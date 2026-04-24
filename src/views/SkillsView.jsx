@@ -138,9 +138,10 @@ export default function SkillsView() {
     return map
   }, [])
 
-  // Compute skill bonuses from DB talents (e.g. Prodigy, Direction Sense, etc.)
+  // Compute skill talent entries: { [skillName]: [{ instId, name, bonus }] }
+  // Each entry is one talent instance so badges can be toggled individually.
   const talentBonuses = useMemo(() => {
-    const bonuses = {}
+    const map = {}
     for (const inst of (c.talents || [])) {
       const def = talentsData.find(t => t.id === inst.talent_id)
       if (!def?.effects) continue
@@ -149,10 +150,11 @@ export default function SkillsView() {
         const skillName = eff.skill === 'param' ? inst.param : eff.skill
         if (!skillName) continue
         const bonus = eff.per_tier != null ? eff.per_tier * inst.tier : (eff.flat ?? 0)
-        bonuses[skillName] = (bonuses[skillName] || 0) + bonus
+        if (!map[skillName]) map[skillName] = []
+        map[skillName].push({ instId: inst.id, name: def.name, bonus })
       }
     }
-    return bonuses
+    return map
   }, [c.talents])
 
   // Build a lookup of culture skill grants for the active character's culture
@@ -220,11 +222,14 @@ export default function SkillsView() {
     const skillStatB = getStatBonus(c, skill.stat_keys)
     const combinedStatB = catStatB + skillStatB
     const rb      = rankBonus(totalRanks)
-    const rawAutoBonus = isCustom
-      ? (talentBonuses[cs.template_name] || 0)
-      : (talentBonuses[skill.name] || 0)
-    const talentDisabled = !!cs.talent_disabled
-    const autoBonus = talentDisabled ? 0 : rawAutoBonus
+    // Per-talent entries for this skill; excluded list is stored on the skill row
+    const talentEntries = isCustom
+      ? (talentBonuses[cs.template_name] || [])
+      : (talentBonuses[skill.name] || [])
+    const excludedTalents = cs.talent_excluded || []
+    const autoBonus = talentEntries
+      .filter(e => !excludedTalents.includes(e.instId))
+      .reduce((sum, e) => sum + e.bonus, 0)
     // Proficiency: character override wins over static skill default
     const defaultProf = skill.prof_type === 'Professional' || skill.prof_type === 'Knack'
     const isProf  = cs.proficient !== undefined ? cs.proficient : defaultProf
@@ -246,9 +251,12 @@ export default function SkillsView() {
       const next = !isProf
       isCustom ? updateCustomSkill(customId, { proficient: next }) : updateSkill(skill.name, 'proficient', next)
     }
-    function toggleTalentDisabled() {
-      const next = !talentDisabled
-      isCustom ? updateCustomSkill(customId, { talent_disabled: next }) : updateSkill(skill.name, 'talent_disabled', next)
+    function toggleTalentExcluded(instId) {
+      const current = cs.talent_excluded || []
+      const next = current.includes(instId)
+        ? current.filter(id => id !== instId)
+        : [...current, instId]
+      isCustom ? updateCustomSkill(customId, { talent_excluded: next }) : updateSkill(skill.name, 'talent_excluded', next)
     }
 
     const dispName = displayName(skill.name, label || undefined)
@@ -294,16 +302,27 @@ export default function SkillsView() {
           color: total > 0 ? 'var(--success)' : total < -10 ? 'var(--danger)' : 'var(--text2)' }}>
           {total >= 0 ? `+${total}` : total}
         </span>
-        {rawAutoBonus !== 0 && (
-          <span style={{ display:'block', fontSize:9, lineHeight:1,
-            color: talentDisabled ? 'var(--text3)' : 'var(--purple)',
-            textDecoration: talentDisabled ? 'line-through' : 'none' }}
-            title={talentDisabled
-              ? `Talent bonus excluded (unlock category to re-enable)`
-              : 'Talent: '+(rawAutoBonus>0?'+':'')+rawAutoBonus}>
-            T{rawAutoBonus > 0 ? '+' : ''}{rawAutoBonus}
-          </span>
-        )}
+        {(() => {
+          const active   = talentEntries.filter(e => !excludedTalents.includes(e.instId))
+          const excluded = talentEntries.filter(e =>  excludedTalents.includes(e.instId))
+          const activeSum   = active.reduce((s, e) => s + e.bonus, 0)
+          const excludedSum = excluded.reduce((s, e) => s + e.bonus, 0)
+          return (<>
+            {activeSum !== 0 && (
+              <span style={{ display:'block', fontSize:9, color:'var(--purple)', lineHeight:1 }}
+                title={active.map(e => `${e.name}: +${e.bonus}`).join(', ')}>
+                T{activeSum > 0 ? '+' : ''}{activeSum}
+              </span>
+            )}
+            {excludedSum !== 0 && (
+              <span style={{ display:'block', fontSize:9, color:'var(--text3)', lineHeight:1,
+                textDecoration:'line-through' }}
+                title={excluded.map(e => `${e.name}: +${e.bonus} (excluded)`).join(', ')}>
+                T{excludedSum > 0 ? '+' : ''}{excludedSum}
+              </span>
+            )}
+          </>)
+        })()}
         {isProf && profBonus > 0 && (
           <span style={{ display:'block', fontSize:9, color:'var(--accent)', lineHeight:1 }}
             title={`Proficiency bonus +${profBonus} (= ranks, max 30)`}>
@@ -360,23 +379,26 @@ export default function SkillsView() {
         {catIsUnlocked && isProf && (
           <span style={{ fontSize: 9, background: 'var(--accent)', color: '#fff', padding: '1px 4px', borderRadius: 3, fontWeight: 700, letterSpacing: '0.04em', flexShrink: 0 }}>PROF</span>
         )}
-        {/* Talent toggle — only when unlocked and a talent bonus exists for this skill */}
-        {catIsUnlocked && rawAutoBonus !== 0 && (
-          <button
-            onClick={toggleTalentDisabled}
-            title={talentDisabled
-              ? `Talent bonus excluded (+${rawAutoBonus} not applied) — click to re-enable`
-              : `Talent bonus active (+${rawAutoBonus}) — click to exclude from this row`}
-            style={{
-              flexShrink: 0, padding: '1px 4px', borderRadius: 3, cursor: 'pointer',
-              fontSize: 9, fontWeight: 700, letterSpacing: '0.04em', lineHeight: 1,
-              border: '1px solid ' + (talentDisabled ? 'var(--border)' : 'var(--purple)'),
-              background: talentDisabled ? 'transparent' : 'rgba(168,85,247,0.15)',
-              color: talentDisabled ? 'var(--text3)' : 'var(--purple)',
-              textDecoration: talentDisabled ? 'line-through' : 'none',
-            }}
-          >T{rawAutoBonus > 0 ? '+' : ''}{rawAutoBonus}</button>
-        )}
+        {/* Per-talent toggle badges — only when unlocked */}
+        {catIsUnlocked && talentEntries.map(entry => {
+          const excluded = excludedTalents.includes(entry.instId)
+          return (
+            <button key={entry.instId}
+              onClick={() => toggleTalentExcluded(entry.instId)}
+              title={excluded
+                ? `${entry.name}: +${entry.bonus} excluded — click to re-enable`
+                : `${entry.name}: +${entry.bonus} active — click to exclude from this row`}
+              style={{
+                flexShrink: 0, padding: '1px 4px', borderRadius: 3, cursor: 'pointer',
+                fontSize: 9, fontWeight: 700, letterSpacing: '0.04em', lineHeight: 1,
+                border: '1px solid ' + (excluded ? 'var(--border)' : 'var(--purple)'),
+                background: excluded ? 'transparent' : 'rgba(168,85,247,0.15)',
+                color: excluded ? 'var(--text3)' : 'var(--purple)',
+                textDecoration: excluded ? 'line-through' : 'none',
+              }}
+            >T{entry.bonus > 0 ? '+' : ''}{entry.bonus}</button>
+          )
+        })}
         {catIsUnlocked && isCustom && (
           <IconBtn onClick={() => removeCustomSkill(customId)} title="Remove this skill" danger>
             <XIcon size={11} color="currentColor" />
