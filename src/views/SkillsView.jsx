@@ -403,9 +403,8 @@ export default function SkillsView() {
           </IconBtn>
         )}
         <IconBtn onClick={() => setStarred(!isStarred)}
-          title={isStarred ? 'Starred — shows on Sheet tab (click to remove)' : 'Star this skill to pin it on the Sheet tab'}
-          active={isStarred} activeColor="#f59e0b">
-          <StarIcon size={11} color={isStarred ? '#fff' : 'currentColor'} filled={isStarred} />
+          title={isStarred ? 'Starred — shows on Sheet tab (click to remove)' : 'Star this skill to pin it on the Sheet tab'}>
+          <StarIcon size={11} color={isStarred ? '#f59e0b' : 'currentColor'} filled={isStarred} />
         </IconBtn>
         <IconBtn onClick={() => setNotesOpen(p => ({ ...p, [rowKey]: !p[rowKey] }))}
           title={noteOpen ? 'Hide notes' : 'Notes'}
