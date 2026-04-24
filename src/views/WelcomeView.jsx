@@ -1,5 +1,6 @@
 import React from 'react'
 import { useCharacter } from '../store/CharacterContext.jsx'
+import { SwordsIcon } from '../components/Icons.jsx'
 
 export default function WelcomeView() {
   const { createCharacter } = useCharacter()
@@ -8,11 +9,11 @@ export default function WelcomeView() {
       display: 'flex', flexDirection: 'column', alignItems: 'center',
       justifyContent: 'center', minHeight: '70dvh', padding: '2rem', textAlign: 'center', gap: 16,
     }}>
-      <div style={{ fontSize: 36, fontWeight: 800, color: 'var(--accent)', letterSpacing: '-0.04em', userSelect: 'none' }}>RM</div>
+      <SwordsIcon size={48} color="var(--accent)" />
       <div>
         <h1 style={{ fontSize: 22, fontWeight: 700, letterSpacing: '0.04em', marginBottom: 6 }}>Rolemaster Unified</h1>
         <p style={{ color: 'var(--text2)', fontSize: 13, maxWidth: 300, lineHeight: 1.6 }}>
-          Interactive character sheet — spells, skills, leveling, and reference tables.
+          Interactive character sheet and reference tables.
         </p>
       </div>
       <button onClick={createCharacter} style={{
