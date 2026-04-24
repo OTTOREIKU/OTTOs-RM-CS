@@ -117,6 +117,319 @@ function lsSet(key, value) {
   try { localStorage.setItem(key, JSON.stringify(value)) } catch {}
 }
 
+// ── SkillRow lives at module scope so React sees a stable component type.
+// Defining it inside SkillsView would create a new function reference on every
+// render, causing unmount/remount and losing focus after each keystroke.
+function SkillRow({
+  skill, cs, rowKey, isCustom, customId, catIsUnlocked, cultureGrant, isMobile,
+  c, talentBonuses, editMode, setEditMode, notesOpen, setNotesOpen,
+  addOpen, setAddOpen, addCustomSkill, updateSkill, updateCustomSkill, removeCustomSkill,
+}) {
+  const ranks        = cs.ranks ?? 0
+  const cultureRanks = cs.culture_ranks ?? 0
+  const totalRanks   = ranks + cultureRanks
+  const item    = cs.item_bonus ?? 0
+  const talent  = cs.talent_bonus ?? 0
+  const notes   = cs.notes ?? ''
+  const label   = cs.label ?? ''
+  const catStatB  = getStatBonus(c, CATEGORY_STATS[skill.category] || '-')
+  const skillStatB = getStatBonus(c, skill.stat_keys)
+  const combinedStatB = catStatB + skillStatB
+  const rb      = rankBonus(totalRanks)
+  const talentEntries = isCustom
+    ? (talentBonuses[cs.template_name] || [])
+    : (talentBonuses[skill.name] || [])
+  const excludedTalents = cs.talent_excluded || []
+  const autoBonus = talentEntries
+    .filter(e => !excludedTalents.includes(e.instId))
+    .reduce((sum, e) => sum + e.bonus, 0)
+  const defaultProf = skill.prof_type === 'Professional' || skill.prof_type === 'Knack'
+  const isProf  = cs.proficient !== undefined ? cs.proficient : defaultProf
+  const profBonus = isProf ? Math.min(totalRanks, 30) : 0
+  const total   = rb + combinedStatB + item + talent + autoBonus + profBonus
+  const isSpec  = hasPlaceholder(skill.name)
+  const editing     = !!editMode[rowKey]
+  const noteOpen    = !!notesOpen[rowKey]
+  const addFormOpen = !!addOpen[rowKey]
+
+  function setRanks(v)        { isCustom ? updateCustomSkill(customId, { ranks: v }) : updateSkill(skill.name, 'ranks', v) }
+  function setCultureRanks(v) { isCustom ? updateCustomSkill(customId, { culture_ranks: v }) : updateSkill(skill.name, 'culture_ranks', v) }
+  function setItem(v)         { isCustom ? updateCustomSkill(customId, { item_bonus: v }) : updateSkill(skill.name, 'item_bonus', v) }
+  function setTalent(v)       { isCustom ? updateCustomSkill(customId, { talent_bonus: v }) : updateSkill(skill.name, 'talent_bonus', v) }
+  function setLabel(v)        { isCustom ? updateCustomSkill(customId, { label: v }) : updateSkill(skill.name, 'label', v) }
+  function setNotes(v)        { isCustom ? updateCustomSkill(customId, { notes: v }) : updateSkill(skill.name, 'notes', v) }
+  function setStarred(v)      { isCustom ? updateCustomSkill(customId, { starred: v }) : updateSkill(skill.name, 'starred', v) }
+  const isStarred = cs.starred ?? false
+  function toggleProf() {
+    const next = !isProf
+    isCustom ? updateCustomSkill(customId, { proficient: next }) : updateSkill(skill.name, 'proficient', next)
+  }
+  function toggleTalentExcluded(instId) {
+    const current = cs.talent_excluded || []
+    const next = current.includes(instId)
+      ? current.filter(id => id !== instId)
+      : [...current, instId]
+    isCustom ? updateCustomSkill(customId, { talent_excluded: next }) : updateSkill(skill.name, 'talent_excluded', next)
+  }
+  function submitAdd(key, sk) {
+    const form = addOpen[key]
+    if (!form) return
+    addCustomSkill(sk.name, form.label.trim() || '')
+    setAddOpen(p => ({ ...p, [key]: null }))
+  }
+
+  const dispName = displayName(skill.name, label || undefined)
+
+  const cultCell = catIsUnlocked ? (
+    <input
+      type="number" min={0} value={cultureRanks || ''}
+      onChange={e => setCultureRanks(Number(e.target.value) || 0)}
+      placeholder="0"
+      title="Culture ranks — edit manually or use Apply button on Sheet tab"
+      style={{ padding: '3px 2px', border: '1px solid var(--accent)', background: 'rgba(99,102,241,0.08)' }}
+    />
+  ) : (
+    <div style={{ textAlign: 'center', fontSize: 12 }}
+      title={cultureRanks > 0
+        ? `${cultureRanks} rank${cultureRanks !== 1 ? 's' : ''} from culture`
+        : cultureGrant
+          ? `${cultureGrant.ranks} rank${cultureGrant.ranks !== 1 ? 's' : ''} from ${c.culture} culture${cultureGrant.choice ? ' (choice)' : ' (not yet applied)'}`
+          : 'No culture grant for this skill'
+      }>
+      {cultureRanks > 0
+        ? <span style={{ color: 'var(--accent)', fontWeight: 700 }}>{cultureRanks}</span>
+        : cultureGrant
+          ? <span style={{ color: 'var(--text3)', fontSize: 11 }}>{cultureGrant.ranks}{cultureGrant.choice ? '*' : ''}</span>
+          : null
+      }
+    </div>
+  )
+  const statCell = (
+    <div
+      style={{ textAlign: 'center', color: 'var(--text2)', fontSize: 12 }}
+      title={`Rank bonus: ${rb >= 0 ? '+' : ''}${rb}\nCategory (${CATEGORY_STATS[skill.category] || '-'}): ${catStatB >= 0 ? '+' : ''}${catStatB}\nSkill (${skill.stat_keys || '-'}): ${skillStatB >= 0 ? '+' : ''}${skillStatB}`}
+    >
+      {(rb + combinedStatB) >= 0 ? `+${rb + combinedStatB}` : rb + combinedStatB}
+    </div>
+  )
+  const totalCell = (
+    <div style={{ textAlign: 'center' }}>
+      <span style={{ fontWeight: 700, fontSize: 13,
+        color: total > 0 ? 'var(--success)' : total < -10 ? 'var(--danger)' : 'var(--text2)' }}>
+        {total >= 0 ? `+${total}` : total}
+      </span>
+      {(() => {
+        const active = talentEntries.filter(e => !excludedTalents.includes(e.instId))
+        const activeSum = active.reduce((s, e) => s + e.bonus, 0)
+        return activeSum !== 0 ? (
+          <span style={{ display: 'block', fontSize: 9, color: 'var(--purple)', lineHeight: 1 }}
+            title={active.map(e => `${e.name}: +${e.bonus}`).join(', ')}>
+            T{activeSum > 0 ? '+' : ''}{activeSum}
+          </span>
+        ) : null
+      })()}
+      {isProf && profBonus > 0 && (
+        <span style={{ display: 'block', fontSize: 9, color: 'var(--accent)', lineHeight: 1 }}
+          title={`Proficiency bonus +${profBonus} (= ranks, max 30)`}>
+          P+{profBonus}
+        </span>
+      )}
+    </div>
+  )
+
+  const nameCell = (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 4, minWidth: 0 }}>
+      {catIsUnlocked && (
+        <button
+          onClick={toggleProf}
+          title={isProf ? 'Proficient — click to remove' : 'Click to mark as proficient'}
+          style={{
+            width: 7, height: 7, padding: 0, flexShrink: 0, cursor: 'pointer',
+            border: '1.5px solid ' + (isProf ? 'var(--accent)' : 'var(--text3)'),
+            background: isProf ? 'var(--accent)' : 'transparent',
+            borderRadius: 1,
+          }}
+        />
+      )}
+      {catIsUnlocked && (
+        <IconBtn onClick={() => setEditMode(p => ({ ...p, [rowKey]: !p[rowKey] }))}
+          title={editing ? 'Stop editing name' : 'Edit name/specialization'}
+          active={editing}>
+          <PencilIcon size={11} color={editing ? '#fff' : 'currentColor'} />
+        </IconBtn>
+      )}
+      {catIsUnlocked && editing && isSpec ? (
+        <input
+          autoFocus
+          value={label}
+          onChange={e => setLabel(e.target.value)}
+          placeholder="specialization"
+          style={{
+            flex: 1, minWidth: 0,
+            background: 'var(--surface2)', border: '1px solid var(--accent)',
+            borderRadius: 5, padding: '2px 6px', color: 'var(--text)', fontSize: 12, outline: 'none',
+          }}
+        />
+      ) : (
+        <span style={{
+          flex: 1, minWidth: 0,
+          overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+          color: isProf ? 'var(--accent)' : 'var(--text)',
+        }}>
+          {dispName}
+        </span>
+      )}
+      {catIsUnlocked && isProf && (
+        <span style={{ fontSize: 9, background: 'var(--accent)', color: '#fff', padding: '1px 4px', borderRadius: 3, fontWeight: 700, letterSpacing: '0.04em', flexShrink: 0 }}>PROF</span>
+      )}
+      {catIsUnlocked && talentEntries.map(entry => {
+        const excluded = excludedTalents.includes(entry.instId)
+        return (
+          <button key={entry.instId}
+            onClick={() => toggleTalentExcluded(entry.instId)}
+            title={excluded
+              ? `${entry.name}: +${entry.bonus} excluded — click to re-enable`
+              : `${entry.name}: +${entry.bonus} active — click to exclude from this row`}
+            style={{
+              flexShrink: 0, padding: '1px 4px', borderRadius: 3, cursor: 'pointer',
+              fontSize: 9, fontWeight: 700, letterSpacing: '0.04em', lineHeight: 1,
+              border: '1px solid ' + (excluded ? 'var(--border)' : 'var(--purple)'),
+              background: excluded ? 'transparent' : 'rgba(168,85,247,0.15)',
+              color: excluded ? 'var(--text3)' : 'var(--purple)',
+              textDecoration: excluded ? 'line-through' : 'none',
+            }}
+          >T{entry.bonus > 0 ? '+' : ''}{entry.bonus}</button>
+        )
+      })}
+      {catIsUnlocked && isCustom && (
+        <IconBtn onClick={() => removeCustomSkill(customId)} title="Remove this skill" danger>
+          <XIcon size={11} color="currentColor" />
+        </IconBtn>
+      )}
+      {catIsUnlocked && (
+        <IconBtn onClick={() => setAddOpen(p => ({ ...p, [rowKey]: p[rowKey] ? null : { label: '' } }))}
+          title="Add specialization based on this skill"
+          active={addFormOpen}>
+          <PlusIcon size={11} color={addFormOpen ? '#fff' : 'currentColor'} />
+        </IconBtn>
+      )}
+      <IconBtn onClick={() => setStarred(!isStarred)}
+        title={isStarred ? 'Starred — shows on Sheet tab (click to remove)' : 'Star this skill to pin it on the Sheet tab'}>
+        <StarIcon size={11} color={isStarred ? '#f59e0b' : 'currentColor'} filled={isStarred} />
+      </IconBtn>
+      <IconBtn onClick={() => setNotesOpen(p => ({ ...p, [rowKey]: !p[rowKey] }))}
+        title={noteOpen ? 'Hide notes' : 'Notes'}
+        active={noteOpen}>
+        <NoteIcon size={11} color={notes ? 'var(--accent)' : noteOpen ? '#fff' : 'currentColor'} />
+      </IconBtn>
+    </div>
+  )
+
+  return (
+    <>
+      {isMobile ? (
+        <div style={{
+          padding: '6px 14px 4px',
+          fontSize: 13, borderTop: '1px solid var(--border)',
+          background: editing ? 'rgba(99,102,241,0.06)' : 'transparent',
+          transition: 'background 0.15s',
+        }}>
+          <div style={{ marginBottom: 4 }}>{nameCell}</div>
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: NUMS_GRID, gap: 4, alignItems: 'center' }}>
+              <input type="number" min={0} value={ranks || ''}
+                onChange={e => setRanks(Number(e.target.value) || 0)}
+                placeholder="0" style={{ padding: '3px 4px', width: '100%', boxSizing: 'border-box' }} />
+              {cultCell}
+              {statCell}
+              <input type="number" value={item || ''} placeholder="0"
+                onChange={e => setItem(Number(e.target.value) || 0)}
+                style={{ padding: '3px 2px' }} />
+              <input type="number" value={talent || ''} placeholder="0"
+                onChange={e => setTalent(Number(e.target.value) || 0)}
+                style={{ padding: '3px 2px' }} />
+              {totalCell}
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div style={{
+          display: 'grid', gridTemplateColumns: GRID,
+          padding: '5px 14px', gap: 4, alignItems: 'center',
+          fontSize: 13, borderTop: '1px solid var(--border)',
+          background: editing ? 'rgba(99,102,241,0.06)' : 'transparent',
+          transition: 'background 0.15s',
+        }}>
+          {nameCell}
+          <input type="number" min={0} value={ranks || ''}
+            onChange={e => setRanks(Number(e.target.value) || 0)}
+            placeholder="0" style={{ padding: '3px 6px', width: '100%', boxSizing: 'border-box' }} />
+          {cultCell}
+          {statCell}
+          <input type="number" value={item || ''} placeholder="0"
+            onChange={e => setItem(Number(e.target.value) || 0)}
+            style={{ padding: '3px 2px' }} />
+          <input type="number" value={talent || ''} placeholder="0"
+            onChange={e => setTalent(Number(e.target.value) || 0)}
+            style={{ padding: '3px 2px' }} />
+          {totalCell}
+        </div>
+      )}
+
+      {noteOpen && (
+        <div style={{ padding: '8px 14px 10px 42px', background: 'var(--surface2)', borderTop: '1px solid var(--border)' }}>
+          <textarea
+            value={notes}
+            onChange={e => setNotes(e.target.value)}
+            placeholder="Notes for this skill (specialization details, conditions, bonuses...)"
+            rows={3}
+            style={{
+              width: '100%', boxSizing: 'border-box',
+              background: 'var(--surface)', border: '1px solid var(--border2)',
+              borderRadius: 6, padding: '6px 8px',
+              color: 'var(--text)', fontSize: 12,
+              resize: 'vertical', fontFamily: 'inherit', lineHeight: 1.5, outline: 'none',
+            }}
+          />
+        </div>
+      )}
+
+      {addFormOpen && (
+        <div style={{
+          display: 'flex', gap: 6, padding: '8px 14px',
+          alignItems: 'center', flexWrap: 'wrap',
+          background: 'rgba(99,102,241,0.06)',
+          borderTop: '1px solid var(--border)',
+        }}>
+          <span style={{ fontSize: 12, color: 'var(--text2)', flexShrink: 0 }}>
+            {skill.name.replace(/<[^>]+>/, '').replace(/:\s*$/, '').trim()}:
+          </span>
+          <input
+            type="text"
+            autoFocus
+            value={addOpen[rowKey]?.label ?? ''}
+            onChange={e => setAddOpen(p => ({ ...p, [rowKey]: { label: e.target.value } }))}
+            onKeyDown={e => { if (e.key === 'Enter') submitAdd(rowKey, skill); if (e.key === 'Escape') setAddOpen(p => ({ ...p, [rowKey]: null })) }}
+            placeholder="specialization (e.g. Hearing, Horse, Elvish...)"
+            style={{
+              flex: 1, minWidth: 140,
+              background: 'var(--surface)', border: '1px solid var(--border2)',
+              borderRadius: 6, padding: '5px 7px', color: 'var(--text)', fontSize: 12,
+            }}
+          />
+          <button onClick={() => submitAdd(rowKey, skill)} style={{
+            background: 'var(--accent)', border: 'none', borderRadius: 6,
+            color: '#fff', padding: '5px 12px', fontSize: 12, fontWeight: 600, cursor: 'pointer',
+          }}>Add</button>
+          <button onClick={() => setAddOpen(p => ({ ...p, [rowKey]: null }))} style={{
+            background: 'none', border: 'none', color: 'var(--text3)', cursor: 'pointer', fontSize: 18, lineHeight: 1,
+          }}>✕</button>
+        </div>
+      )}
+    </>
+  )
+}
+
 export default function SkillsView() {
   const { activeChar, updateCharacter, updateSkill, updateSpellList, removeSpellList,
           addCustomSkill, updateCustomSkill, removeCustomSkill } = useCharacter()
@@ -218,331 +531,10 @@ export default function SkillsView() {
     return skillCosts[skill.category]?.[c.profession] || skill.dev_cost
   }
 
-  function submitAdd(key, skill) {
-    const form = addOpen[key]
-    if (!form) return
-    addCustomSkill(skill.name, form.label.trim() || '')
-    setAddOpen(p => ({ ...p, [key]: null }))
-  }
-
-  function SkillRow({ skill, cs, rowKey, isCustom, customId, catIsUnlocked, cultureGrant, isMobile }) {
-    // eslint-disable-next-line no-shadow
-    const ranks        = cs.ranks ?? 0
-    const cultureRanks = cs.culture_ranks ?? 0
-    const totalRanks   = ranks + cultureRanks
-    const item    = cs.item_bonus ?? 0
-    const talent  = cs.talent_bonus ?? 0
-    const notes   = cs.notes ?? ''
-    const label   = cs.label ?? ''
-    const catStatB  = getStatBonus(c, CATEGORY_STATS[skill.category] || '-')
-    const skillStatB = getStatBonus(c, skill.stat_keys)
-    const combinedStatB = catStatB + skillStatB
-    const rb      = rankBonus(totalRanks)
-    // Per-talent entries for this skill; excluded list is stored on the skill row
-    const talentEntries = isCustom
-      ? (talentBonuses[cs.template_name] || [])
-      : (talentBonuses[skill.name] || [])
-    const excludedTalents = cs.talent_excluded || []
-    const autoBonus = talentEntries
-      .filter(e => !excludedTalents.includes(e.instId))
-      .reduce((sum, e) => sum + e.bonus, 0)
-    // Proficiency: character override wins over static skill default
-    const defaultProf = skill.prof_type === 'Professional' || skill.prof_type === 'Knack'
-    const isProf  = cs.proficient !== undefined ? cs.proficient : defaultProf
-    // Prof bonus = 1 per rank, capped at 30 (not a flat +5)
-    const profBonus = isProf ? Math.min(totalRanks, 30) : 0
-    const total   = rb + combinedStatB + item + talent + autoBonus + profBonus
-    const isSpec  = hasPlaceholder(skill.name)
-    const editing   = !!editMode[rowKey]
-    const noteOpen  = !!notesOpen[rowKey]
-    const addFormOpen = !!addOpen[rowKey]
-
-    function setRanks(v)        { isCustom ? updateCustomSkill(customId, { ranks: v }) : updateSkill(skill.name, 'ranks', v) }
-    function setCultureRanks(v) { isCustom ? updateCustomSkill(customId, { culture_ranks: v }) : updateSkill(skill.name, 'culture_ranks', v) }
-    function setItem(v)         { isCustom ? updateCustomSkill(customId, { item_bonus: v }) : updateSkill(skill.name, 'item_bonus', v) }
-    function setTalent(v)       { isCustom ? updateCustomSkill(customId, { talent_bonus: v }) : updateSkill(skill.name, 'talent_bonus', v) }
-    function setLabel(v)  { isCustom ? updateCustomSkill(customId, { label: v }) : updateSkill(skill.name, 'label', v) }
-    function setNotes(v)   { isCustom ? updateCustomSkill(customId, { notes: v }) : updateSkill(skill.name, 'notes', v) }
-    function setStarred(v) { isCustom ? updateCustomSkill(customId, { starred: v }) : updateSkill(skill.name, 'starred', v) }
-    const isStarred = cs.starred ?? false
-    function toggleProf() {
-      const next = !isProf
-      isCustom ? updateCustomSkill(customId, { proficient: next }) : updateSkill(skill.name, 'proficient', next)
-    }
-    function toggleTalentExcluded(instId) {
-      const current = cs.talent_excluded || []
-      const next = current.includes(instId)
-        ? current.filter(id => id !== instId)
-        : [...current, instId]
-      isCustom ? updateCustomSkill(customId, { talent_excluded: next }) : updateSkill(skill.name, 'talent_excluded', next)
-    }
-
-    const dispName = displayName(skill.name, label || undefined)
-
-    // Reusable sub-components for the number cells (shared by both layouts)
-    const cultCell = catIsUnlocked ? (
-      /* Editable when category is unlocked */
-      <input
-        type="number" min={0} value={cultureRanks || ''}
-        onChange={e => setCultureRanks(Number(e.target.value) || 0)}
-        placeholder="0"
-        title="Culture ranks — edit manually or use Apply button on Sheet tab"
-        style={{ padding: '3px 2px', border: '1px solid var(--accent)', background: 'rgba(99,102,241,0.08)' }}
-      />
-    ) : (
-      /* Read-only display when locked */
-      <div style={{ textAlign: 'center', fontSize: 12 }}
-        title={cultureRanks > 0
-          ? `${cultureRanks} rank${cultureRanks !== 1 ? 's' : ''} from culture`
-          : cultureGrant
-            ? `${cultureGrant.ranks} rank${cultureGrant.ranks !== 1 ? 's' : ''} from ${c.culture} culture${cultureGrant.choice ? ' (choice)' : ' (not yet applied)'}`
-            : 'No culture grant for this skill'
-        }>
-        {cultureRanks > 0
-          ? <span style={{ color: 'var(--accent)', fontWeight: 700 }}>{cultureRanks}</span>
-          : cultureGrant
-            ? <span style={{ color: 'var(--text3)', fontSize: 11 }}>{cultureGrant.ranks}{cultureGrant.choice ? '*' : ''}</span>
-            : null
-        }
-      </div>
-    )
-    const statCell = (
-      <div
-        style={{ textAlign: 'center', color: 'var(--text2)', fontSize: 12 }}
-        title={`Rank bonus: ${rb >= 0 ? '+' : ''}${rb}\nCategory (${CATEGORY_STATS[skill.category] || '-'}): ${catStatB >= 0 ? '+' : ''}${catStatB}\nSkill (${skill.stat_keys || '-'}): ${skillStatB >= 0 ? '+' : ''}${skillStatB}`}
-      >
-        {(rb + combinedStatB) >= 0 ? `+${rb + combinedStatB}` : rb + combinedStatB}
-      </div>
-    )
-    const totalCell = (
-      <div style={{ textAlign:'center' }}>
-        <span style={{ fontWeight:700, fontSize:13,
-          color: total > 0 ? 'var(--success)' : total < -10 ? 'var(--danger)' : 'var(--text2)' }}>
-          {total >= 0 ? `+${total}` : total}
-        </span>
-        {(() => {
-          const active = talentEntries.filter(e => !excludedTalents.includes(e.instId))
-          const activeSum = active.reduce((s, e) => s + e.bonus, 0)
-          return activeSum !== 0 ? (
-            <span style={{ display:'block', fontSize:9, color:'var(--purple)', lineHeight:1 }}
-              title={active.map(e => `${e.name}: +${e.bonus}`).join(', ')}>
-              T{activeSum > 0 ? '+' : ''}{activeSum}
-            </span>
-          ) : null
-        })()}
-        {isProf && profBonus > 0 && (
-          <span style={{ display:'block', fontSize:9, color:'var(--accent)', lineHeight:1 }}
-            title={`Proficiency bonus +${profBonus} (= ranks, max 30)`}>
-            P+{profBonus}
-          </span>
-        )}
-      </div>
-    )
-
-    // Name cell content (shared)
-    const nameCell = (
-      <div style={{ display: 'flex', alignItems: 'center', gap: 4, minWidth: 0 }}>
-        {catIsUnlocked && (
-          <button
-            onClick={toggleProf}
-            title={isProf ? 'Proficient — click to remove' : 'Click to mark as proficient'}
-            style={{
-              width: 7, height: 7, padding: 0, flexShrink: 0, cursor: 'pointer',
-              border: '1.5px solid ' + (isProf ? 'var(--accent)' : 'var(--text3)'),
-              background: isProf ? 'var(--accent)' : 'transparent',
-              borderRadius: 1,
-            }}
-          />
-        )}
-        {catIsUnlocked && (
-          <IconBtn onClick={() => setEditMode(p => ({ ...p, [rowKey]: !p[rowKey] }))}
-            title={editing ? 'Stop editing name' : 'Edit name/specialization'}
-            active={editing}>
-            <PencilIcon size={11} color={editing ? '#fff' : 'currentColor'} />
-          </IconBtn>
-        )}
-        {catIsUnlocked && editing && isSpec ? (
-          <input
-            autoFocus
-            value={label}
-            onChange={e => setLabel(e.target.value)}
-            placeholder="specialization"
-            style={{
-              flex: 1, minWidth: 0,
-              background: 'var(--surface2)', border: '1px solid var(--accent)',
-              borderRadius: 5, padding: '2px 6px', color: 'var(--text)', fontSize: 12, outline: 'none',
-            }}
-          />
-        ) : (
-          <span style={{
-            flex: 1, minWidth: 0,
-            overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-            color: isProf ? 'var(--accent)' : 'var(--text)',
-          }}>
-            {dispName}
-          </span>
-        )}
-        {/* PROF badge — only visible when category is unlocked (editing mode) */}
-        {catIsUnlocked && isProf && (
-          <span style={{ fontSize: 9, background: 'var(--accent)', color: '#fff', padding: '1px 4px', borderRadius: 3, fontWeight: 700, letterSpacing: '0.04em', flexShrink: 0 }}>PROF</span>
-        )}
-        {/* Per-talent toggle badges — only when unlocked */}
-        {catIsUnlocked && talentEntries.map(entry => {
-          const excluded = excludedTalents.includes(entry.instId)
-          return (
-            <button key={entry.instId}
-              onClick={() => toggleTalentExcluded(entry.instId)}
-              title={excluded
-                ? `${entry.name}: +${entry.bonus} excluded — click to re-enable`
-                : `${entry.name}: +${entry.bonus} active — click to exclude from this row`}
-              style={{
-                flexShrink: 0, padding: '1px 4px', borderRadius: 3, cursor: 'pointer',
-                fontSize: 9, fontWeight: 700, letterSpacing: '0.04em', lineHeight: 1,
-                border: '1px solid ' + (excluded ? 'var(--border)' : 'var(--purple)'),
-                background: excluded ? 'transparent' : 'rgba(168,85,247,0.15)',
-                color: excluded ? 'var(--text3)' : 'var(--purple)',
-                textDecoration: excluded ? 'line-through' : 'none',
-              }}
-            >T{entry.bonus > 0 ? '+' : ''}{entry.bonus}</button>
-          )
-        })}
-        {catIsUnlocked && isCustom && (
-          <IconBtn onClick={() => removeCustomSkill(customId)} title="Remove this skill" danger>
-            <XIcon size={11} color="currentColor" />
-          </IconBtn>
-        )}
-        {catIsUnlocked && (
-          <IconBtn onClick={() => setAddOpen(p => ({ ...p, [rowKey]: p[rowKey] ? null : { label: '' } }))}
-            title="Add specialization based on this skill"
-            active={addFormOpen}>
-            <PlusIcon size={11} color={addFormOpen ? '#fff' : 'currentColor'} />
-          </IconBtn>
-        )}
-        <IconBtn onClick={() => setStarred(!isStarred)}
-          title={isStarred ? 'Starred — shows on Sheet tab (click to remove)' : 'Star this skill to pin it on the Sheet tab'}>
-          <StarIcon size={11} color={isStarred ? '#f59e0b' : 'currentColor'} filled={isStarred} />
-        </IconBtn>
-        <IconBtn onClick={() => setNotesOpen(p => ({ ...p, [rowKey]: !p[rowKey] }))}
-          title={noteOpen ? 'Hide notes' : 'Notes'}
-          active={noteOpen}>
-          <NoteIcon size={11} color={notes ? 'var(--accent)' : noteOpen ? '#fff' : 'currentColor'} />
-        </IconBtn>
-      </div>
-    )
-
-    return (
-      <>
-        {isMobile ? (
-          /* ── Mobile: two-row layout ── */
-          <div style={{
-            padding: '6px 14px 4px',
-            fontSize: 13, borderTop: '1px solid var(--border)',
-            background: editing ? 'rgba(99,102,241,0.06)' : 'transparent',
-            transition: 'background 0.15s',
-          }}>
-            {/* Row 1: full-width name */}
-            <div style={{ marginBottom: 4 }}>{nameCell}</div>
-            {/* Row 2: number columns, pushed to right edge to line up under headers */}
-            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: NUMS_GRID, gap: 4, alignItems: 'center' }}>
-              <input type="number" min={0} value={ranks || ''}
-                onChange={e => setRanks(Number(e.target.value) || 0)}
-                placeholder="0" style={{ padding: '3px 4px', width: '100%', boxSizing: 'border-box' }} />
-              {cultCell}
-              {statCell}
-              <input type="number" value={item || ''} placeholder="0"
-                onChange={e => setItem(Number(e.target.value) || 0)}
-                style={{ padding: '3px 2px' }} />
-              <input type="number" value={talent || ''} placeholder="0"
-                onChange={e => setTalent(Number(e.target.value) || 0)}
-                style={{ padding: '3px 2px' }} />
-              {totalCell}
-            </div>
-            </div>
-          </div>
-        ) : (
-          /* ── Desktop: single-row grid ── */
-          <div style={{
-            display: 'grid', gridTemplateColumns: GRID,
-            padding: '5px 14px', gap: 4, alignItems: 'center',
-            fontSize: 13, borderTop: '1px solid var(--border)',
-            background: editing ? 'rgba(99,102,241,0.06)' : 'transparent',
-            transition: 'background 0.15s',
-          }}>
-            {nameCell}
-            <input type="number" min={0} value={ranks || ''}
-              onChange={e => setRanks(Number(e.target.value) || 0)}
-              placeholder="0" style={{ padding: '3px 6px', width: '100%', boxSizing: 'border-box' }} />
-            {cultCell}
-            {statCell}
-            <input type="number" value={item || ''} placeholder="0"
-              onChange={e => setItem(Number(e.target.value) || 0)}
-              style={{ padding: '3px 2px' }} />
-            <input type="number" value={talent || ''} placeholder="0"
-              onChange={e => setTalent(Number(e.target.value) || 0)}
-              style={{ padding: '3px 2px' }} />
-            {totalCell}
-          </div>
-        )}
-
-        {/* Notes panel */}
-        {noteOpen && (
-          <div style={{
-            padding: '8px 14px 10px 42px',
-            background: 'var(--surface2)',
-            borderTop: '1px solid var(--border)',
-          }}>
-            <textarea
-              value={notes}
-              onChange={e => setNotes(e.target.value)}
-              placeholder="Notes for this skill (specialization details, conditions, bonuses...)"
-              rows={3}
-              style={{
-                width: '100%', boxSizing: 'border-box',
-                background: 'var(--surface)', border: '1px solid var(--border2)',
-                borderRadius: 6, padding: '6px 8px',
-                color: 'var(--text)', fontSize: 12,
-                resize: 'vertical', fontFamily: 'inherit', lineHeight: 1.5, outline: 'none',
-              }}
-            />
-          </div>
-        )}
-
-        {/* Inline add-specialization form */}
-        {addFormOpen && (
-          <div style={{
-            display: 'flex', gap: 6, padding: '8px 14px',
-            alignItems: 'center', flexWrap: 'wrap',
-            background: 'rgba(99,102,241,0.06)',
-            borderTop: '1px solid var(--border)',
-          }}>
-            <span style={{ fontSize: 12, color: 'var(--text2)', flexShrink: 0 }}>
-              {skill.name.replace(/<[^>]+>/, '').replace(/:\s*$/, '').trim()}:
-            </span>
-            <input
-              type="text"
-              autoFocus
-              value={addOpen[rowKey]?.label ?? ''}
-              onChange={e => setAddOpen(p => ({ ...p, [rowKey]: { label: e.target.value } }))}
-              onKeyDown={e => { if (e.key === 'Enter') submitAdd(rowKey, skill); if (e.key === 'Escape') setAddOpen(p => ({ ...p, [rowKey]: null })) }}
-              placeholder="specialization (e.g. Hearing, Horse, Elvish...)"
-              style={{
-                flex: 1, minWidth: 140,
-                background: 'var(--surface)', border: '1px solid var(--border2)',
-                borderRadius: 6, padding: '5px 7px', color: 'var(--text)', fontSize: 12,
-              }}
-            />
-            <button onClick={() => submitAdd(rowKey, skill)} style={{
-              background: 'var(--accent)', border: 'none', borderRadius: 6,
-              color: '#fff', padding: '5px 12px', fontSize: 12, fontWeight: 600, cursor: 'pointer',
-            }}>Add</button>
-            <button onClick={() => setAddOpen(p => ({ ...p, [rowKey]: null }))} style={{
-              background: 'none', border: 'none', color: 'var(--text3)', cursor: 'pointer', fontSize: 18, lineHeight: 1,
-            }}>✕</button>
-          </div>
-        )}
-      </>
-    )
+  // Context bundle spread onto every SkillRow (avoids re-declaring props at each call site)
+  const rowCtx = {
+    c, talentBonuses, editMode, setEditMode, notesOpen, setNotesOpen,
+    addOpen, setAddOpen, addCustomSkill, updateSkill, updateCustomSkill, removeCustomSkill,
   }
 
   return (
@@ -664,10 +656,10 @@ export default function SkillsView() {
                   const children = filteredCustoms.filter(fc => fc.template_name === skill.name)
                   return (
                     <React.Fragment key={skill.name}>
-                      <SkillRow skill={skill} cs={cs} rowKey={skill.name} isCustom={false} customId={null} catIsUnlocked={isUnlocked} cultureGrant={cultureLookup[skill.name]} isMobile={isMobile} />
+                      <SkillRow {...rowCtx} skill={skill} cs={cs} rowKey={skill.name} isCustom={false} customId={null} catIsUnlocked={isUnlocked} cultureGrant={cultureLookup[skill.name]} isMobile={isMobile} />
                       {children.map(fc => {
                         const tmpl = fc._template || {}
-                        return <SkillRow key={fc.id} skill={tmpl} cs={fc} rowKey={fc.id} isCustom={true} customId={fc.id} catIsUnlocked={isUnlocked} cultureGrant={cultureLookup[tmpl.name]} isMobile={isMobile} />
+                        return <SkillRow key={fc.id} {...rowCtx} skill={tmpl} cs={fc} rowKey={fc.id} isCustom={true} customId={fc.id} catIsUnlocked={isUnlocked} cultureGrant={cultureLookup[tmpl.name]} isMobile={isMobile} />
                       })}
                     </React.Fragment>
                   )
@@ -675,7 +667,7 @@ export default function SkillsView() {
                 {/* Orphaned custom skills whose template wasn't in the filtered list */}
                 {filteredCustoms.filter(fc => !filtered.some(sk => sk.name === fc.template_name)).map(cs => {
                   const tmpl = cs._template || {}
-                  return <SkillRow key={cs.id} skill={tmpl} cs={cs} rowKey={cs.id} isCustom={true} customId={cs.id} catIsUnlocked={isUnlocked} cultureGrant={cultureLookup[tmpl.name]} isMobile={isMobile} />
+                  return <SkillRow key={cs.id} {...rowCtx} skill={tmpl} cs={cs} rowKey={cs.id} isCustom={true} customId={cs.id} catIsUnlocked={isUnlocked} cultureGrant={cultureLookup[tmpl.name]} isMobile={isMobile} />
                 })}
               </div>
             )}
