@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
-const BASE = '/OTTOs-RMU-CS/'
+const BASE = '/OTTOs-RM-CS/'
 
 export default defineConfig({
   base: BASE,
@@ -20,7 +20,7 @@ export default defineConfig({
         // Don't let workbox try to cache the CoreLaw PDF (it's huge)
         globIgnores: ['**/CoreLaw.pdf'],
         navigateFallback: BASE + 'index.html',
-        navigateFallbackAllowlist: [/^\/OTTOs-RMU-CS/],
+        navigateFallbackAllowlist: [/^\/OTTOs-RM-CS/],
         runtimeCaching: [],
         // Bundle can exceed 2 MiB — raise the limit
         maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
