@@ -523,7 +523,13 @@ export default function CharacterSheet() {
                   <tr key={part} style={{ borderBottom:'1px solid var(--border)', background: i%2===0 ? 'transparent' : 'var(--surface2)' }}>
                     <td style={{ padding:'4px 8px', fontWeight:600, fontSize:12 }}>{ARMOR_PART_LABELS[part]}</td>
                     <td style={{ padding:'3px 6px' }}>
-                      <select value={ap.at ?? 1} onChange={e => updateArmorPart(part, { at: Number(e.target.value) })} style={{ width:52, padding:'2px 3px', fontSize:11 }}>
+                      {armorParts[part]?.name ? (
+                        <div style={{ fontSize:9, color:'var(--text3)', marginBottom:2 }}>{armorParts[part].name}</div>
+                      ) : null}
+                      <select value={ap.at ?? 1} onChange={e => {
+                        const pieceName = armorData[ARMOR_SECTION_MAP[part]]?.find(p => p.at === Number(e.target.value))?.name
+                        updateArmorPart(part, { at: Number(e.target.value), name: pieceName || '' })
+                      }} style={{ width:52, padding:'2px 3px', fontSize:11 }}>
                         {AT_OPTIONS.map(n => <option key={n} value={n}>{n}</option>)}
                       </select>
                     </td>

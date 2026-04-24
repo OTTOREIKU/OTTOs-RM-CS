@@ -3,6 +3,7 @@ import { useCharacter } from '../store/CharacterContext.jsx'
 import talentsData from '../data/talents.json'
 import skillsData from '../data/skills.json'
 import weaponsData from '../data/weapons.json'
+import armorData from '../data/armor.json'
 import { getWeaponOB } from '../utils/calc.js'
 import { XIcon, ChevronDownIcon, ChevronRightIcon } from '../components/Icons.jsx'
 
@@ -537,11 +538,136 @@ function TinyInput({ value, onChange, placeholder, style, type = 'text' }) {
   )
 }
 
+const SHIELD_DB = { 'Target Shield': 15, 'Normal Shield': 20, 'Full Shield': 25, 'Wall Shield': 30 }
+const ARMOR_SECTION_MAP = { torso: 'torso', head: 'helmet', arms: 'vambraces', legs: 'greaves' }
+const ARMOR_SLOT_LABELS = { torso: 'Torso', head: 'Head', arms: 'Arms', legs: 'Legs' }
+
+function ArmorCard({ activeChar, updateArmorPart }) {
+  const armorParts = activeChar.armor_parts || {}
+  const [customAt, setCustomAt] = useState({})
+
+  const fullSuitOptions = armorData.full_suit.filter(p => p.at !== 1)
+
+  function handleQuickSet(e) {
+    const at = Number(e.target.value)
+    if (!at) return
+    ;['torso', 'head', 'arms', 'legs'].forEach(slot => {
+      const section = ARMOR_SECTION_MAP[slot]
+      const piece = armorData[section]?.find(p => p.at === at)
+      if (piece) updateArmorPart(slot, { at: piece.at, name: piece.name, custom: false })
+    })
+  }
+
+  return (
+    <div style={{ background:'var(--surface)', border:'1px solid var(--border)', borderRadius:12, margin:'12px 12px 0', overflow:'hidden' }}>
+      <div style={{ padding:'10px 14px', borderBottom:'1px solid var(--border)', background:'var(--surface2)',
+        fontWeight:700, fontSize:12, letterSpacing:'0.08em', color:'var(--text2)', textTransform:'uppercase' }}>
+        Armor
+      </div>
+      <div style={{ padding:12 }}>
+        {/* Quick set all row */}
+        <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:10 }}>
+          <span style={{ fontSize:11, color:'var(--text3)', flexShrink:0 }}>Quick set all:</span>
+          <select defaultValue="" onChange={handleQuickSet}
+            style={{ flex:1, background:'var(--surface2)', border:'1px solid var(--border2)', borderRadius:5, padding:'4px 6px', color:'var(--text)', fontSize:12 }}>
+            <option value="">— choose —</option>
+            {fullSuitOptions.map(p => (
+              <option key={p.at} value={p.at}>{p.name} (AT {p.at})</option>
+            ))}
+          </select>
+        </div>
+
+        {/* Body part rows */}
+        <div style={{ border:'1px solid var(--border)', borderRadius:7, overflow:'hidden' }}>
+          {['torso','head','arms','legs'].map((slot, i) => {
+            const ap = armorParts[slot] || { at: 1 }
+            const section = ARMOR_SECTION_MAP[slot]
+            const pieces = armorData[section] || []
+            const matchedPiece = pieces.find(p => p.at === (ap.at ?? 1)) || pieces[0]
+            const penalty = matchedPiece?.maneuver_penalty
+            const isCustom = ap.custom === true
+            const selectValue = isCustom ? 'custom' : (matchedPiece?.at ?? 1)
+
+            return (
+              <div key={slot} style={{ borderTop: i === 0 ? 'none' : '1px solid var(--border)' }}>
+                <div style={{ display:'flex', alignItems:'center', gap:6, padding:'5px 8px' }}>
+                  <span style={{ width:60, flexShrink:0, fontSize:12, fontWeight:600, color:'var(--text2)' }}>
+                    {ARMOR_SLOT_LABELS[slot]}
+                  </span>
+                  <select value={selectValue}
+                    onChange={e => {
+                      const val = e.target.value
+                      if (val === 'custom') {
+                        updateArmorPart(slot, { custom: true })
+                      } else {
+                        const piece = pieces.find(p => p.at === Number(val))
+                        if (piece) updateArmorPart(slot, { at: piece.at, name: piece.name, custom: false })
+                      }
+                    }}
+                    style={{ flex:1, background:'var(--surface2)', border:'1px solid var(--border2)', borderRadius:5, padding:'4px 5px', color:'var(--text)', fontSize:12 }}>
+                    {pieces.map(p => (
+                      <option key={p.at} value={p.at}>{p.name} (AT {p.at})</option>
+                    ))}
+                    <option value="custom">Custom…</option>
+                  </select>
+                  <span style={{ width:60, flexShrink:0, textAlign:'right', fontSize:11,
+                    color: penalty && penalty < 0 ? 'var(--danger)' : 'var(--text3)', fontWeight: penalty && penalty < 0 ? 600 : 400 }}>
+                    {penalty && penalty !== 0 ? penalty : `AT ${ap.at ?? 1}`}
+                  </span>
+                </div>
+                {isCustom && (
+                  <div style={{ display:'flex', gap:6, padding:'0 8px 6px', paddingLeft:74 }}>
+                    <input type="text" value={ap.name || ''} placeholder="Armor name"
+                      onChange={e => updateArmorPart(slot, { name: e.target.value })}
+                      style={{ flex:1, background:'var(--surface2)', border:'1px solid var(--border2)', borderRadius:5, padding:'3px 6px', color:'var(--text)', fontSize:12 }} />
+                    <select value={ap.at ?? 1} onChange={e => updateArmorPart(slot, { at: Number(e.target.value) })}
+                      style={{ width:70, background:'var(--surface2)', border:'1px solid var(--border2)', borderRadius:5, padding:'3px 5px', color:'var(--text)', fontSize:12 }}>
+                      {[1,2,3,4,5,6,7,8,9,10].map(n => <option key={n} value={n}>AT {n}</option>)}
+                    </select>
+                  </div>
+                )}
+              </div>
+            )
+          })}
+
+          {/* Shield row */}
+          {(() => {
+            const shield = armorParts.shield || { type: null, db: 0 }
+            return (
+              <div style={{ borderTop:'1px solid var(--border)', background:'var(--surface2)' }}>
+                <div style={{ display:'flex', alignItems:'center', gap:6, padding:'5px 8px' }}>
+                  <span style={{ width:60, flexShrink:0, fontSize:12, fontWeight:600, color:'var(--text2)' }}>Shield</span>
+                  <select value={shield.type || 'None'}
+                    onChange={e => {
+                      const val = e.target.value
+                      updateArmorPart('shield', { type: val === 'None' ? null : val })
+                    }}
+                    style={{ flex:1, background:'var(--surface)', border:'1px solid var(--border2)', borderRadius:5, padding:'4px 5px', color:'var(--text)', fontSize:12 }}>
+                    <option value="None">None</option>
+                    {armorData.shields.map(s => (
+                      <option key={s.name} value={s.name}>{s.name}</option>
+                    ))}
+                  </select>
+                  <span style={{ width:60, flexShrink:0, textAlign:'right', fontSize:11,
+                    color: shield.type ? 'var(--success)' : 'var(--text3)', fontWeight: shield.type ? 700 : 400 }}>
+                    {shield.type ? `+${SHIELD_DB[shield.type]} DB` : '—'}
+                  </span>
+                </div>
+              </div>
+            )
+          })()}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function EquipmentView() {
   const { activeChar, addEquipment, updateEquipment, removeEquipment,
           addMagicItem, updateMagicItem, removeMagicItem, updateCharacter,
           addWeapon, updateWeapon, removeWeapon,
-          addTalent, removeTalent } = useCharacter()
+          addTalent, removeTalent,
+          updateArmorPart } = useCharacter()
   const [expandedMagic, setExpandedMagic] = useState(null)
 
   if (!activeChar) return null
@@ -621,6 +747,8 @@ export default function EquipmentView() {
           </span>
         </div>
       </Card>
+
+      <ArmorCard activeChar={activeChar} updateArmorPart={updateArmorPart} />
 
       <Card title="Magic Items">
         {magicItems.length === 0 && (
