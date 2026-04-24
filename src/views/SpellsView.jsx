@@ -30,7 +30,9 @@ export default function SpellsView() {
   const { activeChar } = useCharacter()
   const [realm, setRealm]           = useState('All')
   const [search, setSearch]         = useState('')
-  const [openList, setOpenList]     = useState(null)
+  const [openList, setOpenList]     = useState(() => {
+    try { const v = localStorage.getItem('rm_spells_openList'); return v != null ? JSON.parse(v) : null } catch { return null }
+  })
   const [openSpell, setOpenSpell]   = useState(null)
   const [tab, setTab]               = useState('browse')
   const [showTypes, setShowTypes]   = useState(false)
@@ -40,6 +42,9 @@ export default function SpellsView() {
     window.addEventListener('resize', h)
     return () => window.removeEventListener('resize', h)
   }, [])
+  useEffect(() => {
+    try { localStorage.setItem('rm_spells_openList', JSON.stringify(openList)) } catch {}
+  }, [openList])
 
   const c = activeChar
   const query = search.toLowerCase()

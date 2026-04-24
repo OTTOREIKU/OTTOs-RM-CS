@@ -107,16 +107,30 @@ const NUMS_GRID   = '54px 34px 50px 50px 50px 62px'       // mobile: numbers-onl
 const SPELL_GRID  = '1fr 54px 34px 52px 56px 64px'        // desktop spell lists
 const SPELL_GRID_M = '1fr 48px 28px 46px 46px 56px'       // mobile spell lists: tightened
 
+// All category names for default-all-open init
+const ALL_SKILL_CATEGORIES = [...new Set(skillsData.map(s => s.category || 'Other'))]
+
+function lsGet(key, fallback) {
+  try { const v = localStorage.getItem(key); return v != null ? JSON.parse(v) : fallback } catch { return fallback }
+}
+function lsSet(key, value) {
+  try { localStorage.setItem(key, JSON.stringify(value)) } catch {}
+}
+
 export default function SkillsView() {
   const { activeChar, updateCharacter, updateSkill, updateSpellList, removeSpellList,
           addCustomSkill, updateCustomSkill, removeCustomSkill } = useCharacter()
   const [search, setSearch]       = useState('')
-  const [expanded, setExpanded]   = useState({})
+  const [expanded, setExpanded]   = useState(() =>
+    lsGet('rm_skills_expanded', Object.fromEntries(ALL_SKILL_CATEGORIES.map(c => [c, true])))
+  )
   const [showZero, setShowZero]   = useState(true)
   const [editMode, setEditMode]   = useState({})    // { [skillKey]: bool }
   const [notesOpen, setNotesOpen] = useState({})    // { [skillKey]: bool }
   const [addOpen, setAddOpen]     = useState({})    // { [skillKey]: { label } | null }
-  const [catUnlocked, setCatUnlocked] = useState({}) // { [cat]: bool } — per-category lock
+  const [catUnlocked, setCatUnlocked] = useState(() =>
+    lsGet('rm_skills_unlocked', {})
+  )
 
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 640)
   useEffect(() => {
@@ -124,6 +138,8 @@ export default function SkillsView() {
     window.addEventListener('resize', handler)
     return () => window.removeEventListener('resize', handler)
   }, [])
+  useEffect(() => { lsSet('rm_skills_expanded', expanded) }, [expanded])
+  useEffect(() => { lsSet('rm_skills_unlocked', catUnlocked) }, [catUnlocked])
 
   const c = activeChar
   if (!c) return <Empty text="No character selected." />
@@ -540,6 +556,21 @@ export default function SkillsView() {
         </label>
         <Btn onClick={() => setExpanded(Object.fromEntries(categories.map(c => [c, true])))}>Expand all</Btn>
         <Btn onClick={() => setExpanded({})}>Collapse all</Btn>
+        {(() => {
+          const allUnlocked = categories.length > 0 && categories.every(cat => catUnlocked[cat])
+          return (
+            <Btn onClick={() => {
+              if (allUnlocked) {
+                setCatUnlocked({})
+              } else {
+                setExpanded(Object.fromEntries(categories.map(c => [c, true])))
+                setCatUnlocked(Object.fromEntries(categories.map(c => [c, true])))
+              }
+            }}>
+              {allUnlocked ? 'Lock All' : 'Unlock All'}
+            </Btn>
+          )
+        })()}
       </div>
 
       {isMobile ? (
