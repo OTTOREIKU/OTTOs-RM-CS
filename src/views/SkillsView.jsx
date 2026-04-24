@@ -585,9 +585,20 @@ export default function SkillsView() {
               <div style={{ border: '1px solid var(--border)', borderTop: 'none', borderRadius: '0 0 8px 8px', overflow: 'hidden' }}>
                 {filtered.map(skill => {
                   const cs = c.skills?.[skill.name] || {}
-                  return <SkillRow key={skill.name} skill={skill} cs={cs} rowKey={skill.name} isCustom={false} customId={null} catIsUnlocked={isUnlocked} cultureGrant={cultureLookup[skill.name]} isMobile={isMobile} />
+                  // Find any custom instances whose template is this skill, in creation order
+                  const children = filteredCustoms.filter(fc => fc.template_name === skill.name)
+                  return (
+                    <React.Fragment key={skill.name}>
+                      <SkillRow skill={skill} cs={cs} rowKey={skill.name} isCustom={false} customId={null} catIsUnlocked={isUnlocked} cultureGrant={cultureLookup[skill.name]} isMobile={isMobile} />
+                      {children.map(fc => {
+                        const tmpl = fc._template || {}
+                        return <SkillRow key={fc.id} skill={tmpl} cs={fc} rowKey={fc.id} isCustom={true} customId={fc.id} catIsUnlocked={isUnlocked} cultureGrant={cultureLookup[tmpl.name]} isMobile={isMobile} />
+                      })}
+                    </React.Fragment>
+                  )
                 })}
-                {filteredCustoms.map(cs => {
+                {/* Orphaned custom skills whose template wasn't in the filtered list */}
+                {filteredCustoms.filter(fc => !filtered.some(sk => sk.name === fc.template_name)).map(cs => {
                   const tmpl = cs._template || {}
                   return <SkillRow key={cs.id} skill={tmpl} cs={cs} rowKey={cs.id} isCustom={true} customId={cs.id} catIsUnlocked={isUnlocked} cultureGrant={cultureLookup[tmpl.name]} isMobile={isMobile} />
                 })}
