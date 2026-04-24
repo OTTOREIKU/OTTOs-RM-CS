@@ -234,9 +234,10 @@ export default function SkillsView() {
     const noteOpen  = !!notesOpen[rowKey]
     const addFormOpen = !!addOpen[rowKey]
 
-    function setRanks(v)  { isCustom ? updateCustomSkill(customId, { ranks: v }) : updateSkill(skill.name, 'ranks', v) }
-    function setItem(v)   { isCustom ? updateCustomSkill(customId, { item_bonus: v }) : updateSkill(skill.name, 'item_bonus', v) }
-    function setTalent(v) { isCustom ? updateCustomSkill(customId, { talent_bonus: v }) : updateSkill(skill.name, 'talent_bonus', v) }
+    function setRanks(v)        { isCustom ? updateCustomSkill(customId, { ranks: v }) : updateSkill(skill.name, 'ranks', v) }
+    function setCultureRanks(v) { isCustom ? updateCustomSkill(customId, { culture_ranks: v }) : updateSkill(skill.name, 'culture_ranks', v) }
+    function setItem(v)         { isCustom ? updateCustomSkill(customId, { item_bonus: v }) : updateSkill(skill.name, 'item_bonus', v) }
+    function setTalent(v)       { isCustom ? updateCustomSkill(customId, { talent_bonus: v }) : updateSkill(skill.name, 'talent_bonus', v) }
     function setLabel(v)  { isCustom ? updateCustomSkill(customId, { label: v }) : updateSkill(skill.name, 'label', v) }
     function setNotes(v)  { isCustom ? updateCustomSkill(customId, { notes: v }) : updateSkill(skill.name, 'notes', v) }
     function toggleProf() {
@@ -247,12 +248,22 @@ export default function SkillsView() {
     const dispName = displayName(skill.name, label || undefined)
 
     // Reusable sub-components for the number cells (shared by both layouts)
-    const cultCell = (
+    const cultCell = catIsUnlocked ? (
+      /* Editable when category is unlocked */
+      <input
+        type="number" min={0} value={cultureRanks || ''}
+        onChange={e => setCultureRanks(Number(e.target.value) || 0)}
+        placeholder="0"
+        title="Culture ranks — edit manually or use Apply button on Sheet tab"
+        style={{ padding: '3px 2px', border: '1px solid var(--accent)', background: 'rgba(99,102,241,0.08)' }}
+      />
+    ) : (
+      /* Read-only display when locked */
       <div style={{ textAlign: 'center', fontSize: 12 }}
         title={cultureRanks > 0
-          ? `${cultureRanks} rank${cultureRanks !== 1 ? 's' : ''} from culture (applied)`
+          ? `${cultureRanks} rank${cultureRanks !== 1 ? 's' : ''} from culture`
           : cultureGrant
-            ? `${cultureGrant.ranks} rank${cultureGrant.ranks !== 1 ? 's' : ''} from ${c.culture} culture${cultureGrant.choice ? ' (choice — assign manually)' : ' (not yet applied)'}`
+            ? `${cultureGrant.ranks} rank${cultureGrant.ranks !== 1 ? 's' : ''} from ${c.culture} culture${cultureGrant.choice ? ' (choice)' : ' (not yet applied)'}`
             : 'No culture grant for this skill'
         }>
         {cultureRanks > 0
