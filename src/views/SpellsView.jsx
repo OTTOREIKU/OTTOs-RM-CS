@@ -1,9 +1,25 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { ChevronDownIcon, ChevronUpIcon } from '../components/Icons.jsx'
 import { rankBonus, getTotalStatBonus } from '../utils/calc.js'
 import spellLists from '../data/spell_lists.json'
 import spellDescs from '../data/spell_descriptions.json'
+
+const SPELL_GRID   = '36px 1fr 80px 90px 64px 32px'   // desktop
+const SPELL_GRID_M = '28px 1fr 58px 78px 42px 28px'   // mobile: tighter fixed cols → ~128px for name
+
+// Spell type codes from CoreLaw
+const SPELL_TYPES = [
+  { code: 'U',  label: 'Utility',              desc: 'General support / non-combat effect' },
+  { code: 'F',  label: 'Force',                desc: 'Physical manipulation or movement' },
+  { code: 'E',  label: 'Elemental',            desc: 'Involves elemental forces (fire, shadow, etc.)' },
+  { code: 'I',  label: 'Information',          desc: 'Detection, divination, sensing' },
+  { code: 'A',  label: 'Attack',               desc: 'Special offensive effect' },
+  { code: 'b',  label: '+ Ball',               desc: 'Suffix: area-of-effect (e.g. Shock Ball)' },
+  { code: 'd',  label: '+ Directed',           desc: 'Suffix: targeted — requires an attack roll' },
+  { code: 'm',  label: '+ Maintained',         desc: 'Suffix: requires active concentration (dur: C)' },
+  { code: 's',  label: '+ Self / Touch',       desc: 'Suffix: range limited to self or touch' },
+]
 
 const REALMS = ['All', 'Channeling', 'Essence', 'Mentalism', 'Hybrid']
 const REALM_COLOR = { Channeling:'#f59e0b', Essence:'#4c8bf5', Mentalism:'#8b5cf6', Hybrid:'#22c55e' }
@@ -17,8 +33,17 @@ export default function SpellsView() {
   const [openList, setOpenList]     = useState(null)
   const [openSpell, setOpenSpell]   = useState(null)
   const [tab, setTab]               = useState('browse')
+  const [showTypes, setShowTypes]   = useState(false)
+  const [isMobile, setIsMobile]     = useState(() => window.innerWidth < 640)
+  useEffect(() => {
+    const h = () => setIsMobile(window.innerWidth < 640)
+    window.addEventListener('resize', h)
+    return () => window.removeEventListener('resize', h)
+  }, [])
+
   const c = activeChar
   const query = search.toLowerCase()
+  const spellGrid = isMobile ? SPELL_GRID_M : SPELL_GRID
 
   const filteredLists = useMemo(() => Object.entries(spellLists).filter(([name, list]) => {
     const matchRealm  = realm === 'All' || list.realm === realm
@@ -73,9 +98,38 @@ export default function SpellsView() {
         </div>
       )}
 
-      <div style={{ fontSize: 11, color: 'var(--text3)', marginBottom: 8 }}>
-        {display.length} list{display.length !== 1 ? 's' : ''}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+        <span style={{ fontSize: 11, color: 'var(--text3)', flex: 1 }}>
+          {display.length} list{display.length !== 1 ? 's' : ''}
+        </span>
+        <button onClick={() => setShowTypes(t => !t)} style={{
+          background: showTypes ? 'var(--surface2)' : 'transparent',
+          border: '1px solid var(--border)', borderRadius: 5,
+          color: 'var(--text3)', fontSize: 11, padding: '3px 8px', cursor: 'pointer',
+        }}>
+          {showTypes ? 'Hide' : 'Spell Types ▸'}
+        </button>
       </div>
+
+      {showTypes && (
+        <div style={{
+          marginBottom: 10, padding: '10px 12px',
+          background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 8,
+          display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '4px 16px',
+        }}>
+          {SPELL_TYPES.map(({ code, label, desc }) => (
+            <div key={code} style={{ display: 'flex', gap: 8, alignItems: 'baseline', fontSize: 12 }}>
+              <span style={{
+                fontSize: 10, background: 'var(--accent)', color: '#fff',
+                padding: '1px 5px', borderRadius: 3, fontWeight: 700,
+                fontFamily: 'monospace', flexShrink: 0, minWidth: 22, textAlign: 'center',
+              }}>{code}</span>
+              <span style={{ color: 'var(--text)', fontWeight: 600, flexShrink: 0 }}>{label}</span>
+              <span style={{ color: 'var(--text3)', fontSize: 11 }}>{desc}</span>
+            </div>
+          ))}
+        </div>
+      )}
 
       {display.map(([listName, list]) => {
         const isOpen = openList === listName
@@ -123,7 +177,7 @@ export default function SpellsView() {
             {/* Spell rows */}
             {isOpen && (
               <>
-                <div style={{ display: 'grid', gridTemplateColumns: '36px 1fr 80px 90px 64px 32px', padding: '4px 14px', borderTop: '1px solid var(--border)', background: 'var(--surface2)' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: spellGrid, padding: '4px 14px', borderTop: '1px solid var(--border)', background: 'var(--surface2)' }}>
                   {['Lvl','Spell','AoE','Duration','Range','Type'].map(h => (
                     <span key={h} style={{ fontSize: 9, fontWeight: 600, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>{h}</span>
                   ))}
@@ -137,8 +191,8 @@ export default function SpellsView() {
                     <div key={spKey}>
                       <div onClick={() => hasDetail ? setOpenSpell(open ? null : spKey) : null}
                         style={{
-                          display: 'grid', gridTemplateColumns: '36px 1fr 80px 90px 64px 32px',
-                          padding: '5px 14px', gap: 4, fontSize: 12, alignItems: 'center',
+                          display: 'grid', gridTemplateColumns: spellGrid,
+                          padding: '5px 14px', gap: 4, fontSize: 12, alignItems: 'start',
                           background: i % 2 === 0 ? 'var(--surface)' : 'var(--surface2)',
                           cursor: hasDetail ? 'pointer' : 'default',
                           borderLeft: '2px solid ' + (hasDetail ? rc + '60' : 'transparent'),

@@ -12,7 +12,7 @@ import combatGuide  from '../data/combat_guide.json'
 import weaponsData  from '../data/weapons.json'
 import fumbleTables from '../data/fumble_tables.json'
 
-const TABS = ['Races', 'Cultures', 'Armor', 'Stat Bonuses', 'Skill Costs', 'Weapons', 'Crit Tables', 'Attack Tables', 'Combat Calc', 'Combat Guide']
+const TABS = ['Races', 'Cultures', 'Armor', 'Stat Bonuses', 'Skill Costs', 'Weapons', 'Spell Types', 'Crit Tables', 'Attack Tables', 'Combat Calc', 'Combat Guide']
 const STAT_COLS = ['Agility','Constitution','Empathy','Intuition','Memory',
                    'Presence','Quickness','Reasoning','Self Discipline','Strength']
 const STAT_ABR  = ['Ag','Co','Em','In','Me','Pr','Qu','Re','SD','St']
@@ -425,6 +425,9 @@ export default function ReferenceView() {
       {/* ── WEAPONS ── */}
       {tab === 'Weapons' && <WeaponsPanel />}
 
+      {/* ── SPELL TYPES ── */}
+      {tab === 'Spell Types' && <SpellTypesTab />}
+
       {/* ── CRIT TABLES ── */}
       {tab === 'Crit Tables' && <CritTablesPanel
         critType={critType} setCritType={setCritType}
@@ -567,6 +570,110 @@ function WeaponsPanel() {
       </div>
       <div style={{ fontSize:11, color:'var(--text3)' }}>
         Fumble = base fumble number (reduced by 1 per 5 ranks in the skill, minimum 1). Size = weapon size modifier vs. Medium target. Str Req = stat needed for effective use.
+      </div>
+    </div>
+  )
+}
+
+/* ─────────────────────────────────────────────── */
+/*  SPELL TYPES TAB                                */
+/* ─────────────────────────────────────────────── */
+const SPELL_BASE_TYPES = [
+  { code: 'U', label: 'Utility',      color: '#6366f1', desc: 'General support or non-combat effect. No attack roll needed.' },
+  { code: 'F', label: 'Force',        color: '#f59e0b', desc: 'Physical manipulation, movement, or force effect.' },
+  { code: 'E', label: 'Elemental',    color: '#22c55e', desc: 'Involves an elemental force (fire, ice, shadow, lightning, etc.).' },
+  { code: 'I', label: 'Information',  color: '#4c8bf5', desc: 'Detection, divination, or sensing. Often range: self.' },
+  { code: 'A', label: 'Attack',       color: '#ef4444', desc: 'Special offensive effect (see spell description for details).' },
+]
+const SPELL_SUFFIXES = [
+  { code: 'b', label: 'Ball',        desc: 'Area-of-effect — hits everything in a radius (e.g. "20\'R").' },
+  { code: 'd', label: 'Directed',    desc: 'Targeted attack — caster must make an attack roll to hit.' },
+  { code: 'm', label: 'Maintained',  desc: 'Requires active concentration (duration shown as "C"). Ends if disrupted.' },
+  { code: 's', label: 'Self / Touch',desc: 'Range limited to self or touch only.' },
+]
+const SPELL_TYPE_EXAMPLES = [
+  { code: 'U',  example: 'Stun Relief, Haste'         },
+  { code: 'Um', example: 'Sensory Merge, Shield'      },
+  { code: 'Us', example: 'Curse Cure, Body Reversion' },
+  { code: 'F',  example: 'Sacred Gate, Telekinesis'   },
+  { code: 'Fd', example: 'Hurling, Deflect'           },
+  { code: 'Fm', example: 'Animal Mastery, Fly'        },
+  { code: 'Fs', example: 'Self spells, personal buff' },
+  { code: 'E',  example: 'Shadow Wall, Elemental barrier' },
+  { code: 'Eb', example: 'Shock Ball, Fireball'       },
+  { code: 'Ed', example: 'Shock Bolt, Ice Bolt'       },
+  { code: 'I',  example: 'Detect Channeling, Locate'  },
+  { code: 'Im', example: 'Presence, Sustained detect' },
+  { code: 'A',  example: 'Lord Research (special)'    },
+]
+
+function SpellTypesTab() {
+  return (
+    <div>
+      {/* Base types */}
+      <div style={{ fontWeight: 700, fontSize: 12, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 8 }}>Base Types</div>
+      <div style={{ border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden', marginBottom: 16 }}>
+        {SPELL_BASE_TYPES.map((t, i) => (
+          <div key={t.code} style={{
+            display: 'grid', gridTemplateColumns: '36px 110px 1fr',
+            padding: '9px 14px', gap: 12, alignItems: 'center',
+            background: i % 2 === 0 ? 'var(--surface)' : 'var(--surface2)',
+            borderTop: i > 0 ? '1px solid var(--border)' : 'none',
+          }}>
+            <span style={{ fontSize: 13, fontWeight: 800, color: t.color, fontFamily: 'monospace' }}>{t.code}</span>
+            <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)' }}>{t.label}</span>
+            <span style={{ fontSize: 12, color: 'var(--text2)' }}>{t.desc}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Suffixes */}
+      <div style={{ fontWeight: 700, fontSize: 12, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 8 }}>Suffixes (appended to base type)</div>
+      <div style={{ border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden', marginBottom: 16 }}>
+        {SPELL_SUFFIXES.map((t, i) => (
+          <div key={t.code} style={{
+            display: 'grid', gridTemplateColumns: '36px 110px 1fr',
+            padding: '9px 14px', gap: 12, alignItems: 'center',
+            background: i % 2 === 0 ? 'var(--surface)' : 'var(--surface2)',
+            borderTop: i > 0 ? '1px solid var(--border)' : 'none',
+          }}>
+            <span style={{ fontSize: 13, fontWeight: 800, color: 'var(--text2)', fontFamily: 'monospace' }}>{t.code}</span>
+            <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)' }}>{t.label}</span>
+            <span style={{ fontSize: 12, color: 'var(--text2)' }}>{t.desc}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Combined examples */}
+      <div style={{ fontWeight: 700, fontSize: 12, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 8 }}>All Codes in This Data Set</div>
+      <div style={{ border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '50px 1fr 1fr', padding: '5px 14px', background: 'var(--surface2)', borderBottom: '1px solid var(--border)' }}>
+          {['Code', 'Meaning', 'Examples'].map(h => (
+            <span key={h} style={{ fontSize: 9, fontWeight: 700, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>{h}</span>
+          ))}
+        </div>
+        {SPELL_TYPE_EXAMPLES.map((row, i) => {
+          const base = SPELL_BASE_TYPES.find(b => b.code === row.code[0])
+          const suf  = row.code.length > 1 ? SPELL_SUFFIXES.find(s => s.code === row.code[1]) : null
+          const meaning = suf ? `${base?.label ?? '?'} + ${suf.label}` : (base?.label ?? '?')
+          return (
+            <div key={row.code} style={{
+              display: 'grid', gridTemplateColumns: '50px 1fr 1fr',
+              padding: '7px 14px', gap: 8, alignItems: 'center',
+              background: i % 2 === 0 ? 'var(--surface)' : 'var(--surface2)',
+              borderTop: '1px solid var(--border)',
+            }}>
+              <span style={{
+                fontSize: 12, fontWeight: 800, fontFamily: 'monospace',
+                color: base?.color ?? 'var(--text)',
+                background: (base?.color ?? 'var(--accent)') + '18',
+                padding: '1px 6px', borderRadius: 4, textAlign: 'center',
+              }}>{row.code}</span>
+              <span style={{ fontSize: 12, color: 'var(--text)' }}>{meaning}</span>
+              <span style={{ fontSize: 11, color: 'var(--text3)', fontStyle: 'italic' }}>{row.example}</span>
+            </div>
+          )
+        })}
       </div>
     </div>
   )
