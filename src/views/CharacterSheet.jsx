@@ -10,6 +10,8 @@ import cultureSkillsData from '../data/culture_skills.json'
 import armorData from '../data/armor.json'
 import weaponsDb from '../data/weapons.json'
 import spellListsDb from '../data/spell_lists.json'
+import skillsData from '../data/skills.json'
+import talentsData from '../data/talents.json'
 
 const REALMS   = ['Channeling', 'Essence', 'Mentalism']
 const SIZES    = ['Small', 'Medium', 'Large', 'Huge']
@@ -18,11 +20,46 @@ const ARMOR_TYPES = [
   '5 – Laminar','6 – Rigid Leather','7 – Metal Scale','8 – Mail',
   '9 – Brigandine','10 – Plate',
 ]
-const AT_OPTIONS = [1,2,3,4,5,6,7,8,9,10]
 const SHIELD_OPTIONS = ['None', 'Target Shield', 'Normal Shield', 'Full Shield', 'Wall Shield']
 const SHIELD_DB = { 'Target Shield': 15, 'Normal Shield': 20, 'Full Shield': 25, 'Wall Shield': 30 }
 const ARMOR_SECTION_MAP = { torso: 'torso', head: 'helmet', arms: 'vambraces', legs: 'greaves' }
 const ARMOR_PART_LABELS = { torso: 'Torso', head: 'Head', arms: 'Arms', legs: 'Legs' }
+
+// Starred skills helpers
+const skillsDataMap = Object.fromEntries(skillsData.map(s => [s.name, s]))
+const SKILL_CATEGORY_STATS = {
+  'Animal':'Ag/Em','Awareness':'In/Re','Battle Expertise':'-','Body Discipline':'Co/SD',
+  'Brawn':'Co/SD','Combat Expertise':'-','Composition':'Em/In','Crafting':'Ag/Me',
+  'Delving':'Em/In','Environmental':'In/Me','Gymnastic':'Ag/Qu','Lore':'Me/Me',
+  'Lore: Languages':'Me/Me','Magical Expertise':'-','Medical':'In/Me','Mental Discipline':'Pr/SD',
+  'Movement':'Ag/St','Performance Art':'Em/Pr','Power Manipulation':'RS/RS','Science':'Me/Re',
+  'Social':'Em/In','Subterfuge':'Ag/SD','Technical':'In/Re','Vocation':'Em/Me',
+}
+const SKILL_STAT_MAP = { Ag:'Agility',Co:'Constitution',Em:'Empathy',In:'Intuition',Me:'Memory',Pr:'Presence',Qu:'Quickness',Re:'Reasoning',SD:'Self Discipline',St:'Strength' }
+function getSkillStatBonus(c, statKeys) {
+  if (!statKeys || statKeys === '-') return 0
+  const realm = (c.realm || '').toLowerCase()
+  const rsKey = realm.includes('channel') ? 'Intuition' : realm.includes('essence') ? 'Empathy' : realm.includes('mental') ? 'Presence' : null
+  return statKeys.split('/').reduce((sum, k) => {
+    const t = k.trim(), full = t === 'RS' ? rsKey : SKILL_STAT_MAP[t]
+    return full && c.stats?.[full] ? sum + getTotalStatBonus(c.stats[full]) : sum
+  }, 0)
+}
+function computeSkillTotal(c, template, skillData, talentBonusMap) {
+  const ranks = (skillData.ranks ?? 0) + (skillData.culture_ranks ?? 0)
+  const rb = rankBonus(ranks)
+  const catStatB = getSkillStatBonus(c, SKILL_CATEGORY_STATS[template?.category] || '-')
+  const skillStatB = getSkillStatBonus(c, template?.stat_keys)
+  const item = skillData.item_bonus ?? 0
+  const talent = skillData.talent_bonus ?? 0
+  const isProf = skillData.proficient !== undefined ? !!skillData.proficient : (template?.prof_type === 'Professional' || template?.prof_type === 'Knack')
+  const profBonus = isProf ? Math.min(ranks, 30) : 0
+  const entries = (talentBonusMap[template?.name || ''] || [])
+  const excluded = skillData.talent_excluded || []
+  const autoBonus = entries.filter(e => !excluded.includes(e.instId)).reduce((s, e) => s + e.bonus, 0)
+  return rb + catStatB + skillStatB + item + talent + autoBonus + profBonus
+}
+
 const BMR_BASE = 10  // meters per round for Medium size
 const PACE_TABLE = [
   { label: 'Creep',  mult: 0.25, man_pen: 30,  ap: 1 },
@@ -522,16 +559,15 @@ export default function CharacterSheet() {
                 return (
                   <tr key={part} style={{ borderBottom:'1px solid var(--border)', background: i%2===0 ? 'transparent' : 'var(--surface2)' }}>
                     <td style={{ padding:'4px 8px', fontWeight:600, fontSize:12 }}>{ARMOR_PART_LABELS[part]}</td>
-                    <td style={{ padding:'3px 6px' }}>
+                    <td style={{ padding:'4px 8px', textAlign:'center' }}>
                       {armorParts[part]?.name ? (
-                        <div style={{ fontSize:9, color:'var(--text3)', marginBottom:2 }}>{armorParts[part].name}</div>
-                      ) : null}
-                      <select value={ap.at ?? 1} onChange={e => {
-                        const pieceName = armorData[ARMOR_SECTION_MAP[part]]?.find(p => p.at === Number(e.target.value))?.name
-                        updateArmorPart(part, { at: Number(e.target.value), name: pieceName || '' })
-                      }} style={{ width:52, padding:'2px 3px', fontSize:11 }}>
-                        {AT_OPTIONS.map(n => <option key={n} value={n}>{n}</option>)}
-                      </select>
+                        <>
+                          <div style={{ fontSize:11, color:'var(--text)' }}>{armorParts[part].name}</div>
+                          <div style={{ fontSize:9, color:'var(--text3)' }}>AT {ap.at ?? 1}</div>
+                        </>
+                      ) : (
+                        <div style={{ fontSize:11, color:'var(--text3)' }}>AT {ap.at ?? 1}</div>
+                      )}
                     </td>
                     {['maneuver_penalty','ranged_penalty','perception_penalty','weight_pct','str_req'].map(f => (
                       <td key={f} style={{ padding:'4px 8px', textAlign:'center', fontSize:11, color: row?.[f] < 0 ? 'var(--danger)' : 'var(--text3)', fontWeight: row?.[f] < 0 ? 600 : 400 }}>
@@ -610,6 +646,12 @@ export default function CharacterSheet() {
         </div>
       </Card>
 
+      {/* Starred Skills */}
+      <StarredSkillsPanel c={c} />
+
+      {/* Spell Lists */}
+      <SpellListsPanel c={c} />
+
       {/* Pace & Encumbrance */}
       <Card title="Pace & Encumbrance">
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(110px,1fr))', gap:8, marginBottom:12 }}>
@@ -643,9 +685,6 @@ export default function CharacterSheet() {
         </div>
       </Card>
 
-      {/* Spell Lists */}
-      <SpellListsPanel c={c} />
-
       {/* Notes */}
       <Card title="Notes">
         <textarea value={c.notes || ''} onChange={e => updateCharacter({ notes: e.target.value })}
@@ -653,6 +692,73 @@ export default function CharacterSheet() {
           style={{ width: '100%', minHeight: 90, resize: 'vertical', fontFamily: 'inherit', fontSize: 13, lineHeight: 1.5 }} />
       </Card>
     </div>
+  )
+}
+
+/* ─── STARRED SKILLS PANEL ──────────────────────────────── */
+function StarredSkillsPanel({ c }) {
+  const talentBonusMap = useMemo(() => {
+    const map = {}
+    for (const inst of (c.talents || [])) {
+      const def = talentsData.find(t => t.id === inst.talent_id)
+      if (!def?.effects) continue
+      for (const eff of def.effects) {
+        if (eff.type !== 'skill_talent_bonus') continue
+        const skillName = eff.skill === 'param' ? inst.param : eff.skill
+        if (!skillName) continue
+        const bonus = eff.per_tier != null ? eff.per_tier * inst.tier : (eff.flat ?? 0)
+        if (!map[skillName]) map[skillName] = []
+        map[skillName].push({ instId: inst.id, name: def.name, bonus })
+      }
+    }
+    return map
+  }, [c.talents])
+
+  const starred = useMemo(() => {
+    const result = []
+    for (const [skillName, skillData] of Object.entries(c.skills || {})) {
+      if (!skillData.starred) continue
+      const template = skillsDataMap[skillName]
+      if (!template) continue
+      const total = computeSkillTotal(c, template, skillData, talentBonusMap)
+      const ranks = (skillData.ranks ?? 0) + (skillData.culture_ranks ?? 0)
+      result.push({ name: skillName, total, ranks, notes: skillData.notes })
+    }
+    for (const cs of (c.custom_skills || [])) {
+      if (!cs.starred) continue
+      const template = skillsDataMap[cs.template_name]
+      const name = cs.label ? `${cs.template_name}: ${cs.label}` : cs.template_name
+      const total = computeSkillTotal(c, template, cs, talentBonusMap)
+      const ranks = (cs.ranks ?? 0) + (cs.culture_ranks ?? 0)
+      result.push({ name, total, ranks, notes: cs.notes })
+    }
+    return result
+  }, [c.skills, c.custom_skills, c.talents, c.stats, c.realm, talentBonusMap])
+
+  if (!starred.length) return null
+
+  return (
+    <Card title="Starred Skills">
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: 8 }}>
+        {starred.map(({ name, total, ranks, notes }) => (
+          <div key={name} style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 8, padding: '8px 10px' }}>
+            <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text)', marginBottom: 4,
+              overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={name}>{name}</div>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+              <span style={{ fontSize: 20, fontWeight: 800,
+                color: total > 0 ? 'var(--success)' : total < -10 ? 'var(--danger)' : 'var(--text2)' }}>
+                {total >= 0 ? `+${total}` : total}
+              </span>
+              <span style={{ fontSize: 10, color: 'var(--text3)' }}>{ranks} rnk</span>
+            </div>
+            {notes && (
+              <div style={{ fontSize: 10, color: 'var(--text3)', marginTop: 4, fontStyle: 'italic',
+                overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={notes}>{notes}</div>
+            )}
+          </div>
+        ))}
+      </div>
+    </Card>
   )
 }
 

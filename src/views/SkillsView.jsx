@@ -6,7 +6,7 @@ import skillCosts from '../data/skill_costs.json'
 import talentsData from '../data/talents.json'
 import spellListsDb from '../data/spell_lists.json'
 import cultureSkillsData from '../data/culture_skills.json'
-import { LockIcon, UnlockIcon, PencilIcon, PlusIcon, XIcon, NoteIcon, ChevronDownIcon, ChevronRightIcon } from '../components/Icons.jsx'
+import { LockIcon, UnlockIcon, PencilIcon, PlusIcon, XIcon, NoteIcon, StarIcon, ChevronDownIcon, ChevronRightIcon } from '../components/Icons.jsx'
 
 // Full stat names for the override selector
 const ALL_STATS = ['Agility','Constitution','Empathy','Intuition','Memory','Presence','Quickness','Reasoning','Self Discipline','Strength']
@@ -246,7 +246,9 @@ export default function SkillsView() {
     function setItem(v)         { isCustom ? updateCustomSkill(customId, { item_bonus: v }) : updateSkill(skill.name, 'item_bonus', v) }
     function setTalent(v)       { isCustom ? updateCustomSkill(customId, { talent_bonus: v }) : updateSkill(skill.name, 'talent_bonus', v) }
     function setLabel(v)  { isCustom ? updateCustomSkill(customId, { label: v }) : updateSkill(skill.name, 'label', v) }
-    function setNotes(v)  { isCustom ? updateCustomSkill(customId, { notes: v }) : updateSkill(skill.name, 'notes', v) }
+    function setNotes(v)   { isCustom ? updateCustomSkill(customId, { notes: v }) : updateSkill(skill.name, 'notes', v) }
+    function setStarred(v) { isCustom ? updateCustomSkill(customId, { starred: v }) : updateSkill(skill.name, 'starred', v) }
+    const isStarred = cs.starred ?? false
     function toggleProf() {
       const next = !isProf
       isCustom ? updateCustomSkill(customId, { proficient: next }) : updateSkill(skill.name, 'proficient', next)
@@ -291,9 +293,9 @@ export default function SkillsView() {
     const statCell = (
       <div
         style={{ textAlign: 'center', color: 'var(--text2)', fontSize: 12 }}
-        title={`Category (${CATEGORY_STATS[skill.category] || '-'}): ${catStatB >= 0 ? '+' : ''}${catStatB}\nSkill (${skill.stat_keys || '-'}): ${skillStatB >= 0 ? '+' : ''}${skillStatB}`}
+        title={`Rank bonus: ${rb >= 0 ? '+' : ''}${rb}\nCategory (${CATEGORY_STATS[skill.category] || '-'}): ${catStatB >= 0 ? '+' : ''}${catStatB}\nSkill (${skill.stat_keys || '-'}): ${skillStatB >= 0 ? '+' : ''}${skillStatB}`}
       >
-        {combinedStatB >= 0 ? `+${combinedStatB}` : combinedStatB}
+        {(rb + combinedStatB) >= 0 ? `+${rb + combinedStatB}` : rb + combinedStatB}
       </div>
     )
     const totalCell = (
@@ -400,6 +402,11 @@ export default function SkillsView() {
             <PlusIcon size={11} color={addFormOpen ? '#fff' : 'currentColor'} />
           </IconBtn>
         )}
+        <IconBtn onClick={() => setStarred(!isStarred)}
+          title={isStarred ? 'Starred — shows on Sheet tab (click to remove)' : 'Star this skill to pin it on the Sheet tab'}
+          active={isStarred} activeColor="#f59e0b">
+          <StarIcon size={11} color={isStarred ? '#fff' : 'currentColor'} filled={isStarred} />
+        </IconBtn>
         <IconBtn onClick={() => setNotesOpen(p => ({ ...p, [rowKey]: !p[rowKey] }))}
           title={noteOpen ? 'Hide notes' : 'Notes'}
           active={noteOpen}>
@@ -423,12 +430,9 @@ export default function SkillsView() {
             {/* Row 2: number columns, pushed to right edge to line up under headers */}
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <div style={{ display: 'grid', gridTemplateColumns: NUMS_GRID, gap: 4, alignItems: 'center' }}>
-              <div>
-                <input type="number" min={0} value={ranks || ''}
-                  onChange={e => setRanks(Number(e.target.value) || 0)}
-                  placeholder="0" style={{ padding: '3px 4px', width: '100%', boxSizing: 'border-box' }} />
-                {rb !== 0 && <div style={{ textAlign: 'center', fontSize: 9, color: 'var(--text3)', lineHeight: 1, marginTop: 1 }}>{rb > 0 ? '+' : ''}{rb}</div>}
-              </div>
+              <input type="number" min={0} value={ranks || ''}
+                onChange={e => setRanks(Number(e.target.value) || 0)}
+                placeholder="0" style={{ padding: '3px 4px', width: '100%', boxSizing: 'border-box' }} />
               {cultCell}
               {statCell}
               <input type="number" value={item || ''} placeholder="0"
@@ -451,12 +455,9 @@ export default function SkillsView() {
             transition: 'background 0.15s',
           }}>
             {nameCell}
-            <div>
-              <input type="number" min={0} value={ranks || ''}
-                onChange={e => setRanks(Number(e.target.value) || 0)}
-                placeholder="0" style={{ padding: '3px 6px', width: '100%', boxSizing: 'border-box' }} />
-              {rb !== 0 && <div style={{ textAlign: 'center', fontSize: 9, color: 'var(--text3)', lineHeight: 1, marginTop: 1 }}>{rb > 0 ? '+' : ''}{rb}</div>}
-            </div>
+            <input type="number" min={0} value={ranks || ''}
+              onChange={e => setRanks(Number(e.target.value) || 0)}
+              placeholder="0" style={{ padding: '3px 6px', width: '100%', boxSizing: 'border-box' }} />
             {cultCell}
             {statCell}
             <input type="number" value={item || ''} placeholder="0"
