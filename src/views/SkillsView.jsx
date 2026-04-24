@@ -371,7 +371,8 @@ export default function SkillsView() {
           }}>
             {/* Row 1: full-width name */}
             <div style={{ marginBottom: 4 }}>{nameCell}</div>
-            {/* Row 2: number columns, right-aligned */}
+            {/* Row 2: number columns, pushed to right edge to line up under headers */}
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <div style={{ display: 'grid', gridTemplateColumns: NUMS_GRID, gap: 4, alignItems: 'center' }}>
               <input type="number" min={0} value={ranks || ''}
                 onChange={e => setRanks(Number(e.target.value) || 0)}
@@ -385,6 +386,7 @@ export default function SkillsView() {
                 onChange={e => setTalent(Number(e.target.value) || 0)}
                 style={{ padding: '3px 2px' }} />
               {totalCell}
+            </div>
             </div>
           </div>
         ) : (
@@ -887,8 +889,10 @@ function SpellListRow({ list, statBonus, statLabel, updateSpellList, removeSpell
     return (
       <div style={{ padding: '6px 14px 4px', fontSize: 13, borderTop: '1px solid var(--border)' }}>
         <div style={{ marginBottom: 4 }}>{spellNameCell}</div>
-        <div style={{ display: 'grid', gridTemplateColumns: '48px 28px 46px 46px 56px', gap: 4, alignItems: 'center' }}>
-          {spellNumCells}
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '48px 28px 46px 46px 56px', gap: 4, alignItems: 'center' }}>
+            {spellNumCells}
+          </div>
         </div>
       </div>
     )
