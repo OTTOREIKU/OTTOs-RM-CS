@@ -50,6 +50,71 @@ const CATEGORY_STATS = {
 
 function hasPlaceholder(name) { return /<[^>]+>/.test(name) }
 
+// Weapon slot type derived from template skill name
+const WEAPON_SLOT_TYPE = {
+  melee:   /^Melee: <weapon/,
+  unarmed: /^Unarmed: <weapon/,
+  ranged:  /^Ranged: <weapon/,
+}
+const WEAPON_OPTIONS = {
+  melee:   ['Blade', 'Greater Blade', 'Hafted', 'Greater Hafted', 'Pole Arm', 'Spear', 'Chain', 'Greater Chain', 'Net'],
+  unarmed: ['Strikes', 'Grappling/Wrestling'],
+  ranged:  ['Bow', 'Crossbow', 'Thrown', 'Sling', 'Blowpipe'],
+}
+function getWeaponSlotType(skillName) {
+  for (const [type, re] of Object.entries(WEAPON_SLOT_TYPE)) {
+    if (re.test(skillName)) return type
+  }
+  return null
+}
+
+// Dropdown + optional custom text input for Combat Training weapon slots
+function WeaponTypeSelector({ slotType, label, setLabel }) {
+  const options = WEAPON_OPTIONS[slotType] || []
+  const isCustomMode = label !== '' && !options.includes(label)
+  const [customMode, setCustomMode] = useState(isCustomMode)
+
+  if (customMode) {
+    return (
+      <div style={{ display: 'flex', gap: 4, flex: 1, minWidth: 0 }}>
+        <select
+          value="__custom__"
+          onChange={e => {
+            if (e.target.value !== '__custom__') { setLabel(e.target.value); setCustomMode(false) }
+          }}
+          style={{ background: 'var(--surface2)', border: '1px solid var(--accent)', borderRadius: 5, padding: '2px 4px', color: 'var(--text)', fontSize: 12 }}
+        >
+          {options.map(o => <option key={o} value={o}>{o}</option>)}
+          <option value="__custom__">Custom…</option>
+        </select>
+        <input
+          autoFocus
+          value={label}
+          onChange={e => setLabel(e.target.value)}
+          placeholder="weapon type"
+          style={{ flex: 1, minWidth: 0, background: 'var(--surface2)', border: '1px solid var(--accent)', borderRadius: 5, padding: '2px 6px', color: 'var(--text)', fontSize: 12, outline: 'none' }}
+        />
+      </div>
+    )
+  }
+
+  return (
+    <select
+      autoFocus
+      value={label || ''}
+      onChange={e => {
+        if (e.target.value === '__custom__') { setCustomMode(true); setLabel('') }
+        else setLabel(e.target.value)
+      }}
+      style={{ flex: 1, minWidth: 0, background: 'var(--surface2)', border: '1px solid var(--accent)', borderRadius: 5, padding: '2px 4px', color: 'var(--text)', fontSize: 12 }}
+    >
+      <option value="">— choose weapon type —</option>
+      {options.map(o => <option key={o} value={o}>{o}</option>)}
+      <option value="__custom__">Custom…</option>
+    </select>
+  )
+}
+
 function displayName(templateName, label) {
   if (!label) return templateName
   if (hasPlaceholder(templateName)) return templateName.replace(/<[^>]+>/, label)
@@ -259,19 +324,25 @@ function SkillRow({
           <PencilIcon size={11} color={editing ? '#fff' : 'currentColor'} />
         </IconBtn>
       )}
-      {catIsUnlocked && editing && isSpec ? (
-        <input
-          autoFocus
-          value={label}
-          onChange={e => setLabel(e.target.value)}
-          placeholder="specialization"
-          style={{
-            flex: 1, minWidth: 0,
-            background: 'var(--surface2)', border: '1px solid var(--accent)',
-            borderRadius: 5, padding: '2px 6px', color: 'var(--text)', fontSize: 12, outline: 'none',
-          }}
-        />
-      ) : (
+      {catIsUnlocked && editing && isSpec ? (() => {
+        const wType = getWeaponSlotType(skill.name)
+        if (wType) {
+          return <WeaponTypeSelector slotType={wType} label={label} setLabel={setLabel} />
+        }
+        return (
+          <input
+            autoFocus
+            value={label}
+            onChange={e => setLabel(e.target.value)}
+            placeholder="specialization"
+            style={{
+              flex: 1, minWidth: 0,
+              background: 'var(--surface2)', border: '1px solid var(--accent)',
+              borderRadius: 5, padding: '2px 6px', color: 'var(--text)', fontSize: 12, outline: 'none',
+            }}
+          />
+        )
+      })() : (
         <span style={{
           flex: 1, minWidth: 0,
           overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',

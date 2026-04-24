@@ -162,66 +162,52 @@
   },
   {
     "category": "Combat Training",
-    "name": "Blade",
+    "name": "Melee: <weapon 1>",
     "dev_cost": "5/7",
     "prof_type": "Professional",
     "stat_keys": "St"
   },
   {
     "category": "Combat Training",
-    "name": "Greater Blade",
+    "name": "Melee: <weapon 2>",
     "dev_cost": "5/7",
     "prof_type": "Normal",
     "stat_keys": "St"
   },
   {
     "category": "Combat Training",
-    "name": "Hafted",
+    "name": "Melee: <weapon 3>",
     "dev_cost": "5/7",
     "prof_type": "Normal",
     "stat_keys": "St"
   },
   {
     "category": "Combat Training",
-    "name": "Greater Hafted",
-    "dev_cost": "5/7",
+    "name": "Unarmed: <weapon 1>",
+    "dev_cost": "9/12",
     "prof_type": "Normal",
     "stat_keys": "St"
   },
   {
     "category": "Combat Training",
-    "name": "Pole Arm",
-    "dev_cost": "5/7",
+    "name": "Unarmed: <weapon 2>",
+    "dev_cost": "9/12",
     "prof_type": "Normal",
     "stat_keys": "St"
   },
   {
     "category": "Combat Training",
-    "name": "Spear",
-    "dev_cost": "5/7",
+    "name": "Ranged: <weapon 1>",
+    "dev_cost": "15/20",
     "prof_type": "Normal",
-    "stat_keys": "St"
+    "stat_keys": "Ag"
   },
   {
     "category": "Combat Training",
-    "name": "Chain",
-    "dev_cost": "5/7",
+    "name": "Ranged: <weapon 2>",
+    "dev_cost": "15/20",
     "prof_type": "Normal",
-    "stat_keys": "St"
-  },
-  {
-    "category": "Combat Training",
-    "name": "Greater Chain",
-    "dev_cost": "5/7",
-    "prof_type": "Normal",
-    "stat_keys": "St"
-  },
-  {
-    "category": "Combat Training",
-    "name": "Net",
-    "dev_cost": "5/7",
-    "prof_type": "Normal",
-    "stat_keys": "St"
+    "stat_keys": "Ag"
   },
   {
     "category": "Combat Training",
@@ -229,55 +215,6 @@
     "dev_cost": "6/8",
     "prof_type": "Normal",
     "stat_keys": "St"
-  },
-  {
-    "category": "Combat Training",
-    "name": "Strikes",
-    "dev_cost": "9/12",
-    "prof_type": "Normal",
-    "stat_keys": "St"
-  },
-  {
-    "category": "Combat Training",
-    "name": "Grappling/Wrestling",
-    "dev_cost": "9/12",
-    "prof_type": "Normal",
-    "stat_keys": "St"
-  },
-  {
-    "category": "Combat Training",
-    "name": "Bow",
-    "dev_cost": "15/20",
-    "prof_type": "Normal",
-    "stat_keys": "Ag"
-  },
-  {
-    "category": "Combat Training",
-    "name": "Crossbow",
-    "dev_cost": "15/20",
-    "prof_type": "Normal",
-    "stat_keys": "Ag"
-  },
-  {
-    "category": "Combat Training",
-    "name": "Thrown",
-    "dev_cost": "15/20",
-    "prof_type": "Normal",
-    "stat_keys": "Ag"
-  },
-  {
-    "category": "Combat Training",
-    "name": "Sling",
-    "dev_cost": "15/20",
-    "prof_type": "Normal",
-    "stat_keys": "Ag"
-  },
-  {
-    "category": "Combat Training",
-    "name": "Blowpipe",
-    "dev_cost": "15/20",
-    "prof_type": "Normal",
-    "stat_keys": "Ag"
   },
   {
     "category": "Composition",

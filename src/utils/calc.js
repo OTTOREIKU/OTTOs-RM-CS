@@ -98,7 +98,16 @@ export function getWeaponOB(char, weapon) {
   }, 0) / stats.length)
 
   const skillName = weapon.skill_name || ''
-  const charSkill = char.skills?.[skillName] || {}
+  // Exact key match (e.g. legacy flat skill like "Blade")
+  let charSkill = char.skills?.[skillName] || null
+  // Fallback: scan template slots whose label matches (Combat Training template skills like "Melee: <weapon 1>")
+  if (!charSkill || (!(charSkill.ranks ?? 0) && !(charSkill.culture_ranks ?? 0))) {
+    const found = Object.entries(char.skills || {}).find(
+      ([key, data]) => data.label === skillName && key !== skillName
+    )
+    if (found) charSkill = found[1]
+  }
+  charSkill = charSkill || {}
   const ranks = (charSkill.ranks ?? 0) + (charSkill.culture_ranks ?? 0)
   const rb = ranks > 0 ? rankBonus(ranks) : 0
 
