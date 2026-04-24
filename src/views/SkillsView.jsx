@@ -220,9 +220,11 @@ export default function SkillsView() {
     const skillStatB = getStatBonus(c, skill.stat_keys)
     const combinedStatB = catStatB + skillStatB
     const rb      = rankBonus(totalRanks)
-    const autoBonus = isCustom
+    const rawAutoBonus = isCustom
       ? (talentBonuses[cs.template_name] || 0)
       : (talentBonuses[skill.name] || 0)
+    const talentDisabled = !!cs.talent_disabled
+    const autoBonus = talentDisabled ? 0 : rawAutoBonus
     // Proficiency: character override wins over static skill default
     const defaultProf = skill.prof_type === 'Professional' || skill.prof_type === 'Knack'
     const isProf  = cs.proficient !== undefined ? cs.proficient : defaultProf
@@ -243,6 +245,10 @@ export default function SkillsView() {
     function toggleProf() {
       const next = !isProf
       isCustom ? updateCustomSkill(customId, { proficient: next }) : updateSkill(skill.name, 'proficient', next)
+    }
+    function toggleTalentDisabled() {
+      const next = !talentDisabled
+      isCustom ? updateCustomSkill(customId, { talent_disabled: next }) : updateSkill(skill.name, 'talent_disabled', next)
     }
 
     const dispName = displayName(skill.name, label || undefined)
@@ -288,10 +294,14 @@ export default function SkillsView() {
           color: total > 0 ? 'var(--success)' : total < -10 ? 'var(--danger)' : 'var(--text2)' }}>
           {total >= 0 ? `+${total}` : total}
         </span>
-        {autoBonus !== 0 && (
-          <span style={{ display:'block', fontSize:9, color:'var(--purple)', lineHeight:1 }}
-            title={'Talent: '+(autoBonus>0?'+':'')+autoBonus}>
-            T{autoBonus > 0 ? '+' : ''}{autoBonus}
+        {rawAutoBonus !== 0 && (
+          <span style={{ display:'block', fontSize:9, lineHeight:1,
+            color: talentDisabled ? 'var(--text3)' : 'var(--purple)',
+            textDecoration: talentDisabled ? 'line-through' : 'none' }}
+            title={talentDisabled
+              ? `Talent bonus excluded (unlock category to re-enable)`
+              : 'Talent: '+(rawAutoBonus>0?'+':'')+rawAutoBonus}>
+            T{rawAutoBonus > 0 ? '+' : ''}{rawAutoBonus}
           </span>
         )}
         {isProf && profBonus > 0 && (
@@ -349,6 +359,23 @@ export default function SkillsView() {
         {/* PROF badge — only visible when category is unlocked (editing mode) */}
         {catIsUnlocked && isProf && (
           <span style={{ fontSize: 9, background: 'var(--accent)', color: '#fff', padding: '1px 4px', borderRadius: 3, fontWeight: 700, letterSpacing: '0.04em', flexShrink: 0 }}>PROF</span>
+        )}
+        {/* Talent toggle — only when unlocked and a talent bonus exists for this skill */}
+        {catIsUnlocked && rawAutoBonus !== 0 && (
+          <button
+            onClick={toggleTalentDisabled}
+            title={talentDisabled
+              ? `Talent bonus excluded (+${rawAutoBonus} not applied) — click to re-enable`
+              : `Talent bonus active (+${rawAutoBonus}) — click to exclude from this row`}
+            style={{
+              flexShrink: 0, padding: '1px 4px', borderRadius: 3, cursor: 'pointer',
+              fontSize: 9, fontWeight: 700, letterSpacing: '0.04em', lineHeight: 1,
+              border: '1px solid ' + (talentDisabled ? 'var(--border)' : 'var(--purple)'),
+              background: talentDisabled ? 'transparent' : 'rgba(168,85,247,0.15)',
+              color: talentDisabled ? 'var(--text3)' : 'var(--purple)',
+              textDecoration: talentDisabled ? 'line-through' : 'none',
+            }}
+          >T{rawAutoBonus > 0 ? '+' : ''}{rawAutoBonus}</button>
         )}
         {catIsUnlocked && isCustom && (
           <IconBtn onClick={() => removeCustomSkill(customId)} title="Remove this skill" danger>
