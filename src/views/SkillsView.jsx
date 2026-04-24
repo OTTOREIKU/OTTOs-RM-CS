@@ -303,25 +303,14 @@ export default function SkillsView() {
           {total >= 0 ? `+${total}` : total}
         </span>
         {(() => {
-          const active   = talentEntries.filter(e => !excludedTalents.includes(e.instId))
-          const excluded = talentEntries.filter(e =>  excludedTalents.includes(e.instId))
-          const activeSum   = active.reduce((s, e) => s + e.bonus, 0)
-          const excludedSum = excluded.reduce((s, e) => s + e.bonus, 0)
-          return (<>
-            {activeSum !== 0 && (
-              <span style={{ display:'block', fontSize:9, color:'var(--purple)', lineHeight:1 }}
-                title={active.map(e => `${e.name}: +${e.bonus}`).join(', ')}>
-                T{activeSum > 0 ? '+' : ''}{activeSum}
-              </span>
-            )}
-            {excludedSum !== 0 && (
-              <span style={{ display:'block', fontSize:9, color:'var(--text3)', lineHeight:1,
-                textDecoration:'line-through' }}
-                title={excluded.map(e => `${e.name}: +${e.bonus} (excluded)`).join(', ')}>
-                T{excludedSum > 0 ? '+' : ''}{excludedSum}
-              </span>
-            )}
-          </>)
+          const active = talentEntries.filter(e => !excludedTalents.includes(e.instId))
+          const activeSum = active.reduce((s, e) => s + e.bonus, 0)
+          return activeSum !== 0 ? (
+            <span style={{ display:'block', fontSize:9, color:'var(--purple)', lineHeight:1 }}
+              title={active.map(e => `${e.name}: +${e.bonus}`).join(', ')}>
+              T{activeSum > 0 ? '+' : ''}{activeSum}
+            </span>
+          ) : null
         })()}
         {isProf && profBonus > 0 && (
           <span style={{ display:'block', fontSize:9, color:'var(--accent)', lineHeight:1 }}
@@ -434,9 +423,12 @@ export default function SkillsView() {
             {/* Row 2: number columns, pushed to right edge to line up under headers */}
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <div style={{ display: 'grid', gridTemplateColumns: NUMS_GRID, gap: 4, alignItems: 'center' }}>
-              <input type="number" min={0} value={ranks || ''}
-                onChange={e => setRanks(Number(e.target.value) || 0)}
-                placeholder="0" style={{ padding: '3px 4px' }} />
+              <div>
+                <input type="number" min={0} value={ranks || ''}
+                  onChange={e => setRanks(Number(e.target.value) || 0)}
+                  placeholder="0" style={{ padding: '3px 4px', width: '100%', boxSizing: 'border-box' }} />
+                {rb !== 0 && <div style={{ textAlign: 'center', fontSize: 9, color: 'var(--text3)', lineHeight: 1, marginTop: 1 }}>{rb > 0 ? '+' : ''}{rb}</div>}
+              </div>
               {cultCell}
               {statCell}
               <input type="number" value={item || ''} placeholder="0"
@@ -459,9 +451,12 @@ export default function SkillsView() {
             transition: 'background 0.15s',
           }}>
             {nameCell}
-            <input type="number" min={0} value={ranks || ''}
-              onChange={e => setRanks(Number(e.target.value) || 0)}
-              placeholder="0" style={{ padding: '3px 6px' }} />
+            <div>
+              <input type="number" min={0} value={ranks || ''}
+                onChange={e => setRanks(Number(e.target.value) || 0)}
+                placeholder="0" style={{ padding: '3px 6px', width: '100%', boxSizing: 'border-box' }} />
+              {rb !== 0 && <div style={{ textAlign: 'center', fontSize: 9, color: 'var(--text3)', lineHeight: 1, marginTop: 1 }}>{rb > 0 ? '+' : ''}{rb}</div>}
+            </div>
             {cultCell}
             {statCell}
             <input type="number" value={item || ''} placeholder="0"
