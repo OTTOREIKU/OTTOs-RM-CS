@@ -696,25 +696,25 @@ function SpellListsPanel({ c }) {
             <div key={sub}>
               <div style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em',
                 color, marginBottom: 4 }}>{sub}</div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 40px 40px 40px 54px', gap: 3,
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 40px 40px 40px 40px 54px', gap: 3,
                 padding: '3px 6px', background: 'var(--surface2)', borderRadius: 4,
                 fontSize: 9, fontWeight: 700, color: 'var(--text3)', textTransform: 'uppercase',
                 letterSpacing: '0.06em', marginBottom: 2 }}>
                 <span>List</span><span style={{textAlign:'center'}}>Rnk</span>
                 <span style={{textAlign:'center'}}>Rank</span>
                 <span style={{textAlign:'center'}}>Stat</span>
+                <span style={{textAlign:'center'}}>Other</span>
                 <span style={{textAlign:'center'}}>Total</span>
               </div>
               {subLists.map(([name, data]) => {
                 const { ranks, rb, statB, item, profB, total } = castingBonus(name, data)
-                const tipParts = [
-                  `Rank: ${rb >= 0 ? '+' : ''}${rb}`,
-                  `Stat (RS×2+Me): ${statB >= 0 ? '+' : ''}${statB}`,
+                const other = item + profB
+                const otherTip = [
                   item  ? `Item: +${item}` : null,
                   profB ? `Prof: +${profB}` : null,
-                ].filter(Boolean).join(' | ')
+                ].filter(Boolean).join(' + ') || 'no bonus'
                 return (
-                  <div key={name} style={{ display: 'grid', gridTemplateColumns: '1fr 40px 40px 40px 54px',
+                  <div key={name} style={{ display: 'grid', gridTemplateColumns: '1fr 40px 40px 40px 40px 54px',
                     gap: 3, padding: '4px 6px', fontSize: 12, alignItems: 'center',
                     borderBottom: '1px solid var(--border)' }}>
                     <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
@@ -725,9 +725,14 @@ function SpellListsPanel({ c }) {
                     <span style={{ textAlign: 'center', color: 'var(--text2)', fontSize: 11 }}>
                       {statB >= 0 ? `+${statB}` : statB}
                     </span>
+                    <span style={{ textAlign: 'center', fontSize: 11,
+                      color: other !== 0 ? 'var(--accent)' : 'var(--text3)' }}
+                      title={otherTip}>
+                      {other !== 0 ? (other > 0 ? `+${other}` : other) : '—'}
+                    </span>
                     <span style={{ textAlign: 'center', fontWeight: 700, fontSize: 13,
                       color: total > 0 ? 'var(--success)' : total < -10 ? 'var(--danger)' : 'var(--text2)' }}
-                      title={tipParts}>
+                      title={`Rank ${rb >= 0 ? '+' : ''}${rb} | Stat ${statB >= 0 ? '+' : ''}${statB}${other ? ` | Other +${other}` : ''}`}>
                       {total >= 0 ? `+${total}` : total}
                     </span>
                   </div>
