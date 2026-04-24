@@ -1,0 +1,254 @@
+{
+  "_version": 1,
+  "_type": "all",
+  "characters": {
+    "char_1776968773083_5isz3": {
+      "id": "char_1776968773083_5isz3",
+      "name": "Atar",
+      "player": "",
+      "realm": "Essence",
+      "culture": "Rural",
+      "race": "Human, common",
+      "profession": "Magician",
+      "level": 4,
+      "gender": "",
+      "age": "",
+      "height_ft": "",
+      "height_in": "",
+      "weight": "",
+      "skin_color": "",
+      "hair_color": "",
+      "eye_color": "",
+      "vision": "Normal",
+      "size": "Medium",
+      "fate_points": 0,
+      "healing_multiplier": 1,
+      "hometown": "",
+      "nationality": "",
+      "stats": {
+        "Agility": {
+          "temp": 51,
+          "potential": 86,
+          "racial": 0,
+          "special": 0
+        },
+        "Constitution": {
+          "temp": 36,
+          "potential": 95,
+          "racial": 0,
+          "special": 0
+        },
+        "Empathy": {
+          "temp": 90,
+          "potential": 99,
+          "racial": 0,
+          "special": 0
+        },
+        "Intuition": {
+          "temp": 85,
+          "potential": 85,
+          "racial": 0,
+          "special": 0
+        },
+        "Memory": {
+          "temp": 63,
+          "potential": 91,
+          "racial": 0,
+          "special": 0
+        },
+        "Presence": {
+          "temp": 60,
+          "potential": 75,
+          "racial": 0,
+          "special": 0
+        },
+        "Quickness": {
+          "temp": 25,
+          "potential": 78,
+          "racial": 0,
+          "special": 0
+        },
+        "Reasoning": {
+          "temp": 47,
+          "potential": 98,
+          "racial": 0,
+          "special": 0
+        },
+        "Self Discipline": {
+          "temp": 51,
+          "potential": 81,
+          "racial": 0,
+          "special": 0
+        },
+        "Strength": {
+          "temp": 20,
+          "potential": 32,
+          "racial": 0,
+          "special": 0
+        }
+      },
+      "hits_max": null,
+      "hits_current": null,
+      "power_points_max": null,
+      "power_points_current": null,
+      "endurance": null,
+      "armor_type": null,
+      "skills": {
+        "Animal Handling: <animal 1>": {
+          "ranks": 3,
+          "item_bonus": 0,
+          "talent_bonus": 0,
+          "proficient": false
+        },
+        "Adrenal Defense": {
+          "ranks": 0,
+          "item_bonus": 0,
+          "talent_bonus": 0,
+          "proficient": false
+        },
+        "Perception": {
+          "ranks": 1,
+          "item_bonus": 0,
+          "talent_bonus": 0,
+          "proficient": false
+        },
+        "Body Development": {
+          "ranks": 5,
+          "item_bonus": 0,
+          "talent_bonus": 25,
+          "proficient": false
+        },
+        "Weight Training": {
+          "ranks": 1,
+          "item_bonus": 0,
+          "talent_bonus": 0
+        },
+        "Region Lore (Own)": {
+          "ranks": 5,
+          "item_bonus": 0,
+          "talent_bonus": 0
+        },
+        "Herbalism": {
+          "ranks": 1,
+          "item_bonus": 0,
+          "talent_bonus": 0
+        },
+        "Medicine": {
+          "ranks": 1,
+          "item_bonus": 0,
+          "talent_bonus": 0
+        },
+        "Climbing": {
+          "ranks": 1,
+          "item_bonus": 0,
+          "talent_bonus": 0
+        },
+        "Running": {
+          "ranks": 1,
+          "item_bonus": 0,
+          "talent_bonus": 0
+        },
+        "Swimming": {
+          "ranks": 1,
+          "item_bonus": 0,
+          "talent_bonus": 0
+        },
+        "Social Awareness": {
+          "ranks": 1,
+          "item_bonus": 0,
+          "talent_bonus": 0
+        },
+        "Trading": {
+          "ranks": 1,
+          "item_bonus": 0,
+          "talent_bonus": 0
+        }
+      },
+      "custom_skills": [],
+      "spell_lists": {
+        "FOUL TRANSFORMATIONS": {
+          "ranks": 8,
+          "category": "Restricted",
+          "proficient": true,
+          "item_bonus": 5
+        }
+      },
+      "talents": [],
+      "weapons": [
+        {
+          "id": "w_1777034238044",
+          "name": "Long Bow (2H)",
+          "fumble": 5,
+          "str_req": 85,
+          "item_bonus": 0,
+          "skill_name": "Bow",
+          "ob_type": "ranged"
+        }
+      ],
+      "armor_parts": {
+        "torso": {
+          "at": 1,
+          "db": 0
+        },
+        "head": {
+          "at": 1,
+          "db": 0
+        },
+        "arms": {
+          "at": 1,
+          "db": 0
+        },
+        "legs": {
+          "at": 1,
+          "db": 0
+        },
+        "shield": {
+          "type": null,
+          "db": 0
+        }
+      },
+      "rr_bonuses": {
+        "channeling": 0,
+        "essence": 0,
+        "mentalism": 0,
+        "physical": 0,
+        "fear": 0
+      },
+      "equipment": [
+        {
+          "id": "eq_1776971923318",
+          "name": "",
+          "qty": 1,
+          "weight": 0,
+          "location": ""
+        }
+      ],
+      "magic_items": [
+        {
+          "id": "mi_1776971925121",
+          "name": "",
+          "properties": "",
+          "ob": 0,
+          "db": 0,
+          "weight": 0,
+          "notes": ""
+        }
+      ],
+      "traits": [
+        {
+          "id": "tr_1776968890417",
+          "name": "",
+          "tier": "Minor",
+          "effect": ""
+        }
+      ],
+      "notes": "",
+      "injuries": [],
+      "experience": 0,
+      "experience_to_next": 10000,
+      "created_at": "2026-04-23T18:26:13.083Z",
+      "updated_at": "2026-04-24T12:37:18.044Z",
+      "culture_applied": "Rural"
+    }
+  }
+}

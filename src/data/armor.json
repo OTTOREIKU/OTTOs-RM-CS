@@ -1,0 +1,68 @@
+{
+  "full_suit": [
+    {"at":1,"name":"None","weight_pct":0,"str_req":0,"cost_small":null,"cost_medium":null,"cost_big":null,"maneuver_penalty":0,"ranged_penalty":0,"perception_penalty":0,"difficulty":null,"craft_time":null},
+    {"at":2,"name":"Heavy Cloth","weight_pct":6,"str_req":30,"cost_small":2.38,"cost_medium":9.5,"cost_big":38,"maneuver_penalty":-10,"ranged_penalty":-5,"perception_penalty":-3,"difficulty":"M(+0)","craft_time":"10d"},
+    {"at":3,"name":"Soft Leather","weight_pct":7,"str_req":30,"cost_small":2.5,"cost_medium":10,"cost_big":40,"maneuver_penalty":-15,"ranged_penalty":-5,"perception_penalty":0,"difficulty":null,"craft_time":"10d"},
+    {"at":4,"name":"Hide Scale","weight_pct":8,"str_req":35,"cost_small":3.5,"cost_medium":14,"cost_big":56,"maneuver_penalty":-35,"ranged_penalty":-10,"perception_penalty":-7,"difficulty":"H(-10)","craft_time":"22d"},
+    {"at":5,"name":"Laminar","weight_pct":12,"str_req":40,"cost_small":9,"cost_medium":36,"cost_big":140,"maneuver_penalty":-45,"ranged_penalty":-10,"perception_penalty":-9,"difficulty":"VH(-20)","craft_time":"25d"},
+    {"at":6,"name":"Rigid Leather","weight_pct":14,"str_req":45,"cost_small":8.5,"cost_medium":34,"cost_big":136,"maneuver_penalty":-50,"ranged_penalty":-20,"perception_penalty":-10,"difficulty":"H(-10)","craft_time":"19d"},
+    {"at":7,"name":"Metal Scale","weight_pct":16,"str_req":50,"cost_small":9.75,"cost_medium":39,"cost_big":156,"maneuver_penalty":-70,"ranged_penalty":-25,"perception_penalty":-12,"difficulty":"H(-10)","craft_time":"37d"},
+    {"at":8,"name":"Mail","weight_pct":21,"str_req":55,"cost_small":15,"cost_medium":60,"cost_big":240,"maneuver_penalty":-80,"ranged_penalty":-25,"perception_penalty":-12,"difficulty":"VH(-20)","craft_time":"58d"},
+    {"at":9,"name":"Brigandine","weight_pct":20,"str_req":70,"cost_small":13.75,"cost_medium":55,"cost_big":220,"maneuver_penalty":-90,"ranged_penalty":-30,"perception_penalty":-12,"difficulty":null,"craft_time":"37d"},
+    {"at":10,"name":"Plate","weight_pct":25,"str_req":75,"cost_small":16.25,"cost_medium":65,"cost_big":260,"maneuver_penalty":-100,"ranged_penalty":-30,"perception_penalty":-15,"difficulty":"SF(-50)","craft_time":"44d"}
+  ],
+  "torso": [
+    {"at":1,"name":"None","weight_pct":0,"str_req":0,"cost_small":null,"cost_medium":null,"cost_big":null,"maneuver_penalty":0,"ranged_penalty":0,"perception_penalty":0,"difficulty":null,"craft_time":null},
+    {"at":2,"name":"Heavy Cloth Torso Armor","weight_pct":2,"str_req":30,"cost_small":0.25,"cost_medium":1,"cost_big":4,"maneuver_penalty":-5,"ranged_penalty":0,"perception_penalty":0,"difficulty":"M(+0)","craft_time":"2d"},
+    {"at":3,"name":"Soft Leather Torso Armor","weight_pct":3,"str_req":30,"cost_small":0.25,"cost_medium":1,"cost_big":4,"maneuver_penalty":-10,"ranged_penalty":0,"perception_penalty":0,"difficulty":null,"craft_time":null},
+    {"at":4,"name":"Hide Scale Torso Armor","weight_pct":4,"str_req":35,"cost_small":0.75,"cost_medium":3,"cost_big":12,"maneuver_penalty":-10,"ranged_penalty":0,"perception_penalty":0,"difficulty":null,"craft_time":null},
+    {"at":5,"name":"Laminar Torso Armor","weight_pct":5,"str_req":40,"cost_small":1.75,"cost_medium":7,"cost_big":28,"maneuver_penalty":-20,"ranged_penalty":0,"perception_penalty":0,"difficulty":"VH(-20)","craft_time":"10d"},
+    {"at":6,"name":"Rigid Leather Torso Armor","weight_pct":7,"str_req":45,"cost_small":1,"cost_medium":4,"cost_big":16,"maneuver_penalty":-25,"ranged_penalty":0,"perception_penalty":0,"difficulty":"H(-10)","craft_time":null},
+    {"at":7,"name":"Metal Scale Torso Armor","weight_pct":9,"str_req":50,"cost_small":1.75,"cost_medium":7,"cost_big":28,"maneuver_penalty":-25,"ranged_penalty":0,"perception_penalty":0,"difficulty":"XH(-30)","craft_time":"11d"},
+    {"at":8,"name":"Mail Torso Armor","weight_pct":11,"str_req":55,"cost_small":3,"cost_medium":12,"cost_big":48,"maneuver_penalty":-35,"ranged_penalty":0,"perception_penalty":0,"difficulty":null,"craft_time":"35d"},
+    {"at":9,"name":"Brigandine Torso Armor","weight_pct":13,"str_req":70,"cost_small":2,"cost_medium":8,"cost_big":32,"maneuver_penalty":-45,"ranged_penalty":0,"perception_penalty":0,"difficulty":"XH(-30)","craft_time":"14d"},
+    {"at":10,"name":"Plate Torso Armor","weight_pct":15,"str_req":75,"cost_small":4.5,"cost_medium":18,"cost_big":72,"maneuver_penalty":-55,"ranged_penalty":0,"perception_penalty":0,"difficulty":"SF(-50)","craft_time":"21d"}
+  ],
+  "helmet": [
+    {"at":1,"name":"None","weight_pct":0,"str_req":0,"cost_small":null,"cost_medium":null,"cost_big":null,"maneuver_penalty":0,"ranged_penalty":0,"perception_penalty":0,"difficulty":null,"craft_time":null},
+    {"at":2,"name":"Heavy Cloth Helmet","weight_pct":1,"str_req":30,"cost_small":0.63,"cost_medium":2.5,"cost_big":10,"maneuver_penalty":0,"ranged_penalty":0,"perception_penalty":-5,"difficulty":"E(+20)","craft_time":"4d"},
+    {"at":3,"name":"Soft Leather Helmet","weight_pct":1,"str_req":30,"cost_small":0.75,"cost_medium":3,"cost_big":12,"maneuver_penalty":0,"ranged_penalty":0,"perception_penalty":-5,"difficulty":null,"craft_time":"3d"},
+    {"at":4,"name":"Hide Scale Helmet","weight_pct":2,"str_req":35,"cost_small":0.88,"cost_medium":3.5,"cost_big":14,"maneuver_penalty":-5,"ranged_penalty":0,"perception_penalty":-10,"difficulty":null,"craft_time":"5d"},
+    {"at":5,"name":"Laminar Helmet","weight_pct":2,"str_req":40,"cost_small":2.25,"cost_medium":9,"cost_big":36,"maneuver_penalty":-5,"ranged_penalty":0,"perception_penalty":-10,"difficulty":null,"craft_time":"5d"},
+    {"at":6,"name":"Rigid Leather Helmet","weight_pct":2,"str_req":45,"cost_small":2.5,"cost_medium":10,"cost_big":40,"maneuver_penalty":-5,"ranged_penalty":0,"perception_penalty":-10,"difficulty":null,"craft_time":"5d"},
+    {"at":7,"name":"Metal Scale Helmet","weight_pct":3,"str_req":50,"cost_small":2.5,"cost_medium":10,"cost_big":40,"maneuver_penalty":-10,"ranged_penalty":0,"perception_penalty":-15,"difficulty":null,"craft_time":"7d"},
+    {"at":8,"name":"Mail Helmet","weight_pct":3,"str_req":55,"cost_small":3.5,"cost_medium":14,"cost_big":56,"maneuver_penalty":-10,"ranged_penalty":0,"perception_penalty":-15,"difficulty":null,"craft_time":"7d"},
+    {"at":9,"name":"Brigandine Helmet","weight_pct":3,"str_req":70,"cost_small":3.25,"cost_medium":13,"cost_big":52,"maneuver_penalty":-10,"ranged_penalty":0,"perception_penalty":-15,"difficulty":"H(-10)","craft_time":"7d"},
+    {"at":10,"name":"Plate Helmet","weight_pct":3,"str_req":75,"cost_small":3.75,"cost_medium":15,"cost_big":60,"maneuver_penalty":-10,"ranged_penalty":0,"perception_penalty":-15,"difficulty":"H(-10)","craft_time":"7d"}
+  ],
+  "vambraces": [
+    {"at":1,"name":"None","weight_pct":0,"str_req":0,"cost_small":null,"cost_medium":null,"cost_big":null,"maneuver_penalty":0,"ranged_penalty":0,"perception_penalty":0,"difficulty":null,"craft_time":null},
+    {"at":2,"name":"Heavy Cloth Vambraces","weight_pct":1,"str_req":30,"cost_small":0.75,"cost_medium":3,"cost_big":12,"maneuver_penalty":0,"ranged_penalty":-5,"perception_penalty":0,"difficulty":"E(+20)","craft_time":"2d"},
+    {"at":3,"name":"Soft Leather Vambraces","weight_pct":1,"str_req":30,"cost_small":0.75,"cost_medium":3,"cost_big":12,"maneuver_penalty":0,"ranged_penalty":-5,"perception_penalty":0,"difficulty":"E(+20)","craft_time":"2d"},
+    {"at":4,"name":"Hide Scale Vambraces","weight_pct":2,"str_req":35,"cost_small":0.88,"cost_medium":3.5,"cost_big":14,"maneuver_penalty":-10,"ranged_penalty":-20,"perception_penalty":0,"difficulty":"M(+0)","craft_time":"3d"},
+    {"at":5,"name":"Laminar Vambraces","weight_pct":2,"str_req":40,"cost_small":2.5,"cost_medium":10,"cost_big":40,"maneuver_penalty":-10,"ranged_penalty":-20,"perception_penalty":0,"difficulty":"M(+0)","craft_time":"5d"},
+    {"at":6,"name":"Rigid Leather Vambraces","weight_pct":2,"str_req":45,"cost_small":2.5,"cost_medium":10,"cost_big":40,"maneuver_penalty":-10,"ranged_penalty":-20,"perception_penalty":0,"difficulty":"M(+0)","craft_time":"5d"},
+    {"at":7,"name":"Metal Scale Vambraces","weight_pct":3,"str_req":50,"cost_small":2.75,"cost_medium":11,"cost_big":44,"maneuver_penalty":-15,"ranged_penalty":-30,"perception_penalty":0,"difficulty":"H(-10)","craft_time":"6d"},
+    {"at":8,"name":"Mail Vambraces","weight_pct":3,"str_req":55,"cost_small":3.75,"cost_medium":15,"cost_big":60,"maneuver_penalty":-15,"ranged_penalty":-30,"perception_penalty":0,"difficulty":"H(-10)","craft_time":"8d"},
+    {"at":9,"name":"Brigandine Vambraces","weight_pct":3,"str_req":70,"cost_small":3.75,"cost_medium":15,"cost_big":60,"maneuver_penalty":-15,"ranged_penalty":-30,"perception_penalty":0,"difficulty":"H(-10)","craft_time":"8d"},
+    {"at":10,"name":"Plate Vambraces","weight_pct":3,"str_req":75,"cost_small":4,"cost_medium":16,"cost_big":64,"maneuver_penalty":-15,"ranged_penalty":-30,"perception_penalty":0,"difficulty":"H(-10)","craft_time":"8d"}
+  ],
+  "greaves": [
+    {"at":1,"name":"None","weight_pct":0,"str_req":0,"cost_small":null,"cost_medium":null,"cost_big":null,"maneuver_penalty":0,"ranged_penalty":0,"perception_penalty":0,"difficulty":null,"craft_time":null},
+    {"at":2,"name":"Heavy Cloth Greaves","weight_pct":2,"str_req":30,"cost_small":0.75,"cost_medium":3,"cost_big":12,"maneuver_penalty":-5,"ranged_penalty":0,"perception_penalty":0,"difficulty":"E(+20)","craft_time":"2d"},
+    {"at":3,"name":"Soft Leather Greaves","weight_pct":2,"str_req":30,"cost_small":0.75,"cost_medium":3,"cost_big":12,"maneuver_penalty":-5,"ranged_penalty":0,"perception_penalty":0,"difficulty":"E(+20)","craft_time":"2d"},
+    {"at":4,"name":"Hide Scale Greaves","weight_pct":3,"str_req":35,"cost_small":1,"cost_medium":4,"cost_big":16,"maneuver_penalty":-10,"ranged_penalty":0,"perception_penalty":0,"difficulty":"M(+0)","craft_time":"3d"},
+    {"at":5,"name":"Laminar Greaves","weight_pct":4,"str_req":40,"cost_small":2.5,"cost_medium":10,"cost_big":40,"maneuver_penalty":-10,"ranged_penalty":0,"perception_penalty":0,"difficulty":"M(+0)","craft_time":"5d"},
+    {"at":6,"name":"Rigid Leather Greaves","weight_pct":4,"str_req":45,"cost_small":2.5,"cost_medium":10,"cost_big":40,"maneuver_penalty":-10,"ranged_penalty":0,"perception_penalty":0,"difficulty":"M(+0)","craft_time":"5d"},
+    {"at":7,"name":"Metal Scale Greaves","weight_pct":4,"str_req":50,"cost_small":2.75,"cost_medium":11,"cost_big":44,"maneuver_penalty":-20,"ranged_penalty":0,"perception_penalty":0,"difficulty":"H(-10)","craft_time":"6d"},
+    {"at":8,"name":"Mail Greaves","weight_pct":4,"str_req":55,"cost_small":3.75,"cost_medium":15,"cost_big":60,"maneuver_penalty":-20,"ranged_penalty":0,"perception_penalty":0,"difficulty":"H(-10)","craft_time":"8d"},
+    {"at":9,"name":"Brigandine Greaves","weight_pct":4,"str_req":70,"cost_small":3.75,"cost_medium":15,"cost_big":60,"maneuver_penalty":-20,"ranged_penalty":0,"perception_penalty":0,"difficulty":"H(-10)","craft_time":"8d"},
+    {"at":10,"name":"Plate Greaves","weight_pct":4,"str_req":75,"cost_small":4,"cost_medium":16,"cost_big":64,"maneuver_penalty":-20,"ranged_penalty":0,"perception_penalty":0,"difficulty":"H(-10)","craft_time":"8d"}
+  ],
+  "shields": [
+    {"at":null,"name":"Target Shield","weight_pct":4,"str_req":65,"cost_small":0.88,"cost_medium":3.5,"cost_big":14,"maneuver_penalty":0,"ranged_penalty":0,"perception_penalty":0,"difficulty":"L(+10)","craft_time":"3d","db_bonus":null},
+    {"at":null,"name":"Normal Shield","weight_pct":8,"str_req":70,"cost_small":1.38,"cost_medium":5.5,"cost_big":22,"maneuver_penalty":0,"ranged_penalty":0,"perception_penalty":0,"difficulty":"M(+0)","craft_time":"5d","db_bonus":null},
+    {"at":null,"name":"Full Shield","weight_pct":12,"str_req":75,"cost_small":1.75,"cost_medium":7,"cost_big":28,"maneuver_penalty":0,"ranged_penalty":0,"perception_penalty":0,"difficulty":"H(-10)","craft_time":"6d","db_bonus":null},
+    {"at":null,"name":"Wall Shield","weight_pct":20,"str_req":80,"cost_small":2.25,"cost_medium":9,"cost_big":36,"maneuver_penalty":0,"ranged_penalty":0,"perception_penalty":0,"difficulty":null,"craft_time":"7d","db_bonus":null}
+  ]
+}

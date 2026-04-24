@@ -1,0 +1,8787 @@
+{
+  "LIGHT'S WAY": {
+    "section": "Bᴀsᴇ Lɪsᴛs",
+    "spells": [
+      {
+        "level": 1,
+        "name": "Projected Light",
+        "aoe": "50' beam",
+        "duration": "10 min/lvl",
+        "range": "self",
+        "type": "E",
+        "notes": "Beam of light (like a flashlight) springs from the caster’s palm; it has a 50' effective range. If the caster’s hand is closed into a fist, the light will “turn off”. If the caster’s fist is reopened before the end of the duration, the light will turn on again."
+      },
+      {
+        "level": 2,
+        "name": "Light I",
+        "aoe": "10'R",
+        "duration": "10 min/lvl",
+        "range": "touch",
+        "type": "E",
+        "notes": "Lights a 10'R area about the point touched. This spell may be cast onto a target as explained in Section 10.17."
+      },
+      {
+        "level": 3,
+        "name": "Aura",
+        "aoe": "1 target",
+        "duration": "10 min/lvl",
+        "range": "10'",
+        "type": "U",
+        "notes": "Causes a bright aura about the target, providing a more powerful appearance and subtracting 10 from all attacks on the target."
+      },
+      {
+        "level": 4,
+        "name": "Lights II",
+        "aoe": "20'R",
+        "duration": "10 min/lvl",
+        "range": "50'",
+        "type": "E",
+        "notes": "As Light I, except 1 or 2 areas can be created with a total radius of 20' (e.g., one area of 20'R or two areas of 10’R) and the location(s) for the light(s) need not be touched."
+      },
+      {
+        "level": 5,
+        "name": "Sudden Light",
+        "aoe": "10'R",
+        "duration": "--",
+        "range": "100'",
+        "type": "F",
+        "notes": "Causes a 10'R burst of intense light, all within are stunned (-50) for 1 round per 10 failure."
+      },
+      {
+        "level": 6,
+        "name": "True Aura",
+        "aoe": "1 target",
+        "duration": "10 min/lvl",
+        "range": "10'",
+        "type": "U",
+        "notes": "As Aura, except it produces an extremely powerful appearance and subtracts 15 from all attacks."
+      },
+      {
+        "level": 7,
+        "name": "Shock Bolt I",
+        "aoe": "1 target",
+        "duration": "--",
+        "range": "<25'>",
+        "type": "Ed",
+        "notes": "A bolt of intense, charged light is shot from the palm of the caster; results are determined on the Lightning Bolt attack table, as a Miniscule attack."
+      },
+      {
+        "level": 8,
+        "name": "Lights III",
+        "aoe": "30'R",
+        "duration": "10 min/lvl",
+        "range": "50'",
+        "type": "E",
+        "notes": "As Lights II, except up to three areas can be created with a total radius of 30'."
+      },
+      {
+        "level": 9,
+        "name": "Utterlight I",
+        "aoe": "10'R",
+        "duration": "1 min/lvl",
+        "range": "touch",
+        "type": "E",
+        "notes": "Nullifies all magically created darkness in a 10'R, and lights that area as full daylight."
+      },
+      {
+        "level": 10,
+        "name": "Waiting Light",
+        "aoe": "10'R",
+        "duration": "10 min/lvl",
+        "range": "touch",
+        "type": "E",
+        "notes": "As Light I, except caster can delay the spell up to 24 hours; it can be triggered by one of the following (decided by caster): elapsed time, specific movements, specific sounds, touch, etc."
+      },
+      {
+        "level": 11,
+        "name": "Flare",
+        "aoe": "varies",
+        "duration": "1 rnd/lvl",
+        "range": "<5'>/lvl",
+        "type": "Ed",
+        "notes": "A ball of light one foot in diameter is shot from the palm of the caster: it will travel to the limit of Long range, explode (as a flare), burn with a bright light (as a flare), drift slowly to earth, and go out. An area equal to the range is lit if the flare can rise to its full range; drops 10'/round. It can be fired at a target as a Small Fire Bolt."
+      },
+      {
+        "level": 12,
+        "name": "Illumination II",
+        "aoe": "20'R",
+        "duration": "1 hr/lvl",
+        "range": "50'",
+        "type": "E",
+        "notes": "As Lights II, except duration is one hour per level."
+      },
+      {
+        "level": 13,
+        "name": "Lights V",
+        "aoe": "50'R",
+        "duration": "10 min/lvl",
+        "range": "50'",
+        "type": "E",
+        "notes": "As Lights II, except up to five areas can be created with a total radius of 50'."
+      },
+      {
+        "level": 14,
+        "name": "Utterlight III",
+        "aoe": "30'R",
+        "duration": "1 min/lvl",
+        "range": "touch",
+        "type": "E",
+        "notes": "As Utterlight I, except up to three areas can be created with a total radius of 30'"
+      },
+      {
+        "level": 15,
+        "name": "Lights X",
+        "aoe": "100'R",
+        "duration": "10 min/lvl",
+        "range": "100'",
+        "type": "E",
+        "notes": "As Lights II, except up to ten areas can be created with a total radius of 100'."
+      },
+      {
+        "level": 16,
+        "name": "Illumination III",
+        "aoe": "30'R",
+        "duration": "1 hr/lvl",
+        "range": "50'",
+        "type": "E",
+        "notes": "As Lights III, except duration is one hour per level."
+      },
+      {
+        "level": 17,
+        "name": "Utterlight V",
+        "aoe": "50'R",
+        "duration": "1 min/lvl",
+        "range": "touch",
+        "type": "E",
+        "notes": "As Utterlight I, except up to five areas can be created with a total radius of 50'"
+      },
+      {
+        "level": 18,
+        "name": "Mass Lights",
+        "aoe": "10'R/lvl",
+        "duration": "10 min/lvl",
+        "range": "10'/lvl",
+        "type": "E",
+        "notes": "As Lights II, except total radius is 10' per level and this may be split between a number of areas equal to the caster’s level."
+      },
+      {
+        "level": 19,
+        "name": "Illumination V",
+        "aoe": "50'R",
+        "duration": "1 hr/lvl",
+        "range": "50'",
+        "type": "E",
+        "notes": "As Lights V, except duration is one hour per level."
+      },
+      {
+        "level": 20,
+        "name": "Mass Aura",
+        "aoe": "1 target/lvl",
+        "duration": "10 min/lvl",
+        "range": "100'",
+        "type": "U",
+        "notes": "As Aura, except as many targets as the caster’s level can be affected."
+      },
+      {
+        "level": 25,
+        "name": "Shock Ball",
+        "aoe": "20'R",
+        "duration": "--",
+        "range": "100'",
+        "type": "Eb",
+        "notes": "Caster extends a finger and a 1\" globe of blue-white light shoots out to the target location, then erupts in arcs of electricity in a 40' sphere. Attack is resolved on the Lightning Ball table as a Miniscule attack."
+      },
+      {
+        "level": 30,
+        "name": "Alkar",
+        "aoe": "1 target",
+        "duration": "10 min/lvl",
+        "range": "10'",
+        "type": "U",
+        "notes": "As Aura, except target seems like a minor god and the subtraction is 25."
+      },
+      {
+        "level": 35,
+        "name": "Mass True Aura",
+        "aoe": "1 target/lvl",
+        "duration": "10 min/lvl",
+        "range": "100'",
+        "type": "U",
+        "notes": "As True Aura, except as many targets as the caster’s level can be affected."
+      },
+      {
+        "level": 40,
+        "name": "Mass Illumination",
+        "aoe": "10'R/lvl",
+        "duration": "1 hr/lvl",
+        "range": "10'/lvl",
+        "type": "E",
+        "notes": "As Mass Lights, except duration is one hour per level."
+      },
+      {
+        "level": 50,
+        "name": "Mass Utterlights",
+        "aoe": "10'R/lvl",
+        "duration": "1 min/lvl",
+        "range": "touch",
+        "type": "E",
+        "notes": "As Utterlight I, except total radius is 10' per level and this may be split between a number of areas equal to the caster’s level."
+      }
+    ]
+  },
+  "FIRE LAW": {
+    "section": "Bᴀsᴇ Lɪsᴛs",
+    "spells": [
+      {
+        "level": 1,
+        "name": "Boiling Heat",
+        "aoe": "1 cu'/lvl",
+        "duration": "C",
+        "range": "10'",
+        "type": "F",
+        "notes": "For each level of the caster, one cubic foot of liquid can be heated to boiling at a rate of 1 cubic foot per round. Once the caster ceases concentration, the liquid (if any remains) will cool normally."
+      },
+      {
+        "level": 2,
+        "name": "Warm Solid",
+        "aoe": "1 cu'/lvl",
+        "duration": "24 hrs",
+        "range": "10'",
+        "type": "F",
+        "notes": "Any solid, inanimate, non-metal material (up to 1 cubic foot per level) can be warmed to 100°F (38°C) at a rate of 1 cubic foot per round."
+      },
+      {
+        "level": 3,
+        "name": "Woodfires",
+        "aoe": "1'R",
+        "duration": "--",
+        "range": "1'",
+        "type": "F",
+        "notes": "Causes any wood to ignite and burn. All wood ignited must be within 1' of caster’s palm."
+      },
+      {
+        "level": 4,
+        "name": "Wall of Fire",
+        "aoe": "10'x10'x6\"",
+        "duration": "1 rnd/lvl",
+        "range": "100'",
+        "type": "E",
+        "notes": "Creates an opaque wall of fire (up to 10'x10'x6\"). Anyone passing through it takes an A Heat critical (no RR)."
+      },
+      {
+        "level": 5,
+        "name": "Heat Solid",
+        "aoe": "1 cu'/lvl",
+        "duration": "1 min/lvl (C)",
+        "range": "10'",
+        "type": "F",
+        "notes": "As Warm Solid, except for duration and material can be heated to 500°F (260°C) at a rate of one cubic foot heated by 100°F (56°C) per round. The caster must concentrate to increase the temperature (without concentration, the material will retain its current temperature for the duration of the spell)."
+      },
+      {
+        "level": 6,
+        "name": "Fire Bolt I",
+        "aoe": "1 target",
+        "duration": "--",
+        "range": "<25'>",
+        "type": "Ed",
+        "notes": "A bolt of fire is shot from the palm of the caster; results are determined on the Fire Bolt Table."
+      },
+      {
+        "level": 7,
+        "name": "Call Flame I",
+        "aoe": "10'x10'x10'",
+        "duration": "1 rnd/lvl",
+        "range": "10'",
+        "type": "E",
+        "notes": "Creates a cube of flame (up to 10'x10'x10'); it takes 1 complete round for the cube to form and be effective. Anyone passing through (or caught within) the cube takes an A Heat critical each round spent in the cube."
+      },
+      {
+        "level": 8,
+        "name": "Fire Ball",
+        "aoe": "10'R",
+        "duration": "--",
+        "range": "100'",
+        "type": "Eb",
+        "notes": "A 1' diameter ball of fire is shot from the palm of the caster. Upon reaching the selected target/location, it expands to affect a 10'R area. Resolve attack on the Fire Ball Table."
+      },
+      {
+        "level": 9,
+        "name": "Ignite",
+        "aoe": "5'R/lvl",
+        "duration": "P",
+        "range": "5'/lvl",
+        "type": "E",
+        "notes": "The caster may designate a type of light source to ignite or extinguish (e.g., candles, torches, fireplaces, or lanterns). This spell will affect all of the light sources of the specified type(s) within the area of effect."
+      },
+      {
+        "level": 10,
+        "name": "Circle Aflame",
+        "aoe": "10'R",
+        "duration": "1 rnd/lvl",
+        "range": "self",
+        "type": "E",
+        "notes": "As Wall of Fire, except “wall” is 10' high and forms a 10'R circle (6\" thick) with the caster at the center (it is non-mobile)."
+      },
+      {
+        "level": 11,
+        "name": "Fire Bolt III",
+        "aoe": "1 target",
+        "duration": "--",
+        "range": "<75'>",
+        "type": "Ed",
+        "notes": "As Fire Bolt I, except range increment is 75'."
+      },
+      {
+        "level": 12,
+        "name": "Call Flame II",
+        "aoe": "20'x20'x20'",
+        "duration": "1 rnd/lvl",
+        "range": "20'",
+        "type": "E",
+        "notes": "As Call Flame I, except cube is up to 20'x20'x20' in size and the range is 20'."
+      },
+      {
+        "level": 13,
+        "name": "Waiting Flame",
+        "aoe": "10'x10'x10'",
+        "duration": "varies",
+        "range": "10'",
+        "type": "E",
+        "notes": "As Call Flame I, except the effect can be delayed for up to 24 hours. The effect can be triggered by one of the following (decided by the caster at time of casting): time period, certain movements, certain sounds, touch, violent actions in the area, or any other trigger so long as the caster would be able to sense it if the caster remained at the area of effect."
+      },
+      {
+        "level": 14,
+        "name": "Firestorm",
+        "aoe": "10'x10'x10'",
+        "duration": "1 rnd/lvl",
+        "range": "20'",
+        "type": "E",
+        "notes": "As Call Flame I, except small balls of flame rain down in a 10' cube causing a B Heat critical to all within or passing through the area of effect."
+      },
+      {
+        "level": 15,
+        "name": "Metal Fires",
+        "aoe": "1 lb/lvl",
+        "duration": "1 rnd/lvl",
+        "range": "100'",
+        "type": "F",
+        "notes": "Causes a metal object to burst into flames, the object can be up to 1 lb/level in mass. If the object is on a being, it gets an RR, and if it fails, the being takes an automatic Heat critical of a severity to be determined by its location on the being’s body. If the object is touching exposed flesh, the being takes a C Heat critical; if the object is touching through cloth, the being takes a B Heat critical; any being within a 1'R takes an A Heat critical."
+      },
+      {
+        "level": 16,
+        "name": "Triad of Flame",
+        "aoe": "1-3 targets",
+        "duration": "--",
+        "range": "<25'>",
+        "type": "Ed",
+        "notes": "Three bolts of fire are shot from the palm of the caster. They can strike up to three different targets as long as they are all within 60° of each other and are within the caster’s field of vision. Caster may apply his Directed Spell skill by dividing it as he chooses among the three bolts (e.g., a +120 OB could be split evenly into three +40 bolts or one +120 bolt and two +0 bolts or one +60, one +40, and one +20 bolt)."
+      },
+      {
+        "level": 17,
+        "name": "Fire Bolt V",
+        "aoe": "1 target",
+        "duration": "--",
+        "range": "<125'>",
+        "type": "Ed",
+        "notes": "As Fire Bolt I, except range increment is 125'."
+      },
+      {
+        "level": 18,
+        "name": "Waiting Firestorm",
+        "aoe": "10'x10'x10'",
+        "duration": "varies",
+        "range": "20'",
+        "type": "E",
+        "notes": "As Waiting Flame, except a Firestorm can be delayed."
+      },
+      {
+        "level": 19,
+        "name": "Call Flame V",
+        "aoe": "50'x50'x50'",
+        "duration": "1 rnd/lvl",
+        "range": "50'",
+        "type": "E",
+        "notes": "As Call Flame I, except the size is up to a 50' cube and the range is 50'."
+      },
+      {
+        "level": 20,
+        "name": "Corner Fires",
+        "aoe": "1 target",
+        "duration": "--",
+        "range": "<75'>",
+        "type": "Ed",
+        "notes": "As Fire Bolt III, except caster can make the bolt turn once by up to 90° before striking the target (the caster must know the target’s location). The caster’s OB is modified by -25 when using this spell. However, this spell can be used to bypass a positional modifier – any DB bonus gained through the use of cover (partial/half/full soft cover; partial/half/full hard cover) is reduced to zero if the turn circumvents the cover; a target that otherwise would be unable to be hit can be attacked using this spell."
+      },
+      {
+        "level": 25,
+        "name": "Following Fires",
+        "aoe": "1 target",
+        "duration": "--",
+        "range": "<75'>",
+        "type": "Ed",
+        "notes": "As Corner Fires, except bolt can make as many turns as necessary, with an OB penalty of -25 per turn, and go through openings (must be larger than 6\" radius) to strike the target."
+      },
+      {
+        "level": 30,
+        "name": "Stone Fires",
+        "aoe": "300 sq'",
+        "duration": "1 rnd/lvl",
+        "range": "100'",
+        "type": "F",
+        "notes": "A stone surface of up to 300 sq. ft. bursts into flames, and a C Heat critical is given each round to anything passing through (or spending the round in) the 3' flames."
+      },
+      {
+        "level": 35,
+        "name": "Following Fires True",
+        "aoe": "1 target",
+        "duration": "--",
+        "range": "<75'>",
+        "type": "Ed",
+        "notes": "As Following Fires, except there is no penalty to OB."
+      },
+      {
+        "level": 40,
+        "name": "Dragon's Fire",
+        "aoe": "(1'-50')Dx100'",
+        "duration": "--",
+        "range": "self",
+        "type": "Eb",
+        "notes": "A cone of fire resembling the breath weapon of a fire-breathing dragon shoots from the caster’s hand or face, with a diameter of 1' at its origin point at the caster increasing to a diameter of 50' at the termination of the cone 100' away. Results of this attack are determined using the Fire Ball table."
+      },
+      {
+        "level": 50,
+        "name": "Fire Mastery",
+        "aoe": "caster",
+        "duration": "1 rnd/lvl",
+        "range": "self",
+        "type": "U",
+        "notes": "Caster can use any one lower level spell (on this list) each round."
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 1,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 2,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 3,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 4,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 5,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 6,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 7,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 8,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 9,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 10,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 11,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 12,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 13,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 14,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 15,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 16,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 17,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 18,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 19,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 20,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 25,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 30,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 35,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 40,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      },
+      {
+        "level": 50,
+        "name": "",
+        "aoe": "",
+        "duration": "",
+        "range": "",
+        "type": "",
+        "notes": ""
+      }
+    ]
+  }
+}

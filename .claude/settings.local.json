@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pdftotext -f 1 -l 20 Rolemaster-CoreLaw.pdf -)",
+      "Bash(pdftotext -f 1 -l 10 Rolemaster-AttackTables.pdf -)",
+      "Bash(pdftotext -f 1 -l 10 Rolemaster-CritTables.pdf -)",
+      "Bash(pdftotext -f 1 -l 15 Rolemaster-SpellLaw.pdf -)",
+      "Read(//tmp/**)"
+    ]
+  }
+}

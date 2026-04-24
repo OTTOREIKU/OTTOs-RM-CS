@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg:        #0e1117;
+    --surface:   #161b27;
+    --surface2:  #1e2538;
+    --border:    #252d42;
+    --border2:   #2e3850;
+    --accent:    #4c8bf5;
+    --accent-dim:#2d5dbf;
+    --danger:    #ef4444;
+    --success:   #22c55e;
+    --warning:   #f59e0b;
+    --purple:    #8b5cf6;
+    --text:      #e8eaf0;
+    --text2:     #8892a8;
+    --text3:     #4f5a6e;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100dvh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Inputs */
+  input, select, textarea {
+    background: var(--surface2);
+    color: var(--text);
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(76,139,245,0.15);
+  }
+  input[type="number"] { -moz-appearance: textfield; text-align: center; }
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+  select option { background: var(--surface2); }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 10px; }
+}

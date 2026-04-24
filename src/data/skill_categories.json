@@ -1,0 +1,122 @@
+[
+  {
+    "name": "Animal",
+    "dev_cost": "3/5",
+    "stat_keys": "Ag/Em"
+  },
+  {
+    "name": "Awareness",
+    "dev_cost": "4/6",
+    "stat_keys": "In/Re"
+  },
+  {
+    "name": "Battle Expertise",
+    "dev_cost": "7/10",
+    "stat_keys": "-"
+  },
+  {
+    "name": "Body Discipline",
+    "dev_cost": "6/8",
+    "stat_keys": "Co/SD"
+  },
+  {
+    "name": "Brawn",
+    "dev_cost": "6/8",
+    "stat_keys": "Co/SD"
+  },
+  {
+    "name": "Combat Expertise",
+    "dev_cost": "7/10",
+    "stat_keys": "-"
+  },
+  {
+    "name": "Composition",
+    "dev_cost": "2/4",
+    "stat_keys": "Em/In"
+  },
+  {
+    "name": "Crafting",
+    "dev_cost": "3/4",
+    "stat_keys": "Ag/Me"
+  },
+  {
+    "name": "Delving",
+    "dev_cost": "1/2",
+    "stat_keys": "Em/In"
+  },
+  {
+    "name": "Environmental",
+    "dev_cost": "4/6",
+    "stat_keys": "In/Me"
+  },
+  {
+    "name": "Gymnastic",
+    "dev_cost": "4/6",
+    "stat_keys": "Ag/Qu"
+  },
+  {
+    "name": "Lore",
+    "dev_cost": "1/3",
+    "stat_keys": "Me/Me"
+  },
+  {
+    "name": "Lore: Languages",
+    "dev_cost": "1/3",
+    "stat_keys": "Me/Me"
+  },
+  {
+    "name": "Magical Expertise",
+    "dev_cost": "1/2",
+    "stat_keys": "-"
+  },
+  {
+    "name": "Medical",
+    "dev_cost": "3/4",
+    "stat_keys": "In/Me"
+  },
+  {
+    "name": "Mental Discipline",
+    "dev_cost": "2/4",
+    "stat_keys": "Pr/SD"
+  },
+  {
+    "name": "Movement",
+    "dev_cost": "4/6",
+    "stat_keys": "Ag/St"
+  },
+  {
+    "name": "Performance Art",
+    "dev_cost": "2/4",
+    "stat_keys": "Em/Pr"
+  },
+  {
+    "name": "Power Manipulation",
+    "dev_cost": "2/3",
+    "stat_keys": "Em"
+  },
+  {
+    "name": "Science",
+    "dev_cost": "2/4",
+    "stat_keys": "Me/Re"
+  },
+  {
+    "name": "Social",
+    "dev_cost": "3/4",
+    "stat_keys": "Em/In"
+  },
+  {
+    "name": "Subterfuge",
+    "dev_cost": "6/8",
+    "stat_keys": "Ag/SD"
+  },
+  {
+    "name": "Technical",
+    "dev_cost": "5/7",
+    "stat_keys": "In/Re"
+  },
+  {
+    "name": "Vocation",
+    "dev_cost": "3/4",
+    "stat_keys": "Em/Me"
+  }
+]

@@ -1,0 +1,1108 @@
+[
+  {
+    "category": "Animal",
+    "name": "Animal Handling: <animal 1>",
+    "dev_cost": "3/5",
+    "prof_type": "Normal",
+    "stat_keys": "Pr"
+  },
+  {
+    "category": "Animal",
+    "name": "Animal Handling: <animal 2>",
+    "dev_cost": "3/5",
+    "prof_type": "Normal",
+    "stat_keys": "Pr"
+  },
+  {
+    "category": "Animal",
+    "name": "Riding: <animal 1>",
+    "dev_cost": "3/5",
+    "prof_type": "Normal",
+    "stat_keys": "Pr"
+  },
+  {
+    "category": "Animal",
+    "name": "Riding: <animal 2>",
+    "dev_cost": "3/5",
+    "prof_type": "Normal",
+    "stat_keys": "Pr"
+  },
+  {
+    "category": "Awareness",
+    "name": "Perception",
+    "dev_cost": "4/6",
+    "prof_type": "Normal",
+    "stat_keys": "SD"
+  },
+  {
+    "category": "Awareness",
+    "name": "Tracking",
+    "dev_cost": "4/6",
+    "prof_type": "Normal",
+    "stat_keys": "SD"
+  },
+  {
+    "category": "Battle Expertise",
+    "name": "Maneuver in Armor",
+    "dev_cost": "7/10",
+    "prof_type": "Normal",
+    "stat_keys": "-"
+  },
+  {
+    "category": "Battle Expertise",
+    "name": "Mounted Combat",
+    "dev_cost": "7/10",
+    "prof_type": "Normal",
+    "stat_keys": "-"
+  },
+  {
+    "category": "Battle Expertise",
+    "name": "Protect",
+    "dev_cost": "7/10",
+    "prof_type": "Normal",
+    "stat_keys": "-"
+  },
+  {
+    "category": "Battle Expertise",
+    "name": "Restricted Quarters",
+    "dev_cost": "7/10",
+    "prof_type": "Normal",
+    "stat_keys": "-"
+  },
+  {
+    "category": "Battle Expertise",
+    "name": "Subduing",
+    "dev_cost": "7/10",
+    "prof_type": "Normal",
+    "stat_keys": "-"
+  },
+  {
+    "category": "Body Discipline",
+    "name": "Adrenal Defense",
+    "dev_cost": "6/8",
+    "prof_type": "Normal",
+    "stat_keys": "Ag"
+  },
+  {
+    "category": "Body Discipline",
+    "name": "Adrenal Focus",
+    "dev_cost": "6/8",
+    "prof_type": "Normal",
+    "stat_keys": "SD"
+  },
+  {
+    "category": "Body Discipline",
+    "name": "Adrenal Speed",
+    "dev_cost": "6/8",
+    "prof_type": "Normal",
+    "stat_keys": "Qu"
+  },
+  {
+    "category": "Body Discipline",
+    "name": "Adrenal Strength",
+    "dev_cost": "6/8",
+    "prof_type": "Normal",
+    "stat_keys": "St"
+  },
+  {
+    "category": "Brawn",
+    "name": "Body Development",
+    "dev_cost": "6/8",
+    "prof_type": "Professional",
+    "stat_keys": "Co"
+  },
+  {
+    "category": "Brawn",
+    "name": "Fortitude",
+    "dev_cost": "6/8",
+    "prof_type": "Normal",
+    "stat_keys": "St"
+  },
+  {
+    "category": "Brawn",
+    "name": "Weight Training",
+    "dev_cost": "6/8",
+    "prof_type": "Normal",
+    "stat_keys": "St"
+  },
+  {
+    "category": "Combat Expertise",
+    "name": "Blind Fighting",
+    "dev_cost": "7/10",
+    "prof_type": "Normal",
+    "stat_keys": "-"
+  },
+  {
+    "category": "Combat Expertise",
+    "name": "Disarm",
+    "dev_cost": "7/10",
+    "prof_type": "Normal",
+    "stat_keys": "-"
+  },
+  {
+    "category": "Combat Expertise",
+    "name": "Footwork",
+    "dev_cost": "7/10",
+    "prof_type": "Normal",
+    "stat_keys": "-"
+  },
+  {
+    "category": "Combat Expertise",
+    "name": "Multiple Attacks",
+    "dev_cost": "7/10",
+    "prof_type": "Normal",
+    "stat_keys": "-"
+  },
+  {
+    "category": "Combat Expertise",
+    "name": "Reverse Strike",
+    "dev_cost": "7/10",
+    "prof_type": "Normal",
+    "stat_keys": "-"
+  },
+  {
+    "category": "Combat Expertise",
+    "name": "Combat Training 1",
+    "dev_cost": "5/7",
+    "prof_type": "Melee",
+    "stat_keys": "Ag/St"
+  },
+  {
+    "category": "Combat Expertise",
+    "name": "Blade",
+    "dev_cost": "5/7",
+    "prof_type": "Professional",
+    "stat_keys": "St"
+  },
+  {
+    "category": "Combat Expertise",
+    "name": "Hafted",
+    "dev_cost": "5/7",
+    "prof_type": "Normal",
+    "stat_keys": "St"
+  },
+  {
+    "category": "Combat Expertise",
+    "name": "Greater Blade",
+    "dev_cost": "5/7",
+    "prof_type": "Normal",
+    "stat_keys": "St"
+  },
+  {
+    "category": "Combat Expertise",
+    "name": "Katana (example)",
+    "dev_cost": "5/7",
+    "prof_type": "Normal",
+    "stat_keys": "St"
+  },
+  {
+    "category": "Combat Expertise",
+    "name": "Combat Training 2",
+    "dev_cost": "6/8",
+    "prof_type": "Shield",
+    "stat_keys": "Ag/St"
+  },
+  {
+    "category": "Combat Expertise",
+    "name": "Shield",
+    "dev_cost": "6/8",
+    "prof_type": "Normal",
+    "stat_keys": "St"
+  },
+  {
+    "category": "Combat Expertise",
+    "name": "<weapon skill>",
+    "dev_cost": "6/8",
+    "prof_type": "Normal",
+    "stat_keys": "St"
+  },
+  {
+    "category": "Combat Expertise",
+    "name": "Combat Training 3",
+    "dev_cost": "9/12",
+    "prof_type": "Unarmed",
+    "stat_keys": "Ag/St"
+  },
+  {
+    "category": "Combat Expertise",
+    "name": "Strikes",
+    "dev_cost": "9/12",
+    "prof_type": "Normal",
+    "stat_keys": "St"
+  },
+  {
+    "category": "Combat Expertise",
+    "name": "Grappling/Wrestling",
+    "dev_cost": "9/12",
+    "prof_type": "Normal",
+    "stat_keys": "St"
+  },
+  {
+    "category": "Combat Expertise",
+    "name": "Combat Training 4",
+    "dev_cost": "15/20",
+    "prof_type": "Ranged",
+    "stat_keys": "Ag/St"
+  },
+  {
+    "category": "Combat Expertise",
+    "name": "Bow",
+    "dev_cost": "15/20",
+    "prof_type": "Normal",
+    "stat_keys": "St"
+  },
+  {
+    "category": "Combat Expertise",
+    "name": "Exotic Ranged 1 (specified)",
+    "dev_cost": "15/20",
+    "prof_type": "Normal",
+    "stat_keys": "St"
+  },
+  {
+    "category": "Composition",
+    "name": "Illusion Crafting",
+    "dev_cost": "2/4",
+    "prof_type": "Normal",
+    "stat_keys": "Pr"
+  },
+  {
+    "category": "Composition",
+    "name": "Musical Composition",
+    "dev_cost": "2/4",
+    "prof_type": "Normal",
+    "stat_keys": "Pr"
+  },
+  {
+    "category": "Composition",
+    "name": "Writing",
+    "dev_cost": "2/4",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Crafting",
+    "name": "Culinary",
+    "dev_cost": "3/4",
+    "prof_type": "Normal",
+    "stat_keys": "SD"
+  },
+  {
+    "category": "Crafting",
+    "name": "Drawing/Painting",
+    "dev_cost": "3/4",
+    "prof_type": "Normal",
+    "stat_keys": "In"
+  },
+  {
+    "category": "Crafting",
+    "name": "Fabric Craft",
+    "dev_cost": "3/4",
+    "prof_type": "Normal",
+    "stat_keys": "SD"
+  },
+  {
+    "category": "Crafting",
+    "name": "Leathercraft",
+    "dev_cost": "3/4",
+    "prof_type": "Normal",
+    "stat_keys": "SD"
+  },
+  {
+    "category": "Crafting",
+    "name": "Metalcraft",
+    "dev_cost": "3/4",
+    "prof_type": "Normal",
+    "stat_keys": "St"
+  },
+  {
+    "category": "Crafting",
+    "name": "Stonecraft",
+    "dev_cost": "3/4",
+    "prof_type": "Normal",
+    "stat_keys": "St"
+  },
+  {
+    "category": "Crafting",
+    "name": "Woodcraft",
+    "dev_cost": "3/4",
+    "prof_type": "Normal",
+    "stat_keys": "SD"
+  },
+  {
+    "category": "Delving",
+    "name": "Attunement",
+    "dev_cost": "1/2",
+    "prof_type": "Normal",
+    "stat_keys": "Pr"
+  },
+  {
+    "category": "Delving",
+    "name": "Runes",
+    "dev_cost": "1/2",
+    "prof_type": "Normal",
+    "stat_keys": "Pr"
+  },
+  {
+    "category": "Environmental",
+    "name": "Navigation",
+    "dev_cost": "4/6",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Environmental",
+    "name": "Piloting: <vehicle 1>",
+    "dev_cost": "4/6",
+    "prof_type": "Normal",
+    "stat_keys": "Ag"
+  },
+  {
+    "category": "Environmental",
+    "name": "Survival: <biome 1>",
+    "dev_cost": "4/6",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Environmental",
+    "name": "Survival: <biome 2>",
+    "dev_cost": "4/6",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Gymnastic",
+    "name": "Acrobatics",
+    "dev_cost": "4/6",
+    "prof_type": "Normal",
+    "stat_keys": "St"
+  },
+  {
+    "category": "Gymnastic",
+    "name": "Contortions",
+    "dev_cost": "4/6",
+    "prof_type": "Normal",
+    "stat_keys": "SD"
+  },
+  {
+    "category": "Gymnastic",
+    "name": "Jumping",
+    "dev_cost": "4/6",
+    "prof_type": "Normal",
+    "stat_keys": "St"
+  },
+  {
+    "category": "Lore",
+    "name": "Creature Lore",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore",
+    "name": "Historic Lore",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore",
+    "name": "Materials Lore",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore",
+    "name": "Racial Lore: <race 1>",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore",
+    "name": "Racial Lore: <race 2>",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore",
+    "name": "Region Lore: <region 1>",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore",
+    "name": "Region Lore: <region 2>",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore",
+    "name": "Religion/Philosophy",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore",
+    "name": "Spell Lore",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore",
+    "name": "<specialization 1> Lore",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore",
+    "name": "<specialization 2> Lore",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore",
+    "name": "<specialization 3> Lore",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore",
+    "name": "<specialization 4> Lore",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore",
+    "name": "<specialization 5> Lore",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore",
+    "name": "<specialization 6> Lore",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore",
+    "name": "<specialization 7> Lore",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore",
+    "name": "<specialization 8> Lore",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore",
+    "name": "<specialization 9> Lore",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore",
+    "name": "<specialization 10> Lore",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore",
+    "name": "<specialization 11> Lore",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore",
+    "name": "<specialization 12> Lore",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore: Languages",
+    "name": "Spoken: <language 1>",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore: Languages",
+    "name": "Writting: <language 1>",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore: Languages",
+    "name": "Spoken: <language 2>",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore: Languages",
+    "name": "Writting: <language 2>",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore: Languages",
+    "name": "Spoken: <language 3>",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore: Languages",
+    "name": "Writting: <language 3>",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore: Languages",
+    "name": "Spoken: <language 4>",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore: Languages",
+    "name": "Writting: <language 4>",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore: Languages",
+    "name": "Spoken: <language 5>",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore: Languages",
+    "name": "Writting: <language 5>",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore: Languages",
+    "name": "Spoken: <language 6>",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore: Languages",
+    "name": "Writting: <language 6>",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore: Languages",
+    "name": "Spoken: <language 7>",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore: Languages",
+    "name": "Writting: <language 7>",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore: Languages",
+    "name": "Spoken: <language 8>",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore: Languages",
+    "name": "Writting: <language 8>",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore: Languages",
+    "name": "Spoken: <language 9>",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore: Languages",
+    "name": "Writting: <language 9>",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore: Languages",
+    "name": "Spoken: <language 10>",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore: Languages",
+    "name": "Writting: <language 10>",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Magical Expertise",
+    "name": "Grace: <spell list 1>",
+    "dev_cost": "1/2",
+    "prof_type": "Normal",
+    "stat_keys": "-"
+  },
+  {
+    "category": "Magical Expertise",
+    "name": "Grace: <spell list 2>",
+    "dev_cost": "1/2",
+    "prof_type": "Normal",
+    "stat_keys": "-"
+  },
+  {
+    "category": "Magical Expertise",
+    "name": "Grace: <spell list 3>",
+    "dev_cost": "1/2",
+    "prof_type": "Normal",
+    "stat_keys": "-"
+  },
+  {
+    "category": "Magical Expertise",
+    "name": "Grace: <spell list 4>",
+    "dev_cost": "1/2",
+    "prof_type": "Normal",
+    "stat_keys": "-"
+  },
+  {
+    "category": "Magical Expertise",
+    "name": "Spell Trickery: <spell list 1>",
+    "dev_cost": "1/2",
+    "prof_type": "Normal",
+    "stat_keys": "-"
+  },
+  {
+    "category": "Magical Expertise",
+    "name": "Spell Trickery: <spell list 2>",
+    "dev_cost": "1/2",
+    "prof_type": "Normal",
+    "stat_keys": "-"
+  },
+  {
+    "category": "Magical Expertise",
+    "name": "Spell Trickery: <spell list 3>",
+    "dev_cost": "1/2",
+    "prof_type": "Normal",
+    "stat_keys": "-"
+  },
+  {
+    "category": "Magical Expertise",
+    "name": "Spell Trickery: <spell list 4>",
+    "dev_cost": "1/2",
+    "prof_type": "Normal",
+    "stat_keys": "-"
+  },
+  {
+    "category": "Magical Expertise",
+    "name": "Transcendence",
+    "dev_cost": "1/2",
+    "prof_type": "Normal",
+    "stat_keys": "-"
+  },
+  {
+    "category": "Medical",
+    "name": "Herbalism",
+    "dev_cost": "3/4",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Medical",
+    "name": "Medicine",
+    "dev_cost": "3/4",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Medical",
+    "name": "Poison Mastery",
+    "dev_cost": "3/4",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Mental Discipline",
+    "name": "Control Lycanthropy",
+    "dev_cost": "2/4",
+    "prof_type": "Normal",
+    "stat_keys": "SD"
+  },
+  {
+    "category": "Mental Discipline",
+    "name": "Meditation",
+    "dev_cost": "2/4",
+    "prof_type": "Normal",
+    "stat_keys": "SD"
+  },
+  {
+    "category": "Mental Discipline",
+    "name": "Mental Focus",
+    "dev_cost": "2/4",
+    "prof_type": "Normal",
+    "stat_keys": "SD"
+  },
+  {
+    "category": "Movement",
+    "name": "Climbing",
+    "dev_cost": "4/6",
+    "prof_type": "Normal",
+    "stat_keys": "Co"
+  },
+  {
+    "category": "Movement",
+    "name": "Flying",
+    "dev_cost": "4/6",
+    "prof_type": "Normal",
+    "stat_keys": "Co"
+  },
+  {
+    "category": "Movement",
+    "name": "Running",
+    "dev_cost": "4/6",
+    "prof_type": "Normal",
+    "stat_keys": "Co"
+  },
+  {
+    "category": "Movement",
+    "name": "Swimming",
+    "dev_cost": "4/6",
+    "prof_type": "Normal",
+    "stat_keys": "Co"
+  },
+  {
+    "category": "Performance Art",
+    "name": "Acting",
+    "dev_cost": "2/4",
+    "prof_type": "Normal",
+    "stat_keys": "Me"
+  },
+  {
+    "category": "Performance Art",
+    "name": "Music: Singing",
+    "dev_cost": "2/4",
+    "prof_type": "Normal",
+    "stat_keys": "Me"
+  },
+  {
+    "category": "Performance Art",
+    "name": "Music: Flute",
+    "dev_cost": "2/4",
+    "prof_type": "Normal",
+    "stat_keys": "Me"
+  },
+  {
+    "category": "Performance Art",
+    "name": "Stage Music",
+    "dev_cost": "2/4",
+    "prof_type": "Normal",
+    "stat_keys": "Ag"
+  },
+  {
+    "category": "Power Manipulation",
+    "name": "Channeling",
+    "dev_cost": "2/3",
+    "prof_type": "Normal",
+    "stat_keys": "Me"
+  },
+  {
+    "category": "Power Manipulation",
+    "name": "Directed Spells: Bolts",
+    "dev_cost": "2/3",
+    "prof_type": "Normal",
+    "stat_keys": "Ag"
+  },
+  {
+    "category": "Power Manipulation",
+    "name": "Directed Spells: Hurling",
+    "dev_cost": "2/3",
+    "prof_type": "Normal",
+    "stat_keys": "Ag"
+  },
+  {
+    "category": "Power Manipulation",
+    "name": "Directed Spells: Illusions",
+    "dev_cost": "2/3",
+    "prof_type": "Normal",
+    "stat_keys": "Ag"
+  },
+  {
+    "category": "Power Manipulation",
+    "name": "Power Development",
+    "dev_cost": "2/3",
+    "prof_type": "Normal",
+    "stat_keys": "Co"
+  },
+  {
+    "category": "Power Manipulation",
+    "name": "Power Projection",
+    "dev_cost": "2/3",
+    "prof_type": "Normal",
+    "stat_keys": "SD"
+  },
+  {
+    "category": "Science",
+    "name": "Architecture",
+    "dev_cost": "2/4",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Science",
+    "name": "Astronomy",
+    "dev_cost": "2/4",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Science",
+    "name": "Engineering",
+    "dev_cost": "2/4",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Science",
+    "name": "Mathematics",
+    "dev_cost": "2/4",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Social",
+    "name": "Influence: Persuasion",
+    "dev_cost": "3/4",
+    "prof_type": "Normal",
+    "stat_keys": "Pr"
+  },
+  {
+    "category": "Social",
+    "name": "Influence: Intimidation",
+    "dev_cost": "3/4",
+    "prof_type": "Normal",
+    "stat_keys": "Pr"
+  },
+  {
+    "category": "Social",
+    "name": "Influence: Duping",
+    "dev_cost": "3/4",
+    "prof_type": "Normal",
+    "stat_keys": "Pr"
+  },
+  {
+    "category": "Social",
+    "name": "Leadership",
+    "dev_cost": "3/4",
+    "prof_type": "Normal",
+    "stat_keys": "Pr"
+  },
+  {
+    "category": "Social",
+    "name": "Social Awareness",
+    "dev_cost": "3/4",
+    "prof_type": "Normal",
+    "stat_keys": "Em"
+  },
+  {
+    "category": "Social",
+    "name": "Trading",
+    "dev_cost": "3/4",
+    "prof_type": "Normal",
+    "stat_keys": "Pr"
+  },
+  {
+    "category": "Subterfuge",
+    "name": "Ambush: <attack 1>",
+    "dev_cost": "6/8",
+    "prof_type": "Normal",
+    "stat_keys": "In"
+  },
+  {
+    "category": "Subterfuge",
+    "name": "Ambush: <attack 2>",
+    "dev_cost": "6/8",
+    "prof_type": "Normal",
+    "stat_keys": "In"
+  },
+  {
+    "category": "Subterfuge",
+    "name": "Concealment",
+    "dev_cost": "6/8",
+    "prof_type": "Normal",
+    "stat_keys": "In"
+  },
+  {
+    "category": "Subterfuge",
+    "name": "Stalking",
+    "dev_cost": "6/8",
+    "prof_type": "Normal",
+    "stat_keys": "In"
+  },
+  {
+    "category": "Subterfuge",
+    "name": "Trickery",
+    "dev_cost": "6/8",
+    "prof_type": "Normal",
+    "stat_keys": "In"
+  },
+  {
+    "category": "Technical",
+    "name": "Locks",
+    "dev_cost": "5/7",
+    "prof_type": "Normal",
+    "stat_keys": "Ag"
+  },
+  {
+    "category": "Technical",
+    "name": "Mechanics: <op/repair 1>",
+    "dev_cost": "5/7",
+    "prof_type": "Normal",
+    "stat_keys": "Me"
+  },
+  {
+    "category": "Technical",
+    "name": "Mechanics: <op/repair 2>",
+    "dev_cost": "5/7",
+    "prof_type": "Normal",
+    "stat_keys": "Me"
+  },
+  {
+    "category": "Technical",
+    "name": "Traps",
+    "dev_cost": "5/7",
+    "prof_type": "Normal",
+    "stat_keys": "Ag"
+  },
+  {
+    "category": "Vocation",
+    "name": "Administration",
+    "dev_cost": "3/4",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Vocation",
+    "name": "Service",
+    "dev_cost": "3/4",
+    "prof_type": "Normal",
+    "stat_keys": "Pr"
+  },
+  {
+    "category": "Vocation",
+    "name": "Trade: <choose trade>",
+    "dev_cost": "3/4",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Vocation",
+    "name": "Magic Ritual: Alteration",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Me"
+  },
+  {
+    "category": "Vocation",
+    "name": "Magic Ritual: Creation",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Me"
+  },
+  {
+    "category": "Vocation",
+    "name": "Magic Ritual: Defensive",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Me"
+  },
+  {
+    "category": "Vocation",
+    "name": "Magic Ritual: Destruction",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Me"
+  },
+  {
+    "category": "Vocation",
+    "name": "Magic Ritual: Elemental",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Me"
+  },
+  {
+    "category": "Vocation",
+    "name": "Magic Ritual: Healing",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Me"
+  },
+  {
+    "category": "Vocation",
+    "name": "Magic Ritual: Informational",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Me"
+  },
+  {
+    "category": "Vocation",
+    "name": "Magic Ritual: Summoning & Transportation",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Me"
+  },
+  {
+    "category": "Vocation",
+    "name": "LIGHT'S WAY",
+    "dev_cost": "1/2",
+    "prof_type": "Normal",
+    "stat_keys": "Me"
+  },
+  {
+    "category": "Vocation",
+    "name": "FIRE LAW",
+    "dev_cost": "1/2",
+    "prof_type": "Normal",
+    "stat_keys": "Me"
+  }
+]

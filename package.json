@@ -1,0 +1,24 @@
+{
+  "name": "rolemaster-character-sheet",
+  "version": "1.0.0",
+  "description": "Interactive Rolemaster Unified character sheet",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "extract-data": "python scripts/extract_data.py"
+  },
+  "type": "module",
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.2.4",
+    "@vitejs/plugin-react": "^6.0.1",
+    "tailwindcss": "^4.2.4",
+    "vite": "^8.0.9",
+    "vite-plugin-pwa": "^1.2.0"
+  },
+  "dependencies": {
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "react-router-dom": "^7.14.2"
+  }
+}

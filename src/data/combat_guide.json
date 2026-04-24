@@ -1,0 +1,1317 @@
+{
+  "round": {
+    "duration_seconds": 5,
+    "ap_by_status": [
+      {
+        "status": "Held",
+        "ap": 1,
+        "note": null
+      },
+      {
+        "status": "Slowed",
+        "ap": 2,
+        "note": "Adrenal Speed Absolute Failure"
+      },
+      {
+        "status": "Staggered",
+        "ap": 3,
+        "note": null
+      },
+      {
+        "status": "Normal",
+        "ap": 4,
+        "note": null
+      },
+      {
+        "status": "Hasted",
+        "ap": 5,
+        "note": "Speed I; Haste I"
+      },
+      {
+        "status": "Hasted",
+        "ap": 6,
+        "note": "Adrenal Speed; Speed II; Haste II"
+      },
+      {
+        "status": "Hasted",
+        "ap": 7,
+        "note": "Speed III; Haste III"
+      },
+      {
+        "status": "Hasted",
+        "ap": 8,
+        "note": "Speed IV; Haste IV"
+      }
+    ],
+    "notes": [
+      "Standard Move Maneuver (1-4AP, or more)\nGM determined, can be rushed",
+      "Hasted 8APAdrenal Speed Absolute Success\nSpeed IV\nHaste IV",
+      "Concentration requries no AP, but doubles AP cost of all additional actions and halves movement.\n\nDouble concentration requires Mental Focus roll every round, or both concentrations are failed (only 50% creep move possible, requiring MM roll)\n\nInstantaneous (0AP) actions are free, but only one is allowed per turn. Further instant actions cost 1AP (or 2 if concentrating).\n\nMultiple Spells can be cast in a single round, but each additional spell has a cumulative -50 penalty to casting (in addition to any rushing penalties). Physical multi-attacks to not suffer this penalty.",
+      "Actions can flow over into the following round if incomplete in the round they were started.\n\nUpkeep (stun, bleed, stagger, etc.) occurs at the end of the round."
+    ]
+  },
+  "actions": [
+    {
+      "category": "Melee Attack",
+      "entries": [
+        {
+          "action": "Passive Dodge/Shield",
+          "ap": 0,
+          "modifier": null,
+          "note": null
+        },
+        {
+          "action": "Partial Dodge/Shield",
+          "ap": 0,
+          "modifier": null,
+          "note": null
+        },
+        {
+          "action": "Normal Attack",
+          "ap": 4,
+          "modifier": null,
+          "note": null
+        },
+        {
+          "action": "Rushed Attack -25",
+          "ap": 3,
+          "modifier": -25,
+          "note": null
+        },
+        {
+          "action": "Snap Attack -50",
+          "ap": 2,
+          "modifier": -50,
+          "note": null
+        },
+        {
+          "action": "Snap Attack -50 while concentrating",
+          "ap": 4,
+          "modifier": -50,
+          "note": null
+        }
+      ]
+    },
+    {
+      "category": "Ranged Attack",
+      "entries": [
+        {
+          "action": "Normal Shot",
+          "ap": 3,
+          "modifier": null,
+          "note": null
+        },
+        {
+          "action": "Rushed Shot -25",
+          "ap": 2,
+          "modifier": -25,
+          "note": null
+        },
+        {
+          "action": "Snap Shot -50",
+          "ap": 1,
+          "modifier": -50,
+          "note": null
+        },
+        {
+          "action": "Draw Ammo + load",
+          "ap": 1,
+          "modifier": null,
+          "note": null
+        },
+        {
+          "action": "String Bow",
+          "ap": 6,
+          "modifier": null,
+          "note": null
+        },
+        {
+          "action": "Load Crossbow",
+          "ap": 6,
+          "modifier": null,
+          "note": null
+        }
+      ]
+    },
+    {
+      "category": "Movement",
+      "entries": [
+        {
+          "action": "Creep",
+          "ap": 0,
+          "modifier": null,
+          "note": null
+        },
+        {
+          "action": "Walk/BMR",
+          "ap": 1,
+          "modifier": null,
+          "note": null
+        },
+        {
+          "action": "Jog",
+          "ap": 2,
+          "modifier": null,
+          "note": null
+        },
+        {
+          "action": "Run",
+          "ap": 3,
+          "modifier": null,
+          "note": null
+        },
+        {
+          "action": "Sprint\nor\nDash",
+          "ap": 4,
+          "modifier": null,
+          "note": null
+        }
+      ]
+    },
+    {
+      "category": "Movement (Free)",
+      "entries": [
+        {
+          "action": "Climb/Swim\nno move",
+          "ap": 0,
+          "modifier": null,
+          "note": null
+        },
+        {
+          "action": "Walk",
+          "ap": 0,
+          "modifier": null,
+          "note": "-25 all other actions"
+        },
+        {
+          "action": "Jog",
+          "ap": 0,
+          "modifier": null,
+          "note": "-50 all other actions"
+        },
+        {
+          "action": "Run",
+          "ap": 0,
+          "modifier": null,
+          "note": "-75 all other actions"
+        },
+        {
+          "action": "Instant Action",
+          "ap": 0,
+          "modifier": null,
+          "note": "free; 1 per turn, then 1AP each"
+        }
+      ]
+    },
+    {
+      "category": "Other movements",
+      "entries": [
+        {
+          "action": "Get item from ground",
+          "ap": 3,
+          "modifier": null,
+          "note": null
+        },
+        {
+          "action": "Drop Prone/\nStand Up",
+          "ap": 2,
+          "modifier": null,
+          "note": null
+        },
+        {
+          "action": "Mount/\nDismount",
+          "ap": 4,
+          "modifier": null,
+          "note": null
+        },
+        {
+          "action": "Standard Move Maneuver",
+          "ap": 0,
+          "modifier": null,
+          "note": "1-4AP (GM), can be rushed"
+        },
+        {
+          "action": "Instant Action",
+          "ap": 0,
+          "modifier": null,
+          "note": "free; 1 per turn, then 1AP each"
+        }
+      ]
+    },
+    {
+      "category": "Actions",
+      "entries": [
+        {
+          "action": "Drop an item",
+          "ap": 0,
+          "modifier": null,
+          "note": null
+        },
+        {
+          "action": "Concentration",
+          "ap": 0,
+          "modifier": null,
+          "note": null
+        },
+        {
+          "action": "Battlefield Perception Check, -50",
+          "ap": 0,
+          "modifier": null,
+          "note": null
+        },
+        {
+          "action": "Shift an item to other hand",
+          "ap": 1,
+          "modifier": null,
+          "note": null
+        },
+        {
+          "action": "Draw weapon/item",
+          "ap": 1,
+          "modifier": null,
+          "note": null
+        },
+        {
+          "action": "Eat/drink Herb/potion",
+          "ap": 2,
+          "modifier": null,
+          "note": null
+        },
+        {
+          "action": "Pick Lock/ Disarm Trap...",
+          "ap": 20,
+          "modifier": null,
+          "note": null
+        },
+        {
+          "action": "Instant Action",
+          "ap": 0,
+          "modifier": null,
+          "note": "free; 1 per turn, then 1AP each"
+        }
+      ]
+    },
+    {
+      "category": "Spells",
+      "entries": [
+        {
+          "action": "Spell Preparation",
+          "ap": 0,
+          "modifier": null,
+          "note": null
+        },
+        {
+          "action": "Cast Instant Spell",
+          "ap": 0,
+          "modifier": null,
+          "note": null
+        },
+        {
+          "action": "Cast Spell",
+          "ap": 4,
+          "modifier": null,
+          "note": null
+        },
+        {
+          "action": "Rushed Spell -25",
+          "ap": 3,
+          "modifier": -25,
+          "note": null
+        },
+        {
+          "action": "Snap Spell -50",
+          "ap": 2,
+          "modifier": -50,
+          "note": null
+        },
+        {
+          "action": "Instant Action",
+          "ap": 0,
+          "modifier": null,
+          "note": "free; 1 per turn, then 1AP each"
+        }
+      ]
+    }
+  ],
+  "crit_size_adjustments": {
+    "note": "Attacker crit adjustment based on size. Use attacker_crit_adjustment - defender_crit_adjustment to get net offset into the matrix.",
+    "size_table": [
+      {
+        "size": "Miniscule",
+        "attack_size": 1,
+        "hits_multiplier": 0.25,
+        "attacker_crit_adjustment": -4,
+        "defender_crit_adjustment": 4
+      },
+      {
+        "size": "Diminutive",
+        "attack_size": 2,
+        "hits_multiplier": 0.5,
+        "attacker_crit_adjustment": -3,
+        "defender_crit_adjustment": 3
+      },
+      {
+        "size": "Tiny",
+        "attack_size": 3,
+        "hits_multiplier": 0.667,
+        "attacker_crit_adjustment": -2,
+        "defender_crit_adjustment": 2
+      },
+      {
+        "size": "Small",
+        "attack_size": 4,
+        "hits_multiplier": 0.75,
+        "attacker_crit_adjustment": -1,
+        "defender_crit_adjustment": 1
+      },
+      {
+        "size": "Medium",
+        "attack_size": 5,
+        "hits_multiplier": 1,
+        "attacker_crit_adjustment": 0,
+        "defender_crit_adjustment": 0
+      },
+      {
+        "size": "Big",
+        "attack_size": 6,
+        "hits_multiplier": 1.5,
+        "attacker_crit_adjustment": 1,
+        "defender_crit_adjustment": -1
+      },
+      {
+        "size": "Large",
+        "attack_size": 7,
+        "hits_multiplier": 2,
+        "attacker_crit_adjustment": 2,
+        "defender_crit_adjustment": -2
+      },
+      {
+        "size": "Huge",
+        "attack_size": 8,
+        "hits_multiplier": 3,
+        "attacker_crit_adjustment": 3,
+        "defender_crit_adjustment": -3
+      },
+      {
+        "size": "Gigantic",
+        "attack_size": 9,
+        "hits_multiplier": 4,
+        "attacker_crit_adjustment": 4,
+        "defender_crit_adjustment": -4
+      },
+      {
+        "size": "Enormous",
+        "attack_size": 10,
+        "hits_multiplier": 5,
+        "attacker_crit_adjustment": 5,
+        "defender_crit_adjustment": -5
+      }
+    ],
+    "crit_result_matrix": [
+      {
+        "original_crit": "Z",
+        "adjustments": {
+          "0": "Z",
+          "1": "A",
+          "2": "B",
+          "3": "C",
+          "4": "D",
+          "5": "E",
+          "6": "F",
+          "7": "G",
+          "8": "H",
+          "-9": "Z",
+          "-8": "Z",
+          "-7": "Z",
+          "-6": "Z",
+          "-5": "Z",
+          "-4": "Z",
+          "-3": "Z",
+          "-2": "Z",
+          "-1": "Z"
+        }
+      },
+      {
+        "original_crit": "A",
+        "adjustments": {
+          "0": "A",
+          "1": "B",
+          "2": "C",
+          "3": "D",
+          "4": "E",
+          "5": "F",
+          "6": "G",
+          "7": "H",
+          "8": "I",
+          "-9": "Z",
+          "-8": "Z",
+          "-7": "Z",
+          "-6": "Z",
+          "-5": "Z",
+          "-4": "Z",
+          "-3": "Z",
+          "-2": "Z",
+          "-1": "Z"
+        }
+      },
+      {
+        "original_crit": "B",
+        "adjustments": {
+          "0": "B",
+          "1": "C",
+          "2": "D",
+          "3": "E",
+          "4": "F",
+          "5": "G",
+          "6": "H",
+          "7": "I",
+          "8": "J",
+          "-9": "Z",
+          "-8": "Z",
+          "-7": "Z",
+          "-6": "Z",
+          "-5": "Z",
+          "-4": "Z",
+          "-3": "Z",
+          "-2": "Z",
+          "-1": "A"
+        }
+      },
+      {
+        "original_crit": "C",
+        "adjustments": {
+          "0": "C",
+          "1": "D",
+          "2": "E",
+          "3": "F",
+          "4": "G",
+          "5": "H",
+          "6": "I",
+          "7": "J",
+          "8": "J",
+          "-9": "Z",
+          "-8": "Z",
+          "-7": "Z",
+          "-6": "Z",
+          "-5": "Z",
+          "-4": "Z",
+          "-3": "Z",
+          "-2": "A",
+          "-1": "B"
+        }
+      },
+      {
+        "original_crit": "D",
+        "adjustments": {
+          "0": "D",
+          "1": "E",
+          "2": "F",
+          "3": "G",
+          "4": "H",
+          "5": "I",
+          "6": "J",
+          "7": "J",
+          "8": "J",
+          "-9": "Z",
+          "-8": "Z",
+          "-7": "Z",
+          "-6": "Z",
+          "-5": "Z",
+          "-4": "Z",
+          "-3": "A",
+          "-2": "B",
+          "-1": "C"
+        }
+      },
+      {
+        "original_crit": "E",
+        "adjustments": {
+          "0": "E",
+          "1": "F",
+          "2": "G",
+          "3": "H",
+          "4": "I",
+          "5": "J",
+          "6": "J",
+          "7": "J",
+          "8": "J",
+          "-9": "Z",
+          "-8": "Z",
+          "-7": "Z",
+          "-6": "Z",
+          "-5": "Z",
+          "-4": "A",
+          "-3": "B",
+          "-2": "C",
+          "-1": "D"
+        }
+      },
+      {
+        "original_crit": "F",
+        "adjustments": {
+          "0": "F",
+          "1": "G",
+          "2": "H",
+          "3": "I",
+          "4": "J",
+          "5": "J",
+          "6": "J",
+          "7": "J",
+          "8": "J",
+          "-9": "Z",
+          "-8": "Z",
+          "-7": "Z",
+          "-6": "Z",
+          "-5": "A",
+          "-4": "B",
+          "-3": "C",
+          "-2": "D",
+          "-1": "E"
+        }
+      },
+      {
+        "original_crit": "G",
+        "adjustments": {
+          "0": "G",
+          "1": "H",
+          "2": "I",
+          "3": "J",
+          "4": "J",
+          "5": "J",
+          "6": "J",
+          "7": "J",
+          "8": "J",
+          "-9": "Z",
+          "-8": "Z",
+          "-7": "Z",
+          "-6": "A",
+          "-5": "B",
+          "-4": "C",
+          "-3": "D",
+          "-2": "E",
+          "-1": "F"
+        }
+      },
+      {
+        "original_crit": "H",
+        "adjustments": {
+          "0": "H",
+          "1": "I",
+          "2": "J",
+          "3": "J",
+          "4": "J",
+          "5": "J",
+          "6": "J",
+          "7": "J",
+          "8": "J",
+          "-9": "Z",
+          "-8": "Z",
+          "-7": "A",
+          "-6": "B",
+          "-5": "C",
+          "-4": "D",
+          "-3": "E",
+          "-2": "F",
+          "-1": "G"
+        }
+      },
+      {
+        "original_crit": "I",
+        "adjustments": {
+          "0": "I",
+          "1": "J",
+          "2": "J",
+          "3": "J",
+          "4": "J",
+          "5": "J",
+          "6": "J",
+          "7": "J",
+          "8": "J",
+          "-9": "Z",
+          "-8": "A",
+          "-7": "B",
+          "-6": "C",
+          "-5": "D",
+          "-4": "E",
+          "-3": "F",
+          "-2": "G",
+          "-1": "H"
+        }
+      },
+      {
+        "original_crit": "J",
+        "adjustments": {
+          "0": "J",
+          "1": "J",
+          "2": "J",
+          "3": "J",
+          "4": "J",
+          "5": "J",
+          "6": "J",
+          "7": "J",
+          "8": "J",
+          "-9": "A",
+          "-8": "B",
+          "-7": "C",
+          "-6": "D",
+          "-5": "E",
+          "-4": "F",
+          "-3": "G",
+          "-2": "H",
+          "-1": "I"
+        }
+      }
+    ]
+  },
+  "vision_penalties": [
+    {
+      "condition": "Bright Light",
+      "normal_vision_required": 0,
+      "normal_vision_helpful": 0,
+      "nightvision_required": 0,
+      "nightvision_helpful": 0,
+      "darkvision_required": 0,
+      "darkvision_helpful": 0
+    },
+    {
+      "condition": "Uneven Light",
+      "normal_vision_required": -10,
+      "normal_vision_helpful": -5,
+      "nightvision_required": 0,
+      "nightvision_helpful": 0,
+      "darkvision_required": 0,
+      "darkvision_helpful": 0
+    },
+    {
+      "condition": "Dim Light",
+      "normal_vision_required": -20,
+      "normal_vision_helpful": -10,
+      "nightvision_required": 0,
+      "nightvision_helpful": 0,
+      "darkvision_required": 0,
+      "darkvision_helpful": 0
+    },
+    {
+      "condition": "Heavy Shadows",
+      "normal_vision_required": -30,
+      "normal_vision_helpful": -15,
+      "nightvision_required": 0,
+      "nightvision_helpful": 0,
+      "darkvision_required": 0,
+      "darkvision_helpful": 0
+    },
+    {
+      "condition": "Dark",
+      "normal_vision_required": -50,
+      "normal_vision_helpful": -25,
+      "nightvision_required": -10,
+      "nightvision_helpful": -5,
+      "darkvision_required": 0,
+      "darkvision_helpful": 0
+    },
+    {
+      "condition": "Extremely Dark",
+      "normal_vision_required": -70,
+      "normal_vision_helpful": -35,
+      "nightvision_required": -30,
+      "nightvision_helpful": -15,
+      "darkvision_required": 0,
+      "darkvision_helpful": 0
+    },
+    {
+      "condition": "Pitch Black",
+      "normal_vision_required": -100,
+      "normal_vision_helpful": -50,
+      "nightvision_required": -100,
+      "nightvision_helpful": -50,
+      "darkvision_required": 0,
+      "darkvision_helpful": 0
+    }
+  ],
+  "slaying_bonuses": [
+    {
+      "tier": "None",
+      "bonus": 0
+    },
+    {
+      "tier": "I",
+      "bonus": 5
+    },
+    {
+      "tier": "II",
+      "bonus": 10
+    },
+    {
+      "tier": "III",
+      "bonus": 15
+    },
+    {
+      "tier": "IV",
+      "bonus": 20
+    },
+    {
+      "tier": "V",
+      "bonus": 25
+    }
+  ],
+  "weapon_multi_attack_penalties": [
+    {
+      "group": "Melee",
+      "skill": "Blade",
+      "multi_attack_penalty": -30
+    },
+    {
+      "group": "Ranged",
+      "skill": "Bow",
+      "multi_attack_penalty": -35
+    },
+    {
+      "group": "Shield",
+      "skill": "Shield",
+      "multi_attack_penalty": -35
+    },
+    {
+      "group": "Unarmed",
+      "skill": "Strikes",
+      "multi_attack_penalty": -35
+    },
+    {
+      "group": "Melee",
+      "skill": "Chain",
+      "multi_attack_penalty": -30
+    },
+    {
+      "group": "Ranged",
+      "skill": "Crossbow",
+      "multi_attack_penalty": -30
+    },
+    {
+      "group": "Unarmed",
+      "skill": "Sweeps & Throws",
+      "multi_attack_penalty": -30
+    },
+    {
+      "group": "Melee",
+      "skill": "Hafted",
+      "multi_attack_penalty": -35
+    },
+    {
+      "group": "Ranged",
+      "skill": "Sling",
+      "multi_attack_penalty": -30
+    },
+    {
+      "group": "Unarmed",
+      "skill": "Grappling/Wrestling",
+      "multi_attack_penalty": -35
+    },
+    {
+      "group": "Melee",
+      "skill": "Greater Blade",
+      "multi_attack_penalty": -35
+    },
+    {
+      "group": "Ranged",
+      "skill": "Thrown",
+      "multi_attack_penalty": -30
+    },
+    {
+      "group": "Unarmed",
+      "skill": "Beak",
+      "multi_attack_penalty": -35
+    },
+    {
+      "group": "Melee",
+      "skill": "Greater Chain",
+      "multi_attack_penalty": -30
+    },
+    {
+      "group": "Ranged",
+      "skill": "Blowpipe",
+      "multi_attack_penalty": -35
+    },
+    {
+      "group": "Unarmed",
+      "skill": "Bite",
+      "multi_attack_penalty": -35
+    },
+    {
+      "group": "Melee",
+      "skill": "Greater Hafted",
+      "multi_attack_penalty": -30
+    },
+    {
+      "group": "Ranged",
+      "skill": "Exotic Ranged 1 (specified)",
+      "multi_attack_penalty": -30
+    },
+    {
+      "group": "Unarmed",
+      "skill": "Claw",
+      "multi_attack_penalty": -35
+    },
+    {
+      "group": "Melee",
+      "skill": "Pole Arm",
+      "multi_attack_penalty": -35
+    },
+    {
+      "group": "Ranged",
+      "skill": "Exotic Ranged 2 (specified)",
+      "multi_attack_penalty": -30
+    },
+    {
+      "group": "Unarmed",
+      "skill": "Horn",
+      "multi_attack_penalty": -35
+    },
+    {
+      "group": "Melee",
+      "skill": "Katana (example)",
+      "multi_attack_penalty": -30
+    },
+    {
+      "group": "Ranged",
+      "skill": "Exotic Ranged 3 (specified)",
+      "multi_attack_penalty": -30
+    },
+    {
+      "group": "Unarmed",
+      "skill": "Ram",
+      "multi_attack_penalty": -35
+    },
+    {
+      "group": "Melee",
+      "skill": "Exotic Melee 2 (specified)",
+      "multi_attack_penalty": -30
+    },
+    {
+      "group": "Unarmed",
+      "skill": "Stinger",
+      "multi_attack_penalty": -35
+    },
+    {
+      "group": "Melee",
+      "skill": "Exotic Melee 3 (specified)",
+      "multi_attack_penalty": -30
+    },
+    {
+      "group": "Unarmed",
+      "skill": "Trample",
+      "multi_attack_penalty": -35
+    }
+  ],
+  "mount_stats": [
+    {
+      "name": "Donkey",
+      "weight": 620,
+      "bmr": 20,
+      "at": 1,
+      "hits": 51,
+      "endurance": 36,
+      "load_bonus": 0.2,
+      "ob": 8,
+      "db": 7,
+      "crit_type": "Big"
+    },
+    {
+      "name": "Pony",
+      "weight": 900,
+      "bmr": 25,
+      "at": 1,
+      "hits": 58,
+      "endurance": 43,
+      "load_bonus": 0.2,
+      "ob": 23,
+      "db": 15,
+      "crit_type": "Big"
+    },
+    {
+      "name": "Quarter Horse, Light Horse",
+      "weight": 1200,
+      "bmr": 32,
+      "at": 1,
+      "hits": 43,
+      "endurance": 23,
+      "load_bonus": 0.2,
+      "ob": 20,
+      "db": 10,
+      "crit_type": "Large"
+    },
+    {
+      "name": "Mixed Breed, Medium Horse",
+      "weight": 1400,
+      "bmr": 31,
+      "at": 1,
+      "hits": 45,
+      "endurance": 26,
+      "load_bonus": 0.2,
+      "ob": 23,
+      "db": 10,
+      "crit_type": "Large"
+    },
+    {
+      "name": "Plow Horse, Heavy Horse",
+      "weight": 1850,
+      "bmr": 29,
+      "at": 1,
+      "hits": 48,
+      "endurance": 33,
+      "load_bonus": 0.2,
+      "ob": 25,
+      "db": 10,
+      "crit_type": "Large"
+    },
+    {
+      "name": "Thoroughbread Horse",
+      "weight": 1000,
+      "bmr": 34,
+      "at": 1,
+      "hits": 43,
+      "endurance": 18,
+      "load_bonus": 0.2,
+      "ob": 21,
+      "db": 10,
+      "crit_type": "Big"
+    },
+    {
+      "name": "Lesser Warhorse",
+      "weight": 1700,
+      "bmr": 28,
+      "at": 1,
+      "hits": 83,
+      "endurance": 68,
+      "load_bonus": 0.3,
+      "ob": 58,
+      "db": 14,
+      "crit_type": "Large"
+    },
+    {
+      "name": "Greater Warhorse",
+      "weight": 2000,
+      "bmr": 29,
+      "at": 1,
+      "hits": 96,
+      "endurance": 81,
+      "load_bonus": 0.3,
+      "ob": 70,
+      "db": 19,
+      "crit_type": "Large"
+    },
+    {
+      "name": "Wild Horse",
+      "weight": 1200,
+      "bmr": 27,
+      "at": 1,
+      "hits": 53,
+      "endurance": 38,
+      "load_bonus": 0,
+      "ob": 28,
+      "db": 15,
+      "crit_type": "Large"
+    },
+    {
+      "name": "Elephant",
+      "weight": 6000,
+      "bmr": 38,
+      "at": 3,
+      "hits": 120,
+      "endurance": 80,
+      "load_bonus": 0.3,
+      "ob": 86,
+      "db": 12,
+      "crit_type": "Huge"
+    },
+    {
+      "name": "Camel",
+      "weight": 1700,
+      "bmr": 31,
+      "at": 1,
+      "hits": 65,
+      "endurance": 60,
+      "load_bonus": 0.3,
+      "ob": 25,
+      "db": 11,
+      "crit_type": "Large"
+    },
+    {
+      "name": "Su'guen",
+      "weight": 5000,
+      "bmr": 18,
+      "at": 7,
+      "hits": 110,
+      "endurance": 100,
+      "load_bonus": 0.3,
+      "ob": 5,
+      "db": 0,
+      "crit_type": "Huge"
+    },
+    {
+      "name": "Shield Cat",
+      "weight": 1800,
+      "bmr": 33,
+      "at": 1,
+      "hits": 108,
+      "endurance": 54,
+      "load_bonus": 0.1,
+      "ob": 55,
+      "db": 35,
+      "crit_type": "Large"
+    }
+  ],
+  "endurance_results": [
+    {
+      "tier": "0 or less, Absolute Failure",
+      "result": "< 1 Absolute Failure\nYou feel a weakness wash over you. When is it going to be time\nfor bed? Increase your current fatigue penalty by 20 and suffer\n10 hits."
+    },
+    {
+      "tier": "1-75, Failure",
+      "result": "1 - 75 Failure\nWhy is everyone moving so fast? What's the rush, you just need\na short nap. Just a few minutes…. please? Increase your fatigue\npenalty by 10."
+    },
+    {
+      "tier": "UM66 Unusual Event",
+      "result": "UM 66 Unusual Event\nWhile fighting off exhaustion you have a brief hallucination\nthat gives you insight into a problem you have been having.\nYou may, in the next 24 hours, reroll a previously failed Lore,\nScience, or Delving roll in order to achive your goal."
+    },
+    {
+      "tier": "67-100 Partial Success",
+      "result": "76 - 100 Partial Success\nIt's hard work, and every bit saps your just strength. But surely\nyou are strong enough to push on ahead. Increase fatigue penalty\nby 5."
+    },
+    {
+      "tier": "101-175 Success",
+      "result": "101 - 175 Success\nBetween the excitement and your fortitude, you shrug off the\nexhaustion and are ready for whatever is coming next. You accumulate\nno additional fatigue."
+    },
+    {
+      "tier": "176+ Unusual Success",
+      "result": "176 + Absolute Success\nIt's time for a marathon. You take solace in your task and feel\nmore energized than ever to tackle what lies before you. Reduce\nany current fatigue penalty by 10, and gain a +5 to whatever\naction you are about to perform."
+    }
+  ],
+  "recovery": [
+    {
+      "roll_range": "0",
+      "bone": 10,
+      "cuts_and_burns": 12,
+      "muscle_tendon": 15,
+      "organ": 20,
+      "poison_disease": 25,
+      "skin_tissue": 5
+    },
+    {
+      "roll_range": "1-50",
+      "bone": 8,
+      "cuts_and_burns": 10,
+      "muscle_tendon": 12,
+      "organ": 16,
+      "poison_disease": 20,
+      "skin_tissue": 4
+    },
+    {
+      "roll_range": "51-75",
+      "bone": 6,
+      "cuts_and_burns": 8,
+      "muscle_tendon": 9,
+      "organ": 12,
+      "poison_disease": 15,
+      "skin_tissue": 3
+    },
+    {
+      "roll_range": "76-100",
+      "bone": 4,
+      "cuts_and_burns": 6,
+      "muscle_tendon": 7,
+      "organ": 8,
+      "poison_disease": 10,
+      "skin_tissue": 2
+    },
+    {
+      "roll_range": "101-125",
+      "bone": 3,
+      "cuts_and_burns": 4,
+      "muscle_tendon": 5,
+      "organ": 6,
+      "poison_disease": 8,
+      "skin_tissue": 2
+    },
+    {
+      "roll_range": "126-175",
+      "bone": 2,
+      "cuts_and_burns": 2,
+      "muscle_tendon": 3,
+      "organ": 4,
+      "poison_disease": 5,
+      "skin_tissue": 1
+    },
+    {
+      "roll_range": "176+",
+      "bone": 1,
+      "cuts_and_burns": 1,
+      "muscle_tendon": 1,
+      "organ": 2,
+      "poison_disease": 3,
+      "skin_tissue": 1
+    }
+  ],
+  "situational_modifiers": [
+    {
+      "situation": "Higher ground",
+      "bonus": 10,
+      "applies_to": "OB",
+      "notes": "Melee only. Mounted attacker vs. foot opponent also qualifies."
+    },
+    {
+      "situation": "Two-handed weapon",
+      "bonus": 10,
+      "applies_to": "OB",
+      "notes": "Melee only."
+    },
+    {
+      "situation": "Stunned foe",
+      "bonus": 20,
+      "applies_to": "OB",
+      "notes": ""
+    },
+    {
+      "situation": "Surprised foe",
+      "bonus": 25,
+      "applies_to": "OB",
+      "notes": "Foe is aware of attacker but not expecting combat; loses first 2 AP."
+    },
+    {
+      "situation": "Flatfooted foe (melee)",
+      "bonus": 60,
+      "applies_to": "OB",
+      "notes": "+25 surprise +35 auto rear attack. Foe cannot use shield; no Quickness DB."
+    },
+    {
+      "situation": "Flatfooted foe (ranged)",
+      "bonus": 25,
+      "applies_to": "OB",
+      "notes": "Ranged attacks do not get the rear attack bonus, only the surprise bonus."
+    },
+    {
+      "situation": "Flank attack (melee)",
+      "bonus": 15,
+      "applies_to": "OB",
+      "notes": "Defender cannot use shield against this attack."
+    },
+    {
+      "situation": "Rear attack (melee)",
+      "bonus": 35,
+      "applies_to": "OB",
+      "notes": "Defender cannot use shield against this attack."
+    },
+    {
+      "situation": "Prone target (melee)",
+      "bonus": 30,
+      "applies_to": "OB",
+      "notes": ""
+    },
+    {
+      "situation": "Prone target (ranged)",
+      "bonus": -30,
+      "applies_to": "OB",
+      "notes": "Smaller profile; harder to hit."
+    },
+    {
+      "situation": "Attacker is prone",
+      "bonus": -50,
+      "applies_to": "OB",
+      "notes": "Melee only."
+    },
+    {
+      "situation": "Attacking to own flank",
+      "bonus": -30,
+      "applies_to": "OB",
+      "notes": ""
+    },
+    {
+      "situation": "Attacking to own rear",
+      "bonus": -70,
+      "applies_to": "OB",
+      "notes": ""
+    },
+    {
+      "situation": "Off-hand weapon attack",
+      "bonus": -20,
+      "applies_to": "OB",
+      "notes": "Eliminated by Ambidextrous talent."
+    },
+    {
+      "situation": "Attacker in melee (ranged)",
+      "bonus": -20,
+      "applies_to": "OB",
+      "notes": "Ranged only. Penalty when attacker is engaged in melee."
+    },
+    {
+      "situation": "Restricted Quarters: Close",
+      "bonus": -25,
+      "applies_to": "OB",
+      "notes": ""
+    },
+    {
+      "situation": "Restricted Quarters: Cramped",
+      "bonus": -50,
+      "applies_to": "OB",
+      "notes": ""
+    },
+    {
+      "situation": "Restricted Quarters: Tight",
+      "bonus": -75,
+      "applies_to": "OB",
+      "notes": ""
+    },
+    {
+      "situation": "Restricted Quarters: Confined",
+      "bonus": -100,
+      "applies_to": "OB",
+      "notes": ""
+    },
+    {
+      "situation": "Called shot",
+      "bonus": -25,
+      "applies_to": "OB",
+      "notes": "Targeting a specific body location. GM may adjust from -10 to -50."
+    },
+    {
+      "situation": "Each AP below maximum (per AP short)",
+      "bonus": -25,
+      "applies_to": "OB",
+      "notes": "-25 per Action Point less than maximum used for the attack."
+    },
+    {
+      "situation": "Wrong-sized weapon",
+      "bonus": -20,
+      "applies_to": "OB",
+      "notes": "Using a weapon designed for a different size creature."
+    },
+    {
+      "situation": "Mounted: attacking at Sprint pace",
+      "bonus": -100,
+      "applies_to": "OB",
+      "notes": "Pace penalty. Reducible with Mounted Combat skill."
+    },
+    {
+      "situation": "Mounted: attacking at Dash pace",
+      "bonus": -125,
+      "applies_to": "OB",
+      "notes": "Pace penalty. Reducible with Mounted Combat skill."
+    },
+    {
+      "situation": "Target is flying",
+      "bonus": 10,
+      "applies_to": "DB",
+      "notes": "Flying combatant gains +10 DB even in melee."
+    },
+    {
+      "situation": "Firing into melee (cover from combatants)",
+      "bonus": 40,
+      "applies_to": "DB",
+      "notes": "Ranged only. Target gains DB from other combatants as cover."
+    },
+    {
+      "situation": "Defender smaller than attacker (per size category)",
+      "bonus": 5,
+      "applies_to": "DB",
+      "notes": "+5 DB per size category the defender is smaller than the attacker."
+    }
+  ]
+}

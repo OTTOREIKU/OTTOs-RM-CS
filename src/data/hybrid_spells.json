@@ -1,0 +1,3710 @@
+{
+  "BLOOD WAYS": {
+    "realm": "Hybrid",
+    "section": "Healer Base",
+    "spells": [
+      {
+        "level": 1,
+        "name": "Clotting II *",
+        "aoe": "caster",
+        "duration": "--",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 2,
+        "name": "Cut Repair I *",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 3,
+        "name": "Light Flesh Healing",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 4,
+        "name": "Clotting V *",
+        "aoe": "caster",
+        "duration": "--",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 5,
+        "name": "Cut Repair III *",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 6,
+        "name": "Medium Flesh Healing",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 7,
+        "name": "Joining ‡ *",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 8,
+        "name": "Clotting True *",
+        "aoe": "caster",
+        "duration": "--",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 9,
+        "name": "Severe Flesh Healing",
+        "aoe": "caster",
+        "duration": "--",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 10,
+        "name": "Cut Repair True *",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 11,
+        "name": "Blood Vigor",
+        "aoe": "caster",
+        "duration": "1 min/lvl",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 12,
+        "name": "Mass Clotting *",
+        "aoe": "caster",
+        "duration": "--",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 13,
+        "name": "Mass Medium Flesh Healing",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 14,
+        "name": "Mass Cut Repair *",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 15,
+        "name": "Joining True ‡ *",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 16,
+        "name": "Light Flesh Healing True",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 17,
+        "name": "Mass Severe Flesh Healing",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 18,
+        "name": "Medium Flesh Healing True",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 19,
+        "name": "Rejuvenation",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 20,
+        "name": "Regulations *",
+        "aoe": "caster",
+        "duration": "varies",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 25,
+        "name": "Severe Flesh Healing True",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 30,
+        "name": "Regrow Limb ‡ *",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 35,
+        "name": "Mass Flesh Healing True",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 40,
+        "name": "Rejuvenation True",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 50,
+        "name": "Blood Repairs True",
+        "aoe": "caster",
+        "duration": "1 rnd/lvl",
+        "range": "self",
+        "type": "Us"
+      }
+    ]
+  },
+  "BONE WAYS": {
+    "realm": "Hybrid",
+    "section": "Healer Base",
+    "spells": [
+      {
+        "level": 1,
+        "name": "Light Cartilage Healing",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 2,
+        "name": "Light Osseous Healing",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 3,
+        "name": "Medium Cartilage Healing",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 4,
+        "name": "Light Skull Healing",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 5,
+        "name": "Medium Osseous Healing",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 6,
+        "name": "Severe Cartilage Healing",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 7,
+        "name": "Joining ‡ *",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 8,
+        "name": "Medium Skull Healing",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 9,
+        "name": "Severe Osseous Healing",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 10,
+        "name": "Medium Cartilage Healing True",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 11,
+        "name": "Severe Skull Healing",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 12,
+        "name": "Medium Osseous Healing True",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 13,
+        "name": "Light Skull Healing True",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 14,
+        "name": "Bone Regeneration",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 15,
+        "name": "Joining True ‡ *",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 16,
+        "name": "Medium Skull Healing True",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 17,
+        "name": "Severe Cartilage Healing True",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 18,
+        "name": "Skull Regeneration",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 19,
+        "name": "Severe Osseous Healing True",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 20,
+        "name": "Severe Skull Healing True",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 25,
+        "name": "Mass Skeletal Relief",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 30,
+        "name": "Regrow Limb ‡ *",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 35,
+        "name": "Bone Regeneration True",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 40,
+        "name": "Mass Skeletal Healing True",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 50,
+        "name": "Skeletal Regeneration True",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      }
+    ]
+  },
+  "CLEANSING": {
+    "realm": "Hybrid",
+    "section": "Healer Base",
+    "spells": [
+      {
+        "level": 1,
+        "name": "Diagnostics",
+        "aoe": "1 target",
+        "duration": "--",
+        "range": "touch",
+        "type": "Im"
+      },
+      {
+        "level": 2,
+        "name": "Transference",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "touch",
+        "type": "U"
+      },
+      {
+        "level": 3,
+        "name": "Psychotranference",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "touch",
+        "type": "U"
+      },
+      {
+        "level": 4,
+        "name": "Detoxification",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 5,
+        "name": "Long Diagnostics",
+        "aoe": "1 target",
+        "duration": "--",
+        "range": "2'/lvl",
+        "type": "Im"
+      },
+      {
+        "level": 6,
+        "name": "Lose Addiction I",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 7,
+        "name": "Transfer Curse",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "touch",
+        "type": "U"
+      },
+      {
+        "level": 8,
+        "name": "Instant Transference*",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "touch",
+        "type": "U"
+      },
+      {
+        "level": 9,
+        "name": "Curse Cure",
+        "aoe": "1 curse",
+        "duration": "P",
+        "range": "self",
+        "type": "Fs"
+      },
+      {
+        "level": 10,
+        "name": "Mind Disease Cures",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 11,
+        "name": "Long Transference",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "2'/lvl",
+        "type": "U"
+      },
+      {
+        "level": 12,
+        "name": "Alter Transference *",
+        "aoe": "1 transference",
+        "duration": "P",
+        "range": "self",
+        "type": "U"
+      },
+      {
+        "level": 13,
+        "name": "Suspend Life",
+        "aoe": "caster",
+        "duration": "1 hr/lvl",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 14,
+        "name": "Mass Diagnostics",
+        "aoe": "1 target/lvl",
+        "duration": "--",
+        "range": "2'/lvl",
+        "type": "Im"
+      },
+      {
+        "level": 15,
+        "name": "Transference True",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "2'/lvl",
+        "type": "U"
+      },
+      {
+        "level": 16,
+        "name": "Lose Addiction II",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 17,
+        "name": "Complete Detoxification",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 18,
+        "name": "Mind Disease Cures True",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 19,
+        "name": "Suspend Life True",
+        "aoe": "caster",
+        "duration": "1 day/lvl",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 20,
+        "name": "Curse Cure True",
+        "aoe": "1 curse",
+        "duration": "P",
+        "range": "self",
+        "type": "Fs"
+      },
+      {
+        "level": 25,
+        "name": "Lose Addiction True",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 30,
+        "name": "Mass Transference *",
+        "aoe": "1 condition/lvl",
+        "duration": "P",
+        "range": "2'/lvl",
+        "type": "U"
+      },
+      {
+        "level": 35,
+        "name": "Transfer Possession",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "touch",
+        "type": "F"
+      },
+      {
+        "level": 40,
+        "name": "Expel Intruder",
+        "aoe": "1 possessor",
+        "duration": "P",
+        "range": "self",
+        "type": "F"
+      },
+      {
+        "level": 50,
+        "name": "Transference Mastery",
+        "aoe": "caster",
+        "duration": "1 rnd/lvl",
+        "range": "self",
+        "type": "U"
+      }
+    ]
+  },
+  "MUSCLE WAYS": {
+    "realm": "Hybrid",
+    "section": "Healer Base",
+    "spells": [
+      {
+        "level": 1,
+        "name": "Severe Tendon Relief",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 2,
+        "name": "Severe Muscular Relief",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 3,
+        "name": "Light Tendon Healing",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 4,
+        "name": "Light Muscular Healing",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 5,
+        "name": "Medium Tendon Healing",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 6,
+        "name": "Medium Muscular Healing",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 7,
+        "name": "Joining ‡ *",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 8,
+        "name": "Severe Tendon Healing",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 9,
+        "name": "Severe Muscular Healing",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 10,
+        "name": "Light Tendon Healing True",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 11,
+        "name": "Light Muscular Healing True",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 12,
+        "name": "Regenerate Tendon",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 13,
+        "name": "Medium Tendon Healing True",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 14,
+        "name": "Medium Muscular Healing True",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 15,
+        "name": "Joining True ‡ *",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 16,
+        "name": "Regenerate Muscle",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 17,
+        "name": "Severe Tendon Healing True",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 18,
+        "name": "Severe Muscular Healing True",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 19,
+        "name": "Mass Tendon Healing",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 20,
+        "name": "Mass Muscular Healing",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 25,
+        "name": "Mass Regenerate Muscle",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 30,
+        "name": "Regrow Limb ‡ *",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 35,
+        "name": "Mass Tendon Healing True",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 40,
+        "name": "Mass Muscular Healing True",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 50,
+        "name": "Mass Repairs True",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      }
+    ]
+  },
+  "ORGAN WAYS": {
+    "realm": "Hybrid",
+    "section": "Healer Base",
+    "spells": [
+      {
+        "level": 1,
+        "name": "Light Organ Relief",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 2,
+        "name": "Medium Organ Relief",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 3,
+        "name": "Severe Organ Relief",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 4,
+        "name": "Restart Heart",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 5,
+        "name": "Sense Restoration",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 6,
+        "name": "Light Organ Healing",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 7,
+        "name": "Joining ‡ *",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 8,
+        "name": "End Coma",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 9,
+        "name": "Medium Organ Healing",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 10,
+        "name": "Sense Restoration True",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 11,
+        "name": "Severe Organ Healing",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 12,
+        "name": "Paralysis Cures",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 13,
+        "name": "Light Organ Healing True",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 14,
+        "name": "Light Nerve Healing",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 15,
+        "name": "Joining True ‡ *",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 16,
+        "name": "Medium Organ Healing True",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 17,
+        "name": "Medium Nerve Healing",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 18,
+        "name": "Severe Organ Healing True",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 19,
+        "name": "Severe Nerve Healing",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 20,
+        "name": "Brain Repair",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 25,
+        "name": "Organ Regeneration",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 30,
+        "name": "Regrow Limb ‡ *",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 35,
+        "name": "Paralysis Cures True",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 40,
+        "name": "Instant Brain Repair",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 50,
+        "name": "Reuniting",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      }
+    ]
+  },
+  "SURFACE WAYS": {
+    "realm": "Hybrid",
+    "section": "Healer Base",
+    "spells": [
+      {
+        "level": 1,
+        "name": "Heal II",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 2,
+        "name": "Fatigue Relief",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 3,
+        "name": "Stun Relief I *",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 4,
+        "name": "Regeneration I *",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 5,
+        "name": "Light Burn/Frostbite Healing",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 6,
+        "name": "Awakening *",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "100'",
+        "type": "Us"
+      },
+      {
+        "level": 7,
+        "name": "Heal V",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 8,
+        "name": "Medium Burn/Frostbite Healing",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 9,
+        "name": "Stun Relief III *",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 10,
+        "name": "Regeneration II *",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 11,
+        "name": "Severe Burn/Frostbite Healing",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 12,
+        "name": "Heal X",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 13,
+        "name": "Stun Relief V *",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 14,
+        "name": "Light Burn/Frostbite Healing True",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 15,
+        "name": "Regeneration III *",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 16,
+        "name": "Medium Burn/Frostbite HealingTrue",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 17,
+        "name": "Heal XV",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 18,
+        "name": "Severe Burn/Frostbite HealingTrue",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 19,
+        "name": "Stun Relief X *",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 20,
+        "name": "Lord Heal",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 25,
+        "name": "Heal True",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 30,
+        "name": "Mass Burn/Frostbite Healing",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 35,
+        "name": "Mass Burn/Frostbite Healing True",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 40,
+        "name": "Stun Relief True *",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      },
+      {
+        "level": 50,
+        "name": "Surface Healing True *",
+        "aoe": "caster",
+        "duration": "P",
+        "range": "self",
+        "type": "Us"
+      }
+    ]
+  },
+  "CONFUSING WAYS": {
+    "realm": "Hybrid",
+    "section": "Mystic Base",
+    "spells": [
+      {
+        "level": 1,
+        "name": "Distraction",
+        "aoe": "1 target",
+        "duration": "C",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 2,
+        "name": "Confusion",
+        "aoe": "1 target",
+        "duration": "1 rnd/5 fail",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 3,
+        "name": "Blur Vision",
+        "aoe": "1 target",
+        "duration": "C",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 4,
+        "name": "Fear",
+        "aoe": "1 target",
+        "duration": "1 min/10 fail",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 5,
+        "name": "Stumble",
+        "aoe": "1 target",
+        "duration": "--",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 6,
+        "name": "Fumble",
+        "aoe": "1 target",
+        "duration": "--",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 7,
+        "name": "Hallucination",
+        "aoe": "1 target",
+        "duration": "C",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 8,
+        "name": "Spin",
+        "aoe": "1 target",
+        "duration": "--",
+        "range": "50'",
+        "type": "Fm"
+      },
+      {
+        "level": 9,
+        "name": "Weapon Alteration",
+        "aoe": "1 target",
+        "duration": "1 rnd/lvl",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 10,
+        "name": "Mirages",
+        "aoe": "1 target",
+        "duration": "C",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 11,
+        "name": "Blinding",
+        "aoe": "1 target",
+        "duration": "1 rnd/10 fail",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 12,
+        "name": "Shifting Sight",
+        "aoe": "1 target",
+        "duration": "1 rnd/10 fail",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 13,
+        "name": "Mass Distraction",
+        "aoe": "1 target/lvl",
+        "duration": "C",
+        "range": "300'",
+        "type": "Fm"
+      },
+      {
+        "level": 14,
+        "name": "Word of Fear *",
+        "aoe": "1 target",
+        "duration": "1 min/5 fail",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 15,
+        "name": "Amnesia",
+        "aoe": "1 target",
+        "duration": "1 day/5 fail",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 16,
+        "name": "Shout of Confusion *",
+        "aoe": "50'R",
+        "duration": "1 rnd/5 fail",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 17,
+        "name": "Long Bewilderment",
+        "aoe": "1 target",
+        "duration": "varies",
+        "range": "300'",
+        "type": "Fm"
+      },
+      {
+        "level": 18,
+        "name": "Shout of Fear *",
+        "aoe": "50'R",
+        "duration": "1 rnd/5 fail",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 19,
+        "name": "Rebellious Weapon",
+        "aoe": "1 target",
+        "duration": "1 rnd/lvl",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 20,
+        "name": "Lord Bewilderment",
+        "aoe": "20 targets",
+        "duration": "varies",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 25,
+        "name": "Amnesia True",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 30,
+        "name": "Parallel Reality",
+        "aoe": "1 target",
+        "duration": "1 day/5 fail",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 35,
+        "name": "Shout of Amnesia *",
+        "aoe": "50'R",
+        "duration": "1 day/5 fail",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 40,
+        "name": "Mass Long Bewilderment",
+        "aoe": "1 target/lvl",
+        "duration": "varies",
+        "range": "300'",
+        "type": "Fm"
+      },
+      {
+        "level": 50,
+        "name": "Bewilderment True",
+        "aoe": "1 target/lvl",
+        "duration": "varies",
+        "range": "300'",
+        "type": "Fm"
+      }
+    ]
+  },
+  "GAS ALTERATION": {
+    "realm": "Hybrid",
+    "section": "Mystic Base",
+    "spells": [
+      {
+        "level": 1,
+        "name": "Condensation",
+        "aoe": "1 cu' water",
+        "duration": "P",
+        "range": "touch",
+        "type": "E"
+      },
+      {
+        "level": 2,
+        "name": "Airwall",
+        "aoe": "10'x10'x3'",
+        "duration": "C",
+        "range": "10'",
+        "type": "E"
+      },
+      {
+        "level": 3,
+        "name": "Thick Fog II",
+        "aoe": "20'R",
+        "duration": "1 min/lvl",
+        "range": "100'",
+        "type": "E"
+      },
+      {
+        "level": 4,
+        "name": "Vacuum A",
+        "aoe": "5'R",
+        "duration": "--",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 5,
+        "name": "Air Stop I",
+        "aoe": "10'R",
+        "duration": "C",
+        "range": "self",
+        "type": "F"
+      },
+      {
+        "level": 6,
+        "name": "Thick Fog X",
+        "aoe": "100'R",
+        "duration": "1 min/lvl",
+        "range": "100'",
+        "type": "E"
+      },
+      {
+        "level": 7,
+        "name": "Airwall True",
+        "aoe": "10'x10'x3'",
+        "duration": "1 min/lvl",
+        "range": "10'",
+        "type": "E"
+      },
+      {
+        "level": 8,
+        "name": "Bolt of Fire I",
+        "aoe": "1 target",
+        "duration": "--",
+        "range": "<25'>",
+        "type": "Ed"
+      },
+      {
+        "level": 9,
+        "name": "Vacuum B",
+        "aoe": "5'R",
+        "duration": "--",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 10,
+        "name": "Air Stop V",
+        "aoe": "50'R",
+        "duration": "C",
+        "range": "self",
+        "type": "F"
+      },
+      {
+        "level": 11,
+        "name": "Thick Fog XXX",
+        "aoe": "300'R",
+        "duration": "1 min/lvl",
+        "range": "100'",
+        "type": "E"
+      },
+      {
+        "level": 12,
+        "name": "Gas/Air",
+        "aoe": "10'R",
+        "duration": "P",
+        "range": "self",
+        "type": "F"
+      },
+      {
+        "level": 13,
+        "name": "Vacuum C",
+        "aoe": "5'R",
+        "duration": "--",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 14,
+        "name": "Oxygenation",
+        "aoe": "50'R",
+        "duration": "C",
+        "range": "100'",
+        "type": "E"
+      },
+      {
+        "level": 15,
+        "name": "Whirling Winds",
+        "aoe": "10'R",
+        "duration": "C",
+        "range": "self",
+        "type": "E"
+      },
+      {
+        "level": 16,
+        "name": "Bolt of Fire III",
+        "aoe": "1 target",
+        "duration": "--",
+        "range": "<75'>",
+        "type": "Ed"
+      },
+      {
+        "level": 17,
+        "name": "Vacuum D",
+        "aoe": "5'R",
+        "duration": "--",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 18,
+        "name": "Greater Vacuum B",
+        "aoe": "10'R",
+        "duration": "--",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 19,
+        "name": "Reverse Winds",
+        "aoe": "100'R/lvl",
+        "duration": "C",
+        "range": "100'/lvl",
+        "type": "E"
+      },
+      {
+        "level": 20,
+        "name": "Thick Fog True",
+        "aoe": "100'R/lvl",
+        "duration": "1 hr/lvl",
+        "range": "100'",
+        "type": "E"
+      },
+      {
+        "level": 25,
+        "name": "Vacuum E",
+        "aoe": "5'R",
+        "duration": "--",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 30,
+        "name": "Cloud Mastery",
+        "aoe": "1,000'R/lvl",
+        "duration": "C",
+        "range": "self",
+        "type": "F"
+      },
+      {
+        "level": 35,
+        "name": "Greater Vacuum E",
+        "aoe": "10'R",
+        "duration": "--",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 40,
+        "name": "Toxic Cloud",
+        "aoe": "1'R/lvl",
+        "duration": "1 min/lvl",
+        "range": "2'/lvl",
+        "type": "F"
+      },
+      {
+        "level": 50,
+        "name": "Gas Transmutation",
+        "aoe": "1,000 cu' gas",
+        "duration": "P",
+        "range": "20'",
+        "type": "F"
+      }
+    ]
+  },
+  "HIDING": {
+    "realm": "Hybrid",
+    "section": "Mystic Base",
+    "spells": [
+      {
+        "level": 1,
+        "name": "Blur *",
+        "aoe": "caster",
+        "duration": "1 min/lvl",
+        "range": "self",
+        "type": "U"
+      },
+      {
+        "level": 2,
+        "name": "Unseen I",
+        "aoe": "1 target",
+        "duration": "24 hrs",
+        "range": "touch",
+        "type": "E"
+      },
+      {
+        "level": 3,
+        "name": "Shadow",
+        "aoe": "caster",
+        "duration": "10 min/lvl",
+        "range": "self",
+        "type": "U"
+      },
+      {
+        "level": 4,
+        "name": "Quiet I",
+        "aoe": "1 target",
+        "duration": "1 min/lvl",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 5,
+        "name": "Resilient Invisibility I",
+        "aoe": "1 target",
+        "duration": "24 hrs",
+        "range": "touch",
+        "type": "E"
+      },
+      {
+        "level": 6,
+        "name": "Resilient Invisibility II",
+        "aoe": "1 target",
+        "duration": "24 hrs",
+        "range": "touch",
+        "type": "E"
+      },
+      {
+        "level": 7,
+        "name": "Screens",
+        "aoe": "1,000 sq'",
+        "duration": "C",
+        "range": "100'",
+        "type": "E"
+      },
+      {
+        "level": 8,
+        "name": "Displacement I",
+        "aoe": "caster",
+        "duration": "1 min/lvl",
+        "range": "self",
+        "type": "E"
+      },
+      {
+        "level": 9,
+        "name": "No Sense",
+        "aoe": "1 target",
+        "duration": "24 hrs",
+        "range": "touch",
+        "type": "E"
+      },
+      {
+        "level": 10,
+        "name": "Shadow Mystic",
+        "aoe": "varies",
+        "duration": "1 min/lvl",
+        "range": "100'",
+        "type": "E"
+      },
+      {
+        "level": 11,
+        "name": "Resilient InvisibilitySphere I",
+        "aoe": "1 target",
+        "duration": "24 hrs",
+        "range": "touch",
+        "type": "E"
+      },
+      {
+        "level": 12,
+        "name": "Displacement II",
+        "aoe": "caster",
+        "duration": "1 min/lvl",
+        "range": "self",
+        "type": "E"
+      },
+      {
+        "level": 13,
+        "name": "Flattening",
+        "aoe": "caster",
+        "duration": "10 min/lvl",
+        "range": "self",
+        "type": "U"
+      },
+      {
+        "level": 14,
+        "name": "Merging",
+        "aoe": "caster",
+        "duration": "10 min/lvl",
+        "range": "self",
+        "type": "U"
+      },
+      {
+        "level": 15,
+        "name": "Greater ResilientInvisibility",
+        "aoe": "1 target",
+        "duration": "24 hrs",
+        "range": "touch",
+        "type": "E"
+      },
+      {
+        "level": 16,
+        "name": "Displacement III",
+        "aoe": "caster",
+        "duration": "1 min/lvl",
+        "range": "self",
+        "type": "E"
+      },
+      {
+        "level": 17,
+        "name": "Passing",
+        "aoe": "caster",
+        "duration": "1 min/lvl",
+        "range": "self",
+        "type": "U"
+      },
+      {
+        "level": 18,
+        "name": "Mystic Manner",
+        "aoe": "caster",
+        "duration": "10 min/lvl",
+        "range": "self",
+        "type": "U"
+      },
+      {
+        "level": 19,
+        "name": "Great Merge",
+        "aoe": "caster",
+        "duration": "10 min/lvl",
+        "range": "self",
+        "type": "U"
+      },
+      {
+        "level": 20,
+        "name": "Displacement IV",
+        "aoe": "caster",
+        "duration": "1 min/lvl",
+        "range": "self",
+        "type": "E"
+      },
+      {
+        "level": 25,
+        "name": "Nondetect",
+        "aoe": "caster",
+        "duration": "1 min/lvl",
+        "range": "self",
+        "type": "E"
+      },
+      {
+        "level": 30,
+        "name": "Displacement V",
+        "aoe": "caster",
+        "duration": "1 min/lvl",
+        "range": "self",
+        "type": "E"
+      },
+      {
+        "level": 35,
+        "name": "Dimensional Closet",
+        "aoe": "caster",
+        "duration": "10 min/lvl",
+        "range": "self",
+        "type": "E"
+      },
+      {
+        "level": 40,
+        "name": "Displacement VI",
+        "aoe": "caster",
+        "duration": "1 min/lvl",
+        "range": "self",
+        "type": "E"
+      },
+      {
+        "level": 50,
+        "name": "Hiding True",
+        "aoe": "caster",
+        "duration": "10 min/lvl",
+        "range": "self",
+        "type": "U"
+      }
+    ]
+  },
+  "LIQUID ALTERATION": {
+    "realm": "Hybrid",
+    "section": "Mystic Base",
+    "spells": [
+      {
+        "level": 1,
+        "name": "Boil/Freeze Liquid",
+        "aoe": "1 cu'/lvl",
+        "duration": "C",
+        "range": "2'",
+        "type": "F"
+      },
+      {
+        "level": 2,
+        "name": "Clear/DesalinateLiquid",
+        "aoe": "1 cu'/lvl",
+        "duration": "P",
+        "range": "2'",
+        "type": "F"
+      },
+      {
+        "level": 3,
+        "name": "Evaporate Liquid",
+        "aoe": "1,000 cu'/lvl",
+        "duration": "P",
+        "range": "2'",
+        "type": "F"
+      },
+      {
+        "level": 4,
+        "name": "Waterwall",
+        "aoe": "10'x10'x1'",
+        "duration": "C",
+        "range": "10'",
+        "type": "E"
+      },
+      {
+        "level": 5,
+        "name": "Bolt of Water I",
+        "aoe": "1 target",
+        "duration": "--",
+        "range": "<25'>",
+        "type": "Ed"
+      },
+      {
+        "level": 6,
+        "name": "Water Corridor I",
+        "aoe": "100'x3'x10'",
+        "duration": "C",
+        "range": "10'",
+        "type": "F"
+      },
+      {
+        "level": 7,
+        "name": "Call Rain",
+        "aoe": "100'R/lvl",
+        "duration": "10 min/lvl",
+        "range": "100'/lvl",
+        "type": "E"
+      },
+      {
+        "level": 8,
+        "name": "Calm Water",
+        "aoe": "100'R",
+        "duration": "C",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 9,
+        "name": "Wave",
+        "aoe": "(1'x10')/lvl",
+        "duration": "--",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 10,
+        "name": "Waterwall True",
+        "aoe": "10'x10'x1'",
+        "duration": "1 min/lvl",
+        "range": "10'",
+        "type": "E"
+      },
+      {
+        "level": 11,
+        "name": "Water Corridor III",
+        "aoe": "300'x4'x50'",
+        "duration": "C",
+        "range": "10'",
+        "type": "F"
+      },
+      {
+        "level": 12,
+        "name": "Liquid/Water",
+        "aoe": "1 cu'/lvl",
+        "duration": "P",
+        "range": "touch",
+        "type": "F"
+      },
+      {
+        "level": 13,
+        "name": "Lesser Whirlpool",
+        "aoe": "20'R (200'R)",
+        "duration": "C",
+        "range": "300'",
+        "type": "F"
+      },
+      {
+        "level": 14,
+        "name": "Water Tunnel",
+        "aoe": "5'Dx100'",
+        "duration": "C",
+        "range": "10'",
+        "type": "F"
+      },
+      {
+        "level": 15,
+        "name": "Calm Water True",
+        "aoe": "100'R/lvl",
+        "duration": "10 min/lvl",
+        "range": "100'/lvl",
+        "type": "F"
+      },
+      {
+        "level": 16,
+        "name": "Command Current",
+        "aoe": "special",
+        "duration": "C",
+        "range": "self",
+        "type": "E"
+      },
+      {
+        "level": 17,
+        "name": "Water Bubble",
+        "aoe": "10'R",
+        "duration": "C",
+        "range": "self",
+        "type": "U"
+      },
+      {
+        "level": 18,
+        "name": "Bolt of Water V",
+        "aoe": "1 target",
+        "duration": "--",
+        "range": "<125'>",
+        "type": "Ed"
+      },
+      {
+        "level": 19,
+        "name": "Acidify Liquid",
+        "aoe": "1 cu'/lvl",
+        "duration": "24 hrs",
+        "range": "10'",
+        "type": "F"
+      },
+      {
+        "level": 20,
+        "name": "Water Corridor True",
+        "aoe": "100'/lvlx6'x100'",
+        "duration": "10 min/lvl",
+        "range": "10'",
+        "type": "F"
+      },
+      {
+        "level": 25,
+        "name": "Water Tunnel True",
+        "aoe": "6'Dx100'/lvl",
+        "duration": "10 min/lvl",
+        "range": "10'",
+        "type": "F"
+      },
+      {
+        "level": 30,
+        "name": "Stream Diversion",
+        "aoe": "1 stream",
+        "duration": "C",
+        "range": "100'/lvl",
+        "type": "F"
+      },
+      {
+        "level": 35,
+        "name": "Water Bubble True",
+        "aoe": "20'R",
+        "duration": "10 min/lvl",
+        "range": "self",
+        "type": "U"
+      },
+      {
+        "level": 40,
+        "name": "Command Rain",
+        "aoe": "1000'R",
+        "duration": "10 min/lvl",
+        "range": "self",
+        "type": "E"
+      },
+      {
+        "level": 50,
+        "name": "Liquid Transmutation",
+        "aoe": "1 cu'",
+        "duration": "P",
+        "range": "touch",
+        "type": "F"
+      }
+    ]
+  },
+  "MYSTICAL CHANGE": {
+    "realm": "Hybrid",
+    "section": "Mystic Base",
+    "spells": [
+      {
+        "level": 1,
+        "name": "Study Individual",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "300'",
+        "type": "I"
+      },
+      {
+        "level": 2,
+        "name": "Face Shifting True",
+        "aoe": "caster",
+        "duration": "1 hr/lvl",
+        "range": "self",
+        "type": "U"
+      },
+      {
+        "level": 3,
+        "name": "Minor Changing",
+        "aoe": "caster",
+        "duration": "10 min/lvl",
+        "range": "self",
+        "type": "U"
+      },
+      {
+        "level": 4,
+        "name": "Misfeel Kind • *",
+        "aoe": "caster",
+        "duration": "C",
+        "range": "self",
+        "type": "E"
+      },
+      {
+        "level": 5,
+        "name": "Deceptive Aura",
+        "aoe": "1 item",
+        "duration": "1 day/lvl",
+        "range": "touch",
+        "type": "F"
+      },
+      {
+        "level": 6,
+        "name": "Major Changing",
+        "aoe": "caster",
+        "duration": "10 min/lvl",
+        "range": "self",
+        "type": "U"
+      },
+      {
+        "level": 7,
+        "name": "Misfeel Calling • *",
+        "aoe": "caster",
+        "duration": "C",
+        "range": "self",
+        "type": "E"
+      },
+      {
+        "level": 8,
+        "name": "Changing Lungs",
+        "aoe": "caster",
+        "duration": "10 min/lvl",
+        "range": "self",
+        "type": "U"
+      },
+      {
+        "level": 9,
+        "name": "Shrinking Change",
+        "aoe": "caster",
+        "duration": "10 min/lvl",
+        "range": "self",
+        "type": "U"
+      },
+      {
+        "level": 10,
+        "name": "Mystical Tongue",
+        "aoe": "1 target",
+        "duration": "C",
+        "range": "20'",
+        "type": "Fm"
+      },
+      {
+        "level": 11,
+        "name": "Misfeel Power • *",
+        "aoe": "caster",
+        "duration": "C",
+        "range": "self",
+        "type": "E"
+      },
+      {
+        "level": 12,
+        "name": "Impersonation",
+        "aoe": "caster",
+        "duration": "10 min/lvl",
+        "range": "self",
+        "type": "U"
+      },
+      {
+        "level": 13,
+        "name": "Unpresence Self",
+        "aoe": "caster",
+        "duration": "C",
+        "range": "self",
+        "type": "E"
+      },
+      {
+        "level": 14,
+        "name": "Misfeel • *",
+        "aoe": "caster",
+        "duration": "C",
+        "range": "self",
+        "type": "E"
+      },
+      {
+        "level": 15,
+        "name": "Changing True",
+        "aoe": "caster",
+        "duration": "10 min/lvl",
+        "range": "self",
+        "type": "U"
+      },
+      {
+        "level": 16,
+        "name": "Growing Change",
+        "aoe": "caster",
+        "duration": "10 min/lvl",
+        "range": "self",
+        "type": "U"
+      },
+      {
+        "level": 17,
+        "name": "Impersonation True",
+        "aoe": "caster",
+        "duration": "10 min/lvl",
+        "range": "self",
+        "type": "U"
+      },
+      {
+        "level": 18,
+        "name": "Long Major Changing",
+        "aoe": "caster",
+        "duration": "1 day/lvl",
+        "range": "self",
+        "type": "U"
+      },
+      {
+        "level": 19,
+        "name": "Long Impersonation",
+        "aoe": "caster",
+        "duration": "1 day/lvl",
+        "range": "self",
+        "type": "U"
+      },
+      {
+        "level": 20,
+        "name": "Unpresence True",
+        "aoe": "caster",
+        "duration": "1 min/lvl",
+        "range": "self",
+        "type": "E"
+      },
+      {
+        "level": 25,
+        "name": "Misfeel True •",
+        "aoe": "caster",
+        "duration": "10 min/lvl",
+        "range": "self",
+        "type": "E"
+      },
+      {
+        "level": 30,
+        "name": "Holy Presence",
+        "aoe": "caster",
+        "duration": "C",
+        "range": "self",
+        "type": "E"
+      },
+      {
+        "level": 35,
+        "name": "Shapechanging",
+        "aoe": "caster",
+        "duration": "10 min/lvl",
+        "range": "self",
+        "type": "U"
+      },
+      {
+        "level": 40,
+        "name": "Shapechanging True",
+        "aoe": "caster",
+        "duration": "10 min/lvl",
+        "range": "self",
+        "type": "U"
+      },
+      {
+        "level": 50,
+        "name": "Submerge Self",
+        "aoe": "caster",
+        "duration": "varies",
+        "range": "self",
+        "type": "U"
+      }
+    ]
+  },
+  "SOLID ALTERATION": {
+    "realm": "Hybrid",
+    "section": "Mystic Base",
+    "spells": [
+      {
+        "level": 1,
+        "name": "Enchanted Rope",
+        "aoe": "10'/lvl",
+        "duration": "C",
+        "range": "touch",
+        "type": "U"
+      },
+      {
+        "level": 2,
+        "name": "Heat Solid I",
+        "aoe": "1 cu'/lvl",
+        "duration": "1 min/lvl (C)",
+        "range": "touch",
+        "type": "F"
+      },
+      {
+        "level": 3,
+        "name": "Cool Solid",
+        "aoe": "1 cu'/lvl",
+        "duration": "24 hrs",
+        "range": "touch",
+        "type": "F"
+      },
+      {
+        "level": 4,
+        "name": "Cracks Call",
+        "aoe": "10'x10'x10'",
+        "duration": "--",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 5,
+        "name": "Door",
+        "aoe": "1 door",
+        "duration": "--",
+        "range": "touch",
+        "type": "F"
+      },
+      {
+        "level": 6,
+        "name": "Woodfires",
+        "aoe": "1'R",
+        "duration": "--",
+        "range": "1'",
+        "type": "F"
+      },
+      {
+        "level": 7,
+        "name": "Strengthen Material",
+        "aoe": "1 cu'/lvl",
+        "duration": "24 hrs",
+        "range": "touch",
+        "type": "F"
+      },
+      {
+        "level": 8,
+        "name": "Heat Solid II",
+        "aoe": "1 cu'/lvl",
+        "duration": "1 min/lvl (C)",
+        "range": "50'",
+        "type": "F"
+      },
+      {
+        "level": 9,
+        "name": "Chill Other Solid",
+        "aoe": "1 cu'/lvl",
+        "duration": "1 min/lvl (C)",
+        "range": "50'",
+        "type": "F"
+      },
+      {
+        "level": 10,
+        "name": "Wall of Ice",
+        "aoe": "10'x10'x2'",
+        "duration": "P",
+        "range": "10'",
+        "type": "E"
+      },
+      {
+        "level": 11,
+        "name": "Solid Door I",
+        "aoe": "3'x6'x1'",
+        "duration": "P",
+        "range": "touch",
+        "type": "F"
+      },
+      {
+        "level": 12,
+        "name": "Stone/Earth/Mud",
+        "aoe": "100 cu'",
+        "duration": "P",
+        "range": "touch",
+        "type": "F"
+      },
+      {
+        "level": 13,
+        "name": "Shatter",
+        "aoe": "1 object",
+        "duration": "--",
+        "range": "10'",
+        "type": "F"
+      },
+      {
+        "level": 14,
+        "name": "Solid Door II",
+        "aoe": "4'x8'x5'",
+        "duration": "P",
+        "range": "touch",
+        "type": "F"
+      },
+      {
+        "level": 15,
+        "name": "Mold Solid",
+        "aoe": "1 cu'",
+        "duration": "P",
+        "range": "touch",
+        "type": "F"
+      },
+      {
+        "level": 16,
+        "name": "Break Solid",
+        "aoe": "1 cu'",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 17,
+        "name": "Unstone",
+        "aoe": "100 cu'",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 18,
+        "name": "Strengthen Material True",
+        "aoe": "100 cu'/lvl",
+        "duration": "24 hrs",
+        "range": "touch",
+        "type": "F"
+      },
+      {
+        "level": 19,
+        "name": "Unmetal",
+        "aoe": "1 cu'",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 20,
+        "name": "Solid Tunnel",
+        "aoe": "4'Dx5'/lvl",
+        "duration": "1 min/lvl",
+        "range": "touch",
+        "type": "F"
+      },
+      {
+        "level": 25,
+        "name": "Solid Door True",
+        "aoe": "6'x12'x10'",
+        "duration": "P",
+        "range": "touch",
+        "type": "F"
+      },
+      {
+        "level": 30,
+        "name": "Solid Tunnel True",
+        "aoe": "3'x6'x1'/lvl",
+        "duration": "P",
+        "range": "touch",
+        "type": "F"
+      },
+      {
+        "level": 35,
+        "name": "Mold Solid True",
+        "aoe": "5 cu'/lvl",
+        "duration": "P",
+        "range": "touch",
+        "type": "F"
+      },
+      {
+        "level": 40,
+        "name": "Living Forge",
+        "aoe": "caster",
+        "duration": "24 hrs",
+        "range": "self",
+        "type": "U"
+      },
+      {
+        "level": 50,
+        "name": "Solid Transmutation",
+        "aoe": "1 oz.",
+        "duration": "P",
+        "range": "touch",
+        "type": "F"
+      }
+    ]
+  },
+  "FLESH DESTRUCTION": {
+    "realm": "Hybrid",
+    "section": "Sorcerer Base",
+    "spells": [
+      {
+        "level": 1,
+        "name": "Sprain Limb",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 2,
+        "name": "Limb Pain",
+        "aoe": "1 target",
+        "duration": "1 rnd/5 fail",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 3,
+        "name": "Touch of Disruption",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "touch",
+        "type": "F"
+      },
+      {
+        "level": 4,
+        "name": "Lock Joint",
+        "aoe": "1 target",
+        "duration": "1 rnd/5 fail",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 5,
+        "name": "Break Limb",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 6,
+        "name": "Disruption II",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "20'",
+        "type": "F"
+      },
+      {
+        "level": 7,
+        "name": "Skin Death",
+        "aoe": "1 target",
+        "duration": "varies",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 8,
+        "name": "Disruption V",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "50'",
+        "type": "F"
+      },
+      {
+        "level": 9,
+        "name": "Ear Disruption",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 10,
+        "name": "Limb Death",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 11,
+        "name": "Eye Disruption",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 12,
+        "name": "Collapse Lung",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 13,
+        "name": "Muscle Death",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 14,
+        "name": "Bone Death",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 15,
+        "name": "Black Channel I",
+        "aoe": "1 target",
+        "duration": "varies",
+        "range": "varies",
+        "type": "F"
+      },
+      {
+        "level": 16,
+        "name": "Rupture",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 17,
+        "name": "Long Flesh Destruction",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "300'",
+        "type": "F"
+      },
+      {
+        "level": 18,
+        "name": "Corpse Disposal",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "touch",
+        "type": "F"
+      },
+      {
+        "level": 19,
+        "name": "Mass Flesh Destruction",
+        "aoe": "1 target/lvl",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 20,
+        "name": "Petrifaction",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 25,
+        "name": "Disruption X",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 30,
+        "name": "Black Channel II",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "varies",
+        "type": "F"
+      },
+      {
+        "level": 35,
+        "name": "Disruption True",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "300'",
+        "type": "F"
+      },
+      {
+        "level": 40,
+        "name": "Multichannels Noir",
+        "aoe": "1 target/lvl",
+        "duration": "varies",
+        "range": "varies",
+        "type": "F"
+      },
+      {
+        "level": 50,
+        "name": "Black Channel III",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "varies",
+        "type": "F"
+      }
+    ]
+  },
+  "FLUID DESTRUCTION": {
+    "realm": "Hybrid",
+    "section": "Sorcerer Base",
+    "spells": [
+      {
+        "level": 1,
+        "name": "Vaporize Fluid",
+        "aoe": "10 cu'/lvl",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 2,
+        "name": "Freeze Fluid",
+        "aoe": "10 cu'/lvl",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 3,
+        "name": "Evaporation I",
+        "aoe": "1000 cu'",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 4,
+        "name": "Unwater I",
+        "aoe": "100 cu'",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 5,
+        "name": "Calm Water",
+        "aoe": "100'R",
+        "duration": "C",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 6,
+        "name": "Water Bolt I",
+        "aoe": "1 target",
+        "duration": "--",
+        "range": "<25'>",
+        "type": "Ed"
+      },
+      {
+        "level": 7,
+        "name": "Unrain",
+        "aoe": "100'R",
+        "duration": "4 hrs/lvl",
+        "range": "100'",
+        "type": "E"
+      },
+      {
+        "level": 8,
+        "name": "Dehydrate",
+        "aoe": "1 cu'",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 9,
+        "name": "Evaporation II",
+        "aoe": "10,000 cu'",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 10,
+        "name": "Unwater II",
+        "aoe": "1,000 cu'",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 11,
+        "name": "Unrain True",
+        "aoe": "500'R/lvl",
+        "duration": "1 day/lvl",
+        "range": "100'",
+        "type": "E"
+      },
+      {
+        "level": 12,
+        "name": "Dehydrate True",
+        "aoe": "10 cu'",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 13,
+        "name": "Evaporation III",
+        "aoe": "100,000 cu'",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 14,
+        "name": "Unwater III",
+        "aoe": "10,000 cu'",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 15,
+        "name": "Calm Water True",
+        "aoe": "100'R/lvl",
+        "duration": "10 min/lvl",
+        "range": "100'/lvl",
+        "type": "F"
+      },
+      {
+        "level": 16,
+        "name": "Acidic Bolt I",
+        "aoe": "1 target",
+        "duration": "--",
+        "range": "<25'>",
+        "type": "Ed"
+      },
+      {
+        "level": 17,
+        "name": "Long FluidDestruction",
+        "aoe": "varies",
+        "duration": "varies",
+        "range": "300'",
+        "type": "F"
+      },
+      {
+        "level": 18,
+        "name": "Blood Destruction",
+        "aoe": "1 target",
+        "duration": "--",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 19,
+        "name": "Desiccation",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 20,
+        "name": "Dehumidify",
+        "aoe": "1 mile R",
+        "duration": "varies",
+        "range": "1 mile",
+        "type": "F"
+      },
+      {
+        "level": 25,
+        "name": "Evaporation True",
+        "aoe": "1,000,000 cu'",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 30,
+        "name": "Calm Sea",
+        "aoe": "1,000'R/lvl",
+        "duration": "10 min/lvl",
+        "range": "1000'/lvl",
+        "type": "F"
+      },
+      {
+        "level": 35,
+        "name": "Acidic Bolt V",
+        "aoe": "1 target",
+        "duration": "--",
+        "range": "<125'>",
+        "type": "Ed"
+      },
+      {
+        "level": 40,
+        "name": "Mass Desiccation",
+        "aoe": "1 target/lvl",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 50,
+        "name": "Dehumidify True",
+        "aoe": "1,000'R/lvl",
+        "duration": "varies",
+        "range": "1000'/lvl",
+        "type": "F"
+      }
+    ]
+  },
+  "GAS DESTRUCTION": {
+    "realm": "Hybrid",
+    "section": "Sorcerer Base",
+    "spells": [
+      {
+        "level": 1,
+        "name": "Foglessness",
+        "aoe": "10'R/lvl",
+        "duration": "10 min/lvl",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 2,
+        "name": "Air Stop I",
+        "aoe": "10'R",
+        "duration": "C",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 3,
+        "name": "Vacuum I",
+        "aoe": "5'R",
+        "duration": "--",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 4,
+        "name": "Deoxygenation I",
+        "aoe": "10'R",
+        "duration": "C",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 5,
+        "name": "Air Stop II",
+        "aoe": "20'R",
+        "duration": "C",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 6,
+        "name": "Vacuum II",
+        "aoe": "10'R",
+        "duration": "--",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 7,
+        "name": "Deoxygenation II",
+        "aoe": "20'R",
+        "duration": "C",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 8,
+        "name": "Gas to Air",
+        "aoe": "1 cu'/rnd",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 9,
+        "name": "Air Stop X",
+        "aoe": "100'R",
+        "duration": "C",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 10,
+        "name": "Vacuum IV",
+        "aoe": "20'R",
+        "duration": "--",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 11,
+        "name": "Great Vacuum I",
+        "aoe": "5'R",
+        "duration": "--",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 12,
+        "name": "Fast Deoxygenation I",
+        "aoe": "10'R",
+        "duration": "C",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 13,
+        "name": "Deoxygenation V",
+        "aoe": "50'R",
+        "duration": "C",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 14,
+        "name": "Great Vacuum II",
+        "aoe": "10'R",
+        "duration": "--",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 15,
+        "name": "Fast Deoxygenation II",
+        "aoe": "20'R",
+        "duration": "C",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 16,
+        "name": "Air Stop True",
+        "aoe": "10'R/lvl",
+        "duration": "C",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 17,
+        "name": "Long Gas Destruction",
+        "aoe": "varies",
+        "duration": "varies",
+        "range": "300'",
+        "type": "F"
+      },
+      {
+        "level": 18,
+        "name": "Great Vacuum III",
+        "aoe": "15'R",
+        "duration": "--",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 19,
+        "name": "Major Deoxygenation",
+        "aoe": "20'R",
+        "duration": "C",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 20,
+        "name": "Major Vacuum I",
+        "aoe": "5'R",
+        "duration": "--",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 25,
+        "name": "Deoxygenation True",
+        "aoe": "20'R",
+        "duration": "C",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 30,
+        "name": "Major Vacuum II",
+        "aoe": "10'R",
+        "duration": "--",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 35,
+        "name": "Vacuum X",
+        "aoe": "50'R",
+        "duration": "--",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 40,
+        "name": "Major Vacuum IV",
+        "aoe": "20'R",
+        "duration": "--",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 50,
+        "name": "Implosion",
+        "aoe": "1,000,000 cu'",
+        "duration": "--",
+        "range": "300'",
+        "type": "F"
+      }
+    ]
+  },
+  "MIND DESTRUCTION": {
+    "realm": "Hybrid",
+    "section": "Sorcerer Base",
+    "spells": [
+      {
+        "level": 1,
+        "name": "Minor Pain",
+        "aoe": "1 target",
+        "duration": "10 min/5 fail",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 2,
+        "name": "Jolts III",
+        "aoe": "1 target",
+        "duration": "3 rnd",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 3,
+        "name": "Disorientation",
+        "aoe": "1 target",
+        "duration": "1 day/5 fail",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 4,
+        "name": "Unbalance",
+        "aoe": "1 target",
+        "duration": "1 day/5 fail",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 5,
+        "name": "Falter",
+        "aoe": "1 target",
+        "duration": "1 day/5 fail",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 6,
+        "name": "Jolts VI",
+        "aoe": "1 target",
+        "duration": "6 rnd",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 7,
+        "name": "Major Pain",
+        "aoe": "1 target",
+        "duration": "10 min/5 fail",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 8,
+        "name": "Forget",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "10'",
+        "type": "Fm"
+      },
+      {
+        "level": 9,
+        "name": "Word of Pain *",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 10,
+        "name": "Mind Shock",
+        "aoe": "1 target",
+        "duration": "1 day/5 fail",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 11,
+        "name": "Mind Death",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "50'",
+        "type": "Fm"
+      },
+      {
+        "level": 12,
+        "name": "Jolts X",
+        "aoe": "1 target",
+        "duration": "10 rnd",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 13,
+        "name": "Unminding",
+        "aoe": "1 target",
+        "duration": "1 rnd/5 fail",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 14,
+        "name": "Mass Disorientation",
+        "aoe": "1 target/lvl",
+        "duration": "1 hr/5 fail",
+        "range": "300'",
+        "type": "Fm"
+      },
+      {
+        "level": 15,
+        "name": "Mind Break",
+        "aoe": "1 target",
+        "duration": "1 day/10 fail",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 16,
+        "name": "Mass Unbalance",
+        "aoe": "1 target/lvl",
+        "duration": "1 day/5 fail",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 17,
+        "name": "Long Mind Destruction",
+        "aoe": "1 target",
+        "duration": "varies",
+        "range": "300'",
+        "type": "Fm"
+      },
+      {
+        "level": 18,
+        "name": "Mass Falter",
+        "aoe": "1 target/lvl",
+        "duration": "1 day/5 fail",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 19,
+        "name": "Horror",
+        "aoe": "1 target",
+        "duration": "varies",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 20,
+        "name": "Lost Experience",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 25,
+        "name": "Mass Pain",
+        "aoe": "1 target/lvl",
+        "duration": "P",
+        "range": "300'",
+        "type": "Fm"
+      },
+      {
+        "level": 30,
+        "name": "Memory Loss",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 35,
+        "name": "Mass Mind Shock",
+        "aoe": "1 target/lvl",
+        "duration": "1 day/5 fail",
+        "range": "300'",
+        "type": "Fm"
+      },
+      {
+        "level": 40,
+        "name": "Mass Major Pain",
+        "aoe": "1 target/lvl",
+        "duration": "P",
+        "range": "300'",
+        "type": "Fm"
+      },
+      {
+        "level": 50,
+        "name": "Mass Unminding",
+        "aoe": "1 target/lvl",
+        "duration": "1 rnd/5 fail",
+        "range": "300'",
+        "type": "Fm"
+      }
+    ]
+  },
+  "SOLID DESTRUCTION": {
+    "realm": "Hybrid",
+    "section": "Sorcerer Base",
+    "spells": [
+      {
+        "level": 1,
+        "name": "Melt Ice",
+        "aoe": "10 cu'/lvl",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 2,
+        "name": "Loosen Earth",
+        "aoe": "100 cu'",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 3,
+        "name": "Erosions",
+        "aoe": "100 cu'/lvl",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 4,
+        "name": "Cracks Call",
+        "aoe": "10'x10'x10'",
+        "duration": "--",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 5,
+        "name": "Undoor I",
+        "aoe": "10'x10'x6\"",
+        "duration": "P",
+        "range": "10'",
+        "type": "F"
+      },
+      {
+        "level": 6,
+        "name": "Stone/Earth",
+        "aoe": "100 cu'",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 7,
+        "name": "Splinter",
+        "aoe": "1 wood object",
+        "duration": "P",
+        "range": "50'",
+        "type": "F"
+      },
+      {
+        "level": 8,
+        "name": "Earth/Mud",
+        "aoe": "100 cu'",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 9,
+        "name": "Loosen Earth True",
+        "aoe": "43,560 cu'",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 10,
+        "name": "Corridor",
+        "aoe": "3'x6'x1'/lvl",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 11,
+        "name": "Shatter",
+        "aoe": "1 object",
+        "duration": "--",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 12,
+        "name": "Unearth",
+        "aoe": "100 cu'",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 13,
+        "name": "Unstone",
+        "aoe": "100 cu'",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 14,
+        "name": "Undoor True",
+        "aoe": "1 door",
+        "duration": "P",
+        "range": "10'",
+        "type": "F"
+      },
+      {
+        "level": 15,
+        "name": "Unmetal",
+        "aoe": "1 cu'",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 16,
+        "name": "Solid Destruction",
+        "aoe": "1 cu'",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 17,
+        "name": "Long Solid Destruction",
+        "aoe": "varies",
+        "duration": "P",
+        "range": "300'",
+        "type": "F"
+      },
+      {
+        "level": 18,
+        "name": "Metal Corridor",
+        "aoe": "3'x6'x1'/lvl",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 19,
+        "name": "Crevasse",
+        "aoe": "100'x10'x200'",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 20,
+        "name": "Solid Destruction True",
+        "aoe": "1 cu'/lvl",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 25,
+        "name": "Tremors",
+        "aoe": "varies",
+        "duration": "1 rnd",
+        "range": "100'/lvl",
+        "type": "F"
+      },
+      {
+        "level": 30,
+        "name": "Great Crack",
+        "aoe": "varies",
+        "duration": "P",
+        "range": "300'",
+        "type": "F"
+      },
+      {
+        "level": 35,
+        "name": "Mass Shatter",
+        "aoe": "1 target/lvl",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 40,
+        "name": "Metal Corridor True",
+        "aoe": "3'x6'x1'/lvl",
+        "duration": "P",
+        "range": "100'",
+        "type": "F"
+      },
+      {
+        "level": 50,
+        "name": "Quake",
+        "aoe": "varies",
+        "duration": "varies",
+        "range": "touch",
+        "type": "F"
+      }
+    ]
+  },
+  "SOUL DESTRUCTION": {
+    "realm": "Hybrid",
+    "section": "Sorcerer Base",
+    "spells": [
+      {
+        "level": 1,
+        "name": "Question",
+        "aoe": "1 target",
+        "duration": "--",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 2,
+        "name": "Possession I",
+        "aoe": "1 target",
+        "duration": "varies",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 3,
+        "name": "Neurosis",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 4,
+        "name": "Guilt",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 5,
+        "name": "Paranoia",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 6,
+        "name": "Possession II",
+        "aoe": "1 target",
+        "duration": "varies",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 7,
+        "name": "Word of Panic *",
+        "aoe": "1 target",
+        "duration": "1 rnd/5 fail",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 8,
+        "name": "Transferal",
+        "aoe": "1 target",
+        "duration": "varies",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 9,
+        "name": "Spirit Burn",
+        "aoe": "1 target",
+        "duration": "1 min/5 fail",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 10,
+        "name": "Possession III",
+        "aoe": "1 target",
+        "duration": "varies",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 11,
+        "name": "Subjugation",
+        "aoe": "1 target",
+        "duration": "varies",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 12,
+        "name": "Unsoul Curse",
+        "aoe": "1 target",
+        "duration": "varies",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 13,
+        "name": "Possession IV",
+        "aoe": "1 target",
+        "duration": "varies",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 14,
+        "name": "Shout of Panic *",
+        "aoe": "20'R",
+        "duration": "1 rnd/5 fail",
+        "range": "self",
+        "type": "Fm"
+      },
+      {
+        "level": 15,
+        "name": "Chronic Panic",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 16,
+        "name": "Spirit Repulsion",
+        "aoe": "1 target",
+        "duration": "--",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 17,
+        "name": "Long Soul Destruction",
+        "aoe": "1 target",
+        "duration": "varies",
+        "range": "300'",
+        "type": "Fm"
+      },
+      {
+        "level": 18,
+        "name": "Possession V",
+        "aoe": "1 target",
+        "duration": "varies",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 19,
+        "name": "Dark Slumbers",
+        "aoe": "1 target",
+        "duration": "varies",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 20,
+        "name": "Soultheft",
+        "aoe": "1 target",
+        "duration": "varies",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 25,
+        "name": "Transferal True",
+        "aoe": "1 target",
+        "duration": "varies",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 30,
+        "name": "Long Absolution",
+        "aoe": "1 target",
+        "duration": "30 days/10 fail",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 35,
+        "name": "Possession VI",
+        "aoe": "1 target",
+        "duration": "varies",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 40,
+        "name": "Absolution Pure",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "100'",
+        "type": "Fm"
+      },
+      {
+        "level": 50,
+        "name": "Dark Absolution",
+        "aoe": "1 target",
+        "duration": "P",
+        "range": "100'",
+        "type": "Fm"
+      }
+    ]
+  }
+}

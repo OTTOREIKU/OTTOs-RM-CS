@@ -1,0 +1,242 @@
+[
+  {
+    "name": "Cosmopolitan",
+    "grants": [
+      { "skill": "Perception",         "ranks": 2 },
+      { "skill": "Body Development",   "ranks": 1 },
+      { "skill": "Unarmed",            "ranks": 1, "choice": "combat_unarmed",     "note": "Choose a combat-training unarmed skill (Strikes or Grappling/Wrestling)" },
+      { "skill": "Composition & Perf. Art", "ranks": 4, "choice": "composition_perf_art", "max_per_skill": 2, "note": "Distribute among Musical Composition, Writing, Drawing/Painting, Acting, Music; max 2 ranks/skill" },
+      { "skill": "Crafting & Vocation","ranks": 6, "choice": "crafting_vocation",  "max_per_skill": 2, "note": "Distribute among any Crafting skills (Culinary, Fabric Craft, Leathercraft, Metalcraft, Stonecraft, Woodcraft, etc.); max 2 ranks/skill" },
+      { "skill": "Languages",          "ranks": 19, "choice": "language",          "note": "Distribute across Spoken/Written language skills" },
+      { "skill": "Region Lore", "ranks": 5, "choice": "region_lore", "note": "Choose own region (required specialization)" },
+      { "skill": "Region Lore (Neighboring)", "ranks": 2, "choice": "region_lore", "note": "Choose a neighboring region" },
+      { "skill": "Religion/Philosophy","ranks": 2 },
+      { "skill": "Other Lores",        "ranks": 7, "choice": "lore",               "note": "Distribute across any Lore skills (Creature, Historic, Materials, Racial, Spell, or specialization lores)" },
+      { "skill": "Running",            "ranks": 1 },
+      { "skill": "Influence",          "ranks": 2, "choice": "influence",          "note": "Choose from Persuasion, Intimidation, or Duping" },
+      { "skill": "Social Awareness",   "ranks": 3 },
+      { "skill": "Trading",            "ranks": 1 }
+    ]
+  },
+  {
+    "name": "Harsh",
+    "grants": [
+      { "skill": "Perception",         "ranks": 2 },
+      { "skill": "Tracking",           "ranks": 1 },
+      { "skill": "Maneuver in Armor",  "ranks": 1 },
+      { "skill": "Body Development",   "ranks": 3 },
+      { "skill": "Unarmed",            "ranks": 1, "choice": "combat_unarmed",     "note": "Choose a combat-training unarmed skill" },
+      { "skill": "Melee Weapons",      "ranks": 1, "choice": "combat_melee",       "note": "Choose a melee weapon skill (Blade, Hafted, etc.)" },
+      { "skill": "Crafting & Vocation","ranks": 4, "choice": "crafting_vocation",  "max_per_skill": 2, "note": "Distribute among Crafting skills; max 2 ranks/skill" },
+      { "skill": "Navigation",         "ranks": 1 },
+      { "skill": "Survival (Own Region)", "ranks": 3, "choice": "survival",        "note": "Choose own region biome" },
+      { "skill": "Languages",          "ranks": 8,  "choice": "language",          "note": "Distribute across Spoken/Written language skills" },
+      { "skill": "Region Lore", "ranks": 5, "choice": "region_lore", "note": "Choose own region (required specialization)" },
+      { "skill": "Other Lores",        "ranks": 2, "choice": "lore",               "note": "Distribute across any Lore skills" },
+      { "skill": "Medicine",           "ranks": 2 },
+      { "skill": "Running",            "ranks": 2 },
+      { "skill": "Concealment",        "ranks": 1 },
+      { "skill": "Stalking",           "ranks": 2 }
+    ]
+  },
+  {
+    "name": "Highland",
+    "grants": [
+      { "skill": "Animal Handling",    "ranks": 1, "choice": "animal_specialization", "note": "Choose animal type" },
+      { "skill": "Perception",         "ranks": 1 },
+      { "skill": "Tracking",           "ranks": 1 },
+      { "skill": "Maneuver in Armor",  "ranks": 1 },
+      { "skill": "Body Development",   "ranks": 2 },
+      { "skill": "Unarmed",            "ranks": 1, "choice": "combat_unarmed",     "note": "Choose a combat-training unarmed skill" },
+      { "skill": "Melee Weapons",      "ranks": 1, "choice": "combat_melee",       "note": "Choose a melee weapon skill" },
+      { "skill": "Composition & Perf. Art", "ranks": 1, "choice": "composition_perf_art", "max_per_skill": 2, "note": "Choose from Musical Composition, Writing, etc.; max 2 ranks/skill" },
+      { "skill": "Crafting & Vocation","ranks": 4, "choice": "crafting_vocation",  "max_per_skill": 2, "note": "Distribute among Crafting skills; max 2 ranks/skill" },
+      { "skill": "Survival (Own Region)", "ranks": 2, "choice": "survival",        "note": "Choose own region biome" },
+      { "skill": "Jumping",            "ranks": 1 },
+      { "skill": "Languages",          "ranks": 13, "choice": "language",          "note": "Distribute across Spoken/Written language skills" },
+      { "skill": "Region Lore", "ranks": 5, "choice": "region_lore", "note": "Choose own region (required specialization)" },
+      { "skill": "Other Lores",        "ranks": 4, "choice": "lore",               "note": "Distribute across any Lore skills" },
+      { "skill": "Medicine",           "ranks": 1 },
+      { "skill": "Climbing",           "ranks": 1 },
+      { "skill": "Running",            "ranks": 2 },
+      { "skill": "Swimming",           "ranks": 1 },
+      { "skill": "Social Awareness",   "ranks": 1 },
+      { "skill": "Stalking",           "ranks": 1 }
+    ]
+  },
+  {
+    "name": "Mariner",
+    "grants": [
+      { "skill": "Perception",         "ranks": 2 },
+      { "skill": "Body Development",   "ranks": 1 },
+      { "skill": "Weight Training",    "ranks": 1 },
+      { "skill": "Unarmed",            "ranks": 1, "choice": "combat_unarmed",     "note": "Choose a combat-training unarmed skill" },
+      { "skill": "Composition & Perf. Art", "ranks": 1, "choice": "composition_perf_art", "max_per_skill": 2, "note": "Choose from Musical Composition, Writing, etc.; max 2 ranks/skill" },
+      { "skill": "Crafting & Vocation","ranks": 4, "choice": "crafting_vocation",  "max_per_skill": 2, "note": "Distribute among Crafting skills; max 2 ranks/skill" },
+      { "skill": "Navigation",         "ranks": 1 },
+      { "skill": "Survival (Own Region)", "ranks": 1, "choice": "survival",        "note": "Choose own region biome" },
+      { "skill": "Acrobatics",         "ranks": 1 },
+      { "skill": "Jumping",            "ranks": 1 },
+      { "skill": "Languages",          "ranks": 15, "choice": "language",          "note": "Distribute across Spoken/Written language skills" },
+      { "skill": "Region Lore", "ranks": 5, "choice": "region_lore", "note": "Choose own region (required specialization)" },
+      { "skill": "Region Lore (Neighboring)", "ranks": 2, "choice": "region_lore", "note": "Choose a neighboring region" },
+      { "skill": "Other Lores",        "ranks": 5, "choice": "lore",               "note": "Distribute across any Lore skills" },
+      { "skill": "Medicine",           "ranks": 1 },
+      { "skill": "Climbing",           "ranks": 1 },
+      { "skill": "Running",            "ranks": 1 },
+      { "skill": "Swimming",           "ranks": 2 },
+      { "skill": "Influence",          "ranks": 1, "choice": "influence",          "note": "Choose from Persuasion, Intimidation, or Duping" },
+      { "skill": "Social Awareness",   "ranks": 1 },
+      { "skill": "Trading",            "ranks": 1 }
+    ]
+  },
+  {
+    "name": "Nomad",
+    "grants": [
+      { "skill": "Animal Handling",    "ranks": 4, "choice": "animal_specialization", "note": "Choose animal type" },
+      { "skill": "Riding",             "ranks": 3, "choice": "animal_specialization", "note": "Choose animal type" },
+      { "skill": "Perception",         "ranks": 1 },
+      { "skill": "Tracking",           "ranks": 1 },
+      { "skill": "Body Development",   "ranks": 1 },
+      { "skill": "Unarmed",            "ranks": 1, "choice": "combat_unarmed",     "note": "Choose a combat-training unarmed skill" },
+      { "skill": "Composition & Perf. Art", "ranks": 1, "choice": "composition_perf_art", "max_per_skill": 2, "note": "Choose from Musical Composition, Writing, etc.; max 2 ranks/skill" },
+      { "skill": "Crafting & Vocation","ranks": 4, "choice": "crafting_vocation",  "max_per_skill": 2, "note": "Distribute among Crafting skills; max 2 ranks/skill" },
+      { "skill": "Navigation",         "ranks": 1 },
+      { "skill": "Survival (Own Region)", "ranks": 1, "choice": "survival",        "note": "Choose own region biome" },
+      { "skill": "Languages",          "ranks": 14, "choice": "language",          "note": "Distribute across Spoken/Written language skills" },
+      { "skill": "Region Lore", "ranks": 5, "choice": "region_lore", "note": "Choose own region (required specialization)" },
+      { "skill": "Region Lore (Neighboring)", "ranks": 2, "choice": "region_lore", "note": "Choose a neighboring region" },
+      { "skill": "Other Lores",        "ranks": 4, "choice": "lore",               "note": "Distribute across any Lore skills" },
+      { "skill": "Herbalism",          "ranks": 1 },
+      { "skill": "Medicine",           "ranks": 1 },
+      { "skill": "Running",            "ranks": 2 },
+      { "skill": "Social Awareness",   "ranks": 1 },
+      { "skill": "Trading",            "ranks": 1 }
+    ]
+  },
+  {
+    "name": "Reaver",
+    "grants": [
+      { "skill": "Animal Handling",    "ranks": 1, "choice": "animal_specialization", "note": "Choose animal type" },
+      { "skill": "Riding",             "ranks": 1, "choice": "animal_specialization", "note": "Choose animal type" },
+      { "skill": "Perception",         "ranks": 1 },
+      { "skill": "Tracking",           "ranks": 1 },
+      { "skill": "Maneuver in Armor",  "ranks": 2 },
+      { "skill": "Body Development",   "ranks": 2 },
+      { "skill": "Unarmed",            "ranks": 2, "choice": "combat_unarmed",     "note": "Choose a combat-training unarmed skill" },
+      { "skill": "Melee Weapons",      "ranks": 1, "choice": "combat_melee",       "note": "Choose a melee weapon skill" },
+      { "skill": "Ranged Weapons",     "ranks": 1, "choice": "combat_ranged",      "note": "Choose a ranged weapon skill (Bow, Exotic Ranged, etc.)" },
+      { "skill": "Crafting & Vocation","ranks": 3, "choice": "crafting_vocation",  "max_per_skill": 2, "note": "Distribute among Crafting skills; max 2 ranks/skill" },
+      { "skill": "Survival (Own Region)", "ranks": 1, "choice": "survival",        "note": "Choose own region biome" },
+      { "skill": "Jumping",            "ranks": 1 },
+      { "skill": "Languages",          "ranks": 11, "choice": "language",          "note": "Distribute across Spoken/Written language skills" },
+      { "skill": "Region Lore", "ranks": 5, "choice": "region_lore", "note": "Choose own region (required specialization)" },
+      { "skill": "Region Lore (Neighboring)", "ranks": 1, "choice": "region_lore", "note": "Choose a neighboring region" },
+      { "skill": "Other Lores",        "ranks": 3, "choice": "lore",               "note": "Distribute across any Lore skills" },
+      { "skill": "Medicine",           "ranks": 1 },
+      { "skill": "Climbing",           "ranks": 1 },
+      { "skill": "Running",            "ranks": 2 },
+      { "skill": "Stalking",           "ranks": 1 }
+    ]
+  },
+  {
+    "name": "Rural",
+    "grants": [
+      { "skill": "Animal Handling",    "ranks": 3, "choice": "animal_specialization", "note": "Choose animal type" },
+      { "skill": "Riding",             "ranks": 2, "choice": "animal_specialization", "note": "Choose animal type" },
+      { "skill": "Perception",         "ranks": 1 },
+      { "skill": "Body Development",   "ranks": 1 },
+      { "skill": "Weight Training",    "ranks": 1 },
+      { "skill": "Unarmed",            "ranks": 1, "choice": "combat_unarmed",     "note": "Choose a combat-training unarmed skill" },
+      { "skill": "Ranged Weapons",     "ranks": 1, "choice": "combat_ranged",      "note": "Choose a ranged weapon skill" },
+      { "skill": "Composition & Perf. Art", "ranks": 1, "choice": "composition_perf_art", "max_per_skill": 2, "note": "Choose from Musical Composition, Writing, etc.; max 2 ranks/skill" },
+      { "skill": "Crafting & Vocation","ranks": 4, "choice": "crafting_vocation",  "max_per_skill": 2, "note": "Distribute among Crafting skills; max 2 ranks/skill" },
+      { "skill": "Piloting",           "ranks": 1, "choice": "vehicle",            "note": "Choose vehicle type" },
+      { "skill": "Languages",          "ranks": 13, "choice": "language",          "note": "Distribute across Spoken/Written language skills" },
+      { "skill": "Region Lore", "ranks": 5, "choice": "region_lore", "note": "Choose own region (required specialization)" },
+      { "skill": "Other Lores",        "ranks": 5, "choice": "lore",               "note": "Distribute across any Lore skills" },
+      { "skill": "Herbalism",          "ranks": 1 },
+      { "skill": "Medicine",           "ranks": 1 },
+      { "skill": "Climbing",           "ranks": 1 },
+      { "skill": "Running",            "ranks": 1 },
+      { "skill": "Swimming",           "ranks": 1 },
+      { "skill": "Influence",          "ranks": 1, "choice": "influence",          "note": "Choose from Persuasion, Intimidation, or Duping" },
+      { "skill": "Social Awareness",   "ranks": 1 },
+      { "skill": "Trading",            "ranks": 1 }
+    ]
+  },
+  {
+    "name": "Sylvan",
+    "grants": [
+      { "skill": "Animal Handling",    "ranks": 2, "choice": "animal_specialization", "note": "Choose animal type" },
+      { "skill": "Perception",         "ranks": 1 },
+      { "skill": "Tracking",           "ranks": 1 },
+      { "skill": "Body Development",   "ranks": 1 },
+      { "skill": "Unarmed",            "ranks": 1, "choice": "combat_unarmed",     "note": "Choose a combat-training unarmed skill" },
+      { "skill": "Ranged Weapons",     "ranks": 1, "choice": "combat_ranged",      "note": "Choose a ranged weapon skill" },
+      { "skill": "Crafting & Vocation","ranks": 4, "choice": "crafting_vocation",  "max_per_skill": 2, "note": "Distribute among Crafting skills; max 2 ranks/skill" },
+      { "skill": "Survival (Own Region)", "ranks": 2, "choice": "survival",        "note": "Choose own region biome" },
+      { "skill": "Languages",          "ranks": 13, "choice": "language",          "note": "Distribute across Spoken/Written language skills" },
+      { "skill": "Region Lore", "ranks": 5, "choice": "region_lore", "note": "Choose own region (required specialization)" },
+      { "skill": "Other Lores",        "ranks": 4, "choice": "lore",               "note": "Distribute across any Lore skills" },
+      { "skill": "Herbalism",          "ranks": 1 },
+      { "skill": "Medicine",           "ranks": 1 },
+      { "skill": "Climbing",           "ranks": 2 },
+      { "skill": "Running",            "ranks": 2 },
+      { "skill": "Social Awareness",   "ranks": 1 },
+      { "skill": "Concealment",        "ranks": 1 },
+      { "skill": "Stalking",           "ranks": 2 }
+    ]
+  },
+  {
+    "name": "Underground",
+    "grants": [
+      { "skill": "Perception",         "ranks": 2 },
+      { "skill": "Body Development",   "ranks": 2 },
+      { "skill": "Weight Training",    "ranks": 1 },
+      { "skill": "Unarmed",            "ranks": 1, "choice": "combat_unarmed",     "note": "Choose a combat-training unarmed skill" },
+      { "skill": "Melee Weapons",      "ranks": 1, "choice": "combat_melee",       "note": "Choose a melee weapon skill" },
+      { "skill": "Crafting & Vocation","ranks": 5, "choice": "crafting_vocation",  "max_per_skill": 2, "note": "Distribute among Crafting skills; max 2 ranks/skill" },
+      { "skill": "Survival (Own Region)", "ranks": 2, "choice": "survival",        "note": "Choose own region biome (underground)" },
+      { "skill": "Languages",          "ranks": 13, "choice": "language",          "note": "Distribute across Spoken/Written language skills" },
+      { "skill": "Region Lore", "ranks": 5, "choice": "region_lore", "note": "Choose own region (required specialization)" },
+      { "skill": "Other Lores",        "ranks": 4, "choice": "lore",               "note": "Distribute across any Lore skills" },
+      { "skill": "Medicine",           "ranks": 2 },
+      { "skill": "Climbing",           "ranks": 1 },
+      { "skill": "Running",            "ranks": 1 },
+      { "skill": "Social Awareness",   "ranks": 1 },
+      { "skill": "Concealment",        "ranks": 1 },
+      { "skill": "Stalking",           "ranks": 2 }
+    ]
+  },
+  {
+    "name": "Urban",
+    "grants": [
+      { "skill": "Animal Handling",    "ranks": 1, "choice": "animal_specialization", "note": "Choose animal type" },
+      { "skill": "Perception",         "ranks": 2 },
+      { "skill": "Body Development",   "ranks": 1 },
+      { "skill": "Unarmed",            "ranks": 1, "choice": "combat_unarmed",     "note": "Choose a combat-training unarmed skill" },
+      { "skill": "Composition & Perf. Art", "ranks": 3, "choice": "composition_perf_art", "max_per_skill": 2, "note": "Distribute among Musical Composition, Writing, Drawing/Painting, Acting, Music; max 2 ranks/skill" },
+      { "skill": "Crafting & Vocation","ranks": 7, "choice": "crafting_vocation",  "max_per_skill": 2, "note": "Distribute among Crafting skills; max 2 ranks/skill" },
+      { "skill": "Languages",          "ranks": 17, "choice": "language",          "note": "Distribute across Spoken/Written language skills" },
+      { "skill": "Region Lore", "ranks": 5, "choice": "region_lore", "note": "Choose own region (required specialization)" },
+      { "skill": "Region Lore (Neighboring)", "ranks": 3, "choice": "region_lore", "note": "Choose a neighboring region" },
+      { "skill": "Religion/Philosophy","ranks": 1 },
+      { "skill": "Other Lores",        "ranks": 7, "choice": "lore",               "note": "Distribute across any Lore skills" },
+      { "skill": "Running",            "ranks": 1 },
+      { "skill": "Influence",          "ranks": 2, "choice": "influence",          "note": "Choose from Persuasion, Intimidation, or Duping" },
+      { "skill": "Social Awareness",   "ranks": 2 },
+      { "skill": "Trading",            "ranks": 2 }
+    ]
+  },
+  {
+    "name": "Argo",
+    "grants": [],
+    "_note": "Not in CoreLaw Table 2-3 — supplement culture, no standard skill grants defined"
+  },
+  {
+    "name": "Hobbit",
+    "grants": [],
+    "_note": "Not in CoreLaw Table 2-3 — supplement culture, no standard skill grants defined"
+  }
+]
