@@ -161,102 +161,123 @@
     "stat_keys": "-"
   },
   {
-    "category": "Combat Expertise",
-    "name": "Combat Training 1",
-    "dev_cost": "5/7",
-    "prof_type": "Melee",
-    "stat_keys": "Ag/St"
-  },
-  {
-    "category": "Combat Expertise",
+    "category": "Combat Training",
     "name": "Blade",
     "dev_cost": "5/7",
     "prof_type": "Professional",
     "stat_keys": "St"
   },
   {
-    "category": "Combat Expertise",
-    "name": "Hafted",
-    "dev_cost": "5/7",
-    "prof_type": "Normal",
-    "stat_keys": "St"
-  },
-  {
-    "category": "Combat Expertise",
+    "category": "Combat Training",
     "name": "Greater Blade",
     "dev_cost": "5/7",
     "prof_type": "Normal",
     "stat_keys": "St"
   },
   {
-    "category": "Combat Expertise",
-    "name": "Katana (example)",
+    "category": "Combat Training",
+    "name": "Hafted",
     "dev_cost": "5/7",
     "prof_type": "Normal",
     "stat_keys": "St"
   },
   {
-    "category": "Combat Expertise",
-    "name": "Combat Training 2",
-    "dev_cost": "6/8",
-    "prof_type": "Shield",
-    "stat_keys": "Ag/St"
+    "category": "Combat Training",
+    "name": "Greater Hafted",
+    "dev_cost": "5/7",
+    "prof_type": "Normal",
+    "stat_keys": "St"
   },
   {
-    "category": "Combat Expertise",
+    "category": "Combat Training",
+    "name": "Pole Arm",
+    "dev_cost": "5/7",
+    "prof_type": "Normal",
+    "stat_keys": "St"
+  },
+  {
+    "category": "Combat Training",
+    "name": "Spear",
+    "dev_cost": "5/7",
+    "prof_type": "Normal",
+    "stat_keys": "St"
+  },
+  {
+    "category": "Combat Training",
+    "name": "Chain",
+    "dev_cost": "5/7",
+    "prof_type": "Normal",
+    "stat_keys": "St"
+  },
+  {
+    "category": "Combat Training",
+    "name": "Greater Chain",
+    "dev_cost": "5/7",
+    "prof_type": "Normal",
+    "stat_keys": "St"
+  },
+  {
+    "category": "Combat Training",
+    "name": "Net",
+    "dev_cost": "5/7",
+    "prof_type": "Normal",
+    "stat_keys": "St"
+  },
+  {
+    "category": "Combat Training",
     "name": "Shield",
     "dev_cost": "6/8",
     "prof_type": "Normal",
     "stat_keys": "St"
   },
   {
-    "category": "Combat Expertise",
-    "name": "<weapon skill>",
-    "dev_cost": "6/8",
-    "prof_type": "Normal",
-    "stat_keys": "St"
-  },
-  {
-    "category": "Combat Expertise",
-    "name": "Combat Training 3",
-    "dev_cost": "9/12",
-    "prof_type": "Unarmed",
-    "stat_keys": "Ag/St"
-  },
-  {
-    "category": "Combat Expertise",
+    "category": "Combat Training",
     "name": "Strikes",
     "dev_cost": "9/12",
     "prof_type": "Normal",
     "stat_keys": "St"
   },
   {
-    "category": "Combat Expertise",
+    "category": "Combat Training",
     "name": "Grappling/Wrestling",
     "dev_cost": "9/12",
     "prof_type": "Normal",
     "stat_keys": "St"
   },
   {
-    "category": "Combat Expertise",
-    "name": "Combat Training 4",
-    "dev_cost": "15/20",
-    "prof_type": "Ranged",
-    "stat_keys": "Ag/St"
-  },
-  {
-    "category": "Combat Expertise",
+    "category": "Combat Training",
     "name": "Bow",
     "dev_cost": "15/20",
     "prof_type": "Normal",
-    "stat_keys": "St"
+    "stat_keys": "Ag"
   },
   {
-    "category": "Combat Expertise",
-    "name": "Exotic Ranged 1 (specified)",
+    "category": "Combat Training",
+    "name": "Crossbow",
     "dev_cost": "15/20",
     "prof_type": "Normal",
-    "stat_keys": "St"
+    "stat_keys": "Ag"
+  },
+  {
+    "category": "Combat Training",
+    "name": "Thrown",
+    "dev_cost": "15/20",
+    "prof_type": "Normal",
+    "stat_keys": "Ag"
+  },
+  {
+    "category": "Combat Training",
+    "name": "Sling",
+    "dev_cost": "15/20",
+    "prof_type": "Normal",
+    "stat_keys": "Ag"
+  },
+  {
+    "category": "Combat Training",
+    "name": "Blowpipe",
+    "dev_cost": "15/20",
+    "prof_type": "Normal",
+    "stat_keys": "Ag"
   },
   {
     "category": "Composition",

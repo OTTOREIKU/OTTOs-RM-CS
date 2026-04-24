@@ -27,6 +27,7 @@ const CATEGORY_STATS = {
   'Body Discipline':    'Co/SD',
   'Brawn':              'Co/SD',
   'Combat Expertise':   '-',
+  'Combat Training':    'Ag/St',
   'Composition':        'Em/In',
   'Crafting':           'Ag/Me',
   'Delving':            'Em/In',

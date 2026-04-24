@@ -29,7 +29,7 @@ const ARMOR_PART_LABELS = { torso: 'Torso', head: 'Head', arms: 'Arms', legs: 'L
 const skillsDataMap = Object.fromEntries(skillsData.map(s => [s.name, s]))
 const SKILL_CATEGORY_STATS = {
   'Animal':'Ag/Em','Awareness':'In/Re','Battle Expertise':'-','Body Discipline':'Co/SD',
-  'Brawn':'Co/SD','Combat Expertise':'-','Composition':'Em/In','Crafting':'Ag/Me',
+  'Brawn':'Co/SD','Combat Expertise':'-','Combat Training':'Ag/St','Composition':'Em/In','Crafting':'Ag/Me',
   'Delving':'Em/In','Environmental':'In/Me','Gymnastic':'Ag/Qu','Lore':'Me/Me',
   'Lore: Languages':'Me/Me','Magical Expertise':'-','Medical':'In/Me','Mental Discipline':'Pr/SD',
   'Movement':'Ag/St','Performance Art':'Em/Pr','Power Manipulation':'RS/RS','Science':'Me/Re',
