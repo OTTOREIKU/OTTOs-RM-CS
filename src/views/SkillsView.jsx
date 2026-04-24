@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { rankBonus, getTotalStatBonus } from '../utils/calc.js'
 import skillsData from '../data/skills.json'
@@ -102,8 +102,10 @@ function IconBtn({ onClick, title, active, activeColor = 'var(--accent)', danger
   )
 }
 
-const GRID       = '1fr 54px 34px 50px 50px 50px 62px'  // +Cult column
-const SPELL_GRID = '1fr 54px 34px 52px 56px 64px'       // spell lists: +Cult column (greyed)
+const GRID        = '1fr 54px 34px 50px 50px 50px 62px'   // desktop: all 7 columns
+const NUMS_GRID   = '54px 34px 50px 50px 50px 62px'       // mobile: numbers-only second row
+const SPELL_GRID  = '1fr 54px 34px 52px 56px 64px'        // desktop spell lists
+const SPELL_GRID_M = '1fr 48px 28px 46px 46px 56px'       // mobile spell lists: tightened
 
 export default function SkillsView() {
   const { activeChar, updateCharacter, updateSkill, updateSpellList, removeSpellList,
@@ -115,6 +117,13 @@ export default function SkillsView() {
   const [notesOpen, setNotesOpen] = useState({})    // { [skillKey]: bool }
   const [addOpen, setAddOpen]     = useState({})    // { [skillKey]: { label } | null }
   const [catUnlocked, setCatUnlocked] = useState({}) // { [cat]: bool } — per-category lock
+
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 640)
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth < 640)
+    window.addEventListener('resize', handler)
+    return () => window.removeEventListener('resize', handler)
+  }, [])
 
   const c = activeChar
   if (!c) return <Empty text="No character selected." />
@@ -198,7 +207,7 @@ export default function SkillsView() {
     setAddOpen(p => ({ ...p, [key]: null }))
   }
 
-  function SkillRow({ skill, cs, rowKey, isCustom, customId, catIsUnlocked, cultureGrant }) {
+  function SkillRow({ skill, cs, rowKey, isCustom, customId, catIsUnlocked, cultureGrant, isMobile }) {
     // eslint-disable-next-line no-shadow
     const ranks        = cs.ranks ?? 0
     const cultureRanks = cs.culture_ranks ?? 0
@@ -237,139 +246,171 @@ export default function SkillsView() {
 
     const dispName = displayName(skill.name, label || undefined)
 
+    // Reusable sub-components for the number cells (shared by both layouts)
+    const cultCell = (
+      <div style={{ textAlign: 'center', fontSize: 12 }}
+        title={cultureRanks > 0
+          ? `${cultureRanks} rank${cultureRanks !== 1 ? 's' : ''} from culture (applied)`
+          : cultureGrant
+            ? `${cultureGrant.ranks} rank${cultureGrant.ranks !== 1 ? 's' : ''} from ${c.culture} culture${cultureGrant.choice ? ' (choice — assign manually)' : ' (not yet applied)'}`
+            : 'No culture grant for this skill'
+        }>
+        {cultureRanks > 0
+          ? <span style={{ color: 'var(--accent)', fontWeight: 700 }}>{cultureRanks}</span>
+          : cultureGrant
+            ? <span style={{ color: 'var(--text3)', fontSize: 11 }}>{cultureGrant.ranks}{cultureGrant.choice ? '*' : ''}</span>
+            : null
+        }
+      </div>
+    )
+    const statCell = (
+      <div
+        style={{ textAlign: 'center', color: 'var(--text2)', fontSize: 12 }}
+        title={`Category (${CATEGORY_STATS[skill.category] || '-'}): ${catStatB >= 0 ? '+' : ''}${catStatB}\nSkill (${skill.stat_keys || '-'}): ${skillStatB >= 0 ? '+' : ''}${skillStatB}`}
+      >
+        {combinedStatB >= 0 ? `+${combinedStatB}` : combinedStatB}
+      </div>
+    )
+    const totalCell = (
+      <div style={{ textAlign:'center' }}>
+        <span style={{ fontWeight:700, fontSize:13,
+          color: total > 0 ? 'var(--success)' : total < -10 ? 'var(--danger)' : 'var(--text2)' }}>
+          {total >= 0 ? `+${total}` : total}
+        </span>
+        {autoBonus !== 0 && (
+          <span style={{ display:'block', fontSize:9, color:'var(--purple)', lineHeight:1 }}
+            title={'Talent: '+(autoBonus>0?'+':'')+autoBonus}>
+            T{autoBonus > 0 ? '+' : ''}{autoBonus}
+          </span>
+        )}
+        {isProf && profBonus > 0 && (
+          <span style={{ display:'block', fontSize:9, color:'var(--accent)', lineHeight:1 }}
+            title={`Proficiency bonus +${profBonus} (= ranks, max 30)`}>
+            P+{profBonus}
+          </span>
+        )}
+      </div>
+    )
+
+    // Name cell content (shared)
+    const nameCell = (
+      <div style={{ display: 'flex', alignItems: 'center', gap: 4, minWidth: 0 }}>
+        {catIsUnlocked && (
+          <button
+            onClick={toggleProf}
+            title={isProf ? 'Proficient — click to remove' : 'Click to mark as proficient'}
+            style={{
+              width: 7, height: 7, padding: 0, flexShrink: 0, cursor: 'pointer',
+              border: '1.5px solid ' + (isProf ? 'var(--accent)' : 'var(--text3)'),
+              background: isProf ? 'var(--accent)' : 'transparent',
+              borderRadius: 1,
+            }}
+          />
+        )}
+        {catIsUnlocked && (
+          <IconBtn onClick={() => setEditMode(p => ({ ...p, [rowKey]: !p[rowKey] }))}
+            title={editing ? 'Stop editing name' : 'Edit name/specialization'}
+            active={editing}>
+            <PencilIcon size={11} color={editing ? '#fff' : 'currentColor'} />
+          </IconBtn>
+        )}
+        {catIsUnlocked && editing && isSpec ? (
+          <input
+            autoFocus
+            value={label}
+            onChange={e => setLabel(e.target.value)}
+            placeholder="specialization"
+            style={{
+              flex: 1, minWidth: 0,
+              background: 'var(--surface2)', border: '1px solid var(--accent)',
+              borderRadius: 5, padding: '2px 6px', color: 'var(--text)', fontSize: 12, outline: 'none',
+            }}
+          />
+        ) : (
+          <span style={{
+            flex: 1, minWidth: 0,
+            overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+            color: isProf ? 'var(--accent)' : 'var(--text)',
+          }}>
+            {dispName}
+          </span>
+        )}
+        {/* PROF badge — only visible when category is unlocked (editing mode) */}
+        {catIsUnlocked && isProf && (
+          <span style={{ fontSize: 9, background: 'var(--accent)', color: '#fff', padding: '1px 4px', borderRadius: 3, fontWeight: 700, letterSpacing: '0.04em', flexShrink: 0 }}>PROF</span>
+        )}
+        {catIsUnlocked && isCustom && (
+          <IconBtn onClick={() => removeCustomSkill(customId)} title="Remove this skill" danger>
+            <XIcon size={11} color="currentColor" />
+          </IconBtn>
+        )}
+        {catIsUnlocked && (
+          <IconBtn onClick={() => setAddOpen(p => ({ ...p, [rowKey]: p[rowKey] ? null : { label: '' } }))}
+            title="Add specialization based on this skill"
+            active={addFormOpen}>
+            <PlusIcon size={11} color={addFormOpen ? '#fff' : 'currentColor'} />
+          </IconBtn>
+        )}
+        <IconBtn onClick={() => setNotesOpen(p => ({ ...p, [rowKey]: !p[rowKey] }))}
+          title={noteOpen ? 'Hide notes' : 'Notes'}
+          active={noteOpen}>
+          <NoteIcon size={11} color={notes ? 'var(--accent)' : noteOpen ? '#fff' : 'currentColor'} />
+        </IconBtn>
+      </div>
+    )
+
     return (
       <>
-        <div style={{
-          display: 'grid', gridTemplateColumns: GRID,
-          padding: '5px 14px', gap: 4, alignItems: 'center',
-          fontSize: 13, borderTop: '1px solid var(--border)',
-          background: editing ? 'rgba(99,102,241,0.06)' : 'transparent',
-          transition: 'background 0.15s',
-        }}>
-          {/* Name cell */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4, minWidth: 0 }}>
-            {/* Proficiency toggle — only when category is unlocked */}
-            {catIsUnlocked && (
-              <button
-                onClick={toggleProf}
-                title={isProf ? 'Proficient (+5) — click to remove' : 'Click to mark as proficient (+5)'}
-                style={{
-                  width: 7, height: 7, padding: 0, flexShrink: 0, cursor: 'pointer',
-                  border: '1.5px solid ' + (isProf ? 'var(--accent)' : 'var(--text3)'),
-                  background: isProf ? 'var(--accent)' : 'transparent',
-                  borderRadius: 1,
-                }}
-              />
-            )}
-
-            {catIsUnlocked && (
-              <IconBtn onClick={() => setEditMode(p => ({ ...p, [rowKey]: !p[rowKey] }))}
-                title={editing ? 'Stop editing name' : 'Edit name/specialization'}
-                active={editing}>
-                <PencilIcon size={11} color={editing ? '#fff' : 'currentColor'} />
-              </IconBtn>
-            )}
-
-            {catIsUnlocked && editing && isSpec ? (
-              <input
-                autoFocus
-                value={label}
-                onChange={e => setLabel(e.target.value)}
-                placeholder="specialization"
-                style={{
-                  flex: 1, minWidth: 0,
-                  background: 'var(--surface2)', border: '1px solid var(--accent)',
-                  borderRadius: 5, padding: '2px 6px', color: 'var(--text)', fontSize: 12, outline: 'none',
-                }}
-              />
-            ) : (
-              <span style={{
-                flex: 1, minWidth: 0,
-                overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-                color: isProf ? 'var(--accent)' : 'var(--text)',
-              }}>
-                {dispName}
-              </span>
-            )}
-
-            {isProf && (
-              <span style={{ fontSize: 9, background: 'var(--accent)', color: '#fff', padding: '1px 4px', borderRadius: 3, fontWeight: 700, letterSpacing: '0.04em', flexShrink: 0 }}>PROF</span>
-            )}
-
-            {catIsUnlocked && isCustom && (
-              <IconBtn onClick={() => removeCustomSkill(customId)} title="Remove this skill" danger>
-                <XIcon size={11} color="currentColor" />
-              </IconBtn>
-            )}
-
-            {catIsUnlocked && (
-              <IconBtn onClick={() => setAddOpen(p => ({ ...p, [rowKey]: p[rowKey] ? null : { label: '' } }))}
-                title="Add specialization based on this skill"
-                active={addFormOpen}>
-                <PlusIcon size={11} color={addFormOpen ? '#fff' : 'currentColor'} />
-              </IconBtn>
-            )}
-
-            {/* Note toggle lives in name cell so ranks column stays clean */}
-            <IconBtn onClick={() => setNotesOpen(p => ({ ...p, [rowKey]: !p[rowKey] }))}
-              title={noteOpen ? 'Hide notes' : 'Notes'}
-              active={noteOpen}>
-              <NoteIcon size={11} color={notes ? 'var(--accent)' : noteOpen ? '#fff' : 'currentColor'} />
-            </IconBtn>
+        {isMobile ? (
+          /* ── Mobile: two-row layout ── */
+          <div style={{
+            padding: '6px 14px 4px',
+            fontSize: 13, borderTop: '1px solid var(--border)',
+            background: editing ? 'rgba(99,102,241,0.06)' : 'transparent',
+            transition: 'background 0.15s',
+          }}>
+            {/* Row 1: full-width name */}
+            <div style={{ marginBottom: 4 }}>{nameCell}</div>
+            {/* Row 2: number columns, right-aligned */}
+            <div style={{ display: 'grid', gridTemplateColumns: NUMS_GRID, gap: 4, alignItems: 'center' }}>
+              <input type="number" min={0} value={ranks || ''}
+                onChange={e => setRanks(Number(e.target.value) || 0)}
+                placeholder="0" style={{ padding: '3px 4px' }} />
+              {cultCell}
+              {statCell}
+              <input type="number" value={item || ''} placeholder="0"
+                onChange={e => setItem(Number(e.target.value) || 0)}
+                style={{ padding: '3px 2px' }} />
+              <input type="number" value={talent || ''} placeholder="0"
+                onChange={e => setTalent(Number(e.target.value) || 0)}
+                style={{ padding: '3px 2px' }} />
+              {totalCell}
+            </div>
           </div>
-
-          {/* Ranks — plain input, full width */}
-          <input type="number" min={0} value={ranks || ''}
-            onChange={e => setRanks(Number(e.target.value) || 0)}
-            placeholder="0" style={{ padding: '3px 6px' }} />
-
-          {/* Culture ranks — read-only, shows applied or expected */}
-          <div style={{ textAlign: 'center', fontSize: 12 }}
-            title={cultureRanks > 0
-              ? `${cultureRanks} rank${cultureRanks !== 1 ? 's' : ''} from culture (applied)`
-              : cultureGrant
-                ? `${cultureGrant.ranks} rank${cultureGrant.ranks !== 1 ? 's' : ''} from ${c.culture} culture${cultureGrant.choice ? ' (choice — assign manually)' : ' (not yet applied)'}`
-                : 'No culture grant for this skill'
-            }>
-            {cultureRanks > 0
-              ? <span style={{ color: 'var(--accent)', fontWeight: 700 }}>{cultureRanks}</span>
-              : cultureGrant
-                ? <span style={{ color: 'var(--text3)', fontSize: 11 }}>{cultureGrant.ranks}{cultureGrant.choice ? '*' : ''}</span>
-                : null
-            }
+        ) : (
+          /* ── Desktop: single-row grid ── */
+          <div style={{
+            display: 'grid', gridTemplateColumns: GRID,
+            padding: '5px 14px', gap: 4, alignItems: 'center',
+            fontSize: 13, borderTop: '1px solid var(--border)',
+            background: editing ? 'rgba(99,102,241,0.06)' : 'transparent',
+            transition: 'background 0.15s',
+          }}>
+            {nameCell}
+            <input type="number" min={0} value={ranks || ''}
+              onChange={e => setRanks(Number(e.target.value) || 0)}
+              placeholder="0" style={{ padding: '3px 6px' }} />
+            {cultCell}
+            {statCell}
+            <input type="number" value={item || ''} placeholder="0"
+              onChange={e => setItem(Number(e.target.value) || 0)}
+              style={{ padding: '3px 2px' }} />
+            <input type="number" value={talent || ''} placeholder="0"
+              onChange={e => setTalent(Number(e.target.value) || 0)}
+              style={{ padding: '3px 2px' }} />
+            {totalCell}
           </div>
-
-          <div
-            style={{ textAlign: 'center', color: 'var(--text2)', fontSize: 12 }}
-            title={`Category (${CATEGORY_STATS[skill.category] || '-'}): ${catStatB >= 0 ? '+' : ''}${catStatB}\nSkill (${skill.stat_keys || '-'}): ${skillStatB >= 0 ? '+' : ''}${skillStatB}`}
-          >
-            {combinedStatB >= 0 ? `+${combinedStatB}` : combinedStatB}
-          </div>
-          <input type="number" value={item || ''} placeholder="0"
-            onChange={e => setItem(Number(e.target.value) || 0)}
-            style={{ padding: '3px 2px' }} />
-          <input type="number" value={talent || ''} placeholder="0"
-            onChange={e => setTalent(Number(e.target.value) || 0)}
-            style={{ padding: '3px 2px' }} />
-          <div style={{ textAlign:'center' }}>
-            <span style={{ fontWeight:700, fontSize:13,
-              color: total > 0 ? 'var(--success)' : total < -10 ? 'var(--danger)' : 'var(--text2)' }}>
-              {total >= 0 ? `+${total}` : total}
-            </span>
-            {autoBonus !== 0 && (
-              <span style={{ display:'block', fontSize:9, color:'var(--purple)', lineHeight:1 }}
-                title={'Talent: '+(autoBonus>0?'+':'')+autoBonus}>
-                T{autoBonus > 0 ? '+' : ''}{autoBonus}
-              </span>
-            )}
-            {isProf && profBonus > 0 && (
-              <span style={{ display:'block', fontSize:9, color:'var(--accent)', lineHeight:1 }}
-                title={`Proficiency bonus +${profBonus} (= ranks, max 30)`}>
-                P+{profBonus}
-              </span>
-            )}
-          </div>
-        </div>
+        )}
 
         {/* Notes panel */}
         {noteOpen && (
@@ -444,11 +485,22 @@ export default function SkillsView() {
         <Btn onClick={() => setExpanded({})}>Collapse all</Btn>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: GRID, gap: 4, padding: '4px 14px', marginBottom: 4 }}>
-        {['Skill', 'Ranks', 'Cult', 'Stat', 'Item', 'Other', 'Total'].map((h, i) => (
-          <span key={h} style={{ fontSize: 10, fontWeight: 600, color: i === 2 ? 'var(--accent)' : 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.07em', textAlign: i > 0 ? 'center' : 'left', opacity: i === 2 ? 0.7 : 1 }}>{h}</span>
-        ))}
-      </div>
+      {isMobile ? (
+        <div style={{ display: 'flex', gap: 4, padding: '4px 14px', marginBottom: 4, alignItems: 'center' }}>
+          <span style={{ flex: 1, fontSize: 10, fontWeight: 600, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>Skill</span>
+          <div style={{ display: 'grid', gridTemplateColumns: NUMS_GRID, gap: 4 }}>
+            {['Ranks', 'Cult', 'Stat', 'Item', 'Other', 'Total'].map((h, i) => (
+              <span key={h} style={{ fontSize: 10, fontWeight: 600, color: i === 1 ? 'var(--accent)' : 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.07em', textAlign: 'center', opacity: i === 1 ? 0.7 : 1 }}>{h}</span>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div style={{ display: 'grid', gridTemplateColumns: GRID, gap: 4, padding: '4px 14px', marginBottom: 4 }}>
+          {['Skill', 'Ranks', 'Cult', 'Stat', 'Item', 'Other', 'Total'].map((h, i) => (
+            <span key={h} style={{ fontSize: 10, fontWeight: 600, color: i === 2 ? 'var(--accent)' : 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.07em', textAlign: i > 0 ? 'center' : 'left', opacity: i === 2 ? 0.7 : 1 }}>{h}</span>
+          ))}
+        </div>
+      )}
 
       {categories.map(cat => {
         const skills  = grouped[cat]
@@ -520,11 +572,11 @@ export default function SkillsView() {
               <div style={{ border: '1px solid var(--border)', borderTop: 'none', borderRadius: '0 0 8px 8px', overflow: 'hidden' }}>
                 {filtered.map(skill => {
                   const cs = c.skills?.[skill.name] || {}
-                  return <SkillRow key={skill.name} skill={skill} cs={cs} rowKey={skill.name} isCustom={false} customId={null} catIsUnlocked={isUnlocked} cultureGrant={cultureLookup[skill.name]} />
+                  return <SkillRow key={skill.name} skill={skill} cs={cs} rowKey={skill.name} isCustom={false} customId={null} catIsUnlocked={isUnlocked} cultureGrant={cultureLookup[skill.name]} isMobile={isMobile} />
                 })}
                 {filteredCustoms.map(cs => {
                   const tmpl = cs._template || {}
-                  return <SkillRow key={cs.id} skill={tmpl} cs={cs} rowKey={cs.id} isCustom={true} customId={cs.id} catIsUnlocked={isUnlocked} cultureGrant={cultureLookup[tmpl.name]} />
+                  return <SkillRow key={cs.id} skill={tmpl} cs={cs} rowKey={cs.id} isCustom={true} customId={cs.id} catIsUnlocked={isUnlocked} cultureGrant={cultureLookup[tmpl.name]} isMobile={isMobile} />
                 })}
               </div>
             )}
@@ -532,7 +584,7 @@ export default function SkillsView() {
         )
       })}
 
-      <SpellListsSection c={c} query={query} updateSpellList={updateSpellList} removeSpellList={removeSpellList} updateCharacter={updateCharacter} />
+      <SpellListsSection c={c} query={query} updateSpellList={updateSpellList} removeSpellList={removeSpellList} updateCharacter={updateCharacter} isMobile={isMobile} />
     </div>
   )
 }
@@ -559,7 +611,7 @@ function getSpellListOptions(sub, realm, alreadyAdded) {
   return filtered.sort()
 }
 
-function SpellListsSection({ c, query, updateSpellList, removeSpellList, updateCharacter }) {
+function SpellListsSection({ c, query, updateSpellList, removeSpellList, updateCharacter, isMobile }) {
   const [sectionOpen, setSectionOpen] = useState(false)
   const [expanded, setExpanded]       = useState({ Base: true })
   const [adding, setAdding]           = useState(null) // { sub, name }
@@ -713,7 +765,7 @@ function SpellListsSection({ c, query, updateSpellList, removeSpellList, updateC
                       <SpellListRow key={list.name} list={list}
                         statBonus={totalStatBonus} statLabel={statLabel}
                         updateSpellList={updateSpellList} removeSpellList={removeSpellList}
-                        sub={sub} unlocked={unlocked} />
+                        sub={sub} unlocked={unlocked} isMobile={isMobile} />
                     ))}
                     {isAdding && (() => {
                       const alreadyAdded = new Set(Object.keys(c.spell_lists || {}))
@@ -758,7 +810,7 @@ function SpellListsSection({ c, query, updateSpellList, removeSpellList, updateC
   )
 }
 
-function SpellListRow({ list, statBonus, statLabel, updateSpellList, removeSpellList, sub, unlocked }) {
+function SpellListRow({ list, statBonus, statLabel, updateSpellList, removeSpellList, sub, unlocked, isMobile }) {
   const ranks      = list.ranks ?? 0
   const item       = list.item_bonus ?? 0
   const isProf     = !!list.proficient
@@ -768,61 +820,56 @@ function SpellListRow({ list, statBonus, statLabel, updateSpellList, removeSpell
 
   function upd(patch) { updateSpellList(list.name, { ...patch, category: sub }) }
 
-  return (
-    <div style={{
-      display: 'grid', gridTemplateColumns: SPELL_GRID,
-      padding: '5px 14px', gap: 6, alignItems: 'center',
-      fontSize: 13, borderTop: '1px solid var(--border)',
-    }}>
-      {/* Name + controls */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 4, minWidth: 0 }}>
-        {unlocked && (
-          <button
-            onClick={() => upd({ proficient: !isProf })}
-            title={isProf ? 'Proficient (+5) — click to remove' : 'Mark as proficient (+5)'}
-            style={{
-              width: 7, height: 7, padding: 0, flexShrink: 0, cursor: 'pointer',
-              border: '1.5px solid ' + (isProf ? 'var(--accent)' : 'var(--text3)'),
-              background: isProf ? 'var(--accent)' : 'transparent',
-              borderRadius: 1,
-            }}
-          />
-        )}
-        <span style={{
-          flex: 1, minWidth: 0,
-          overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-          color: isProf ? 'var(--accent)' : 'var(--text)', fontSize: 12,
-        }}>{list.name}</span>
-        {isProf && (
-          <span style={{ fontSize: 9, background: 'var(--accent)', color: '#fff', padding: '1px 4px', borderRadius: 3, fontWeight: 700, letterSpacing: '0.04em', flexShrink: 0 }}>PROF</span>
-        )}
-        {unlocked && (
-          <button
-            onClick={() => removeSpellList(list.name)}
-            onMouseEnter={e => e.currentTarget.style.color = 'var(--danger)'}
-            onMouseLeave={e => e.currentTarget.style.color = 'var(--text3)'}
-            style={{ background: 'none', border: 'none', color: 'var(--text3)', cursor: 'pointer', padding: 2, display: 'flex', alignItems: 'center', flexShrink: 0 }}
-          >
-            <XIcon size={11} color="currentColor" />
-          </button>
-        )}
-      </div>
-      {/* Ranks */}
+  const spellGrid = isMobile ? SPELL_GRID_M : SPELL_GRID
+
+  const spellNameCell = (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 4, minWidth: 0 }}>
+      {unlocked && (
+        <button
+          onClick={() => upd({ proficient: !isProf })}
+          title={isProf ? 'Proficient — click to remove' : 'Mark as proficient'}
+          style={{
+            width: 7, height: 7, padding: 0, flexShrink: 0, cursor: 'pointer',
+            border: '1.5px solid ' + (isProf ? 'var(--accent)' : 'var(--text3)'),
+            background: isProf ? 'var(--accent)' : 'transparent',
+            borderRadius: 1,
+          }}
+        />
+      )}
+      <span style={{
+        flex: 1, minWidth: 0,
+        overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+        color: isProf ? 'var(--accent)' : 'var(--text)', fontSize: 12,
+      }}>{list.name}</span>
+      {/* PROF badge — only when unlocked */}
+      {unlocked && isProf && (
+        <span style={{ fontSize: 9, background: 'var(--accent)', color: '#fff', padding: '1px 4px', borderRadius: 3, fontWeight: 700, letterSpacing: '0.04em', flexShrink: 0 }}>PROF</span>
+      )}
+      {unlocked && (
+        <button
+          onClick={() => removeSpellList(list.name)}
+          onMouseEnter={e => e.currentTarget.style.color = 'var(--danger)'}
+          onMouseLeave={e => e.currentTarget.style.color = 'var(--text3)'}
+          style={{ background: 'none', border: 'none', color: 'var(--text3)', cursor: 'pointer', padding: 2, display: 'flex', alignItems: 'center', flexShrink: 0 }}
+        >
+          <XIcon size={11} color="currentColor" />
+        </button>
+      )}
+    </div>
+  )
+
+  const spellNumCells = (
+    <>
       <input type="number" min={0} value={ranks || ''}
         onChange={e => upd({ ranks: Number(e.target.value) || 0 })}
         placeholder="0" style={{ padding: '3px 4px' }} />
-      {/* Cult — spell lists have no culture grants */}
       <div />
-      {/* Stat bonus (RS×2 + Me) */}
-      <div style={{ textAlign: 'center', color: 'var(--text2)', fontSize: 12 }}
-        title={statLabel}>
+      <div style={{ textAlign: 'center', color: 'var(--text2)', fontSize: 12 }} title={statLabel}>
         {statBonus >= 0 ? `+${statBonus}` : statBonus}
       </div>
-      {/* Item bonus */}
       <input type="number" value={item || ''} placeholder="0"
         onChange={e => upd({ item_bonus: Number(e.target.value) || 0 })}
         style={{ padding: '3px 4px' }} />
-      {/* Total */}
       <div style={{ textAlign: 'center' }}>
         <span style={{ fontWeight: 700, fontSize: 13,
           color: total > 0 ? 'var(--success)' : total < -10 ? 'var(--danger)' : 'var(--text2)' }}>
@@ -833,6 +880,28 @@ function SpellListRow({ list, statBonus, statLabel, updateSpellList, removeSpell
             title={`Proficiency bonus +${profBonus} (= ranks, max 30)`}>P+{profBonus}</span>
         )}
       </div>
+    </>
+  )
+
+  if (isMobile) {
+    return (
+      <div style={{ padding: '6px 14px 4px', fontSize: 13, borderTop: '1px solid var(--border)' }}>
+        <div style={{ marginBottom: 4 }}>{spellNameCell}</div>
+        <div style={{ display: 'grid', gridTemplateColumns: '48px 28px 46px 46px 56px', gap: 4, alignItems: 'center' }}>
+          {spellNumCells}
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div style={{
+      display: 'grid', gridTemplateColumns: spellGrid,
+      padding: '5px 14px', gap: 6, alignItems: 'center',
+      fontSize: 13, borderTop: '1px solid var(--border)',
+    }}>
+      {spellNameCell}
+      {spellNumCells}
     </div>
   )
 }
