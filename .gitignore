@@ -2,6 +2,14 @@ node_modules/
 dist/
 *.xlsx
 xSourcePDFs/
+xcharacterSheets/
 __pycache__/
 *.pyc
+*.png
+*.jpg
+*.jpeg
 .DS_Store
+.claude/
+extract_*.py
+patch_*.py
+scripts/
