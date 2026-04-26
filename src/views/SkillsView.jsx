@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react'
 import { useCharacter } from '../store/CharacterContext.jsx'
-import { rankBonus, getTotalStatBonus } from '../utils/calc.js'
+import { rankBonus, getTotalStatBonus, getTalentBonuses } from '../utils/calc.js'
 import skillsData from '../data/skills.json'
 import skillCosts from '../data/skill_costs.json'
 import talentsData from '../data/talents.json'
@@ -516,6 +516,9 @@ export default function SkillsView() {
   const [catUnlocked, setCatUnlocked] = useState(() =>
     lsGet('rm_skills_unlocked', {})
   )
+  const [spellOpen, setSpellOpen]         = useState(() => lsGet('rm_spells_open', false))
+  const [spellSubExp, setSpellSubExp]     = useState(() => lsGet('rm_spells_sub', { Base: true }))
+  const [spellUnlocked, setSpellUnlocked] = useState(false)
 
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 640)
   useEffect(() => {
@@ -525,6 +528,8 @@ export default function SkillsView() {
   }, [])
   useEffect(() => { lsSet('rm_skills_expanded', expanded) }, [expanded])
   useEffect(() => { lsSet('rm_skills_unlocked', catUnlocked) }, [catUnlocked])
+  useEffect(() => { lsSet('rm_spells_open', spellOpen) }, [spellOpen])
+  useEffect(() => { lsSet('rm_spells_sub', spellSubExp) }, [spellSubExp])
 
   const c = activeChar
   if (!c) return <Empty text="No character selected." />
@@ -618,17 +623,28 @@ export default function SkillsView() {
           <input type="checkbox" checked={showZero} onChange={e => setShowZero(e.target.checked)} style={{ width: 'auto' }} />
           Unranked
         </label>
-        <Btn onClick={() => setExpanded(Object.fromEntries(categories.map(c => [c, true])))}>Expand all</Btn>
-        <Btn onClick={() => setExpanded({})}>Collapse all</Btn>
+        <Btn onClick={() => {
+          setExpanded(Object.fromEntries(categories.map(c => [c, true])))
+          setSpellOpen(true)
+          setSpellSubExp(Object.fromEntries(SPELL_SUBSECTIONS.map(s => [s, true])))
+        }}>Expand all</Btn>
+        <Btn onClick={() => {
+          setExpanded({})
+          setSpellSubExp({})
+        }}>Collapse all</Btn>
         {(() => {
-          const allUnlocked = categories.length > 0 && categories.every(cat => catUnlocked[cat])
+          const allUnlocked = categories.length > 0 && categories.every(cat => catUnlocked[cat]) && spellUnlocked
           return (
             <Btn onClick={() => {
               if (allUnlocked) {
                 setCatUnlocked({})
+                setSpellUnlocked(false)
               } else {
                 setExpanded(Object.fromEntries(categories.map(c => [c, true])))
                 setCatUnlocked(Object.fromEntries(categories.map(c => [c, true])))
+                setSpellOpen(true)
+                setSpellSubExp(Object.fromEntries(SPELL_SUBSECTIONS.map(s => [s, true])))
+                setSpellUnlocked(true)
               }
             }}>
               {allUnlocked ? 'Lock All' : 'Unlock All'}
@@ -747,7 +763,11 @@ export default function SkillsView() {
         )
       })}
 
-      <SpellListsSection c={c} query={query} updateSpellList={updateSpellList} removeSpellList={removeSpellList} updateCharacter={updateCharacter} isMobile={isMobile} />
+      <SpellListsSection c={c} query={query} updateSpellList={updateSpellList} removeSpellList={removeSpellList} updateCharacter={updateCharacter} isMobile={isMobile}
+        sectionOpen={spellOpen} setSectionOpen={setSpellOpen}
+        expanded={spellSubExp} setExpanded={setSpellSubExp}
+        unlocked={spellUnlocked} setUnlocked={setSpellUnlocked}
+      />
     </div>
   )
 }
@@ -774,11 +794,9 @@ function getSpellListOptions(sub, realm, alreadyAdded) {
   return filtered.sort()
 }
 
-function SpellListsSection({ c, query, updateSpellList, removeSpellList, updateCharacter, isMobile }) {
-  const [sectionOpen, setSectionOpen] = useState(false)
-  const [expanded, setExpanded]       = useState({ Base: true })
-  const [adding, setAdding]           = useState(null) // { sub, name }
-  const [unlocked, setUnlocked]       = useState(false)
+function SpellListsSection({ c, query, updateSpellList, removeSpellList, updateCharacter, isMobile,
+  sectionOpen, setSectionOpen, expanded, setExpanded, unlocked, setUnlocked }) {
+  const [adding, setAdding] = useState(null) // { sub, name }
 
   // Resolve casting stat: character override → realm default → null
   const defaultStatFull = REALM_DEFAULT_STAT[c.realm] || null
@@ -793,6 +811,7 @@ function SpellListsSection({ c, query, updateSpellList, removeSpellList, updateC
   const meBonus         = getStatBonus(c, 'Me')
   const totalStatBonus  = rsBonus * 2 + meBonus
   const statLabel       = castStatFull ? `${castStatFull}×2 + Memory` : '— + Memory'
+  const talentSpellBonus = getTalentBonuses(c).spellcasting
 
   const grouped = useMemo(() => {
     const map = Object.fromEntries(SPELL_SUBSECTIONS.map(s => [s, []]))
@@ -856,9 +875,9 @@ function SpellListsSection({ c, query, updateSpellList, removeSpellList, updateC
           </select>
         ) : (
           <span onClick={() => setSectionOpen(o => !o)}
-            title={statLabel}
+            title={statLabel + (talentSpellBonus ? ` + ${talentSpellBonus} talent` : '')}
             style={{ fontSize: 11, color: 'var(--text2)', flexShrink: 0, cursor: 'pointer' }}>
-            {castStatFull ? `${castStatFull}×2+Me` : 'Me'} ({totalStatBonus >= 0 ? '+' : ''}{totalStatBonus})
+            {castStatFull ? `${castStatFull}×2+Me` : 'Me'} ({totalStatBonus >= 0 ? '+' : ''}{totalStatBonus}{talentSpellBonus ? `, T${talentSpellBonus > 0 ? '+' : ''}${talentSpellBonus}` : ''})
           </span>
         )}
 
@@ -927,6 +946,7 @@ function SpellListsSection({ c, query, updateSpellList, removeSpellList, updateC
                     {lists.map(list => (
                       <SpellListRow key={list.name} list={list}
                         statBonus={totalStatBonus} statLabel={statLabel}
+                        talentSpellBonus={talentSpellBonus}
                         updateSpellList={updateSpellList} removeSpellList={removeSpellList}
                         sub={sub} unlocked={unlocked} isMobile={isMobile} />
                     ))}
@@ -973,13 +993,14 @@ function SpellListsSection({ c, query, updateSpellList, removeSpellList, updateC
   )
 }
 
-function SpellListRow({ list, statBonus, statLabel, updateSpellList, removeSpellList, sub, unlocked, isMobile }) {
+function SpellListRow({ list, statBonus, statLabel, talentSpellBonus, updateSpellList, removeSpellList, sub, unlocked, isMobile }) {
   const ranks      = list.ranks ?? 0
   const item       = list.item_bonus ?? 0
   const isProf     = !!list.proficient
   const profBonus  = isProf ? Math.min(ranks, 30) : 0
   const rb         = rankBonus(ranks)
-  const total      = rb + statBonus + item + profBonus
+  const talentB    = talentSpellBonus ?? 0
+  const total      = rb + statBonus + item + profBonus + talentB
 
   function upd(patch) { updateSpellList(list.name, { ...patch, category: sub }) }
 
@@ -1026,7 +1047,10 @@ function SpellListRow({ list, statBonus, statLabel, updateSpellList, removeSpell
       <input type="number" min={0} value={ranks || ''}
         onChange={e => upd({ ranks: Number(e.target.value) || 0 })}
         placeholder="0" style={{ padding: '3px 4px' }} />
-      <div />
+      <div style={{ textAlign: 'center', color: 'var(--text3)', fontSize: 11 }}
+        title={`Rank bonus: ${rb >= 0 ? '+' : ''}${rb}`}>
+        {rb >= 0 ? `+${rb}` : rb}
+      </div>
       <div style={{ textAlign: 'center', color: 'var(--text2)', fontSize: 12 }} title={statLabel}>
         {statBonus >= 0 ? `+${statBonus}` : statBonus}
       </div>
@@ -1041,6 +1065,10 @@ function SpellListRow({ list, statBonus, statLabel, updateSpellList, removeSpell
         {isProf && profBonus > 0 && (
           <span style={{ display: 'block', fontSize: 9, color: 'var(--accent)', lineHeight: 1 }}
             title={`Proficiency bonus +${profBonus} (= ranks, max 30)`}>P+{profBonus}</span>
+        )}
+        {talentB !== 0 && (
+          <span style={{ display: 'block', fontSize: 9, color: 'var(--purple)', lineHeight: 1 }}
+            title={`Talent spellcasting bonus: ${talentB > 0 ? '+' : ''}${talentB}`}>T{talentB > 0 ? '+' : ''}{talentB}</span>
         )}
       </div>
     </>
