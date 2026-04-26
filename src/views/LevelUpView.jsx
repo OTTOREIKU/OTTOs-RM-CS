@@ -14,23 +14,32 @@ const STAT_MAP = {
   Me:'Memory', Pr:'Presence', Qu:'Quickness', Re:'Reasoning',
   SD:'Self Discipline', St:'Strength',
 }
-const REALM_STAT = { Channeling:'Intuition', Essence:'Empathy', Mentalism:'Self Discipline' }
+const REALM_STAT = { Channeling:'Intuition', Essence:'Empathy', Mentalism:'Presence' }
 
 const STEPS = ['Stats', 'Skills', 'Spells', 'Review']
 
 // ── Cost parsing ──────────────────────────────────────────────────────────────
-function parseCost(costStr, isProf) {
-  if (!costStr || costStr === '?/?') return isProf ? 3 : 5
-  const parts = costStr.split('/')
-  const normal = parseInt(parts[0]) || 5
-  const hard   = parseInt(parts[1]) || normal * 2
-  return isProf ? normal : hard
+// Per CoreLaw p.85: "x/y" means 1st rank costs x DP, 2nd rank costs y DP per level.
+// No more than 2 ranks of any skill may be purchased each level.
+function parseSkillCosts(costStr) {
+  if (!costStr || costStr === '?/?') return { first: 5, second: 8 }
+  const [a, b] = costStr.split('/')
+  const first  = parseInt(a) || 5
+  const second = parseInt(b) || first * 2
+  return { first, second }
 }
 
-function getSkillCostForChar(skill, profession) {
+function getSkillCostsForChar(skill, profession) {
   const costStr = skillCosts[skill.category]?.[profession] || skill.dev_cost
-  const isProf  = skill.prof_type === 'Professional' || skill.prof_type === 'Knack'
-  return parseCost(costStr, isProf)
+  return parseSkillCosts(costStr)
+}
+
+// Net DP change when moving from `from` ranks to `to` ranks purchased this level.
+// Negative = refund (e.g. removing a rank).
+function rankCostDelta(from, to, costs) {
+  const oldCost = (from >= 1 ? costs.first : 0) + (from >= 2 ? costs.second : 0)
+  const newCost = (to   >= 1 ? costs.first : 0) + (to   >= 2 ? costs.second : 0)
+  return newCost - oldCost
 }
 
 function getSpellCostForChar(listName, list, profession) {
@@ -45,7 +54,7 @@ function getSpellCostForChar(listName, list, profession) {
 
 // ── Reducer for level-up state ────────────────────────────────────────────────
 function initLevelUp(char) {
-  const dp = professionDP[char.profession] ?? 45
+  const dp = 60  // CoreLaw p.85: all characters receive 60 DP per level regardless of profession
   return {
     step: 0,
     statGains:   Object.fromEntries(STATS.map(s => [s, 0])),  // temp gains
@@ -77,10 +86,9 @@ function reducer(state, action) {
     }
     case 'SKILL_BUY': {
       const oldRanks = state.skillBuys[action.name] || 0
-      const cost     = action.cost
-      const delta    = action.ranks - oldRanks
-      const dpNew    = state.dpSpent + delta * cost
-      if (dpNew < 0 || dpNew > state.dpTotal || action.ranks < 0) return state
+      const dpDelta  = rankCostDelta(oldRanks, action.ranks, action.costs)
+      const dpNew    = state.dpSpent + dpDelta
+      if (dpNew < 0 || dpNew > state.dpTotal || action.ranks < 0 || action.ranks > 2) return state
       const skillBuys = { ...state.skillBuys, [action.name]: action.ranks }
       if (action.ranks === 0) delete skillBuys[action.name]
       return { ...state, skillBuys, dpSpent: dpNew }
@@ -282,8 +290,8 @@ function SkillStep({ c, lu, dispatch, skillSearch, setSkillSearch, dpLeft }) {
   return (
     <div>
       <InfoBox>
-        Each rank costs DP equal to the profession cost. You can buy <strong>up to 3 ranks</strong> per skill per level.
-        Professional skills cost less; non-professional skills cost more.
+        Each skill shows <strong>x/y DP</strong> — the 1st rank costs x, the 2nd costs y. Max <strong>2 ranks</strong> per skill per level (CoreLaw p.85).
+        Costs are lower for professions where the skill is core.
       </InfoBox>
       <div style={{ display: 'flex', gap: 8, marginBottom: 12, alignItems: 'center' }}>
         <input type="text" placeholder="Search skills…" value={skillSearch} onChange={e => setSkillSearch(e.target.value)} style={{ flex: 1 }} />
@@ -310,13 +318,14 @@ function SkillStep({ c, lu, dispatch, skillSearch, setSkillSearch, dpLeft }) {
             {isOpen && (
               <div style={{ border: '1px solid var(--border)', borderTop: 'none', borderRadius: '0 0 7px 7px', overflow: 'hidden' }}>
                 {filtered.map((skill, idx) => {
-                  const cost     = getSkillCostForChar(skill, c.profession)
+                  const costs    = getSkillCostsForChar(skill, c.profession)
                   const curRanks = c.skills?.[skill.name]?.ranks || 0
                   const buying   = lu.skillBuys[skill.name] || 0
                   const newRanks = curRanks + buying
                   const curBonus = rankBonus(curRanks)
                   const newBonus = rankBonus(newRanks)
-                  const canAfford1 = dpLeft >= cost
+                  const nextCost = buying === 0 ? costs.first : costs.second
+                  const canAfford1 = dpLeft >= nextCost
 
                   return (
                     <div key={skill.name} style={{
@@ -326,14 +335,14 @@ function SkillStep({ c, lu, dispatch, skillSearch, setSkillSearch, dpLeft }) {
                     }}>
                       <div>
                         <span>{skill.name}</span>
-                        <span style={{ marginLeft: 6, fontSize: 10, color: 'var(--text3)' }}>{cost} DP/rank · cur {curRanks} ranks</span>
+                        <span style={{ marginLeft: 6, fontSize: 10, color: 'var(--text3)' }}>{costs.first}/{costs.second} DP · cur {curRanks} ranks</span>
                       </div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                        <button onClick={() => buying > 0 && dispatch({ type: 'SKILL_BUY', name: skill.name, ranks: buying - 1, cost })}
+                        <button onClick={() => buying > 0 && dispatch({ type: 'SKILL_BUY', name: skill.name, ranks: buying - 1, costs })}
                           style={pmBtn(buying > 0)}>−</button>
                         <span style={{ width: 20, textAlign: 'center', fontWeight: 700, color: buying > 0 ? 'var(--accent)' : 'var(--text2)' }}>{buying}</span>
-                        <button onClick={() => buying < 3 && canAfford1 && dispatch({ type: 'SKILL_BUY', name: skill.name, ranks: buying + 1, cost })}
-                          style={pmBtn(buying < 3 && canAfford1)}>+</button>
+                        <button onClick={() => buying < 2 && canAfford1 && dispatch({ type: 'SKILL_BUY', name: skill.name, ranks: buying + 1, costs })}
+                          style={pmBtn(buying < 2 && canAfford1)}>+</button>
                       </div>
                       <div style={{ fontSize: 11, color: 'var(--text2)' }}>
                         Bonus: <span style={{ color: buying > 0 ? 'var(--success)' : 'var(--text2)', fontWeight: buying > 0 ? 700 : 400 }}>
@@ -342,7 +351,7 @@ function SkillStep({ c, lu, dispatch, skillSearch, setSkillSearch, dpLeft }) {
                         </span>
                       </div>
                       <div style={{ fontSize: 11, color: buying > 0 ? 'var(--warning)' : 'var(--text3)' }}>
-                        {buying > 0 ? `−${buying * cost} DP` : ''}
+                        {buying > 0 ? `−${rankCostDelta(0, buying, costs)} DP` : ''}
                       </div>
                     </div>
                   )
@@ -371,7 +380,7 @@ function SpellStep({ c, lu, dispatch, spellSearch, setSpellSearch, spellRealm, s
   return (
     <div>
       <InfoBox>
-        Spell list ranks cost DP based on list type: Base (4), Open (6), Closed (8), Evil (12). Max 1 new rank per list per level.
+        Spell list ranks cost DP based on list type: Base (4), Open (6), Closed (8), Evil (12). Max <strong>2 ranks</strong> per list per level — same rule as all skills (CoreLaw p.85).
       </InfoBox>
       <div style={{ display: 'flex', gap: 8, marginBottom: 8, flexWrap: 'wrap', alignItems: 'center' }}>
         <input type="text" placeholder="Search spell lists…" value={spellSearch} onChange={e => setSpellSearch(e.target.value)} style={{ flex: 1, minWidth: 140 }} />
@@ -415,8 +424,8 @@ function SpellStep({ c, lu, dispatch, spellSearch, setSpellSearch, spellRealm, s
               <button onClick={() => buying > 0 && dispatch({ type: 'SPELL_BUY', name, ranks: buying - 1, cost })}
                 style={pmBtn(buying > 0)}>−</button>
               <span style={{ width: 20, textAlign: 'center', fontWeight: 700, color: buying > 0 ? 'var(--accent)' : 'var(--text2)' }}>{buying}</span>
-              <button onClick={() => buying < 1 && canAfford && dispatch({ type: 'SPELL_BUY', name, ranks: buying + 1, cost })}
-                style={pmBtn(buying < 1 && canAfford)}>+</button>
+              <button onClick={() => buying < 2 && canAfford && dispatch({ type: 'SPELL_BUY', name, ranks: buying + 1, cost })}
+                style={pmBtn(buying < 2 && canAfford)}>+</button>
             </div>
             <div style={{ fontSize: 11, color: buying > 0 ? 'var(--warning)' : 'var(--text3)', textAlign: 'right' }}>
               {buying > 0 ? `−${buying * cost} DP` : ''}
@@ -462,9 +471,9 @@ function ReviewStep({ c, lu, onConfirm }) {
       {skillChanges.length > 0 && (
         <Section title={`Skill Ranks (${skillChanges.length} skills)`}>
           {skillChanges.map(([name, ranks]) => {
-            const cost = getSkillCostForChar(skillsData.find(s => s.name === name) || {}, c.profession)
-            const cur  = c.skills?.[name]?.ranks || 0
-            return <Row key={name} label={name} value={`+${ranks} ranks (${cur} → ${cur + ranks}) · −${ranks * cost} DP`} color="var(--accent)" />
+            const costs = getSkillCostsForChar(skillsData.find(s => s.name === name) || {}, c.profession)
+            const cur   = c.skills?.[name]?.ranks || 0
+            return <Row key={name} label={name} value={`+${ranks} rank${ranks > 1 ? 's' : ''} (${cur} → ${cur + ranks}) · −${rankCostDelta(0, ranks, costs)} DP`} color="var(--accent)" />
           })}
         </Section>
       )}
