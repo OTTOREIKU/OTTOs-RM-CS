@@ -16,7 +16,7 @@ const STAT_MAP = {
 }
 const REALM_STAT = { Channeling:'Intuition', Essence:'Empathy', Mentalism:'Presence' }
 
-const STEPS = ['Stats', 'Skills', 'Spells', 'Review']
+const STEPS = ['Stats', 'Skills & Spells', 'Review']
 
 // ── Cost parsing ──────────────────────────────────────────────────────────────
 // Per CoreLaw p.85: "x/y" means 1st rank costs x DP, 2nd rank costs y DP per level.
@@ -245,18 +245,16 @@ export default function LevelUpView() {
         </div>
       )}
 
-      {/* ── Step 1: Skills ── */}
+      {/* ── Step 1: Skills & Spells ── */}
       {step === 1 && (
-        <SkillStep c={c} lu={lu} dispatch={dispatch} skillSearch={skillSearch} setSkillSearch={setSkillSearch} dpLeft={dpLeft} />
+        <SkillStep c={c} lu={lu} dispatch={dispatch}
+          skillSearch={skillSearch} setSkillSearch={setSkillSearch} dpLeft={dpLeft}
+          spellSearch={spellSearch} setSpellSearch={setSpellSearch}
+          spellRealm={spellRealm} setSpellRealm={setSpellRealm} />
       )}
 
-      {/* ── Step 2: Spells ── */}
+      {/* ── Step 2: Review ── */}
       {step === 2 && (
-        <SpellStep c={c} lu={lu} dispatch={dispatch} spellSearch={spellSearch} setSpellSearch={setSpellSearch} spellRealm={spellRealm} setSpellRealm={setSpellRealm} dpLeft={dpLeft} />
-      )}
-
-      {/* ── Step 3: Review ── */}
-      {step === 3 && (
         <ReviewStep c={c} lu={lu} onConfirm={applyLevelUp} />
       )}
 
@@ -273,7 +271,8 @@ export default function LevelUpView() {
 }
 
 // ── Skill step ────────────────────────────────────────────────────────────────
-function SkillStep({ c, lu, dispatch, skillSearch, setSkillSearch, dpLeft }) {
+function SkillStep({ c, lu, dispatch, skillSearch, setSkillSearch, dpLeft,
+                     spellSearch, setSpellSearch, spellRealm, setSpellRealm }) {
   const query = skillSearch.toLowerCase()
   const grouped = useMemo(() => {
     const map = {}
@@ -361,12 +360,17 @@ function SkillStep({ c, lu, dispatch, skillSearch, setSkillSearch, dpLeft }) {
           </div>
         )
       })}
+
+      {/* ── Spell Lists section ── */}
+      <SpellListsSection c={c} lu={lu} dispatch={dispatch} dpLeft={dpLeft}
+        spellSearch={spellSearch} setSpellSearch={setSpellSearch}
+        spellRealm={spellRealm} setSpellRealm={setSpellRealm} />
     </div>
   )
 }
 
-// ── Spell step ────────────────────────────────────────────────────────────────
-function SpellStep({ c, lu, dispatch, spellSearch, setSpellSearch, spellRealm, setSpellRealm, dpLeft }) {
+// ── Spell lists section (embedded at bottom of SkillStep) ─────────────────────
+function SpellListsSection({ c, lu, dispatch, dpLeft, spellSearch, setSpellSearch, spellRealm, setSpellRealm }) {
   const query = spellSearch.toLowerCase()
   const REALMS = ['All', 'Channeling', 'Essence', 'Mentalism', 'Hybrid']
   const REALM_COLOR = { Channeling:'#f59e0b', Essence:'#4c8bf5', Mentalism:'#8b5cf6', Hybrid:'#22c55e' }
@@ -378,9 +382,14 @@ function SpellStep({ c, lu, dispatch, spellSearch, setSpellSearch, spellRealm, s
   }), [spellRealm, query])
 
   return (
-    <div>
+    <div style={{ marginTop: 16 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+        <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
+        <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Spell Lists</span>
+        <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
+      </div>
       <InfoBox>
-        Spell list ranks cost DP based on list type: Base (4), Open (6), Closed (8), Evil (12). Max <strong>2 ranks</strong> per list per level — same rule as all skills (CoreLaw p.85).
+        Spell list costs: Base (4), Open (6), Closed (8), Evil (12) DP per rank. Max <strong>2 ranks</strong> per list per level. Buy new lists here too — they'll be added to your character on confirm.
       </InfoBox>
       <div style={{ display: 'flex', gap: 8, marginBottom: 8, flexWrap: 'wrap', alignItems: 'center' }}>
         <input type="text" placeholder="Search spell lists…" value={spellSearch} onChange={e => setSpellSearch(e.target.value)} style={{ flex: 1, minWidth: 140 }} />

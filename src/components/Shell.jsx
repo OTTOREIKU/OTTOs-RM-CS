@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useCharacter } from '../store/CharacterContext.jsx'
-import { exportCharacter, exportAllCharacters, importCharactersFromFile } from '../store/characters.js'
+import { exportCharacter, importCharactersFromFile } from '../store/characters.js'
 import { SwordsIcon, ChevronDownIcon } from './Icons.jsx'
 import { getBaseHits, getPowerPoints } from '../utils/calc.js'
 
@@ -35,9 +35,9 @@ export default function Shell({ children }) {
     navigate('/')
   }
 
-  function handleExportOne(id, e) {
+  function handleExport(e) {
     e.stopPropagation()
-    exportCharacter(id)
+    if (activeId) exportCharacter(activeId)
   }
 
   async function handleImport(e) {
@@ -132,14 +132,6 @@ export default function Shell({ children }) {
                         Level {ch.level} {ch.profession} · {ch.race}
                       </div>
                     </div>
-                    {/* Export single character */}
-                    <button onClick={e => handleExportOne(ch.id, e)} title="Export character" style={{
-                      background: 'none', border: 'none', color: 'var(--text3)',
-                      cursor: 'pointer', padding: '2px 5px', borderRadius: 4, fontSize: 12,
-                    }}
-                      onMouseEnter={e => e.currentTarget.style.color = 'var(--accent)'}
-                      onMouseLeave={e => e.currentTarget.style.color = 'var(--text3)'}
-                    >↓</button>
                     <button onClick={e => handleDelete(ch.id, e)} style={{
                       background: 'none', border: 'none', color: 'var(--text3)',
                       cursor: 'pointer', padding: '2px 4px', borderRadius: 4, fontSize: 12,
@@ -165,13 +157,12 @@ export default function Shell({ children }) {
                       border: '1px solid var(--border)', borderRadius: 7, padding: '7px 10px',
                       fontSize: 12, cursor: 'pointer', fontWeight: 500,
                     }}>Import</button>
-                    {/* Export all */}
-                    {charList.length > 0 && (
-                      <button onClick={e => { e.stopPropagation(); exportAllCharacters() }} style={{
+                    {activeId && (
+                      <button onClick={handleExport} style={{
                         flex: 1, background: 'var(--surface2)', color: 'var(--text2)',
                         border: '1px solid var(--border)', borderRadius: 7, padding: '7px 10px',
                         fontSize: 12, cursor: 'pointer', fontWeight: 500,
-                      }}>Export All</button>
+                      }}>Export</button>
                     )}
                   </div>
 
