@@ -793,7 +793,7 @@ function StarredSkillsPanel({ c }) {
       if (!template) continue
       const total = computeSkillTotal(c, template, skillData, talentBonusMap)
       const ranks = (skillData.ranks ?? 0) + (skillData.culture_ranks ?? 0)
-      result.push({ name: skillName, total, ranks, notes: skillData.notes })
+      result.push({ name: displaySkillName(skillName, skillData.label), total, ranks, notes: skillData.notes })
     }
     for (const cs of (c.custom_skills || [])) {
       if (!cs.starred) continue
