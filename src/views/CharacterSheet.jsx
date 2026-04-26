@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react'
 import { ChevronDownIcon, ChevronUpIcon } from '../components/Icons.jsx'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { STATS } from '../store/characters.js'
-import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getBaseHits, getEndurance, getPowerPoints } from '../utils/calc.js'
+import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getBaseHits, getEndurance, getPowerPoints, getTalentBonuses } from '../utils/calc.js'
 import races from '../data/races.json'
 import professions from '../data/professions.json'
 import cultures from '../data/cultures.json'
@@ -322,6 +322,7 @@ export default function CharacterSheet() {
   const ini = getInitiativeBonus(c)
   const realmStat = REALM_STAT[c.realm]
   const rrBonuses = getResistanceBonuses(c)
+  const talentB   = getTalentBonuses(c)
 
   // Auto-calculated derived stats (shown as placeholder when field is null / not overridden)
   const autoHitsMax    = getBaseHits(c)
@@ -397,8 +398,8 @@ export default function CharacterSheet() {
       {/* Derived stats row */}
       <Card title="Derived Stats">
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(110px,1fr))', gap: 8 }}>
-          <StatCard label="Def Bonus" value={fmt(db)} color={db > 0 ? 'var(--success)' : 'var(--text)'} sub="Qu×3" />
-          <StatCard label="Initiative" value={fmt(ini)} color={ini > 0 ? 'var(--accent)' : 'var(--text)'} sub="Qu bonus" />
+          <StatCard label="Def Bonus" value={fmt(db)} color={db > 0 ? 'var(--success)' : 'var(--text)'} sub={talentB.db ? `Qu×3 + ${talentB.db} talent` : 'Qu×3'} />
+          <StatCard label="Initiative" value={fmt(ini)} color={ini > 0 ? 'var(--accent)' : 'var(--text)'} sub={talentB.initiative ? `Qu + ${talentB.initiative} talent` : 'Qu bonus'} />
           <EditStat label="Max Hits"  field="hits_max"             char={c} onUpdate={updateCharacter} autoValue={autoHitsMax}
             sub="BD ranks × Co" />
           <EditStat label="Hits"      field="hits_current"         char={c} onUpdate={updateCharacter} autoValue={effHitsMax}

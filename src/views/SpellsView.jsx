@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { ChevronDownIcon, ChevronUpIcon } from '../components/Icons.jsx'
-import { rankBonus, getTotalStatBonus } from '../utils/calc.js'
+import { rankBonus, getTotalStatBonus, getTalentBonuses } from '../utils/calc.js'
 import spellLists from '../data/spell_lists.json'
 import spellDescs from '../data/spell_descriptions.json'
 
@@ -68,7 +68,8 @@ export default function SpellsView() {
     const rStatName = c?.spell_cast_stat ?? REALM_STAT[spellLists[name]?.realm ?? c?.realm]
     const rsB    = rStatName && c?.stats?.[rStatName] ? getTotalStatBonus(c.stats[rStatName]) : 0
     const meB    = c?.stats?.Memory ? getTotalStatBonus(c.stats.Memory) : 0
-    return rb + rsB * 2 + meB
+    const talentSpell = c ? getTalentBonuses(c).spellcasting : 0
+    return rb + rsB * 2 + meB + talentSpell
   }
 
   const display = tab === 'myspells' ? myLists : filteredLists

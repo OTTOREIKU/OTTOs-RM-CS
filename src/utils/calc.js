@@ -1,6 +1,36 @@
 // Derived stat calculations for Rolemaster Unified
 import statBonuses from '../data/stat_bonuses.json'
 import racesData   from '../data/races.json'
+import talentsData from '../data/talents.json'
+
+// Aggregate all non-skill talent bonuses from a character's talent list.
+// Returns: { spellcasting, db, hits, initiative, endurance, rr: { [realm]: bonus } }
+export function getTalentBonuses(char) {
+  const result = { spellcasting: 0, db: 0, hits: 0, initiative: 0, endurance: 0, rr: {} }
+  for (const inst of (char.talents || [])) {
+    const def = talentsData.find(t => t.id === inst.talent_id)
+    if (!def?.effects) continue
+    for (const eff of def.effects) {
+      const val = eff.per_tier != null ? eff.per_tier * inst.tier : (eff.flat ?? 0)
+      if (!val) continue
+      switch (eff.type) {
+        case 'spellcasting_bonus': result.spellcasting += val; break
+        case 'db_bonus':          result.db          += val; break
+        case 'hits_bonus':        result.hits        += val; break
+        case 'initiative_bonus':  result.initiative  += val; break
+        case 'endurance_bonus':   result.endurance   += val; break
+        case 'rr_bonus': {
+          const realm = eff.realm === 'param'
+            ? (inst.param || '').toLowerCase()
+            : (eff.realm || '')
+          if (realm) result.rr[realm] = (result.rr[realm] ?? 0) + val
+          break
+        }
+      }
+    }
+  }
+  return result
+}
 
 export function getStatBonus(value) {
   const v = Math.max(1, Math.min(100, Math.round(value || 0)))
@@ -16,12 +46,15 @@ export function getTotalStatBonus(stat) {
 export function getDefensiveBonus(char) {
   const qu = char.stats?.Quickness
   const quBonus = qu ? getTotalStatBonus(qu) : 0
-  return quBonus * 3
+  const talentDB = getTalentBonuses(char).db
+  return quBonus * 3 + talentDB
 }
 
 export function getInitiativeBonus(char) {
   const qu = char.stats?.Quickness
-  return qu ? getTotalStatBonus(qu) : 0
+  const quBonus = qu ? getTotalStatBonus(qu) : 0
+  const talentIni = getTalentBonuses(char).initiative
+  return quBonus + talentIni
 }
 
 export function getRankBonus(ranks) {
@@ -124,12 +157,13 @@ export function getResistanceBonuses(char) {
     physical:   'Constitution',
     fear:       'Self Discipline',
   }
+  const talentRR = getTalentBonuses(char).rr
   const result = {}
   for (const [type, statName] of Object.entries(RR_STATS)) {
     const stat = char.stats?.[statName]
     const statB = stat ? getTotalStatBonus(stat) : 0
     const special = char.rr_bonuses?.[type] ?? 0
-    result[type] = statB + lvlBonus + special
+    result[type] = statB + lvlBonus + special + (talentRR[type] ?? 0)
   }
   return result
 }
@@ -150,7 +184,8 @@ export function getSpellCastingBonus(char, listName) {
   const statBonus = statName && char.stats?.[statName]
     ? getTotalStatBonus(char.stats[statName])
     : 0
-  return rb + statBonus
+  const talentSpell = getTalentBonuses(char).spellcasting
+  return rb + statBonus + talentSpell
 }
 
 export function getBaseHits(char) {
@@ -170,7 +205,8 @@ export function getBaseHits(char) {
   const itemB     = bdSkill.item_bonus   ?? 0
   const talentB   = bdSkill.talent_bonus ?? 0
   const profB     = bdSkill.proficient ? Math.min(bdRanks, 30) : 0
-  return racialBase + rb + statBonus + itemB + talentB + profB
+  const talentHits = getTalentBonuses(char).hits
+  return racialBase + rb + statBonus + itemB + talentB + profB + talentHits
 }
 
 export function getEndurance(char) {

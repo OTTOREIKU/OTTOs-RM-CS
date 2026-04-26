@@ -52,12 +52,29 @@ function tierCost(def, tier) {
 
 function effectSummary(def, inst) {
   const parts = []
+  const seen = new Set()
   for (const eff of (def.effects || [])) {
-    if (eff.type !== 'skill_talent_bonus') continue
-    const skill = eff.skill === 'param' ? inst.param : eff.skill
-    if (!skill) continue
     const val = eff.per_tier != null ? eff.per_tier * inst.tier : (eff.flat ?? 0)
-    if (val !== 0) parts.push((val > 0 ? '+' : '') + val + ' to ' + skill)
+    if (!val) continue
+    const s = val > 0 ? `+${val}` : String(val)
+    switch (eff.type) {
+      case 'skill_talent_bonus': {
+        const skill = eff.skill === 'param' ? inst.param : eff.skill
+        if (skill) parts.push(s + ' to ' + skill)
+        break
+      }
+      case 'spellcasting_bonus': parts.push(s + ' Spellcasting'); break
+      case 'db_bonus':           parts.push(s + ' DB'); break
+      case 'hits_bonus':         parts.push(s + ' base hits'); break
+      case 'initiative_bonus':   parts.push(s + ' Initiative'); break
+      case 'endurance_bonus':    parts.push(s + ' Endurance rolls'); break
+      case 'rr_bonus': {
+        const realm = eff.realm === 'param' ? (inst.param || 'realm') : eff.realm
+        const key = `rr_${realm}`
+        if (!seen.has(key)) { seen.add(key); parts.push(s + ' ' + realm + ' RR') }
+        break
+      }
+    }
   }
   return parts.join(', ')
 }
@@ -481,7 +498,7 @@ function TalentsCard({ activeChar, addTalent, removeTalent }) {
                 </div>
               )}
 
-              {configuring.effects?.some(e=>e.type==='skill_talent_bonus') && (configParam || !configuring.param) && (
+              {configuring.effects?.some(e=>e.type!==undefined) && configuring.effects.length > 0 && (configParam || !configuring.param) && (
                 <div style={{marginBottom:10,padding:'6px 8px',background:'rgba(139,92,246,0.1)',borderRadius:6,fontSize:12,color:'var(--purple)'}}>
                   Auto-applies: {effectSummary(configuring,{tier:configTier,param:configParam}) || 'none'}
                 </div>
