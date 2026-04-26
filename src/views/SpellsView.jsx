@@ -61,15 +61,19 @@ export default function SpellsView() {
     c ? Object.entries(spellLists).filter(([name]) => (c.spell_lists?.[name]?.ranks ?? 0) > 0) : [],
   [c])
 
+  const talentSpell = c ? getTalentBonuses(c).spellcasting : 0
   function ranks(name)  { return c?.spell_lists?.[name]?.ranks ?? 0 }
   function bonus(name)  {
-    const rb     = rankBonus(ranks(name))
+    const r      = ranks(name)
+    const rb     = rankBonus(r)
+    const d      = c?.spell_lists?.[name] || {}
+    const item   = d.item_bonus ?? 0
+    const profB  = d.proficient ? Math.min(r, 30) : 0
     // RS×2 + Me: Power Manipulation category (RS/RS) + individual skill stat (Me)
     const rStatName = c?.spell_cast_stat ?? REALM_STAT[spellLists[name]?.realm ?? c?.realm]
     const rsB    = rStatName && c?.stats?.[rStatName] ? getTotalStatBonus(c.stats[rStatName]) : 0
     const meB    = c?.stats?.Memory ? getTotalStatBonus(c.stats.Memory) : 0
-    const talentSpell = c ? getTalentBonuses(c).spellcasting : 0
-    return rb + rsB * 2 + meB + talentSpell
+    return rb + rsB * 2 + meB + item + profB + talentSpell
   }
 
   const display = tab === 'myspells' ? myLists : filteredLists
