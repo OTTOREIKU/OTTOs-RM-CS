@@ -773,7 +773,8 @@ function SpellListsPanel({ c }) {
   const lists = Object.entries(c.spell_lists || {})
   if (!lists.length) return null
 
-  // Formula: rankBonus + RS×2 + Me + itemBonus + profBonus  (must match SkillsView SpellListRow)
+  // Formula: rankBonus + RS×2 + Me + itemBonus + profBonus + talentSpell  (must match SkillsView SpellListRow)
+  const talentSpellB = getTalentBonuses(c).spellcasting
   function castingBonus(listName, data) {
     const d       = typeof data === 'object' ? data : {}
     const ranks   = typeof data === 'number' ? data : (d.ranks ?? 0)
@@ -787,7 +788,7 @@ function SpellListsPanel({ c }) {
     const rsB     = rsName && c.stats?.[rsName] ? getTotalStatBonus(c.stats[rsName]) : 0
     const meB     = c.stats?.Memory ? getTotalStatBonus(c.stats.Memory) : 0
     const statB   = rsB * 2 + meB
-    return { ranks, rb, statB, item, profB, total: rb + statB + item + profB }
+    return { ranks, rb, statB, item, profB, talentB: talentSpellB, total: rb + statB + item + profB + talentSpellB }
   }
 
   const grouped = {}
@@ -820,11 +821,12 @@ function SpellListsPanel({ c }) {
                 <span style={{textAlign:'center'}}>Total</span>
               </div>
               {subLists.map(([name, data]) => {
-                const { ranks, rb, statB, item, profB, total } = castingBonus(name, data)
-                const other = item + profB
+                const { ranks, rb, statB, item, profB, talentB, total } = castingBonus(name, data)
+                const other = item + profB + talentB
                 const otherTip = [
-                  item  ? `Item: +${item}` : null,
-                  profB ? `Prof: +${profB}` : null,
+                  item    ? `Item: +${item}`     : null,
+                  profB   ? `Prof: +${profB}`    : null,
+                  talentB ? `Talent: ${talentB > 0 ? '+' : ''}${talentB}` : null,
                 ].filter(Boolean).join(' + ') || 'no bonus'
                 return (
                   <div key={name} style={{ display: 'grid', gridTemplateColumns: '1fr 40px 40px 40px 40px 54px',
