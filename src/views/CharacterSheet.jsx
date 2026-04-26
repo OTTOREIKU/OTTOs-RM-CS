@@ -27,6 +27,14 @@ const ARMOR_PART_LABELS = { torso: 'Torso', head: 'Head', arms: 'Arms', legs: 'L
 
 // Starred skills helpers
 const skillsDataMap = Object.fromEntries(skillsData.map(s => [s.name, s]))
+
+// Resolve display name for a skill/custom skill — matches SkillsView displayName logic.
+// If template has <placeholder>, the label replaces it; otherwise ": label" is appended.
+function displaySkillName(templateName, label) {
+  if (!label) return templateName
+  if (/<[^>]+>/.test(templateName)) return templateName.replace(/<[^>]+>/, label)
+  return `${templateName}: ${label}`
+}
 const SKILL_CATEGORY_STATS = {
   'Animal':'Ag/Em','Awareness':'In/Re','Battle Expertise':'-','Body Discipline':'Co/SD',
   'Brawn':'Co/SD','Combat Expertise':'-','Combat Training':'Ag/St','Composition':'Em/In','Crafting':'Ag/Me',
@@ -400,18 +408,80 @@ export default function CharacterSheet() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(110px,1fr))', gap: 8 }}>
           <StatCard label="Def Bonus" value={fmt(db)} color={db > 0 ? 'var(--success)' : 'var(--text)'} sub={talentB.db ? `Qu×3 + ${talentB.db} talent` : 'Qu×3'} />
           <StatCard label="Initiative" value={fmt(ini)} color={ini > 0 ? 'var(--accent)' : 'var(--text)'} sub={talentB.initiative ? `Qu + ${talentB.initiative} talent` : 'Qu bonus'} />
-          <EditStat label="Max Hits"  field="hits_max"             char={c} onUpdate={updateCharacter} autoValue={autoHitsMax}
-            sub="BD ranks × Co" />
-          <EditStat label="Hits"      field="hits_current"         char={c} onUpdate={updateCharacter} autoValue={effHitsMax}
-            danger={c.hits_current != null && effHitsMax && c.hits_current / effHitsMax < 0.3} />
-          <EditStat label="Max PP"    field="power_points_max"     char={c} onUpdate={updateCharacter} autoValue={autoPPMax}
-            sub="PD ranks × RS" />
-          <EditStat label="PP"        field="power_points_current" char={c} onUpdate={updateCharacter} autoValue={effPPMax} />
-          <EditStat label="Endurance" field="endurance"            char={c} onUpdate={updateCharacter} autoValue={autoEndurance} sub="Race base" />
-          <EditStat label="Experience" field="experience"          char={c} onUpdate={updateCharacter} />
+          <EditStat label="Endurance" field="endurance"   char={c} onUpdate={updateCharacter} autoValue={autoEndurance} sub="Race base" />
+          <EditStat label="Experience" field="experience" char={c} onUpdate={updateCharacter} />
         </div>
         <p style={{ fontSize: 10, color: 'var(--text3)', marginTop: 8, marginBottom: 0 }}>
-          Auto values shown in grey — type to override, clear to revert · BD = Body Development · PD = Power Development · RS = Realm Stat
+          Auto values shown in grey — type to override, clear to revert
+        </p>
+      </Card>
+
+      {/* HP / PP combat panel */}
+      <Card title="Hit Points & Power Points">
+        <div style={{ display: 'grid', gridTemplateColumns: effPPMax != null ? '1fr 1fr' : '1fr', gap: 12 }}>
+          {/* HP */}
+          <div style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 10, padding: '14px 16px' }}>
+            <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--danger)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>Hit Points</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 10, color: 'var(--text3)', marginBottom: 3 }}>Current</div>
+                <input type="number"
+                  value={c.hits_current ?? ''}
+                  placeholder={String(effHitsMax ?? '—')}
+                  onChange={e => updateCharacter({ hits_current: e.target.value === '' ? null : Number(e.target.value) })}
+                  style={{ width: '100%', fontSize: 28, fontWeight: 800, textAlign: 'center', padding: '4px 2px',
+                    color: (c.hits_current != null && effHitsMax && c.hits_current / effHitsMax < 0.3) ? 'var(--danger)' : 'var(--text)',
+                    background: 'transparent', border: 'none', boxShadow: 'none' }} />
+              </div>
+              <div style={{ fontSize: 22, color: 'var(--text3)', fontWeight: 300, alignSelf: 'center', paddingTop: 16 }}>/</div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 10, color: 'var(--text3)', marginBottom: 3 }}>Max</div>
+                <input type="number"
+                  value={c.hits_max ?? ''}
+                  placeholder={String(autoHitsMax ?? '—')}
+                  onChange={e => updateCharacter({ hits_max: e.target.value === '' ? null : Number(e.target.value) })}
+                  style={{ width: '100%', fontSize: 22, fontWeight: 700, textAlign: 'center', padding: '4px 2px',
+                    color: c.hits_max != null ? 'var(--text)' : 'var(--text3)',
+                    background: 'transparent', border: 'none', boxShadow: 'none' }} />
+                {c.hits_max == null && <div style={{ fontSize: 8, color: 'var(--accent)', textAlign: 'center', letterSpacing: '0.06em' }}>AUTO</div>}
+                {c.hits_max != null && <div style={{ fontSize: 8, color: 'var(--text3)', textAlign: 'center', marginTop: 1 }}>BD ranks × Co</div>}
+              </div>
+            </div>
+          </div>
+
+          {/* PP — only shown if character has a realm */}
+          {effPPMax != null && (
+            <div style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 10, padding: '14px 16px' }}>
+              <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--purple)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>Power Points</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 10, color: 'var(--text3)', marginBottom: 3 }}>Current</div>
+                  <input type="number"
+                    value={c.power_points_current ?? ''}
+                    placeholder={String(effPPMax ?? '—')}
+                    onChange={e => updateCharacter({ power_points_current: e.target.value === '' ? null : Number(e.target.value) })}
+                    style={{ width: '100%', fontSize: 28, fontWeight: 800, textAlign: 'center', padding: '4px 2px',
+                      color: 'var(--text)', background: 'transparent', border: 'none', boxShadow: 'none' }} />
+                </div>
+                <div style={{ fontSize: 22, color: 'var(--text3)', fontWeight: 300, alignSelf: 'center', paddingTop: 16 }}>/</div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 10, color: 'var(--text3)', marginBottom: 3 }}>Max</div>
+                  <input type="number"
+                    value={c.power_points_max ?? ''}
+                    placeholder={String(autoPPMax ?? '—')}
+                    onChange={e => updateCharacter({ power_points_max: e.target.value === '' ? null : Number(e.target.value) })}
+                    style={{ width: '100%', fontSize: 22, fontWeight: 700, textAlign: 'center', padding: '4px 2px',
+                      color: c.power_points_max != null ? 'var(--text)' : 'var(--text3)',
+                      background: 'transparent', border: 'none', boxShadow: 'none' }} />
+                  {c.power_points_max == null && <div style={{ fontSize: 8, color: 'var(--accent)', textAlign: 'center', letterSpacing: '0.06em' }}>AUTO</div>}
+                  {c.power_points_max != null && <div style={{ fontSize: 8, color: 'var(--text3)', textAlign: 'center', marginTop: 1 }}>PD ranks × RS</div>}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+        <p style={{ fontSize: 10, color: 'var(--text3)', marginTop: 8, marginBottom: 0 }}>
+          Current values editable — clear to reset to max · Max auto-calculated or type to override
         </p>
       </Card>
 
@@ -728,7 +798,7 @@ function StarredSkillsPanel({ c }) {
     for (const cs of (c.custom_skills || [])) {
       if (!cs.starred) continue
       const template = skillsDataMap[cs.template_name]
-      const name = cs.label ? `${cs.template_name}: ${cs.label}` : cs.template_name
+      const name = displaySkillName(cs.template_name, cs.label)
       const total = computeSkillTotal(c, template, cs, talentBonusMap)
       const ranks = (cs.ranks ?? 0) + (cs.culture_ranks ?? 0)
       result.push({ name, total, ranks, notes: cs.notes })
