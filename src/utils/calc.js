@@ -210,9 +210,28 @@ export function getBaseHits(char) {
 }
 
 export function getEndurance(char) {
-  // Racial base endurance from races.json (can be manually overridden on sheet)
-  const raceEntry = racesData.find(r => r.name === char.race)
-  return raceEntry?.endurance ?? 0
+  // CoreLaw p.74: Endurance = Body Development skill bonus + racial endurance modifier
+  // The BD skill bonus is the same full-skill total used for base hits (rank bonus + stat + item + prof)
+  // but WITHOUT the racial base_hits offset.
+  //
+  // Body Development is in the Brawn category (Co/SD), individual skill stat: Co
+  // → stat contribution = 2×Co + SD  (matches getBaseHits)
+  const co = char.stats?.Constitution
+  const sd = char.stats?.['Self Discipline']
+  const coBonus = co ? getTotalStatBonus(co) : 0
+  const sdBonus = sd ? getTotalStatBonus(sd) : 0
+  const bdSkill  = char.skills?.['Body Development'] || {}
+  const bdRanks  = (bdSkill.ranks ?? 0) + (bdSkill.culture_ranks ?? 0)
+  const rb       = rankBonus(bdRanks)
+  const statBonus = 2 * coBonus + sdBonus
+  const itemB    = bdSkill.item_bonus   ?? 0
+  const talentB  = bdSkill.talent_bonus ?? 0
+  const profB    = bdSkill.proficient ? Math.min(bdRanks, 30) : 0
+  const bdBonus  = rb + statBonus + itemB + talentB + profB
+
+  const raceEntry     = racesData.find(r => r.name === char.race)
+  const racialEndurance = raceEntry?.endurance ?? 0
+  return bdBonus + racialEndurance
 }
 
 export function getPowerPoints(char) {
