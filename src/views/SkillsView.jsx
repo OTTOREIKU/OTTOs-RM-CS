@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react'
 import { useCharacter } from '../store/CharacterContext.jsx'
-import { rankBonus, getTotalStatBonus, getTalentBonuses } from '../utils/calc.js'
+import { rankBonus, getTotalStatBonus, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus } from '../utils/calc.js'
 import skillsData from '../data/skills.json'
 import skillCosts from '../data/skill_costs.json'
 import talentsData from '../data/talents.json'
@@ -170,8 +170,9 @@ function IconBtn({ onClick, title, active, activeColor = 'var(--accent)', danger
 
 const GRID        = '1fr 54px 34px 50px 50px 50px 62px'   // desktop: all 7 columns
 const NUMS_GRID   = '54px 34px 50px 50px 50px 62px'       // mobile: numbers-only second row
-const SPELL_GRID  = '1fr 54px 34px 52px 56px 64px'        // desktop spell lists
-const SPELL_GRID_M = '1fr 48px 28px 46px 46px 56px'       // mobile spell lists: tightened
+// Columns: name | ranks | SCR | Mastery
+const SPELL_GRID   = '1fr 54px 62px 68px'
+const SPELL_GRID_M = '1fr 48px 56px 60px'
 
 // All category names for default-all-open init
 const ALL_SKILL_CATEGORIES = [...new Set(skillsData.map(s => s.category || 'Other'))]
@@ -798,19 +799,9 @@ function SpellListsSection({ c, query, updateSpellList, removeSpellList, updateC
   sectionOpen, setSectionOpen, expanded, setExpanded, unlocked, setUnlocked }) {
   const [adding, setAdding] = useState(null) // { sub, name }
 
-  // Resolve casting stat: character override → realm default → null
-  const defaultStatFull = REALM_DEFAULT_STAT[c.realm] || null
-  const castStatFull    = c.spell_cast_stat ?? defaultStatFull
-  // Convert full name to short key for getStatBonus
-  const castStatKey     = castStatFull
-    ? Object.entries(STAT_KEY_TO_FULL).find(([, v]) => v === castStatFull)?.[0] ?? null
-    : null
-
-  // Formula: RS + RS + Me  (Power Manipulation category = RS/RS, individual stat = Me)
-  const rsBonus         = castStatKey ? getStatBonus(c, castStatKey) : 0
-  const meBonus         = getStatBonus(c, 'Me')
-  const totalStatBonus  = rsBonus * 2 + meBonus
-  const statLabel       = castStatFull ? `${castStatFull}×2 + Memory` : '— + Memory'
+  // Resolve casting stat for the header label only
+  const defaultStatFull  = REALM_DEFAULT_STAT[c.realm] || null
+  const castStatFull     = c.spell_cast_stat ?? defaultStatFull
   const talentSpellBonus = getTalentBonuses(c).spellcasting
 
   const grouped = useMemo(() => {
@@ -875,9 +866,9 @@ function SpellListsSection({ c, query, updateSpellList, removeSpellList, updateC
           </select>
         ) : (
           <span onClick={() => setSectionOpen(o => !o)}
-            title={statLabel + (talentSpellBonus ? ` + ${talentSpellBonus} talent` : '')}
+            title={`SCR: raw ranks + ${castStatFull ?? 'realm stat'}×1 · Mastery: rank bonus + ${castStatFull ?? 'realm stat'}×2 + Memory${talentSpellBonus ? ` + ${talentSpellBonus} talent` : ''}`}
             style={{ fontSize: 11, color: 'var(--text2)', flexShrink: 0, cursor: 'pointer' }}>
-            {castStatFull ? `${castStatFull}×2+Me` : 'Me'} ({totalStatBonus >= 0 ? '+' : ''}{totalStatBonus}{talentSpellBonus ? `, T${talentSpellBonus > 0 ? '+' : ''}${talentSpellBonus}` : ''})
+            SCR/MST · {castStatFull ?? (defaultStatFull ?? 'no realm')}
           </span>
         )}
 
@@ -943,10 +934,21 @@ function SpellListsSection({ c, query, updateSpellList, removeSpellList, updateC
 
                 {(subOpen || query) && (
                   <>
+                    {/* Column headers */}
+                    {lists.length > 0 && (
+                      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? SPELL_GRID_M : SPELL_GRID,
+                        padding: '3px 14px', gap: 6, background: 'var(--surface2)',
+                        borderTop: '1px solid var(--border)' }}>
+                        <span style={{ fontSize: 9, color: 'var(--text3)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.07em' }}>List</span>
+                        <span style={{ fontSize: 9, color: 'var(--text3)', fontWeight: 600, textTransform: 'uppercase', textAlign: 'center', letterSpacing: '0.07em' }}>Ranks</span>
+                        <span style={{ fontSize: 9, color: 'var(--text3)', fontWeight: 600, textTransform: 'uppercase', textAlign: 'center', letterSpacing: '0.07em' }}
+                          title="Spellcasting Roll: raw ranks + realm stat (×1) + talents">SCR</span>
+                        <span style={{ fontSize: 9, color: 'var(--text3)', fontWeight: 600, textTransform: 'uppercase', textAlign: 'center', letterSpacing: '0.07em' }}
+                          title="Spell Mastery: full skill bonus (rank bonus + stats×2 + Memory + item + prof + talents)">Mastery</span>
+                      </div>
+                    )}
                     {lists.map(list => (
-                      <SpellListRow key={list.name} list={list}
-                        statBonus={totalStatBonus} statLabel={statLabel}
-                        talentSpellBonus={talentSpellBonus}
+                      <SpellListRow key={list.name} list={list} char={c}
                         updateSpellList={updateSpellList} removeSpellList={removeSpellList}
                         sub={sub} unlocked={unlocked} isMobile={isMobile} />
                     ))}
@@ -993,108 +995,175 @@ function SpellListsSection({ c, query, updateSpellList, removeSpellList, updateC
   )
 }
 
-function SpellListRow({ list, statBonus, statLabel, talentSpellBonus, updateSpellList, removeSpellList, sub, unlocked, isMobile }) {
-  const ranks      = list.ranks ?? 0
-  const item       = list.item_bonus ?? 0
-  const isProf     = !!list.proficient
-  const profBonus  = isProf ? Math.min(ranks, 30) : 0
-  const rb         = rankBonus(ranks)
-  const talentB    = talentSpellBonus ?? 0
-  const total      = rb + statBonus + item + profBonus + talentB
+function SpellListRow({ list, char, updateSpellList, removeSpellList, sub, unlocked, isMobile }) {
+  const [showExtra, setShowExtra] = useState(false)
+
+  const ranks  = list.ranks ?? 0
+  const isProf = !!list.proficient
+  const comp   = list.complementary || null   // { skill, type }
+
+  const scrVal     = char ? getSpellCastingBonus(char, list.name) : null
+  const masteryVal = char ? getSpellMasteryBonus(char, list.name) : null
 
   function upd(patch) { updateSpellList(list.name, { ...patch, category: sub }) }
 
+  // All skills available as complementary choices
+  const allSkillNames = char ? Object.keys(char.skills || {}).sort() : []
+
   const spellGrid = isMobile ? SPELL_GRID_M : SPELL_GRID
 
-  const spellNameCell = (
+  // Complementary skill breakdown label
+  const compLabel = (() => {
+    if (!comp?.skill) return null
+    const s    = char?.skills?.[comp.skill] || {}
+    const raw  = (s.ranks ?? 0) + (s.culture_ranks ?? 0)
+    const val  = comp.type === 'secondary' ? Math.floor(raw / 2) : raw
+    return `${comp.skill} (${comp.type === 'secondary' ? 'secondary' : 'main'}) +${val}`
+  })()
+
+  const nameCell = (
     <div style={{ display: 'flex', alignItems: 'center', gap: 4, minWidth: 0 }}>
       {unlocked && (
-        <button
-          onClick={() => upd({ proficient: !isProf })}
+        <button onClick={() => upd({ proficient: !isProf })}
           title={isProf ? 'Proficient — click to remove' : 'Mark as proficient'}
-          style={{
-            width: 7, height: 7, padding: 0, flexShrink: 0, cursor: 'pointer',
+          style={{ width: 7, height: 7, padding: 0, flexShrink: 0, cursor: 'pointer',
             border: '1.5px solid ' + (isProf ? 'var(--accent)' : 'var(--text3)'),
-            background: isProf ? 'var(--accent)' : 'transparent',
-            borderRadius: 1,
-          }}
-        />
+            background: isProf ? 'var(--accent)' : 'transparent', borderRadius: 1 }} />
       )}
-      <span style={{
-        flex: 1, minWidth: 0,
-        overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-        color: isProf ? 'var(--accent)' : 'var(--text)', fontSize: 12,
-      }}>{list.name}</span>
-      {/* PROF badge — only when unlocked */}
+      <span style={{ flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap', color: isProf ? 'var(--accent)' : 'var(--text)', fontSize: 12 }}>
+        {list.name}
+      </span>
+      {!unlocked && compLabel && (
+        <span style={{ fontSize: 9, color: 'var(--purple)', flexShrink: 0 }}
+          title={`Complementary: ${compLabel}`}>comp</span>
+      )}
       {unlocked && isProf && (
-        <span style={{ fontSize: 9, background: 'var(--accent)', color: '#fff', padding: '1px 4px', borderRadius: 3, fontWeight: 700, letterSpacing: '0.04em', flexShrink: 0 }}>PROF</span>
+        <span style={{ fontSize: 9, background: 'var(--accent)', color: '#fff', padding: '1px 4px',
+          borderRadius: 3, fontWeight: 700, letterSpacing: '0.04em', flexShrink: 0 }}>PROF</span>
       )}
       {unlocked && (
-        <button
-          onClick={() => removeSpellList(list.name)}
+        <button onClick={() => setShowExtra(x => !x)}
+          title="Extra options (complementary skill, talent bonus)"
+          style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '1px 3px',
+            color: (comp || list.talent_bonus) ? 'var(--purple)' : 'var(--text3)',
+            display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+          <ChevronDownIcon size={9} color="currentColor" />
+        </button>
+      )}
+      {unlocked && (
+        <button onClick={() => removeSpellList(list.name)}
           onMouseEnter={e => e.currentTarget.style.color = 'var(--danger)'}
           onMouseLeave={e => e.currentTarget.style.color = 'var(--text3)'}
-          style={{ background: 'none', border: 'none', color: 'var(--text3)', cursor: 'pointer', padding: 2, display: 'flex', alignItems: 'center', flexShrink: 0 }}
-        >
+          style={{ background: 'none', border: 'none', color: 'var(--text3)', cursor: 'pointer',
+            padding: 2, display: 'flex', alignItems: 'center', flexShrink: 0 }}>
           <XIcon size={11} color="currentColor" />
         </button>
       )}
     </div>
   )
 
-  const spellNumCells = (
+  const fmt = v => v == null ? '—' : (v >= 0 ? `+${v}` : `${v}`)
+
+  const numCells = (
     <>
-      <input type="number" min={0} value={ranks || ''}
-        onChange={e => upd({ ranks: Number(e.target.value) || 0 })}
+      <input type="number" min={0} value={ranks || ''} onChange={e => upd({ ranks: Number(e.target.value) || 0 })}
         placeholder="0" style={{ padding: '3px 4px' }} />
-      <div style={{ textAlign: 'center', color: 'var(--text3)', fontSize: 11 }}
-        title={`Rank bonus: ${rb >= 0 ? '+' : ''}${rb}`}>
-        {rb >= 0 ? `+${rb}` : rb}
-      </div>
-      <div style={{ textAlign: 'center', color: 'var(--text2)', fontSize: 12 }} title={statLabel}>
-        {statBonus >= 0 ? `+${statBonus}` : statBonus}
-      </div>
-      <input type="number" value={item || ''} placeholder="0"
-        onChange={e => upd({ item_bonus: Number(e.target.value) || 0 })}
-        style={{ padding: '3px 4px' }} />
+      {/* SCR column */}
       <div style={{ textAlign: 'center' }}>
-        <span style={{ fontWeight: 700, fontSize: 13,
-          color: total > 0 ? 'var(--success)' : total < -10 ? 'var(--danger)' : 'var(--text2)' }}>
-          {total >= 0 ? `+${total}` : total}
+        <span style={{ fontWeight: 700, fontSize: 12,
+          color: scrVal > 0 ? 'var(--success)' : scrVal < 0 ? 'var(--danger)' : 'var(--text2)' }}
+          title={`SCR: ${ranks} raw ranks + realm stat×1 + talents${compLabel ? ' + ' + compLabel : ''}`}>
+          {fmt(scrVal)}
         </span>
-        {isProf && profBonus > 0 && (
+      </div>
+      {/* Mastery column */}
+      <div style={{ textAlign: 'center' }}>
+        <span style={{ fontWeight: 700, fontSize: 12,
+          color: masteryVal > 0 ? 'var(--success)' : masteryVal < 0 ? 'var(--danger)' : 'var(--text2)' }}
+          title={`Mastery: rank bonus ${rankBonus(ranks) >= 0 ? '+' : ''}${rankBonus(ranks)} + realm stat×2 + Memory + item + prof + talents${compLabel ? ' + ' + compLabel : ''}`}>
+          {fmt(masteryVal)}
+        </span>
+        {isProf && (
           <span style={{ display: 'block', fontSize: 9, color: 'var(--accent)', lineHeight: 1 }}
-            title={`Proficiency bonus +${profBonus} (= ranks, max 30)`}>P+{profBonus}</span>
-        )}
-        {talentB !== 0 && (
-          <span style={{ display: 'block', fontSize: 9, color: 'var(--purple)', lineHeight: 1 }}
-            title={`Talent spellcasting bonus: ${talentB > 0 ? '+' : ''}${talentB}`}>T{talentB > 0 ? '+' : ''}{talentB}</span>
+            title={`Proficiency +${Math.min(ranks, 30)} (= ranks, max 30)`}>P+{Math.min(ranks, 30)}</span>
         )}
       </div>
     </>
   )
 
+  // Extra options panel (complementary skill + per-list talent bonus + item bonus)
+  const extraPanel = unlocked && showExtra && (
+    <div style={{ padding: '6px 14px 8px', background: 'var(--surface2)',
+      borderTop: '1px dashed var(--border)', display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
+      {/* Complementary skill */}
+      <label style={{ fontSize: 11, color: 'var(--text3)', display: 'flex', alignItems: 'center', gap: 4 }}>
+        Comp. skill:
+        <select value={comp?.skill || ''} onChange={e => upd({ complementary: e.target.value ? { skill: e.target.value, type: comp?.type || 'secondary' } : null })}
+          style={{ fontSize: 11, background: 'var(--surface)', border: '1px solid var(--border2)',
+            borderRadius: 4, padding: '2px 4px', color: 'var(--text)', maxWidth: 160 }}>
+          <option value="">— none —</option>
+          {allSkillNames.map(sn => <option key={sn} value={sn}>{sn}</option>)}
+        </select>
+      </label>
+      {comp?.skill && (
+        <label style={{ fontSize: 11, color: 'var(--text3)', display: 'flex', alignItems: 'center', gap: 4 }}>
+          Type:
+          <select value={comp.type || 'secondary'} onChange={e => upd({ complementary: { ...comp, type: e.target.value } })}
+            style={{ fontSize: 11, background: 'var(--surface)', border: '1px solid var(--border2)',
+              borderRadius: 4, padding: '2px 4px', color: 'var(--text)' }}>
+            <option value="main">Main (raw ranks)</option>
+            <option value="secondary">Secondary (ranks ÷ 2)</option>
+          </select>
+        </label>
+      )}
+      {/* Item bonus */}
+      <label style={{ fontSize: 11, color: 'var(--text3)', display: 'flex', alignItems: 'center', gap: 4 }}>
+        Item:
+        <input type="number" value={list.item_bonus || ''} placeholder="0"
+          onChange={e => upd({ item_bonus: Number(e.target.value) || 0 })}
+          style={{ width: 44, padding: '2px 4px', fontSize: 11 }} />
+      </label>
+      {/* Per-list talent/custom bonus */}
+      <label style={{ fontSize: 11, color: 'var(--text3)', display: 'flex', alignItems: 'center', gap: 4 }}>
+        Talent/custom:
+        <input type="number" value={list.talent_bonus || ''} placeholder="0"
+          onChange={e => upd({ talent_bonus: Number(e.target.value) || 0 })}
+          style={{ width: 44, padding: '2px 4px', fontSize: 11 }} />
+      </label>
+      {compLabel && (
+        <span style={{ fontSize: 10, color: 'var(--purple)', background: 'var(--purple)22',
+          padding: '2px 7px', borderRadius: 10, flexShrink: 0 }}>
+          {compLabel}
+        </span>
+      )}
+    </div>
+  )
+
   if (isMobile) {
     return (
-      <div style={{ padding: '6px 14px 4px', fontSize: 13, borderTop: '1px solid var(--border)' }}>
-        <div style={{ marginBottom: 4 }}>{spellNameCell}</div>
-        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '48px 28px 46px 46px 56px', gap: 4, alignItems: 'center' }}>
-            {spellNumCells}
+      <div style={{ borderTop: '1px solid var(--border)' }}>
+        <div style={{ padding: '6px 14px 4px', fontSize: 13 }}>
+          <div style={{ marginBottom: 4 }}>{nameCell}</div>
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '48px 56px 60px', gap: 4, alignItems: 'center' }}>
+              {numCells}
+            </div>
           </div>
         </div>
+        {extraPanel}
       </div>
     )
   }
 
   return (
-    <div style={{
-      display: 'grid', gridTemplateColumns: spellGrid,
-      padding: '5px 14px', gap: 6, alignItems: 'center',
-      fontSize: 13, borderTop: '1px solid var(--border)',
-    }}>
-      {spellNameCell}
-      {spellNumCells}
+    <div style={{ borderTop: '1px solid var(--border)' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: spellGrid,
+        padding: '5px 14px', gap: 6, alignItems: 'center', fontSize: 13 }}>
+        {nameCell}
+        {numCells}
+      </div>
+      {extraPanel}
     </div>
   )
 }

@@ -168,24 +168,51 @@ export function getResistanceBonuses(char) {
   return result
 }
 
-export function getSpellCastingBonus(char, listName) {
-  const sl = char.spell_lists?.[listName]
-  const ranks = sl?.ranks ?? 0
-  const rb = rankBonus(ranks)
-  // Realm stat bonus
-  // Per CoreLaw: Channeling→Intuition, Essence→Empathy, Mentalism→Presence
-  // spell_cast_stat on character allows house-rule override (full stat name, e.g. 'Empathy')
-  const realmStatMap = {
-    Channeling: 'Intuition',
-    Essence:    'Empathy',
-    Mentalism:  'Presence',
-  }
+// Per CoreLaw p.109: SCR uses raw rank count, NOT the scaled rank bonus.
+// Complementary skill contributes its raw ranks (main) or floor(raw ranks / 2) (secondary).
+function _realmStatBonus(char) {
+  const realmStatMap = { Channeling: 'Intuition', Essence: 'Empathy', Mentalism: 'Presence' }
   const statName = char.spell_cast_stat ?? realmStatMap[char.realm]
-  const statBonus = statName && char.stats?.[statName]
-    ? getTotalStatBonus(char.stats[statName])
-    : 0
-  const talentSpell = getTalentBonuses(char).spellcasting
-  return rb + statBonus + talentSpell
+  return statName && char.stats?.[statName] ? getTotalStatBonus(char.stats[statName]) : 0
+}
+
+function _compBonus(char, sl) {
+  const comp = sl?.complementary
+  if (!comp?.skill) return 0
+  const s = char.skills?.[comp.skill] || {}
+  const rawRanks = (s.ranks ?? 0) + (s.culture_ranks ?? 0)
+  return comp.type === 'secondary' ? Math.floor(rawRanks / 2) : rawRanks
+}
+
+/**
+ * Spellcasting Roll (SCR) modifier — what you add to d100OE when casting.
+ * Formula (CoreLaw p.109): raw ranks + realm stat (×1) + talent bonus + complementary
+ */
+export function getSpellCastingBonus(char, listName) {
+  const sl            = char.spell_lists?.[listName] || {}
+  const rawRanks      = sl.ranks ?? 0
+  const talentSpell   = getTalentBonuses(char).spellcasting
+  const customTalent  = sl.talent_bonus ?? 0
+  const compB         = _compBonus(char, sl)
+  return rawRanks + _realmStatBonus(char) + talentSpell + customTalent + compB
+}
+
+/**
+ * Spell Mastery modifier — full skill bonus for shaping/modifying spells.
+ * Formula: scaled rank bonus + (realm stat ×2 + Memory) + item + proficient + talent + complementary
+ */
+export function getSpellMasteryBonus(char, listName) {
+  const sl           = char.spell_lists?.[listName] || {}
+  const ranks        = sl.ranks ?? 0
+  const rb           = rankBonus(ranks)
+  const item         = sl.item_bonus  ?? 0
+  const profB        = sl.proficient  ? Math.min(ranks, 30) : 0
+  const customTalent = sl.talent_bonus ?? 0
+  const rsB          = _realmStatBonus(char)
+  const meB          = char.stats?.Memory ? getTotalStatBonus(char.stats.Memory) : 0
+  const talentSpell  = getTalentBonuses(char).spellcasting
+  const compB        = _compBonus(char, sl)
+  return rb + rsB * 2 + meB + item + profB + talentSpell + customTalent + compB
 }
 
 export function getBaseHits(char) {

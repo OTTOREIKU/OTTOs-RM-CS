@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { ChevronDownIcon, ChevronUpIcon, ChevronRightIcon, InfoIcon } from '../components/Icons.jsx'
-import { rankBonus, getTotalStatBonus, getTalentBonuses } from '../utils/calc.js'
+import { rankBonus, getTotalStatBonus, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus } from '../utils/calc.js'
 import spellLists from '../data/spell_lists.json'
 import spellDescs from '../data/spell_descriptions.json'
 
@@ -61,20 +61,9 @@ export default function SpellsView() {
     c ? Object.entries(spellLists).filter(([name]) => (c.spell_lists?.[name]?.ranks ?? 0) > 0) : [],
   [c])
 
-  const talentSpell = c ? getTalentBonuses(c).spellcasting : 0
   function ranks(name)  { return c?.spell_lists?.[name]?.ranks ?? 0 }
-  function bonus(name)  {
-    const r      = ranks(name)
-    const rb     = rankBonus(r)
-    const d      = c?.spell_lists?.[name] || {}
-    const item   = d.item_bonus ?? 0
-    const profB  = d.proficient ? Math.min(r, 30) : 0
-    // RS×2 + Me: Power Manipulation category (RS/RS) + individual skill stat (Me)
-    const rStatName = c?.spell_cast_stat ?? REALM_STAT[spellLists[name]?.realm ?? c?.realm]
-    const rsB    = rStatName && c?.stats?.[rStatName] ? getTotalStatBonus(c.stats[rStatName]) : 0
-    const meB    = c?.stats?.Memory ? getTotalStatBonus(c.stats.Memory) : 0
-    return rb + rsB * 2 + meB + item + profB + talentSpell
-  }
+  function scr(name)    { return c ? getSpellCastingBonus(c, name) : null }
+  function mastery(name){ return c ? getSpellMasteryBonus(c, name) : null }
 
   const display = tab === 'myspells' ? myLists : filteredLists
 
@@ -145,7 +134,8 @@ export default function SpellsView() {
         const isOpen = openList === listName
         const rc = REALM_COLOR[list.realm] || 'var(--accent)'
         const r  = ranks(listName)
-        const b  = bonus(listName)
+        const b  = scr(listName)
+        const m  = mastery(listName)
         const spells = (query && tab === 'browse')
           ? list.spells?.filter(s => s.name.toLowerCase().includes(query)) ?? []
           : list.spells ?? []
@@ -171,12 +161,18 @@ export default function SpellsView() {
               {list.section && <span style={{ fontSize: 10, color: 'var(--text3)', flexShrink: 0 }}>{list.section}</span>}
               <span style={{ fontSize: 11, color: 'var(--text3)', flexShrink: 0 }}>{list.spells?.length ?? 0}</span>
 
-              {/* Casting bonus (read-only; set ranks in Skills > Spell Lists) */}
+              {/* SCR + Mastery (read-only; set ranks in Skills > Spell Lists) */}
               {c && r > 0 && (
-                <span style={{ fontSize: 12, fontWeight: 700, color: b >= 0 ? 'var(--success)' : 'var(--danger)',
-                  flexShrink: 0, minWidth: 36, textAlign: 'right' }}>
-                  {b >= 0 ? `+${b}` : b}
-                </span>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', flexShrink: 0, gap: 1 }}>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: b >= 0 ? 'var(--success)' : 'var(--danger)' }}
+                    title="Spellcasting Roll: raw ranks + realm stat + talents">
+                    SCR {b >= 0 ? `+${b}` : b}
+                  </span>
+                  <span style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 500 }}
+                    title="Spell Mastery: full skill bonus (rank bonus + stats×2 + Memory + item + prof + talents)">
+                    MST {m >= 0 ? `+${m}` : m}
+                  </span>
+                </div>
               )}
               {c && r === 0 && (
                 <span style={{ fontSize: 10, color: 'var(--text3)', flexShrink: 0 }}>no ranks</span>
