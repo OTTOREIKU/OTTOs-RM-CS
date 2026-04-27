@@ -13,6 +13,12 @@ const ELEMENTS = ['Cold/Ice','Heat/Fire','Electricity/Light']
 const REALMS = ['Channeling','Essence','Mentalism']
 const SENSES = ['Taste','Touch','Smell','Hearing','Sight']
 const ALL_SKILL_NAMES = [...new Set(skillsData.map(s => s.name))].sort()
+
+function resolveSkillName(templateName, label) {
+  if (!label) return templateName
+  if (/<[^>]+>/.test(templateName)) return templateName.replace(/<[^>]+>/, label)
+  return `${templateName}: ${label}`
+}
 const CATEGORIES = ['All','Combat','Discipline','Magical','Physical','Racial','Senses','Other']
 const CAT_COLOR = {
   Combat:'var(--danger)',Discipline:'var(--purple)',Magical:'var(--accent)',
@@ -85,7 +91,7 @@ function costLabel(def) {
   return (def.cost_per_tier > 0 ? '+' : '') + def.cost_per_tier + '/Tier DP'
 }
 
-function ParamInput({ param, value, onChange }) {
+function ParamInput({ param, value, onChange, charSkillNames = [] }) {
   const sel = (opts) => (
     <select value={value} onChange={e => onChange(e.target.value)}
       style={{flex:1,background:'var(--surface2)',border:'1px solid var(--border2)',borderRadius:5,padding:'4px 6px',color:'var(--text)',fontSize:12}}>
@@ -97,14 +103,22 @@ function ParamInput({ param, value, onChange }) {
     <input type="text" value={value} onChange={e => onChange(e.target.value)} placeholder={ph}
       style={{flex:1,background:'var(--surface2)',border:'1px solid var(--border2)',borderRadius:5,padding:'4px 6px',color:'var(--text)',fontSize:12}} />
   )
-  if (param === 'skill') return (
-    <>
-      <input type="text" value={value} onChange={e => onChange(e.target.value)}
-        list="eq-skill-dl" placeholder="Type or choose a skill..."
-        style={{flex:1,background:'var(--surface2)',border:'1px solid var(--border2)',borderRadius:5,padding:'4px 6px',color:'var(--text)',fontSize:12}} />
-      <datalist id="eq-skill-dl">{ALL_SKILL_NAMES.map(n => <option key={n} value={n} />)}</datalist>
-    </>
-  )
+  if (param === 'skill') {
+    const charSet = new Set(charSkillNames)
+    return (
+      <>
+        <input type="text" value={value} onChange={e => onChange(e.target.value)}
+          list="eq-skill-dl" placeholder="Type or choose a skill..."
+          style={{flex:1,background:'var(--surface2)',border:'1px solid var(--border2)',borderRadius:5,padding:'4px 6px',color:'var(--text)',fontSize:12}} />
+        <datalist id="eq-skill-dl">
+          {/* Character's actual named skills first */}
+          {charSkillNames.map(n => <option key={'chr_'+n} value={n} />)}
+          {/* Then remaining static skill names not already listed */}
+          {ALL_SKILL_NAMES.filter(n => !charSet.has(n)).map(n => <option key={n} value={n} />)}
+        </datalist>
+      </>
+    )
+  }
   if (param === 'element') return sel(ELEMENTS)
   if (param === 'realm') return sel(REALMS)
   if (param === 'stat') return sel(STATS)
@@ -342,6 +356,18 @@ function TalentsCard({ activeChar, addTalent, removeTalent }) {
     })
   }, [browseSearch, browseFilter])
 
+  // Build resolved skill names from character's actual skills (e.g. "Music: Singing" not "Music: <instrument 1>")
+  const charSkillNames = useMemo(() => {
+    const names = new Set()
+    for (const [tmpl, sk] of Object.entries(activeChar.skills || {})) {
+      names.add(resolveSkillName(tmpl, sk.label))
+    }
+    for (const cs of (activeChar.custom_skills || [])) {
+      names.add(resolveSkillName(cs.template_name, cs.label))
+    }
+    return [...names].sort()
+  }, [activeChar.skills, activeChar.custom_skills])
+
   function openConfigure(def) { setConfiguring(def); setConfigTier(1); setConfigParam('') }
 
   function confirmAdd() {
@@ -493,7 +519,7 @@ function TalentsCard({ activeChar, addTalent, removeTalent }) {
                       'animal_type':'Animal Type','sense_description':'Sense Description','spell_list':'Spell List'}[configuring.param] || 'Details'}
                   </div>
                   <div style={{display:'flex',gap:6}}>
-                    <ParamInput param={configuring.param} value={configParam} onChange={setConfigParam}/>
+                    <ParamInput param={configuring.param} value={configParam} onChange={setConfigParam} charSkillNames={charSkillNames}/>
                   </div>
                 </div>
               )}
