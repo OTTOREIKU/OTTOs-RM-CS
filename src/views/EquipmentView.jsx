@@ -65,8 +65,10 @@ function effectSummary(def, inst) {
     const s = val > 0 ? `+${val}` : String(val)
     switch (eff.type) {
       case 'skill_talent_bonus': {
-        const skill = eff.skill === 'param' ? inst.param : eff.skill
-        if (skill) parts.push(s + ' to ' + skill)
+        const skills = eff.skill === 'param'
+          ? [inst.param, ...(inst.extra_params || [])].filter(Boolean)
+          : (eff.skill ? [eff.skill] : [])
+        if (skills.length) parts.push(s + ' to ' + skills.join(', '))
         break
       }
       case 'spellcasting_bonus': parts.push(s + ' Spellcasting'); break
@@ -337,7 +339,7 @@ function WeaponsCard({ activeChar, addWeapon, updateWeapon, removeWeapon }) {
   )
 }
 
-function TalentsCard({ activeChar, addTalent, removeTalent }) {
+function TalentsCard({ activeChar, addTalent, updateTalent, removeTalent }) {
   const talents = activeChar.talents || []
   const [expanded, setExpanded] = useState(null)
   const [browseOpen, setBrowseOpen] = useState(false)
@@ -346,6 +348,9 @@ function TalentsCard({ activeChar, addTalent, removeTalent }) {
   const [configuring, setConfiguring] = useState(null)
   const [configTier, setConfigTier] = useState(1)
   const [configParam, setConfigParam] = useState('')
+  // Multi-skill: which talent instance is receiving a new skill entry
+  const [addSkillFor, setAddSkillFor] = useState(null)
+  const [newSkillVal, setNewSkillVal] = useState('')
 
   const filtered = useMemo(() => {
     const q = browseSearch.toLowerCase()
@@ -379,6 +384,18 @@ function TalentsCard({ activeChar, addTalent, removeTalent }) {
 
   function cancelBrowse() { setConfiguring(null); setBrowseOpen(false); setBrowseSearch('') }
 
+  function addExtraSkill(instId, extraParams) {
+    const val = newSkillVal.trim()
+    if (!val) return
+    updateTalent(instId, { extra_params: [...(extraParams || []), val] })
+    setAddSkillFor(null)
+    setNewSkillVal('')
+  }
+
+  function removeExtraSkill(instId, extraParams, idx) {
+    updateTalent(instId, { extra_params: extraParams.filter((_, i) => i !== idx) })
+  }
+
   return (
     <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:12,margin:'12px 12px 0',overflow:'hidden'}}>
       <div style={{padding:'10px 14px',borderBottom:'1px solid var(--border)',background:'var(--surface2)',
@@ -397,10 +414,15 @@ function TalentsCard({ activeChar, addTalent, removeTalent }) {
           const summary = effectSummary(def, inst)
           const cost = tierCost(def, inst.tier)
           const tierLabel = def.max_tiers > 1 ? ' ' + (ROMAN[inst.tier-1] || inst.tier) : ''
-          const paramLabel = inst.param ? ' (' + inst.param + ')' : ''
+          const extraCount = (inst.extra_params || []).filter(Boolean).length
+          const paramLabel = inst.param
+            ? ` (${inst.param}${extraCount > 0 ? ` +${extraCount} more` : ''})`
+            : ''
+          const isMultiSkill = def.param === 'skill' || def.param === 'spell_list'
+          const isAddingSkill = addSkillFor === inst.id
           return (
             <div key={inst.id} style={{border:'1px solid var(--border2)',borderRadius:8,marginBottom:6,overflow:'hidden'}}>
-              <div onClick={() => setExpanded(isOpen ? null : inst.id)}
+              <div onClick={() => { setExpanded(isOpen ? null : inst.id); if (isOpen) { setAddSkillFor(null); setNewSkillVal('') } }}
                 style={{display:'flex',alignItems:'center',gap:8,padding:'7px 10px',cursor:'pointer',
                   background:isOpen?'var(--surface2)':'transparent'}}>
                 <span style={{fontSize:10,color:'var(--text3)',flexShrink:0,display:'flex',alignItems:'center'}}>
@@ -429,6 +451,73 @@ function TalentsCard({ activeChar, addTalent, removeTalent }) {
                   <div style={{fontSize:12,color:'var(--text2)',lineHeight:1.5}}>{def.description}</div>
                   {summary && (
                     <div style={{marginTop:6,fontSize:11,color:'var(--purple)'}}>Auto-applied: {summary}</div>
+                  )}
+
+                  {/* Multi-skill target manager */}
+                  {isMultiSkill && inst.param && (
+                    <div style={{marginTop:10,paddingTop:8,borderTop:'1px solid var(--border)'}}>
+                      <div style={{fontSize:10,fontWeight:700,color:'var(--text3)',textTransform:'uppercase',
+                        letterSpacing:'0.07em',marginBottom:6}}>
+                        {def.param === 'spell_list' ? 'Spell Lists' : 'Skills'}
+                      </div>
+                      {/* Primary param — fixed */}
+                      <div style={{display:'flex',alignItems:'center',gap:6,marginBottom:4}}>
+                        <span style={{fontSize:11,background:'var(--accent)22',color:'var(--accent)',
+                          padding:'2px 8px',borderRadius:12,fontWeight:600}}>{inst.param}</span>
+                        <span style={{fontSize:10,color:'var(--text3)'}}>primary</span>
+                      </div>
+                      {/* Extra params */}
+                      {(inst.extra_params || []).map((sk, idx) => (
+                        <div key={idx} style={{display:'flex',alignItems:'center',gap:6,marginBottom:4}}>
+                          <span style={{fontSize:11,background:'var(--surface)',border:'1px solid var(--border2)',
+                            padding:'2px 8px',borderRadius:12,color:'var(--text)'}}>{sk}</span>
+                          <button
+                            onClick={() => removeExtraSkill(inst.id, inst.extra_params || [], idx)}
+                            style={{background:'none',border:'none',color:'var(--text3)',cursor:'pointer',padding:2,
+                              display:'flex',alignItems:'center'}}
+                            onMouseEnter={e=>e.currentTarget.style.color='var(--danger)'}
+                            onMouseLeave={e=>e.currentTarget.style.color='var(--text3)'}
+                            title="Remove this skill target">
+                            <XIcon size={11} color="currentColor"/>
+                          </button>
+                        </div>
+                      ))}
+                      {/* Add new skill input */}
+                      {isAddingSkill ? (
+                        <div style={{display:'flex',gap:6,alignItems:'center',marginTop:4,flexWrap:'wrap'}}>
+                          <input
+                            autoFocus
+                            type="text" value={newSkillVal}
+                            onChange={e => setNewSkillVal(e.target.value)}
+                            onKeyDown={e => {
+                              if (e.key === 'Enter') addExtraSkill(inst.id, inst.extra_params)
+                              if (e.key === 'Escape') { setAddSkillFor(null); setNewSkillVal('') }
+                            }}
+                            list="tal-extra-skill-dl"
+                            placeholder={def.param === 'spell_list' ? 'Spell list name…' : 'Type or choose a skill…'}
+                            style={{flex:1,minWidth:140,background:'var(--surface)',border:'1px solid var(--border2)',
+                              borderRadius:5,padding:'4px 6px',color:'var(--text)',fontSize:12}} />
+                          <datalist id="tal-extra-skill-dl">
+                            {charSkillNames.map(n => <option key={n} value={n} />)}
+                          </datalist>
+                          <button onClick={() => addExtraSkill(inst.id, inst.extra_params)}
+                            style={{background:'var(--accent)',border:'none',borderRadius:5,padding:'4px 10px',
+                              color:'#fff',fontSize:11,fontWeight:600,cursor:'pointer'}}>
+                            Add
+                          </button>
+                          <button onClick={() => { setAddSkillFor(null); setNewSkillVal('') }}
+                            style={{background:'none',border:'none',color:'var(--text3)',cursor:'pointer',
+                              padding:'0 2px',fontSize:16,lineHeight:1}}>×</button>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={e => { e.stopPropagation(); setAddSkillFor(inst.id); setNewSkillVal('') }}
+                          style={{marginTop:2,background:'none',border:'1px dashed var(--border2)',borderRadius:5,
+                            padding:'3px 10px',color:'var(--text3)',fontSize:11,cursor:'pointer'}}>
+                          + Add {def.param === 'spell_list' ? 'list' : 'skill'}
+                        </button>
+                      )}
+                    </div>
                   )}
                 </div>
               )}
@@ -709,7 +798,7 @@ export default function EquipmentView() {
   const { activeChar, addEquipment, updateEquipment, removeEquipment,
           addMagicItem, updateMagicItem, removeMagicItem, updateCharacter,
           addWeapon, updateWeapon, removeWeapon,
-          addTalent, removeTalent,
+          addTalent, updateTalent, removeTalent,
           updateArmorPart } = useCharacter()
   const [expandedMagic, setExpandedMagic] = useState(null)
 
@@ -844,7 +933,7 @@ export default function EquipmentView() {
       </Card>
 
       <WeaponsCard activeChar={activeChar} addWeapon={addWeapon} updateWeapon={updateWeapon} removeWeapon={removeWeapon}/>
-      <TalentsCard activeChar={activeChar} addTalent={addTalent} removeTalent={removeTalent}/>
+      <TalentsCard activeChar={activeChar} addTalent={addTalent} updateTalent={updateTalent} removeTalent={removeTalent}/>
 
       <Card title="Custom Traits">
         {traits.length === 0 && (

@@ -782,11 +782,14 @@ function StarredSkillsPanel({ c }) {
       if (!def?.effects) continue
       for (const eff of def.effects) {
         if (eff.type !== 'skill_talent_bonus') continue
-        const skillName = eff.skill === 'param' ? inst.param : eff.skill
-        if (!skillName) continue
+        const skillNames = eff.skill === 'param'
+          ? [inst.param, ...(inst.extra_params || [])].filter(Boolean)
+          : (eff.skill ? [eff.skill] : [])
         const bonus = eff.per_tier != null ? eff.per_tier * inst.tier : (eff.flat ?? 0)
-        if (!map[skillName]) map[skillName] = []
-        map[skillName].push({ instId: inst.id, name: def.name, bonus })
+        for (const skillName of skillNames) {
+          if (!map[skillName]) map[skillName] = []
+          map[skillName].push({ instId: inst.id, name: def.name, bonus })
+        }
       }
     }
     return map

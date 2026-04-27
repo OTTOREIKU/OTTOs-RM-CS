@@ -554,11 +554,14 @@ export default function SkillsView() {
       if (!def?.effects) continue
       for (const eff of def.effects) {
         if (eff.type !== 'skill_talent_bonus') continue
-        const skillName = eff.skill === 'param' ? inst.param : eff.skill
-        if (!skillName) continue
+        const skillNames = eff.skill === 'param'
+          ? [inst.param, ...(inst.extra_params || [])].filter(Boolean)
+          : (eff.skill ? [eff.skill] : [])
         const bonus = eff.per_tier != null ? eff.per_tier * inst.tier : (eff.flat ?? 0)
-        if (!map[skillName]) map[skillName] = []
-        map[skillName].push({ instId: inst.id, name: def.name, bonus })
+        for (const skillName of skillNames) {
+          if (!map[skillName]) map[skillName] = []
+          map[skillName].push({ instId: inst.id, name: def.name, bonus })
+        }
       }
     }
     return map
@@ -1076,6 +1079,16 @@ function SpellListRow({ list, char, updateSpellList, removeSpellList, sub, unloc
           title={`SCR: ${ranks} raw ranks + realm stat×1 + talents${compLabel ? ' + ' + compLabel : ''}`}>
           {fmt(scrVal)}
         </span>
+        {(() => {
+          const talB = (char ? getTalentBonuses(char).spellcasting : 0) + (list.talent_bonus || 0)
+          if (!talB) return null
+          return (
+            <span style={{ display: 'block', fontSize: 9, color: 'var(--purple)', lineHeight: 1 }}
+              title="Talent / custom bonus included in SCR">
+              T{talB >= 0 ? `+${talB}` : talB}
+            </span>
+          )
+        })()}
       </div>
       {/* Mastery column */}
       <div style={{ textAlign: 'center' }}>
