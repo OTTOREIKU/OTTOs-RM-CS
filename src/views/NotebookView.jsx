@@ -364,6 +364,7 @@ export default function NotebookView() {
   }
   function onFolderDrop(e, folderId) {
     e.preventDefault()
+    e.stopPropagation()  // prevent bubbling to root onDrop which would move to root
     const raw = e.dataTransfer.getData('text/plain') || (dragItem ? `${dragItem.type}:${dragItem.id}` : '')
     const [type, id] = raw.split(':')
     if (type === 'note')   moveNote(id, folderId === '__unfiled__' ? null : folderId)
@@ -485,6 +486,17 @@ export default function NotebookView() {
         </>}
         <CtxDivider />
         <CtxItem icon={<TrashIcon size={12} />} onClick={() => deleteNote(ctxMenu.id)} danger>Delete note</CtxItem>
+      </>
+    }
+    if (ctxMenu.type === 'sidebar') {
+      return <>
+        <CtxItem icon={<FileIcon size={12} color="currentColor" />}
+          onClick={() => { createNote(); setCtxMenu(null) }}>New note</CtxItem>
+        <CtxItem icon={<FolderIcon size={12} color="currentColor" />}
+          onClick={() => { createFolder(); setCtxMenu(null) }}>New folder</CtxItem>
+        <CtxDivider />
+        <CtxItem icon={<CalendarIcon size={12} color="currentColor" />}
+          onClick={() => { createDailyNote(); setCtxMenu(null) }}>Today's note</CtxItem>
       </>
     }
     if (ctxMenu.type === 'folder') {
@@ -691,7 +703,14 @@ export default function NotebookView() {
       </div>
 
       {/* Tree / search / tag results */}
-      <div style={{ flex: 1, overflowY: 'auto', padding: '4px 0', WebkitOverflowScrolling: 'touch' }}>
+      <div style={{ flex: 1, overflowY: 'auto', padding: '4px 0', WebkitOverflowScrolling: 'touch' }}
+        onContextMenu={e => {
+          // Only fires on empty space — child items call e.stopPropagation() in their own handlers
+          e.preventDefault()
+          const x = Math.min(e.clientX, window.innerWidth  - 190)
+          const y = Math.min(e.clientY, window.innerHeight - 160)
+          setCtxMenu({ type: 'sidebar', x, y })
+        }}>
         {sidebarMode === 'search' ? (
           <div>
             <SectionLabel>{searchResults.length} result{searchResults.length !== 1 ? 's' : ''}</SectionLabel>
