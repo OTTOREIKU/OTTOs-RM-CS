@@ -5,7 +5,7 @@ import skillsData from '../data/skills.json'
 import weaponsData from '../data/weapons.json'
 import armorData from '../data/armor.json'
 import { getWeaponOB } from '../utils/calc.js'
-import { XIcon, ChevronDownIcon, ChevronRightIcon } from '../components/Icons.jsx'
+import { XIcon, ChevronDownIcon, ChevronRightIcon, ArrowDownIcon } from '../components/Icons.jsx'
 
 const LOCATIONS = ['Carried', 'Pack', 'Belt', 'Worn', 'Stored', 'Mount']
 const STATS = ['Agility','Constitution','Empathy','Intuition','Memory','Presence','Quickness','Reasoning','Self Discipline','Strength']
@@ -205,7 +205,7 @@ function WeaponsCard({ activeChar, addWeapon, updateWeapon, removeWeapon }) {
                   OB {ob >= 0 ? '+' : ''}{ob}
                 </span>
                 <span style={{fontSize:11,color:fumbleReduced?'var(--success)':'var(--text3)',flexShrink:0}}>
-                  F:{effFumble}{fumbleReduced ? <span style={{fontSize:9}}>↓</span> : ''}
+                  F:{effFumble}{fumbleReduced ? <ArrowDownIcon size={9} color="currentColor" /> : ''}
                 </span>
                 <button onClick={e=>{e.stopPropagation();removeWeapon(w.id)}}
                   onMouseEnter={e=>e.currentTarget.style.color='var(--danger)'}

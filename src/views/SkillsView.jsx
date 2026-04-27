@@ -494,8 +494,8 @@ function SkillRow({
             color: '#fff', padding: '5px 12px', fontSize: 12, fontWeight: 600, cursor: 'pointer',
           }}>Add</button>
           <button onClick={() => setAddOpen(p => ({ ...p, [rowKey]: null }))} style={{
-            background: 'none', border: 'none', color: 'var(--text3)', cursor: 'pointer', fontSize: 18, lineHeight: 1,
-          }}>✕</button>
+            background: 'none', border: 'none', color: 'var(--text3)', cursor: 'pointer', display: 'flex', alignItems: 'center',
+          }}><XIcon size={14} color="currentColor" /></button>
         </div>
       )}
     </>

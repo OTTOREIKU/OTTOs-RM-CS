@@ -7,7 +7,7 @@ import skillsData from '../data/skills.json'
 import skillCosts from '../data/skill_costs.json'
 import spellLists from '../data/spell_lists.json'
 import professionDP from '../data/profession_dp.json'
-import { ChevronDownIcon, ChevronRightIcon } from '../components/Icons.jsx'
+import { ChevronDownIcon, ChevronRightIcon, ChevronLeftIcon, ArrowRightIcon, MinusIcon, SparkleIcon } from '../components/Icons.jsx'
 
 const STAT_MAP = {
   Ag:'Agility', Co:'Constitution', Em:'Empathy', In:'Intuition',
@@ -260,9 +260,9 @@ export default function LevelUpView() {
 
       {/* Nav buttons */}
       <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 20 }}>
-        <button disabled={step === 0} onClick={() => dispatch({ type: 'STEP', step: step - 1 })} style={navBtn(false)}>← Back</button>
+        <button disabled={step === 0} onClick={() => dispatch({ type: 'STEP', step: step - 1 })} style={{ ...navBtn(false), display: 'flex', alignItems: 'center', gap: 5 }}><ChevronLeftIcon size={13} color="currentColor" /> Back</button>
         {step < STEPS.length - 1
-          ? <button onClick={() => dispatch({ type: 'STEP', step: step + 1 })} style={navBtn(true)}>Next →</button>
+          ? <button onClick={() => dispatch({ type: 'STEP', step: step + 1 })} style={{ ...navBtn(true), display: 'flex', alignItems: 'center', gap: 5 }}>Next <ArrowRightIcon size={13} color="currentColor" /></button>
           : <button onClick={applyLevelUp} style={{ ...navBtn(true), background: 'var(--success)' }}>Confirm Level Up</button>
         }
       </div>
@@ -338,7 +338,7 @@ function SkillStep({ c, lu, dispatch, skillSearch, setSkillSearch, dpLeft,
                       </div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                         <button onClick={() => buying > 0 && dispatch({ type: 'SKILL_BUY', name: skill.name, ranks: buying - 1, costs })}
-                          style={pmBtn(buying > 0)}>−</button>
+                          style={pmBtn(buying > 0)}><MinusIcon size={12} color="currentColor" /></button>
                         <span style={{ width: 20, textAlign: 'center', fontWeight: 700, color: buying > 0 ? 'var(--accent)' : 'var(--text2)' }}>{buying}</span>
                         <button onClick={() => buying < 2 && canAfford1 && dispatch({ type: 'SKILL_BUY', name: skill.name, ranks: buying + 1, costs })}
                           style={pmBtn(buying < 2 && canAfford1)}>+</button>
@@ -431,7 +431,7 @@ function SpellListsSection({ c, lu, dispatch, dpLeft, spellSearch, setSpellSearc
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
               <button onClick={() => buying > 0 && dispatch({ type: 'SPELL_BUY', name, ranks: buying - 1, cost })}
-                style={pmBtn(buying > 0)}>−</button>
+                style={pmBtn(buying > 0)}><MinusIcon size={12} color="currentColor" /></button>
               <span style={{ width: 20, textAlign: 'center', fontWeight: 700, color: buying > 0 ? 'var(--accent)' : 'var(--text2)' }}>{buying}</span>
               <button onClick={() => buying < 2 && canAfford && dispatch({ type: 'SPELL_BUY', name, ranks: buying + 1, cost })}
                 style={pmBtn(buying < 2 && canAfford)}>+</button>
@@ -508,7 +508,7 @@ function ReviewStep({ c, lu, onConfirm }) {
 function ConfirmedScreen({ char, lu, onDone }) {
   return (
     <div style={{ maxWidth: 400, margin: '4rem auto', padding: '2rem', textAlign: 'center' }}>
-      <div style={{ fontSize: 48, marginBottom: 16 }}>🎉</div>
+      <div style={{ marginBottom: 16, display: 'flex', justifyContent: 'center' }}><SparkleIcon size={48} color="var(--accent)" /></div>
       <h2 style={{ fontWeight: 700, fontSize: 20, marginBottom: 8 }}>Level {(char.level || 1)} reached!</h2>
       <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.6, marginBottom: 24 }}>
         All stats, skills, and spell list ranks have been updated.

@@ -7,17 +7,20 @@ import {
   hasWritePermission, requestWritePermission,
   pickAndLinkFile, writeToHandle, readFromHandle, clearLinkedHandle,
 } from '../store/fileSync.js'
-import { SwordsIcon, ChevronDownIcon } from './Icons.jsx'
+import {
+  SwordsIcon, ChevronDownIcon, XIcon, MenuIcon, SaveIcon,
+  UserIcon, BarChartIcon, ZapIcon, PackageIcon, BookOpenIcon, TrendingUpIcon, BookIcon,
+} from './Icons.jsx'
 import { getBaseHits, getPowerPoints } from '../utils/calc.js'
 
 const NAV = [
-  { to: '/sheet',     label: 'Sheet',    icon: '◆' },
-  { to: '/skills',    label: 'Skills',   icon: '◈' },
-  { to: '/spells',    label: 'Spells',   icon: '✦' },
-  { to: '/gear',      label: 'Gear',     icon: '⊞' },
-  { to: '/notebook',  label: 'Notes',    icon: '✎' },
-  { to: '/levelup',   label: 'Level Up', icon: '★' },
-  { to: '/reference', label: 'Ref',      icon: '◉' },
+  { to: '/sheet',     label: 'Sheet',    Icon: UserIcon       },
+  { to: '/skills',    label: 'Skills',   Icon: BarChartIcon   },
+  { to: '/spells',    label: 'Spells',   Icon: ZapIcon        },
+  { to: '/gear',      label: 'Gear',     Icon: PackageIcon    },
+  { to: '/notebook',  label: 'Notes',    Icon: BookOpenIcon   },
+  { to: '/levelup',   label: 'Level Up', Icon: TrendingUpIcon },
+  { to: '/reference', label: 'Ref',      Icon: BookIcon       },
 ]
 
 export default function Shell({ children }) {
@@ -188,11 +191,12 @@ export default function Shell({ children }) {
                     </div>
                     <button onClick={e => handleDelete(ch.id, e)} style={{
                       background: 'none', border: 'none', color: 'var(--text3)',
-                      cursor: 'pointer', padding: '2px 4px', borderRadius: 4, fontSize: 12,
+                      cursor: 'pointer', padding: '2px 4px', borderRadius: 4,
+                      display: 'flex', alignItems: 'center',
                     }}
                       onMouseEnter={e => e.currentTarget.style.color = 'var(--danger)'}
                       onMouseLeave={e => e.currentTarget.style.color = 'var(--text3)'}
-                    >✕</button>
+                    ><XIcon size={13} color="currentColor" /></button>
                   </div>
                 ))}
                 {charList.length > 0 && <div style={{ height: 1, background: 'var(--border)' }} />}
@@ -246,7 +250,7 @@ export default function Shell({ children }) {
                 border: '1px solid ' + (backupMenuOpen ? 'var(--border2)' : 'transparent'),
                 borderRadius: 7, padding: '4px 8px', cursor: 'pointer', color: 'var(--text3)',
               }}>
-              <span style={{ fontSize: 13 }}>💾</span>
+              <SaveIcon size={15} color="var(--text3)" />
               <span style={{
                 width: 7, height: 7, borderRadius: '50%', flexShrink: 0,
                 background: backupFile
@@ -329,7 +333,7 @@ export default function Shell({ children }) {
                 borderRadius: '16px 16px 0 0',
                 zIndex: 52, overflow: 'hidden',
               }}>
-                {NAV.map(({ to, label, icon }) => (
+                {NAV.map(({ to, label, Icon: NavIcon }) => (
                   <NavLink key={to} to={to} style={({ isActive }) => ({
                     display: 'flex', alignItems: 'center', gap: 14,
                     padding: '14px 24px',
@@ -339,7 +343,7 @@ export default function Shell({ children }) {
                     borderLeft: '3px solid ' + (isActive ? 'var(--accent)' : 'transparent'),
                     fontSize: 15, fontWeight: isActive ? 700 : 500,
                   })}>
-                    <span style={{ fontSize: 18, width: 24, textAlign: 'center' }}>{icon}</span>
+                    <NavIcon size={18} color="currentColor" />
                     <span>{label}</span>
                   </NavLink>
                 ))}
@@ -362,7 +366,7 @@ export default function Shell({ children }) {
                   padding: '0 16px', color: 'var(--accent)',
                   borderTop: '2px solid var(--accent)',
                 }}>
-                  <span style={{ fontSize: 16 }}>{active.icon}</span>
+                  <active.Icon size={16} color="var(--accent)" />
                   <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: '0.04em' }}>{active.label}</span>
                 </div>
               )
@@ -381,7 +385,7 @@ export default function Shell({ children }) {
                 cursor: 'pointer',
               }}
             >
-              <span style={{ fontSize: 16, lineHeight: 1 }}>☰</span>
+              <MenuIcon size={16} color="currentColor" />
               <span style={{ fontSize: 9, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Menu</span>
             </button>
           </nav>
@@ -392,7 +396,7 @@ export default function Shell({ children }) {
           background: 'var(--surface)', borderTop: '1px solid var(--border)',
           display: 'flex', zIndex: 50,
         }}>
-          {NAV.map(({ to, label, icon }) => (
+          {NAV.map(({ to, label, Icon: NavIcon }) => (
             <NavLink key={to} to={to} style={({ isActive }) => ({
               flex: 1, display: 'flex', flexDirection: 'column',
               alignItems: 'center', justifyContent: 'center',
@@ -400,7 +404,7 @@ export default function Shell({ children }) {
               color: isActive ? 'var(--accent)' : 'var(--text3)',
               borderTop: '2px solid ' + (isActive ? 'var(--accent)' : 'transparent'),
             })}>
-              <span style={{ fontSize: 14 }}>{icon}</span>
+              <NavIcon size={15} color="currentColor" />
               <span style={{ fontSize: 9, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' }}>{label}</span>
             </NavLink>
           ))}

@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react'
 import { useCharacter } from '../store/CharacterContext.jsx'
-import { ChevronDownIcon, ChevronUpIcon } from '../components/Icons.jsx'
+import { ChevronDownIcon, ChevronUpIcon, ChevronRightIcon, InfoIcon } from '../components/Icons.jsx'
 import { rankBonus, getTotalStatBonus, getTalentBonuses } from '../utils/calc.js'
 import spellLists from '../data/spell_lists.json'
 import spellDescs from '../data/spell_descriptions.json'
@@ -117,7 +117,7 @@ export default function SpellsView() {
           border: '1px solid var(--border)', borderRadius: 5,
           color: 'var(--text3)', fontSize: 11, padding: '3px 8px', cursor: 'pointer',
         }}>
-          {showTypes ? 'Hide' : 'Spell Types ▸'}
+          {showTypes ? 'Hide' : <span style={{ display: 'flex', alignItems: 'center', gap: 3 }}>Spell Types <ChevronRightIcon size={10} color="currentColor" /></span>}
         </button>
       </div>
 
@@ -208,7 +208,7 @@ export default function SpellsView() {
                           borderLeft: '2px solid ' + (hasDetail ? rc + '60' : 'transparent'),
                         }}>
                         <span style={{ color: rc, fontWeight: 700 }}>{spell.level}</span>
-                        <span>{spell.name}{hasDetail && <span style={{ marginLeft: 4, color: 'var(--text3)', fontSize: 9 }}>ⓘ</span>}</span>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: 3 }}>{spell.name}{hasDetail && <InfoIcon size={9} color="var(--text3)" />}</span>
                         <span style={{ color: 'var(--text2)', fontSize: 11 }}>{spell.aoe || '—'}</span>
                         <span style={{ color: 'var(--text2)', fontSize: 11 }}>{spell.duration || '—'}</span>
                         <span style={{ color: 'var(--text2)', fontSize: 11 }}>{spell.range || '—'}</span>

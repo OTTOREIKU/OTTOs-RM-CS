@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react'
-import { ChevronDownIcon, ChevronUpIcon } from '../components/Icons.jsx'
+import { ChevronDownIcon, ChevronUpIcon, XIcon, CheckIcon, DiamondIcon } from '../components/Icons.jsx'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { STATS } from '../store/characters.js'
 import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getBaseHits, getEndurance, getPowerPoints, getWeightAllowance, getTalentBonuses } from '../utils/calc.js'
@@ -182,7 +182,7 @@ function CultureGrantsPanel({ culture, char, updateCharacter, updateSkill }) {
       }}>
         <span>Culture Grants — {culture}</span>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          {applied && <span style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 600, textTransform: 'none', letterSpacing: 0 }}>✓ Applied</span>}
+          {applied && <span style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 600, textTransform: 'none', letterSpacing: 0, display: 'flex', alignItems: 'center', gap: 3 }}><CheckIcon size={10} color="currentColor" /> Applied</span>}
           {open ? <ChevronUpIcon size={12} color="var(--text3)" /> : <ChevronDownIcon size={12} color="var(--text3)" />}
         </div>
       </button>
@@ -293,7 +293,7 @@ function WeaponBrowser({ onSelect, onCancel }) {
           {WDB_SKILLS.map(s=><option key={s} value={s}>{s==='All'?'All skills':s}</option>)}
         </select>
         <button onClick={onCancel}
-          style={{ background:'none', border:'none', color:'var(--text3)', cursor:'pointer', fontSize:16, lineHeight:1, padding:'0 2px' }}>✕</button>
+          style={{ background:'none', border:'none', color:'var(--text3)', cursor:'pointer', padding:'2px', display:'flex', alignItems:'center' }}><XIcon size={14} color="currentColor" /></button>
       </div>
       <div style={{ maxHeight:260, overflowY:'auto' }}>
         {filtered.length === 0 && (
@@ -512,7 +512,7 @@ export default function CharacterSheet() {
                 return (
                   <tr key={stat} style={{ borderBottom: '1px solid var(--border)' }}>
                     <td style={{ padding: '5px 6px', fontWeight: isRealm ? 700 : 400, color: isRealm ? 'var(--accent)' : 'var(--text)', whiteSpace: 'nowrap' }}>{stat}</td>
-                    <td style={{ padding: '5px 2px', fontSize: 10, color: 'var(--text3)', fontWeight: 600 }}>{STAT_ABBR[stat]}{isRealm ? ' ✦' : ''}</td>
+                    <td style={{ padding: '5px 2px', fontSize: 10, color: 'var(--text3)', fontWeight: 600 }}>{STAT_ABBR[stat]}{isRealm ? <> <DiamondIcon size={7} color="var(--accent)" /></> : ''}</td>
                     <td style={{ padding: '3px 4px' }}>
                       <input type="number" value={s.temp ?? ''} min={1} max={100}
                         onChange={e => updateStat(stat, 'temp', Number(e.target.value))}
@@ -542,15 +542,15 @@ export default function CharacterSheet() {
             </tbody>
           </table>
         </div>
-        <p style={{ fontSize: 10, color: 'var(--text3)', marginTop: 8 }}>✦ Realm stat · Bonus = stat bonus + racial + special</p>
+        <p style={{ fontSize: 10, color: 'var(--text3)', marginTop: 8, display: 'flex', alignItems: 'center', gap: 4 }}><DiamondIcon size={7} color="var(--accent)" /> Realm stat · Bonus = stat bonus + racial + special</p>
       </Card>
 
       {/* Weapons */}
       <Card title="Weapons & Attacks" action={
         <div style={{ display:'flex', gap:6 }}>
           <button onClick={()=>setWBrowse(b=>!b)}
-            style={{ background:'var(--surface2)', color:'var(--text2)', border:'1px solid var(--border)', borderRadius:6, padding:'3px 10px', fontSize:11, fontWeight:600, cursor:'pointer' }}>
-            {wBrowse ? '✕ Close DB' : '+ From DB'}
+            style={{ background:'var(--surface2)', color:'var(--text2)', border:'1px solid var(--border)', borderRadius:6, padding:'3px 10px', fontSize:11, fontWeight:600, cursor:'pointer', display:'flex', alignItems:'center', gap:4 }}>
+            {wBrowse ? <><XIcon size={10} color="currentColor" /> Close DB</> : '+ From DB'}
           </button>
           <button onClick={()=>{addWeapon();setWBrowse(false);}}
             style={{ background:'var(--accent)', color:'#fff', border:'none', borderRadius:6, padding:'3px 10px', fontSize:11, fontWeight:600, cursor:'pointer' }}>+ Custom</button>
@@ -607,10 +607,10 @@ export default function CharacterSheet() {
                       <div style={{ fontSize:9, color:'var(--text3)', textTransform:'uppercase', letterSpacing:'0.07em' }}>Total OB</div>
                       <div style={{ fontSize:22, fontWeight:800, color: ob > 0 ? 'var(--success)' : ob < 0 ? 'var(--danger)' : 'var(--text)' }}>{fmt(ob)}</div>
                     </div>
-                    <button onClick={() => removeWeapon(w.id)} style={{ background:'none', border:'none', color:'var(--text3)', cursor:'pointer', padding:'4px', fontSize:14 }}
+                    <button onClick={() => removeWeapon(w.id)} style={{ background:'none', border:'none', color:'var(--text3)', cursor:'pointer', padding:'4px', display:'flex', alignItems:'center' }}
                       onMouseEnter={e => e.currentTarget.style.color='var(--danger)'}
                       onMouseLeave={e => e.currentTarget.style.color='var(--text3)'}
-                    >✕</button>
+                    ><XIcon size={13} color="currentColor" /></button>
                   </div>
                 </div>
               </div>

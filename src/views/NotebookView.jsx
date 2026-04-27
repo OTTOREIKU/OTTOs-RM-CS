@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import {
   ChevronDownIcon, ChevronRightIcon, PlusIcon, TrashIcon,
   PencilIcon, PinIcon, FolderIcon, FolderOpenIcon, DotsHIcon, FileIcon, CalendarIcon,
+  XIcon, MenuIcon, ChevronLeftIcon, CheckIcon,
 } from '../components/Icons.jsx'
 import {
   loadNotebook, saveNotebook, loadOpenFolders, saveOpenFolders,
@@ -352,6 +353,22 @@ export default function NotebookView() {
     })
   }
 
+  // ── Notebook import ────────────────────────────────────────────────────────
+  async function handleImportNotebook(e) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    e.target.value = ''
+    try {
+      const { imported, skipped } = await importNotebookFromFile(file, 'merge')
+      setData(loadNotebook())
+      setNbImportStatus(`Imported ${imported} note${imported !== 1 ? 's' : ''}${skipped ? `, skipped ${skipped} (already exist)` : ''}.`)
+      setTimeout(() => setNbImportStatus(null), 4000)
+    } catch (err) {
+      setNbImportStatus('Error: ' + err.message)
+      setTimeout(() => setNbImportStatus(null), 5000)
+    }
+  }
+
   // ── Rename ─────────────────────────────────────────────────────────────────
   function startRename(type, id, val) { setRenaming({ type, id }); setRenameVal(val); setCtxMenu(null) }
   function commitRename() {
@@ -696,8 +713,8 @@ export default function NotebookView() {
           {isMobile && (
             <button onClick={() => setShowSidebar(false)}
               style={{ background: 'none', border: 'none', color: 'var(--accent)', cursor: 'pointer',
-                fontSize: 20, lineHeight: 1, padding: '0 6px 0 0', flexShrink: 0, display: 'flex', alignItems: 'center' }}>
-              ‹
+                padding: '0 6px 0 0', flexShrink: 0, display: 'flex', alignItems: 'center' }}>
+              <ChevronLeftIcon size={18} color="currentColor" />
             </button>
           )}
           <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text)', flex: 1 }}>Notebook</span>
@@ -767,8 +784,9 @@ export default function NotebookView() {
           </button>
           <button onClick={clearSelection}
             style={{ background: 'var(--surface2)', border: '1px solid var(--border)',
-              color: 'var(--text2)', borderRadius: 5, padding: '3px 8px', fontSize: 11, cursor: 'pointer' }}>
-            ✕
+              color: 'var(--text2)', borderRadius: 5, padding: '4px 8px', cursor: 'pointer',
+              display: 'flex', alignItems: 'center' }}>
+            <XIcon size={11} color="currentColor" />
           </button>
         </div>
       )}
@@ -809,8 +827,10 @@ export default function NotebookView() {
             <div style={{ display: 'flex', alignItems: 'center', padding: '2px 8px 4px' }}>
               <SectionLabel>#{activeTag}</SectionLabel>
               <button onClick={() => setActiveTag(null)}
-                style={{ background: 'none', border: 'none', fontSize: 11, color: 'var(--text3)',
-                  cursor: 'pointer', padding: '0 4px' }}>✕ clear</button>
+                style={{ background: 'none', border: 'none', color: 'var(--text3)',
+                  cursor: 'pointer', padding: '2px 4px', display: 'flex', alignItems: 'center', gap: 3, fontSize: 11 }}>
+                <XIcon size={9} color="currentColor" /> clear
+              </button>
             </div>
             {tagResults.length === 0 && (
               <div style={{ padding: '12px 14px', fontSize: 12, color: 'var(--text3)', fontStyle: 'italic' }}>No notes with #{activeTag}.</div>
@@ -889,7 +909,7 @@ export default function NotebookView() {
               color: 'var(--text3)', fontSize: 11, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5 }}
             onMouseEnter={e => { e.currentTarget.style.background = 'var(--surface2)'; e.currentTarget.style.color = 'var(--text2)' }}
             onMouseLeave={e => { e.currentTarget.style.background = 'none'; e.currentTarget.style.color = 'var(--text3)' }}>
-            ‹ Hide sidebar
+            <ChevronLeftIcon size={11} color="currentColor" /> Hide sidebar
           </button>
         )}
         <div style={{ display: 'flex', gap: 6 }}>
@@ -976,9 +996,9 @@ export default function NotebookView() {
                       onClick={() => isMobile ? setShowSidebar(true) : setSidebarHidden(false)}
                       title="Open notes list"
                       style={{ background: 'none', border: '1px solid var(--border)', borderRadius: 6,
-                        color: 'var(--text2)', cursor: 'pointer', padding: '4px 8px',
-                        fontSize: 14, lineHeight: 1, flexShrink: 0, display: 'flex', alignItems: 'center', gap: 4 }}>
-                      ☰
+                        color: 'var(--text2)', cursor: 'pointer', padding: '5px 8px',
+                        flexShrink: 0, display: 'flex', alignItems: 'center', gap: 4 }}>
+                      <MenuIcon size={15} color="currentColor" />
                     </button>
                   )}
                   <input ref={titleRef} value={activeNote.title}
@@ -1029,7 +1049,7 @@ export default function NotebookView() {
                   <TGroup>
                     <TBtn onClick={() => applyFormat('ul')}   title="Bullet list">• List</TBtn>
                     <TBtn onClick={() => applyFormat('ol')}   title="Numbered list">1. List</TBtn>
-                    <TBtn onClick={() => applyFormat('task')} title="Task checkbox">☐ Task</TBtn>
+                    <TBtn onClick={() => applyFormat('task')} title="Task checkbox">[ ] Task</TBtn>
                     <TBtn onClick={() => applyFormat('hr')}   title="Horizontal rule">─</TBtn>
                   </TGroup>
                   <div style={{ flex: 1 }} />
@@ -1102,9 +1122,9 @@ export default function NotebookView() {
                   style={{ position: 'absolute', top: 12, left: 12,
                     background: 'var(--surface)', border: '1px solid var(--border2)',
                     borderRadius: 8, color: 'var(--text2)', cursor: 'pointer',
-                    padding: '7px 10px', fontSize: 16, lineHeight: 1,
+                    padding: '7px 10px',
                     boxShadow: '0 2px 8px rgba(0,0,0,0.25)', display: 'flex', alignItems: 'center' }}>
-                  ☰
+                  <MenuIcon size={16} color="currentColor" />
                 </button>
               )}
               <div style={{ opacity: 0.25 }}><FileIcon size={44} color="var(--text)" /></div>
@@ -1208,7 +1228,7 @@ function NoteRow({ note, active, dragging, selected, inSelectionMode, indent = 1
         {selected ? (
           <span style={{ width: 11, height: 11, borderRadius: 3, background: 'var(--accent)',
             display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-            <span style={{ color: '#fff', fontSize: 8, fontWeight: 900, lineHeight: 1 }}>✓</span>
+            <CheckIcon size={8} color="#fff" />
           </span>
         ) : note.pinned ? (
           <PinIcon size={11} filled color="currentColor" />

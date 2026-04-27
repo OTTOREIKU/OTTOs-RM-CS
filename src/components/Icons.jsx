@@ -197,3 +197,167 @@ export function GearIcon({ size, color }) {
     </Icon>
   )
 }
+
+// ── Navigation tab icons ─────────────────────────────────────────────────────
+
+export function UserIcon({ size, color }) {
+  return (
+    <Icon size={size} color={color}>
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+      <circle cx="12" cy="7" r="4" />
+    </Icon>
+  )
+}
+
+export function BarChartIcon({ size, color }) {
+  return (
+    <Icon size={size} color={color}>
+      <line x1="18" y1="20" x2="18" y2="10" />
+      <line x1="12" y1="20" x2="12" y2="4" />
+      <line x1="6"  y1="20" x2="6"  y2="14" />
+    </Icon>
+  )
+}
+
+export function ZapIcon({ size, color }) {
+  return (
+    <Icon size={size} color={color}>
+      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+    </Icon>
+  )
+}
+
+export function PackageIcon({ size, color }) {
+  return (
+    <Icon size={size} color={color}>
+      <line x1="16.5" y1="9.4" x2="7.5" y2="4.21" />
+      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+      <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+      <line x1="12" y1="22.08" x2="12" y2="12" />
+    </Icon>
+  )
+}
+
+export function BookOpenIcon({ size, color }) {
+  return (
+    <Icon size={size} color={color}>
+      <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+      <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+    </Icon>
+  )
+}
+
+export function TrendingUpIcon({ size, color }) {
+  return (
+    <Icon size={size} color={color}>
+      <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+      <polyline points="17 6 23 6 23 12" />
+    </Icon>
+  )
+}
+
+export function BookIcon({ size, color }) {
+  return (
+    <Icon size={size} color={color}>
+      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+    </Icon>
+  )
+}
+
+// ── Utility icons ────────────────────────────────────────────────────────────
+
+/** Floppy-disk save icon — flat/monochrome, no color emoji */
+export function SaveIcon({ size, color }) {
+  return (
+    <Icon size={size} color={color}>
+      <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+      <polyline points="17 21 17 13 7 13 7 21" />
+      <polyline points="7 3 7 8 15 8" />
+    </Icon>
+  )
+}
+
+/** Hamburger / menu icon — three horizontal lines */
+export function MenuIcon({ size, color }) {
+  return (
+    <Icon size={size} color={color}>
+      <line x1="3" y1="6"  x2="21" y2="6"  />
+      <line x1="3" y1="12" x2="21" y2="12" />
+      <line x1="3" y1="18" x2="21" y2="18" />
+    </Icon>
+  )
+}
+
+export function ChevronLeftIcon({ size, color }) {
+  return (
+    <Icon size={size} color={color}>
+      <polyline points="15 18 9 12 15 6" />
+    </Icon>
+  )
+}
+
+export function MinusIcon({ size, color }) {
+  return (
+    <Icon size={size} color={color}>
+      <line x1="5" y1="12" x2="19" y2="12" />
+    </Icon>
+  )
+}
+
+export function CheckIcon({ size, color }) {
+  return (
+    <Icon size={size} color={color}>
+      <polyline points="20 6 9 17 4 12" />
+    </Icon>
+  )
+}
+
+export function InfoIcon({ size, color }) {
+  return (
+    <Icon size={size} color={color}>
+      <circle cx="12" cy="12" r="10" />
+      <line x1="12" y1="8" x2="12" y2="8" strokeWidth={2.5} strokeLinecap="round" />
+      <line x1="12" y1="12" x2="12" y2="16" />
+    </Icon>
+  )
+}
+
+/** Sparkle / celebration — replaces 🎉 emoji */
+export function SparkleIcon({ size, color }) {
+  return (
+    <Icon size={size} color={color}>
+      <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z" />
+    </Icon>
+  )
+}
+
+/** Small diamond — replaces ✦ realm-stat indicator */
+export function DiamondIcon({ size = 10, color = 'currentColor' }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill={color} stroke="none"
+      style={{ display: 'inline-block', flexShrink: 0, verticalAlign: 'middle' }}>
+      <path d="M12 2L22 12L12 22L2 12Z" />
+    </svg>
+  )
+}
+
+/** Arrow pointing right — replaces → in navigation buttons */
+export function ArrowRightIcon({ size, color }) {
+  return (
+    <Icon size={size} color={color}>
+      <line x1="5" y1="12" x2="19" y2="12" />
+      <polyline points="12 5 19 12 12 19" />
+    </Icon>
+  )
+}
+
+/** Arrow pointing down — replaces ↓ fumble-reduced indicator */
+export function ArrowDownIcon({ size, color }) {
+  return (
+    <Icon size={size} color={color}>
+      <line x1="12" y1="5" x2="12" y2="19" />
+      <polyline points="19 12 12 19 5 12" />
+    </Icon>
+  )
+}
