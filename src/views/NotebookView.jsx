@@ -20,6 +20,16 @@ const NOTE_COLORS = {
 }
 const COLOR_KEYS = Object.keys(NOTE_COLORS)
 
+// Hex-based tints for use in backgrounds (CSS vars can't be alpha-modified inline)
+const NOTE_COLOR_ACTIVE = {
+  red:    '#ef444428', orange: '#f9731628', yellow: '#eab30828',
+  green:  '#22c55e28', blue:   '#6366f128', purple: '#a855f728',
+}
+const NOTE_COLOR_PASSIVE = {
+  red:    '#ef444412', orange: '#f9731612', yellow: '#eab30812',
+  green:  '#22c55e12', blue:   '#6366f112', purple: '#a855f712',
+}
+
 // ── Markdown renderer ─────────────────────────────────────────────────────────
 
 function escHtml(s) {
@@ -187,6 +197,7 @@ export default function NotebookView() {
   const [dragItem,       setDragItem]       = useState(null)  // { type: 'note'|'folder', id }
   const [dragOverTarget, setDragOverTarget] = useState(null)
   const [plusOpen,       setPlusOpen]       = useState(false)
+  const [confirmDlg,     setConfirmDlg]     = useState(null)  // { message, onConfirm }
 
   const renameRef   = useRef(null)
   const titleRef    = useRef(null)
@@ -254,10 +265,14 @@ export default function NotebookView() {
     mutate(d => { if (d.notes[id]) d.notes[id] = { ...d.notes[id], ...patch, updated_at: new Date().toISOString() }; return d })
   }
   function deleteNote(id) {
-    if (!confirm('Delete this note? This cannot be undone.')) return
-    mutate(d => { delete d.notes[id]; return d })
-    if (activeId === id) setActiveId(null)
     setCtxMenu(null)
+    setConfirmDlg({
+      message: 'Delete this note? This cannot be undone.',
+      onConfirm: () => {
+        mutate(d => { delete d.notes[id]; return d })
+        if (activeId === id) setActiveId(null)
+      }
+    })
   }
 
   function createFolder(parentId = null) {
@@ -275,14 +290,18 @@ export default function NotebookView() {
     mutate(d => { if (d.folders[id]) d.folders[id] = { ...d.folders[id], ...patch, updated_at: new Date().toISOString() }; return d })
   }
   function deleteFolder(id) {
-    if (!confirm('Delete this folder and all subfolders? Notes inside will become Unfiled.')) return
-    mutate(d => {
-      const toDelete = collectDescendants(d.folders, id)
-      Object.values(d.notes).forEach(n => { if (toDelete.has(n.folder_id)) n.folder_id = null })
-      toDelete.forEach(fId => delete d.folders[fId])
-      return d
-    })
     setCtxMenu(null)
+    setConfirmDlg({
+      message: 'Delete this folder and all subfolders? Notes inside will become Unfiled.',
+      onConfirm: () => {
+        mutate(d => {
+          const toDelete = collectDescendants(d.folders, id)
+          Object.values(d.notes).forEach(n => { if (toDelete.has(n.folder_id)) n.folder_id = null })
+          toDelete.forEach(fId => delete d.folders[fId])
+          return d
+        })
+      }
+    })
   }
   function moveNote(noteId, folderId) {
     updateNote(noteId, { folder_id: folderId ?? null }); setCtxMenu(null)
@@ -562,9 +581,14 @@ export default function NotebookView() {
           )}
         </div>
 
-        {/* Expanded content */}
+        {/* Expanded content — with Obsidian-style indent guide */}
         {isOpen && (
-          <div>
+          <div style={{ position: 'relative' }}>
+            {/* Vertical indent guide line */}
+            {!isUnfiled && (
+              <div style={{ position: 'absolute', left: pad + 13, top: 2, bottom: 10,
+                width: 1, background: 'var(--border2)', borderRadius: 1, pointerEvents: 'none' }} />
+            )}
             {children.map(cf => renderFolderNode(cf.id, depth + 1))}
             {notes.map(note => (
               <NoteRow key={note.id} note={note} active={activeId === note.id}
@@ -972,6 +996,36 @@ export default function NotebookView() {
           {renderCtxItems()}
         </div>
       )}
+
+      {/* ── CONFIRM DIALOG ───────────────────────────────────────── */}
+      {confirmDlg && (
+        <>
+          <div onClick={() => setConfirmDlg(null)}
+            style={{ position: 'fixed', inset: 0, zIndex: 9998, background: 'rgba(0,0,0,0.6)' }} />
+          <div style={{ position: 'fixed', left: '50%', top: '50%', transform: 'translate(-50%,-50%)',
+            zIndex: 9999, background: 'var(--surface)', border: '1px solid var(--border2)',
+            borderRadius: 12, boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
+            padding: '24px 28px', maxWidth: 320, width: '90vw' }}>
+            <div style={{ fontSize: 14, color: 'var(--text)', lineHeight: 1.5, marginBottom: 20 }}>
+              {confirmDlg.message}
+            </div>
+            <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
+              <button onClick={() => setConfirmDlg(null)}
+                style={{ padding: '7px 18px', borderRadius: 8, border: '1px solid var(--border2)',
+                  background: 'var(--surface2)', color: 'var(--text2)', fontSize: 13,
+                  fontWeight: 500, cursor: 'pointer' }}>
+                Cancel
+              </button>
+              <button onClick={() => { confirmDlg.onConfirm(); setConfirmDlg(null) }}
+                style={{ padding: '7px 18px', borderRadius: 8, border: 'none',
+                  background: 'var(--danger)', color: '#fff', fontSize: 13,
+                  fontWeight: 600, cursor: 'pointer' }}>
+                Delete
+              </button>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   )
 }
@@ -991,10 +1045,12 @@ function NoteRow({ note, active, dragging, indent = 10, renaming, renameVal, ren
       style={{ display: 'flex', alignItems: 'flex-start',
         padding: `5px 8px 5px ${indent}px`,
         gap: 5, cursor: 'pointer', borderRadius: 6, margin: '0 4px 1px',
-        background: active ? 'var(--accent)20' : dragging ? 'var(--surface2)' : 'transparent',
+        background: dragging ? 'var(--surface2)' : active
+          ? (note.color ? NOTE_COLOR_ACTIVE[note.color] : 'var(--accent)20')
+          : (note.color ? NOTE_COLOR_PASSIVE[note.color] : 'transparent'),
         opacity: dragging ? 0.4 : 1, transition: 'opacity .15s, background .1s' }}
-      onMouseEnter={e => { if (!active && !dragging) e.currentTarget.style.background = 'var(--surface2)' }}
-      onMouseLeave={e => { if (!active && !dragging) e.currentTarget.style.background = 'transparent' }}>
+      onMouseEnter={e => { if (!active && !dragging) e.currentTarget.style.background = note.color ? NOTE_COLOR_ACTIVE[note.color] : 'var(--surface2)' }}
+      onMouseLeave={e => { if (!active && !dragging) e.currentTarget.style.background = note.color ? NOTE_COLOR_PASSIVE[note.color] : 'transparent' }}>
 
       <span style={{
         color: dotColor ?? (active ? 'var(--accent)' : note.pinned ? 'var(--accent)' : 'var(--text3)'),
