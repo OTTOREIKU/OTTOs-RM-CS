@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react'
 import { ChevronDownIcon, ChevronUpIcon, XIcon, CheckIcon, DiamondIcon } from '../components/Icons.jsx'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { STATS } from '../store/characters.js'
-import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getBaseHits, getEndurance, getPowerPoints, getWeightAllowance, getTalentBonuses } from '../utils/calc.js'
+import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getBaseHits, getEndurance, getPowerPoints, getWeightAllowance, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus } from '../utils/calc.js'
 import races from '../data/races.json'
 import professions from '../data/professions.json'
 import cultures from '../data/cultures.json'
@@ -813,7 +813,7 @@ function StarredSkillsPanel({ c }) {
       const ranks = (cs.ranks ?? 0) + (cs.culture_ranks ?? 0)
       result.push({ name, total, ranks, notes: cs.notes })
     }
-    return result
+    return result.sort((a, b) => a.name.localeCompare(b.name))
   }, [c.skills, c.custom_skills, c.talents, c.stats, c.realm, talentBonusMap])
 
   if (!starred.length) return null
@@ -853,24 +853,6 @@ function SpellListsPanel({ c }) {
   const lists = Object.entries(c.spell_lists || {})
   if (!lists.length) return null
 
-  // Formula: rankBonus + RS×2 + Me + itemBonus + profBonus + talentSpell  (must match SkillsView SpellListRow)
-  const talentSpellB = getTalentBonuses(c).spellcasting
-  function castingBonus(listName, data) {
-    const d       = typeof data === 'object' ? data : {}
-    const ranks   = typeof data === 'number' ? data : (d.ranks ?? 0)
-    const item    = d.item_bonus ?? 0
-    const isProf  = !!d.proficient
-    const profB   = isProf ? Math.min(ranks, 30) : 0
-    const rb      = rankBonus(ranks)
-    const listDef = spellListsDb[listName]
-    const realm   = listDef?.realm || c.realm
-    const rsName  = c.spell_cast_stat ?? REALM_STAT_MAP[realm]
-    const rsB     = rsName && c.stats?.[rsName] ? getTotalStatBonus(c.stats[rsName]) : 0
-    const meB     = c.stats?.Memory ? getTotalStatBonus(c.stats.Memory) : 0
-    const statB   = rsB * 2 + meB
-    return { ranks, rb, statB, item, profB, talentB: talentSpellB, total: rb + statB + item + profB + talentSpellB }
-  }
-
   const grouped = {}
   for (const sub of SPELL_SUBS) grouped[sub] = []
   for (const [name, data] of lists) {
@@ -878,6 +860,8 @@ function SpellListsPanel({ c }) {
     const target = grouped[cat] ?? grouped['Base']
     target.push([name, data])
   }
+
+  const fmt = v => v == null ? '—' : (v >= 0 ? `+${v}` : `${v}`)
 
   return (
     <Card title="Spell Lists">
@@ -890,45 +874,35 @@ function SpellListsPanel({ c }) {
             <div key={sub}>
               <div style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em',
                 color, marginBottom: 4 }}>{sub}</div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 40px 40px 40px 40px 54px', gap: 3,
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 36px 54px 60px', gap: 3,
                 padding: '3px 6px', background: 'var(--surface2)', borderRadius: 4,
                 fontSize: 9, fontWeight: 700, color: 'var(--text3)', textTransform: 'uppercase',
                 letterSpacing: '0.06em', marginBottom: 2 }}>
-                <span>List</span><span style={{textAlign:'center'}}>Rnk</span>
-                <span style={{textAlign:'center'}}>Rank</span>
-                <span style={{textAlign:'center'}}>Stat</span>
-                <span style={{textAlign:'center'}}>Other</span>
-                <span style={{textAlign:'center'}}>Total</span>
+                <span>List</span>
+                <span style={{textAlign:'center'}}>Rnk</span>
+                <span style={{textAlign:'center'}} title="Spellcasting Roll: raw ranks + realm stat×1 + talents">SCR</span>
+                <span style={{textAlign:'center'}} title="Spell Mastery: rank bonus + stat×2 + Memory + item + prof + talents">Mastery</span>
               </div>
               {subLists.map(([name, data]) => {
-                const { ranks, rb, statB, item, profB, talentB, total } = castingBonus(name, data)
-                const other = item + profB + talentB
-                const otherTip = [
-                  item    ? `Item: +${item}`     : null,
-                  profB   ? `Prof: +${profB}`    : null,
-                  talentB ? `Talent: ${talentB > 0 ? '+' : ''}${talentB}` : null,
-                ].filter(Boolean).join(' + ') || 'no bonus'
+                const ranks = typeof data === 'number' ? data : (data?.ranks ?? 0)
+                const scr     = getSpellCastingBonus(c, name)
+                const mastery = getSpellMasteryBonus(c, name)
                 return (
-                  <div key={name} style={{ display: 'grid', gridTemplateColumns: '1fr 40px 40px 40px 40px 54px',
+                  <div key={name} style={{ display: 'grid', gridTemplateColumns: '1fr 36px 54px 60px',
                     gap: 3, padding: '4px 6px', fontSize: 12, alignItems: 'center',
                     borderBottom: '1px solid var(--border)' }}>
                     <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
                       color: 'var(--text)', fontWeight: 500 }} title={name}>{name}</span>
                     <span style={{ textAlign: 'center', color: 'var(--text2)' }}>{ranks}</span>
-                    <span style={{ textAlign: 'center', color: ranks > 0 ? 'var(--text2)' : 'var(--text3)',
-                      fontSize: 11 }}>{rb >= 0 ? `+${rb}` : rb}</span>
-                    <span style={{ textAlign: 'center', color: 'var(--text2)', fontSize: 11 }}>
-                      {statB >= 0 ? `+${statB}` : statB}
+                    <span style={{ textAlign: 'center', fontWeight: 700, fontSize: 12,
+                      color: scr > 0 ? 'var(--success)' : scr < 0 ? 'var(--danger)' : 'var(--text2)' }}
+                      title="Spellcasting Roll modifier">
+                      {fmt(scr)}
                     </span>
-                    <span style={{ textAlign: 'center', fontSize: 11,
-                      color: other !== 0 ? 'var(--accent)' : 'var(--text3)' }}
-                      title={otherTip}>
-                      {other !== 0 ? (other > 0 ? `+${other}` : other) : '—'}
-                    </span>
-                    <span style={{ textAlign: 'center', fontWeight: 700, fontSize: 13,
-                      color: total > 0 ? 'var(--success)' : total < -10 ? 'var(--danger)' : 'var(--text2)' }}
-                      title={`Rank ${rb >= 0 ? '+' : ''}${rb} | Stat ${statB >= 0 ? '+' : ''}${statB}${other ? ` | Other +${other}` : ''}`}>
-                      {total >= 0 ? `+${total}` : total}
+                    <span style={{ textAlign: 'center', fontWeight: 700, fontSize: 12,
+                      color: mastery > 0 ? 'var(--success)' : mastery < 0 ? 'var(--danger)' : 'var(--text2)' }}
+                      title="Spell Mastery modifier">
+                      {fmt(mastery)}
                     </span>
                   </div>
                 )

@@ -68,7 +68,8 @@ function effectSummary(def, inst) {
         const skills = eff.skill === 'param'
           ? [inst.param, ...(inst.extra_params || [])].filter(Boolean)
           : (eff.skill ? [eff.skill] : [])
-        if (skills.length) parts.push(s + ' to ' + skills.join(', '))
+        if (skills.length === 1) parts.push(s + ' to ' + skills[0])
+        else if (skills.length > 1) parts.push(s + ' to ' + skills[0] + ` (+${skills.length - 1} more)`)
         break
       }
       case 'spellcasting_bonus': parts.push(s + ' Spellcasting'); break
@@ -467,7 +468,8 @@ function TalentsCard({ activeChar, addTalent, updateTalent, removeTalent }) {
               {isOpen && (
                 <div style={{padding:'8px 12px 10px',borderTop:'1px solid var(--border)',background:'var(--surface2)'}}>
                   <div style={{fontSize:12,color:'var(--text2)',lineHeight:1.5}}>{def.description}</div>
-                  {summary && (
+                  {/* Show auto-applied summary only for non-multi-skill talents */}
+                  {summary && !(isMultiSkill && inst.param) && (
                     <div style={{marginTop:6,fontSize:11,color:'var(--purple)'}}>Auto-applied: {summary}</div>
                   )}
 
@@ -475,69 +477,69 @@ function TalentsCard({ activeChar, addTalent, updateTalent, removeTalent }) {
                   {isMultiSkill && inst.param && (
                     <div style={{marginTop:10,paddingTop:8,borderTop:'1px solid var(--border)'}}>
                       <div style={{fontSize:10,fontWeight:700,color:'var(--text3)',textTransform:'uppercase',
-                        letterSpacing:'0.07em',marginBottom:6}}>
+                        letterSpacing:'0.07em',marginBottom:7}}>
                         {def.param === 'spell_list' ? 'Spell Lists' : 'Skills'}
+                        {summary && <span style={{marginLeft:8,color:'var(--purple)',fontWeight:400,textTransform:'none',letterSpacing:0}}>{summary.split(' to ')[0]}</span>}
                       </div>
-                      {/* Primary param — fixed */}
-                      <div style={{display:'flex',alignItems:'center',gap:6,marginBottom:4}}>
+                      {/* Pills: primary + extra, all inline */}
+                      <div style={{display:'flex',flexWrap:'wrap',gap:5,alignItems:'center'}}>
+                        {/* Primary — not removable */}
                         <span style={{fontSize:11,background:'var(--accent)22',color:'var(--accent)',
-                          padding:'2px 8px',borderRadius:12,fontWeight:600}}>{inst.param}</span>
-                        <span style={{fontSize:10,color:'var(--text3)'}}>primary</span>
-                      </div>
-                      {/* Extra params */}
-                      {(inst.extra_params || []).map((sk, idx) => (
-                        <div key={idx} style={{display:'flex',alignItems:'center',gap:6,marginBottom:4}}>
-                          <span style={{fontSize:11,background:'var(--surface)',border:'1px solid var(--border2)',
-                            padding:'2px 8px',borderRadius:12,color:'var(--text)'}}>{sk}</span>
+                          padding:'3px 10px',borderRadius:12,fontWeight:600,border:'1px solid var(--accent)44'}}>
+                          {inst.param}
+                        </span>
+                        {/* Extra params */}
+                        {(inst.extra_params || []).map((sk, idx) => (
+                          <span key={idx} style={{display:'inline-flex',alignItems:'center',gap:4,
+                            fontSize:11,background:'var(--surface)',border:'1px solid var(--border2)',
+                            padding:'3px 8px 3px 10px',borderRadius:12,color:'var(--text)'}}>
+                            {sk}
+                            <button
+                              onClick={e => { e.stopPropagation(); removeExtraSkill(inst.id, inst.extra_params || [], idx) }}
+                              style={{background:'none',border:'none',color:'var(--text3)',cursor:'pointer',
+                                padding:0,display:'flex',alignItems:'center',lineHeight:1}}
+                              onMouseEnter={e=>e.currentTarget.style.color='var(--danger)'}
+                              onMouseLeave={e=>e.currentTarget.style.color='var(--text3)'}
+                              title="Remove">
+                              <XIcon size={10} color="currentColor"/>
+                            </button>
+                          </span>
+                        ))}
+                        {/* Add inline */}
+                        {isAddingSkill ? (
+                          <>
+                            <input autoFocus type="text" value={newSkillVal}
+                              onChange={e => setNewSkillVal(e.target.value)}
+                              onKeyDown={e => {
+                                if (e.key === 'Enter') addExtraSkill(inst.id, inst.extra_params)
+                                if (e.key === 'Escape') { setAddSkillFor(null); setNewSkillVal('') }
+                              }}
+                              list="tal-extra-skill-dl"
+                              placeholder={def.param === 'spell_list' ? 'Spell list name…' : 'Type or choose a skill…'}
+                              style={{width:170,background:'var(--surface)',border:'1px solid var(--border2)',
+                                borderRadius:5,padding:'3px 7px',color:'var(--text)',fontSize:12}} />
+                            <datalist id="tal-extra-skill-dl">
+                              {def.param === 'spell_list'
+                                ? charSpellListNames.map(n => <option key={n} value={n} />)
+                                : [...charSkillNames, ...charSpellListNames].map(n => <option key={n} value={n} />)
+                              }
+                            </datalist>
+                            <button onClick={() => addExtraSkill(inst.id, inst.extra_params)}
+                              style={{background:'var(--accent)',border:'none',borderRadius:5,padding:'3px 10px',
+                                color:'#fff',fontSize:11,fontWeight:600,cursor:'pointer'}}>Add</button>
+                            <button onClick={() => { setAddSkillFor(null); setNewSkillVal('') }}
+                              style={{background:'none',border:'none',color:'var(--text3)',cursor:'pointer',
+                                fontSize:14,lineHeight:1,padding:'0 2px'}}>×</button>
+                          </>
+                        ) : (
                           <button
-                            onClick={() => removeExtraSkill(inst.id, inst.extra_params || [], idx)}
-                            style={{background:'none',border:'none',color:'var(--text3)',cursor:'pointer',padding:2,
-                              display:'flex',alignItems:'center'}}
-                            onMouseEnter={e=>e.currentTarget.style.color='var(--danger)'}
-                            onMouseLeave={e=>e.currentTarget.style.color='var(--text3)'}
-                            title="Remove this skill target">
-                            <XIcon size={11} color="currentColor"/>
+                            onClick={e => { e.stopPropagation(); setAddSkillFor(inst.id); setNewSkillVal('') }}
+                            style={{background:'none',border:'1px dashed var(--border2)',borderRadius:12,
+                              padding:'2px 10px',color:'var(--text3)',fontSize:11,cursor:'pointer'}}>
+                            + Add
                           </button>
-                        </div>
-                      ))}
-                      {/* Add new skill input */}
-                      {isAddingSkill ? (
-                        <div style={{display:'flex',gap:6,alignItems:'center',marginTop:4,flexWrap:'wrap'}}>
-                          <input
-                            autoFocus
-                            type="text" value={newSkillVal}
-                            onChange={e => setNewSkillVal(e.target.value)}
-                            onKeyDown={e => {
-                              if (e.key === 'Enter') addExtraSkill(inst.id, inst.extra_params)
-                              if (e.key === 'Escape') { setAddSkillFor(null); setNewSkillVal('') }
-                            }}
-                            list="tal-extra-skill-dl"
-                            placeholder={def.param === 'spell_list' ? 'Spell list name…' : 'Type or choose a skill…'}
-                            style={{flex:1,minWidth:140,background:'var(--surface)',border:'1px solid var(--border2)',
-                              borderRadius:5,padding:'4px 6px',color:'var(--text)',fontSize:12}} />
-                          <datalist id="tal-extra-skill-dl">
-                            {def.param === 'spell_list'
-                              ? charSpellListNames.map(n => <option key={n} value={n} />)
-                              : [...charSkillNames, ...charSpellListNames].map(n => <option key={n} value={n} />)
-                            }
-                          </datalist>
-                          <button onClick={() => addExtraSkill(inst.id, inst.extra_params)}
-                            style={{background:'var(--accent)',border:'none',borderRadius:5,padding:'4px 10px',
-                              color:'#fff',fontSize:11,fontWeight:600,cursor:'pointer'}}>
-                            Add
-                          </button>
-                          <button onClick={() => { setAddSkillFor(null); setNewSkillVal('') }}
-                            style={{background:'none',border:'none',color:'var(--text3)',cursor:'pointer',
-                              padding:'0 2px',fontSize:16,lineHeight:1}}>×</button>
-                        </div>
-                      ) : (
-                        <button
-                          onClick={e => { e.stopPropagation(); setAddSkillFor(inst.id); setNewSkillVal('') }}
-                          style={{marginTop:2,background:'none',border:'1px dashed var(--border2)',borderRadius:5,
-                            padding:'3px 10px',color:'var(--text3)',fontSize:11,cursor:'pointer'}}>
-                          + Add {def.param === 'spell_list' ? 'list' : 'skill'}
-                        </button>
-                      )}
+                        )}
+                      </div>
                     </div>
                   )}
                 </div>
