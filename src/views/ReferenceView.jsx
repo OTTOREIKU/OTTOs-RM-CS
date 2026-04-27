@@ -2153,7 +2153,8 @@ function CritResultCard({ hit, critType, critSev, critRoll, sevColor }) {
 
 function CritTableGrid({ rows, hit, sevColor }) {
   return (
-    <div style={{ border: '1px solid var(--border)', borderRadius: 10, overflow: 'hidden' }}>
+    <div style={{ border: '1px solid var(--border)', borderRadius: 10, overflowX: 'auto', overflowY: 'hidden' }}>
+      <div style={{ minWidth: 620 }}>
       <div style={{ display: 'grid', gridTemplateColumns: '60px 48px 60px 80px 72px 100px 1fr', background: 'var(--surface2)', padding: '6px 14px', gap: 8 }}>
         {['Roll','Hits','Bleed','Stun','Location','Conditions','Result'].map(h => (
           <span key={h} style={{ fontSize: 10, fontWeight: 700, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>{h}</span>
@@ -2205,6 +2206,7 @@ function CritTableGrid({ rows, hit, sevColor }) {
           </div>
         )
       })}
+      </div>
     </div>
   )
 }

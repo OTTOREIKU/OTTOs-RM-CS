@@ -79,8 +79,18 @@
     border-width: 2px !important;
   }
 
-  /* E-ink large text variant */
-  html.eink-large body { font-size: 15px; }
+  /* E-ink large text variant — font-size applied via JS to document.body */
+
+  /* E-ink grayscale — desaturate everything that uses hardcoded colors */
+  html.eink-gray svg                          { filter: grayscale(1) !important; }
+  html.eink-gray img                          { filter: grayscale(1) !important; }
+  /* Colored badge/pill spans (hardcoded hex backgrounds) */
+  html.eink-gray [style*="background:#"],
+  html.eink-gray [style*="background: #"]     { filter: grayscale(1) !important; }
+
+  /* E-ink flat backgrounds — remove all non-white surface fills */
+  html.eink-flatbg table tr:nth-child(even)   { background: #ffffff !important; }
+  html.eink-flatbg [style*="var(--surface2)"] { background: #ffffff !important; }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
