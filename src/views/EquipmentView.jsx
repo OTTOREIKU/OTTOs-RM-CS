@@ -93,7 +93,7 @@ function costLabel(def) {
   return (def.cost_per_tier > 0 ? '+' : '') + def.cost_per_tier + '/Tier DP'
 }
 
-function ParamInput({ param, value, onChange, charSkillNames = [] }) {
+function ParamInput({ param, value, onChange, charSkillNames = [], charSpellListNames = [] }) {
   const sel = (opts) => (
     <select value={value} onChange={e => onChange(e.target.value)}
       style={{flex:1,background:'var(--surface2)',border:'1px solid var(--border2)',borderRadius:5,padding:'4px 6px',color:'var(--text)',fontSize:12}}>
@@ -127,7 +127,18 @@ function ParamInput({ param, value, onChange, charSkillNames = [] }) {
   if (param === 'sense') return sel(SENSES)
   if (param === 'animal_type') return txt('e.g. Horses, Dogs, Eagles...')
   if (param === 'sense_description') return txt('e.g. detect evil magic, smell fear...')
-  if (param === 'spell_list') return txt('Spell list name...')
+  if (param === 'spell_list') {
+    return (
+      <>
+        <input type="text" value={value} onChange={e => onChange(e.target.value)}
+          list="eq-spelllist-dl" placeholder="Type or choose a spell list..."
+          style={{flex:1,background:'var(--surface2)',border:'1px solid var(--border2)',borderRadius:5,padding:'4px 6px',color:'var(--text)',fontSize:12}} />
+        <datalist id="eq-spelllist-dl">
+          {charSpellListNames.map(n => <option key={n} value={n} />)}
+        </datalist>
+      </>
+    )
+  }
   return txt('Details...')
 }
 
@@ -373,6 +384,11 @@ function TalentsCard({ activeChar, addTalent, updateTalent, removeTalent }) {
     return [...names].sort()
   }, [activeChar.skills, activeChar.custom_skills])
 
+  // Spell list names the character has ranks in
+  const charSpellListNames = useMemo(() =>
+    Object.keys(activeChar.spell_lists || {}).sort()
+  , [activeChar.spell_lists])
+
   function openConfigure(def) { setConfiguring(def); setConfigTier(1); setConfigParam('') }
 
   function confirmAdd() {
@@ -498,7 +514,7 @@ function TalentsCard({ activeChar, addTalent, updateTalent, removeTalent }) {
                             style={{flex:1,minWidth:140,background:'var(--surface)',border:'1px solid var(--border2)',
                               borderRadius:5,padding:'4px 6px',color:'var(--text)',fontSize:12}} />
                           <datalist id="tal-extra-skill-dl">
-                            {charSkillNames.map(n => <option key={n} value={n} />)}
+                            {(def.param === 'spell_list' ? charSpellListNames : charSkillNames).map(n => <option key={n} value={n} />)}
                           </datalist>
                           <button onClick={() => addExtraSkill(inst.id, inst.extra_params)}
                             style={{background:'var(--accent)',border:'none',borderRadius:5,padding:'4px 10px',
@@ -608,7 +624,7 @@ function TalentsCard({ activeChar, addTalent, updateTalent, removeTalent }) {
                       'animal_type':'Animal Type','sense_description':'Sense Description','spell_list':'Spell List'}[configuring.param] || 'Details'}
                   </div>
                   <div style={{display:'flex',gap:6}}>
-                    <ParamInput param={configuring.param} value={configParam} onChange={setConfigParam} charSkillNames={charSkillNames}/>
+                    <ParamInput param={configuring.param} value={configParam} onChange={setConfigParam} charSkillNames={charSkillNames} charSpellListNames={charSpellListNames}/>
                   </div>
                 </div>
               )}
