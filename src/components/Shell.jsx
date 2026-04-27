@@ -10,7 +10,8 @@ const NAV = [
   { to: '/skills',    label: 'Skills',   icon: '◈' },
   { to: '/spells',    label: 'Spells',   icon: '✦' },
   { to: '/gear',      label: 'Gear',     icon: '⊞' },
-  { to: '/levelup',   label: 'Level',    icon: '★' },
+  { to: '/notebook',  label: 'Notes',    icon: '✎' },
+  { to: '/levelup',   label: 'Level Up', icon: '★' },
   { to: '/reference', label: 'Ref',      icon: '◉' },
 ]
 
@@ -78,7 +79,7 @@ export default function Shell({ children }) {
         {/* Logo */}
         <SwordsIcon size={17} color="var(--accent)" />
         <span style={{ fontWeight: 700, fontSize: 13, letterSpacing: '0.12em', color: 'var(--text)', opacity: 0.9 }}>
-          ROLEMASTER
+          RMU Character+
         </span>
 
         {/* Divider */}

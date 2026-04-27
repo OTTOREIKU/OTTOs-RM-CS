@@ -121,6 +121,63 @@ export function TrashIcon({ size, color }) {
   )
 }
 
+export function FolderIcon({ size, color }) {
+  return (
+    <Icon size={size} color={color}>
+      <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+    </Icon>
+  )
+}
+
+export function FolderOpenIcon({ size, color }) {
+  return (
+    <Icon size={size} color={color}>
+      <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+      <line x1="8" y1="13" x2="16" y2="13" strokeWidth={1.5} opacity="0.6" />
+    </Icon>
+  )
+}
+
+export function PinIcon({ size, color, filled = false }) {
+  return (
+    <Icon size={size} color={color}>
+      <line x1="12" y1="17" x2="12" y2="22" />
+      <path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V17z"
+        fill={filled ? color : 'none'} />
+    </Icon>
+  )
+}
+
+export function DotsHIcon({ size, color }) {
+  return (
+    <Icon size={size} color={color}>
+      <circle cx="5"  cy="12" r="1.2" fill={color} stroke="none" />
+      <circle cx="12" cy="12" r="1.2" fill={color} stroke="none" />
+      <circle cx="19" cy="12" r="1.2" fill={color} stroke="none" />
+    </Icon>
+  )
+}
+
+export function FileIcon({ size, color }) {
+  return (
+    <Icon size={size} color={color}>
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+      <polyline points="14 2 14 8 20 8" />
+    </Icon>
+  )
+}
+
+export function CalendarIcon({ size, color }) {
+  return (
+    <Icon size={size} color={color}>
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+      <line x1="16" y1="2" x2="16" y2="6" />
+      <line x1="8" y1="2" x2="8" y2="6" />
+      <line x1="3" y1="10" x2="21" y2="10" />
+    </Icon>
+  )
+}
+
 export function StarIcon({ size = 14, color = 'currentColor', filled = false }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24"
