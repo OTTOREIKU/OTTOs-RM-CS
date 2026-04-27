@@ -176,6 +176,30 @@ function _realmStatBonus(char) {
   return statName && char.stats?.[statName] ? getTotalStatBonus(char.stats[statName]) : 0
 }
 
+/**
+ * Sum of all skill_talent_bonus effects that explicitly target a given name
+ * (checks inst.param and inst.extra_params). Used to apply skill-targeted
+ * talent bonuses to spell lists when the list name is used as the param.
+ */
+export function getNamedTalentBonus(char, name) {
+  if (!name) return 0
+  let total = 0
+  for (const inst of (char.talents || [])) {
+    const def = talentsData.find(t => t.id === inst.talent_id)
+    if (!def?.effects) continue
+    for (const eff of def.effects) {
+      if (eff.type !== 'skill_talent_bonus') continue
+      const targets = eff.skill === 'param'
+        ? [inst.param, ...(inst.extra_params || [])].filter(Boolean)
+        : (eff.skill ? [eff.skill] : [])
+      if (targets.includes(name)) {
+        total += eff.per_tier != null ? eff.per_tier * inst.tier : (eff.flat ?? 0)
+      }
+    }
+  }
+  return total
+}
+
 function _compBonus(char, sl) {
   const comp = sl?.complementary
   if (!comp?.skill) return 0
@@ -193,8 +217,9 @@ export function getSpellCastingBonus(char, listName) {
   const rawRanks      = sl.ranks ?? 0
   const talentSpell   = getTalentBonuses(char).spellcasting
   const customTalent  = sl.talent_bonus ?? 0
+  const namedTalent   = getNamedTalentBonus(char, listName)
   const compB         = _compBonus(char, sl)
-  return rawRanks + _realmStatBonus(char) + talentSpell + customTalent + compB
+  return rawRanks + _realmStatBonus(char) + talentSpell + customTalent + namedTalent + compB
 }
 
 /**
@@ -208,11 +233,12 @@ export function getSpellMasteryBonus(char, listName) {
   const item         = sl.item_bonus  ?? 0
   const profB        = sl.proficient  ? Math.min(ranks, 30) : 0
   const customTalent = sl.talent_bonus ?? 0
+  const namedTalent  = getNamedTalentBonus(char, listName)
   const rsB          = _realmStatBonus(char)
   const meB          = char.stats?.Memory ? getTotalStatBonus(char.stats.Memory) : 0
   const talentSpell  = getTalentBonuses(char).spellcasting
   const compB        = _compBonus(char, sl)
-  return rb + rsB * 2 + meB + item + profB + talentSpell + customTalent + compB
+  return rb + rsB * 2 + meB + item + profB + talentSpell + customTalent + namedTalent + compB
 }
 
 export function getBaseHits(char) {

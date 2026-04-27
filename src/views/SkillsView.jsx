@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react'
 import { useCharacter } from '../store/CharacterContext.jsx'
-import { rankBonus, getTotalStatBonus, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus } from '../utils/calc.js'
+import { rankBonus, getTotalStatBonus, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getNamedTalentBonus } from '../utils/calc.js'
 import skillsData from '../data/skills.json'
 import skillCosts from '../data/skill_costs.json'
 import talentsData from '../data/talents.json'
@@ -1080,7 +1080,9 @@ function SpellListRow({ list, char, updateSpellList, removeSpellList, sub, unloc
           {fmt(scrVal)}
         </span>
         {(() => {
-          const talB = (char ? getTalentBonuses(char).spellcasting : 0) + (list.talent_bonus || 0)
+          const talB = (char ? getTalentBonuses(char).spellcasting : 0)
+            + (list.talent_bonus || 0)
+            + (char ? getNamedTalentBonus(char, list.name) : 0)
           if (!talB) return null
           return (
             <span style={{ display: 'block', fontSize: 9, color: 'var(--purple)', lineHeight: 1 }}

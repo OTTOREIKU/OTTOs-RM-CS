@@ -110,11 +110,13 @@ function ParamInput({ param, value, onChange, charSkillNames = [], charSpellList
     return (
       <>
         <input type="text" value={value} onChange={e => onChange(e.target.value)}
-          list="eq-skill-dl" placeholder="Type or choose a skill..."
+          list="eq-skill-dl" placeholder="Type or choose a skill or spell list..."
           style={{flex:1,background:'var(--surface2)',border:'1px solid var(--border2)',borderRadius:5,padding:'4px 6px',color:'var(--text)',fontSize:12}} />
         <datalist id="eq-skill-dl">
           {/* Character's actual named skills first */}
           {charSkillNames.map(n => <option key={'chr_'+n} value={n} />)}
+          {/* Character's spell lists */}
+          {charSpellListNames.map(n => <option key={'sl_'+n} value={n} />)}
           {/* Then remaining static skill names not already listed */}
           {ALL_SKILL_NAMES.filter(n => !charSet.has(n)).map(n => <option key={n} value={n} />)}
         </datalist>
@@ -514,7 +516,10 @@ function TalentsCard({ activeChar, addTalent, updateTalent, removeTalent }) {
                             style={{flex:1,minWidth:140,background:'var(--surface)',border:'1px solid var(--border2)',
                               borderRadius:5,padding:'4px 6px',color:'var(--text)',fontSize:12}} />
                           <datalist id="tal-extra-skill-dl">
-                            {(def.param === 'spell_list' ? charSpellListNames : charSkillNames).map(n => <option key={n} value={n} />)}
+                            {def.param === 'spell_list'
+                              ? charSpellListNames.map(n => <option key={n} value={n} />)
+                              : [...charSkillNames, ...charSpellListNames].map(n => <option key={n} value={n} />)
+                            }
                           </datalist>
                           <button onClick={() => addExtraSkill(inst.id, inst.extra_params)}
                             style={{background:'var(--accent)',border:'none',borderRadius:5,padding:'4px 10px',
