@@ -316,6 +316,13 @@
   },
   {
     "category": "Environmental",
+    "name": "Piloting: <vehicle 2>",
+    "dev_cost": "4/6",
+    "prof_type": "Normal",
+    "stat_keys": "Ag"
+  },
+  {
+    "category": "Environmental",
     "name": "Survival: <biome 1>",
     "dev_cost": "4/6",
     "prof_type": "Normal",
@@ -498,13 +505,6 @@
   },
   {
     "category": "Magical Expertise",
-    "name": "Grace: <spell list 4>",
-    "dev_cost": "1/2",
-    "prof_type": "Normal",
-    "stat_keys": "-"
-  },
-  {
-    "category": "Magical Expertise",
     "name": "Spell Trickery: <spell list 1>",
     "dev_cost": "1/2",
     "prof_type": "Normal",
@@ -513,20 +513,6 @@
   {
     "category": "Magical Expertise",
     "name": "Spell Trickery: <spell list 2>",
-    "dev_cost": "1/2",
-    "prof_type": "Normal",
-    "stat_keys": "-"
-  },
-  {
-    "category": "Magical Expertise",
-    "name": "Spell Trickery: <spell list 3>",
-    "dev_cost": "1/2",
-    "prof_type": "Normal",
-    "stat_keys": "-"
-  },
-  {
-    "category": "Magical Expertise",
-    "name": "Spell Trickery: <spell list 4>",
     "dev_cost": "1/2",
     "prof_type": "Normal",
     "stat_keys": "-"
@@ -617,21 +603,21 @@
   },
   {
     "category": "Performance Art",
-    "name": "Music: Singing",
+    "name": "Music: <instrument 1>",
     "dev_cost": "2/4",
     "prof_type": "Normal",
     "stat_keys": "Me"
   },
   {
     "category": "Performance Art",
-    "name": "Music: Flute",
+    "name": "Music: <instrument 2>",
     "dev_cost": "2/4",
     "prof_type": "Normal",
     "stat_keys": "Me"
   },
   {
     "category": "Performance Art",
-    "name": "Stage Music",
+    "name": "Stage Magic",
     "dev_cost": "2/4",
     "prof_type": "Normal",
     "stat_keys": "Ag"
@@ -645,21 +631,14 @@
   },
   {
     "category": "Power Manipulation",
-    "name": "Directed Spells: Bolts",
+    "name": "Directed Spells: <type 1>",
     "dev_cost": "2/3",
     "prof_type": "Normal",
     "stat_keys": "Ag"
   },
   {
     "category": "Power Manipulation",
-    "name": "Directed Spells: Hurling",
-    "dev_cost": "2/3",
-    "prof_type": "Normal",
-    "stat_keys": "Ag"
-  },
-  {
-    "category": "Power Manipulation",
-    "name": "Directed Spells: Illusions",
+    "name": "Directed Spells: <type 2>",
     "dev_cost": "2/3",
     "prof_type": "Normal",
     "stat_keys": "Ag"
@@ -708,7 +687,7 @@
   },
   {
     "category": "Social",
-    "name": "Influence: Persuasion",
+    "name": "Influence: Charm",
     "dev_cost": "3/4",
     "prof_type": "Normal",
     "stat_keys": "Pr"
@@ -813,93 +792,23 @@
   },
   {
     "category": "Vocation",
-    "name": "Administration",
+    "name": "Administration: <vocation>",
     "dev_cost": "3/4",
     "prof_type": "Normal",
     "stat_keys": "Re"
   },
   {
     "category": "Vocation",
-    "name": "Service",
+    "name": "Service: <vocation>",
     "dev_cost": "3/4",
     "prof_type": "Normal",
     "stat_keys": "Pr"
   },
   {
     "category": "Vocation",
-    "name": "Trade: <choose trade>",
+    "name": "Trade: <vocation>",
     "dev_cost": "3/4",
     "prof_type": "Normal",
     "stat_keys": "Re"
-  },
-  {
-    "category": "Vocation",
-    "name": "Magic Ritual: Alteration",
-    "dev_cost": "1/3",
-    "prof_type": "Normal",
-    "stat_keys": "Me"
-  },
-  {
-    "category": "Vocation",
-    "name": "Magic Ritual: Creation",
-    "dev_cost": "1/3",
-    "prof_type": "Normal",
-    "stat_keys": "Me"
-  },
-  {
-    "category": "Vocation",
-    "name": "Magic Ritual: Defensive",
-    "dev_cost": "1/3",
-    "prof_type": "Normal",
-    "stat_keys": "Me"
-  },
-  {
-    "category": "Vocation",
-    "name": "Magic Ritual: Destruction",
-    "dev_cost": "1/3",
-    "prof_type": "Normal",
-    "stat_keys": "Me"
-  },
-  {
-    "category": "Vocation",
-    "name": "Magic Ritual: Elemental",
-    "dev_cost": "1/3",
-    "prof_type": "Normal",
-    "stat_keys": "Me"
-  },
-  {
-    "category": "Vocation",
-    "name": "Magic Ritual: Healing",
-    "dev_cost": "1/3",
-    "prof_type": "Normal",
-    "stat_keys": "Me"
-  },
-  {
-    "category": "Vocation",
-    "name": "Magic Ritual: Informational",
-    "dev_cost": "1/3",
-    "prof_type": "Normal",
-    "stat_keys": "Me"
-  },
-  {
-    "category": "Vocation",
-    "name": "Magic Ritual: Summoning & Transportation",
-    "dev_cost": "1/3",
-    "prof_type": "Normal",
-    "stat_keys": "Me"
-  },
-  {
-    "category": "Vocation",
-    "name": "LIGHT'S WAY",
-    "dev_cost": "1/2",
-    "prof_type": "Normal",
-    "stat_keys": "Me"
-  },
-  {
-    "category": "Vocation",
-    "name": "FIRE LAW",
-    "dev_cost": "1/2",
-    "prof_type": "Normal",
-    "stat_keys": "Me"
   }
 ]
