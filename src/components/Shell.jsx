@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react'
-import { NavLink, useNavigate } from 'react-router-dom'
+import React, { useRef, useState, useEffect } from 'react'
+import { NavLink, useNavigate, useLocation } from 'react-router-dom'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { exportCharacter, importCharactersFromFile } from '../store/characters.js'
 import { SwordsIcon, ChevronDownIcon } from './Icons.jsx'
@@ -19,8 +19,20 @@ export default function Shell({ children }) {
   const { characters, activeId, activeChar, switchCharacter, createCharacter, deleteCharacter, reloadCharacters } = useCharacter()
   const [menuOpen, setMenuOpen] = useState(false)
   const [importStatus, setImportStatus] = useState(null)
+  const [navMenuOpen, setNavMenuOpen] = useState(false)
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 700)
   const importRef = useRef(null)
   const navigate = useNavigate()
+  const location = useLocation()
+
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth < 700)
+    window.addEventListener('resize', handler)
+    return () => window.removeEventListener('resize', handler)
+  }, [])
+
+  // Close nav menu on route change
+  useEffect(() => { setNavMenuOpen(false) }, [location.pathname])
   const charList = Object.values(characters)
 
   function handleCreate() {
@@ -196,24 +208,98 @@ export default function Shell({ children }) {
       </main>
 
       {/* Bottom nav */}
-      <nav style={{
-        position: 'fixed', bottom: 0, left: 0, right: 0, height: 56,
-        background: 'var(--surface)', borderTop: '1px solid var(--border)',
-        display: 'flex', zIndex: 50,
-      }}>
-        {NAV.map(({ to, label, icon }) => (
-          <NavLink key={to} to={to} style={({ isActive }) => ({
-            flex: 1, display: 'flex', flexDirection: 'column',
-            alignItems: 'center', justifyContent: 'center',
-            textDecoration: 'none', gap: 2, padding: '4px 2px',
-            color: isActive ? 'var(--accent)' : 'var(--text3)',
-            borderTop: '2px solid ' + (isActive ? 'var(--accent)' : 'transparent'),
-          })}>
-            <span style={{ fontSize: 14 }}>{icon}</span>
-            <span style={{ fontSize: 9, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' }}>{label}</span>
-          </NavLink>
-        ))}
-      </nav>
+      {isMobile ? (
+        <>
+          {/* Mobile nav menu overlay (bottom sheet) */}
+          {navMenuOpen && (
+            <>
+              <div
+                onClick={() => setNavMenuOpen(false)}
+                style={{ position: 'fixed', inset: 0, zIndex: 51, background: 'rgba(0,0,0,0.5)' }}
+              />
+              <div style={{
+                position: 'fixed', bottom: 56, left: 0, right: 0,
+                background: 'var(--surface)', borderTop: '1px solid var(--border2)',
+                borderRadius: '16px 16px 0 0',
+                zIndex: 52, overflow: 'hidden',
+              }}>
+                {NAV.map(({ to, label, icon }) => (
+                  <NavLink key={to} to={to} style={({ isActive }) => ({
+                    display: 'flex', alignItems: 'center', gap: 14,
+                    padding: '14px 24px',
+                    textDecoration: 'none',
+                    color: isActive ? 'var(--accent)' : 'var(--text)',
+                    background: isActive ? 'var(--surface2)' : 'transparent',
+                    borderLeft: '3px solid ' + (isActive ? 'var(--accent)' : 'transparent'),
+                    fontSize: 15, fontWeight: isActive ? 700 : 500,
+                  })}>
+                    <span style={{ fontSize: 18, width: 24, textAlign: 'center' }}>{icon}</span>
+                    <span>{label}</span>
+                  </NavLink>
+                ))}
+              </div>
+            </>
+          )}
+
+          {/* Mobile compact bar: active tab + Menu button */}
+          <nav style={{
+            position: 'fixed', bottom: 0, left: 0, right: 0, height: 56,
+            background: 'var(--surface)', borderTop: '1px solid var(--border)',
+            display: 'flex', zIndex: 50,
+          }}>
+            {/* Active tab indicator */}
+            {(() => {
+              const active = NAV.find(n => location.pathname.startsWith(n.to)) ?? NAV[0]
+              return (
+                <div style={{
+                  flex: 1, display: 'flex', alignItems: 'center', gap: 10,
+                  padding: '0 16px', color: 'var(--accent)',
+                  borderTop: '2px solid var(--accent)',
+                }}>
+                  <span style={{ fontSize: 16 }}>{active.icon}</span>
+                  <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: '0.04em' }}>{active.label}</span>
+                </div>
+              )
+            })()}
+            {/* Menu button */}
+            <button
+              onClick={() => setNavMenuOpen(p => !p)}
+              style={{
+                display: 'flex', flexDirection: 'column', alignItems: 'center',
+                justifyContent: 'center', gap: 3,
+                padding: '0 20px',
+                background: navMenuOpen ? 'var(--surface2)' : 'transparent',
+                border: 'none',
+                borderTop: '2px solid ' + (navMenuOpen ? 'var(--accent)' : 'transparent'),
+                color: navMenuOpen ? 'var(--accent)' : 'var(--text3)',
+                cursor: 'pointer',
+              }}
+            >
+              <span style={{ fontSize: 16, lineHeight: 1 }}>☰</span>
+              <span style={{ fontSize: 9, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Menu</span>
+            </button>
+          </nav>
+        </>
+      ) : (
+        <nav style={{
+          position: 'fixed', bottom: 0, left: 0, right: 0, height: 56,
+          background: 'var(--surface)', borderTop: '1px solid var(--border)',
+          display: 'flex', zIndex: 50,
+        }}>
+          {NAV.map(({ to, label, icon }) => (
+            <NavLink key={to} to={to} style={({ isActive }) => ({
+              flex: 1, display: 'flex', flexDirection: 'column',
+              alignItems: 'center', justifyContent: 'center',
+              textDecoration: 'none', gap: 2, padding: '4px 2px',
+              color: isActive ? 'var(--accent)' : 'var(--text3)',
+              borderTop: '2px solid ' + (isActive ? 'var(--accent)' : 'transparent'),
+            })}>
+              <span style={{ fontSize: 14 }}>{icon}</span>
+              <span style={{ fontSize: 9, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' }}>{label}</span>
+            </NavLink>
+          ))}
+        </nav>
+      )}
     </div>
   )
 }

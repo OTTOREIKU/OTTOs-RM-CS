@@ -390,6 +390,46 @@ export default function ReferenceView() {
                   <div style={{ fontSize: 10, color: 'var(--text3)' }}>Increases base font size slightly — also use your browser zoom for finer control</div>
                 </div>
               </label>
+
+              {/* Grayscale toggle */}
+              <label style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10, cursor: 'pointer' }}>
+                <div onClick={() => handleEinkChange({ gray: !einkSettings.gray })}
+                  style={{
+                    width: 36, height: 20, borderRadius: 10, flexShrink: 0,
+                    background: einkSettings.gray ? 'var(--accent)' : 'var(--border2)',
+                    position: 'relative', cursor: 'pointer', transition: 'background .2s',
+                  }}>
+                  <div style={{
+                    position: 'absolute', top: 3, left: einkSettings.gray ? 18 : 3,
+                    width: 14, height: 14, borderRadius: '50%', background: '#fff',
+                    transition: 'left .2s',
+                  }} />
+                </div>
+                <div>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text)' }}>Grayscale mode</div>
+                  <div style={{ fontSize: 10, color: 'var(--text3)' }}>Overrides all accent/status colors to pure black — for monochrome e-ink panels</div>
+                </div>
+              </label>
+
+              {/* Flat backgrounds toggle */}
+              <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}>
+                <div onClick={() => handleEinkChange({ flatBg: !einkSettings.flatBg })}
+                  style={{
+                    width: 36, height: 20, borderRadius: 10, flexShrink: 0,
+                    background: einkSettings.flatBg ? 'var(--accent)' : 'var(--border2)',
+                    position: 'relative', cursor: 'pointer', transition: 'background .2s',
+                  }}>
+                  <div style={{
+                    position: 'absolute', top: 3, left: einkSettings.flatBg ? 18 : 3,
+                    width: 14, height: 14, borderRadius: '50%', background: '#fff',
+                    transition: 'left .2s',
+                  }} />
+                </div>
+                <div>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text)' }}>Flat white backgrounds</div>
+                  <div style={{ fontSize: 10, color: 'var(--text3)' }}>Removes all gray card fills — cards and surfaces become pure white, reducing visual noise on e-ink</div>
+                </div>
+              </label>
             </div>
           )}
         </div>
