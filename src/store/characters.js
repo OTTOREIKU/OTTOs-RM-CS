@@ -361,11 +361,13 @@ export function exportCharacter(id) {
   const chars = loadCharacters()
   const char  = chars[id]
   if (!char) return
-  const payload = { _version: EXPORT_VERSION, _type: 'single', character: char }
-  const safeName = (char.name || 'character').replace(/[^a-z0-9]/gi, '_').toLowerCase()
-  const level    = char.level ?? 1
-  const date     = new Date().toISOString().slice(0, 10)  // YYYY-MM-DD
-  triggerDownload(`${safeName}_lv${level}_${date}.json`, JSON.stringify(payload, null, 2))
+  const payload    = { _version: EXPORT_VERSION, _type: 'single', character: char }
+  const safe       = s => (s || '').replace(/[^a-z0-9]/gi, '_').replace(/_+/g, '_').replace(/^_|_$/g, '')
+  const name       = safe(char.name) || 'Character'
+  const race       = safe(char.race) || 'Unknown'
+  const profession = safe(char.profession) || 'Unknown'
+  const level      = char.level ?? 1
+  triggerDownload(`${name}_${race}_${profession}_${level}.json`, JSON.stringify(payload, null, 2))
 }
 
 export function exportAllCharacters() {
