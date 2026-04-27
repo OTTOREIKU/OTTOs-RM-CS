@@ -136,7 +136,10 @@ export default function SpellsView() {
         const r  = ranks(listName)
         const b  = scr(listName)
         const m  = mastery(listName)
-        const spells = (query && tab === 'browse')
+        // If the list name matched the query, show all spells.
+        // Only filter to matching spells when the list appeared because a spell name matched.
+        const listNameMatches = !query || listName.toLowerCase().includes(query)
+        const spells = (query && tab === 'browse' && !listNameMatches)
           ? list.spells?.filter(s => s.name.toLowerCase().includes(query)) ?? []
           : list.spells ?? []
 
