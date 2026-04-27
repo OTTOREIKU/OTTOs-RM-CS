@@ -1014,8 +1014,8 @@ function CombatCalcPanel({
               type="number"
               value={calcRoll}
               onChange={e => { setCalcRoll(e.target.value); setOeRolls(null); setCalcFumbleRoll('') }}
-              placeholder="Enter your modified roll (can be negative)"
-              style={{ width: '100%', maxWidth: 280, padding: '9px 10px', fontSize: 17, fontWeight: 700,
+              placeholder="Enter Modified Roll"
+              style={{ width: '100%', maxWidth: 280, padding: '9px 10px', fontSize: 17, fontWeight: calcRoll ? 700 : 400,
                 border: '2px solid var(--border2)', borderRadius: 8, background: 'var(--surface)',
                 color: isVeryLow ? '#ef4444' : 'var(--text)', boxSizing: 'border-box' }}
             />

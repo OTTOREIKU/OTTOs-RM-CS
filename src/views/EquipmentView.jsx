@@ -235,7 +235,7 @@ function WeaponsCard({ activeChar, addWeapon, updateWeapon, removeWeapon }) {
                           borderRadius:5,padding:'4px 6px',color:'var(--text)',fontSize:12,textAlign:'center'}}/>
                     </div>
                   </div>
-                  <div style={{display:'grid',gridTemplateColumns:'1fr 120px',gap:6}}>
+                  <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:6}}>
                     <div>
                       <div style={{fontSize:10,color:'var(--text3)',marginBottom:3,textTransform:'uppercase',letterSpacing:'0.06em'}}>Combat Skill</div>
                       <input value={w.skill_name||''} onChange={e=>updateWeapon(w.id,{skill_name:e.target.value})}

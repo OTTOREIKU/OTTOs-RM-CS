@@ -749,24 +749,35 @@ export default function NotebookView() {
         )}
       </div>
 
-      {/* Sidebar footer — export current note */}
-      {activeNote && (
-        <div style={{ borderTop: '1px solid var(--border)', padding: '8px 10px', flexShrink: 0 }}>
+      {/* Sidebar footer — export buttons */}
+      <div style={{ borderTop: '1px solid var(--border)', padding: '8px 10px', flexShrink: 0, display: 'flex', gap: 6 }}>
+        {activeNote && (
           <button onClick={() => exportNoteAsMd(activeNote)}
             title="Download current note as a .md file"
-            style={{ display: 'flex', alignItems: 'center', gap: 6, width: '100%',
-              background: 'var(--surface2)', border: '1px solid var(--border)',
-              borderRadius: 7, padding: '7px 10px', cursor: 'pointer',
-              color: 'var(--text2)', fontSize: 12, fontWeight: 500 }}
+            style={{ flex: 1, background: 'var(--surface2)', border: '1px solid var(--border)',
+              borderRadius: 7, padding: '7px 8px', cursor: 'pointer',
+              color: 'var(--text2)', fontSize: 11, fontWeight: 500 }}
             onMouseEnter={e => { e.currentTarget.style.background = 'var(--accent)22'; e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.color = 'var(--text)' }}
             onMouseLeave={e => { e.currentTarget.style.background = 'var(--surface2)'; e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text2)' }}>
-            <span style={{ fontSize: 14 }}>↓</span>
-            <span style={{ flex: 1, textAlign: 'left', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-              Export as .md
-            </span>
+            Export Note
           </button>
-        </div>
-      )}
+        )}
+        <button onClick={() => {
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
+            const url = URL.createObjectURL(blob)
+            const a = document.createElement('a')
+            a.href = url; a.download = `rm_notebook_${new Date().toISOString().slice(0,10)}.json`
+            a.click(); URL.revokeObjectURL(url)
+          }}
+          title="Download entire notebook as JSON"
+          style={{ flex: 1, background: 'var(--surface2)', border: '1px solid var(--border)',
+            borderRadius: 7, padding: '7px 8px', cursor: 'pointer',
+            color: 'var(--text2)', fontSize: 11, fontWeight: 500 }}
+          onMouseEnter={e => { e.currentTarget.style.background = 'var(--accent)22'; e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.color = 'var(--text)' }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'var(--surface2)'; e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text2)' }}>
+          Export Notebook
+        </button>
+      </div>
     </>
   )
 
