@@ -1,4 +1,11 @@
 // Notebook store — folders + notes, persisted to localStorage
+import { scheduleBackup } from './fileSync.js'
+
+function buildBackupPayload() {
+  const chars = (() => { try { return JSON.parse(localStorage.getItem('rm_characters') || '{}') } catch { return {} } })()
+  const nb    = (() => { try { return JSON.parse(localStorage.getItem(NB_KEY) || 'null') } catch { return null } })()
+  return { _version: 1, _type: 'backup', characters: chars, notebook: nb, _saved_at: new Date().toISOString() }
+}
 
 const NB_KEY        = 'rm_notebook'
 const NB_OPEN_KEY   = 'rm_nb_open_folders'
@@ -13,6 +20,7 @@ export function loadNotebook() {
 
 export function saveNotebook(data) {
   try { localStorage.setItem(NB_KEY, JSON.stringify(data)) } catch {}
+  scheduleBackup(buildBackupPayload)
 }
 
 export function loadOpenFolders() {

@@ -1,7 +1,12 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef, useState, useEffect, useCallback } from 'react'
 import { NavLink, useNavigate, useLocation } from 'react-router-dom'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { exportCharacter, importCharactersFromFile } from '../store/characters.js'
+import {
+  FILE_SYNC_SUPPORTED, getLinkedHandle, getLinkedFileName,
+  hasWritePermission, requestWritePermission,
+  pickAndLinkFile, writeToHandle, readFromHandle, clearLinkedHandle,
+} from '../store/fileSync.js'
 import { SwordsIcon, ChevronDownIcon } from './Icons.jsx'
 import { getBaseHits, getPowerPoints } from '../utils/calc.js'
 
@@ -21,6 +26,8 @@ export default function Shell({ children }) {
   const [importStatus, setImportStatus] = useState(null)
   const [navMenuOpen, setNavMenuOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 700)
+  const [backupFile, setBackupFile] = useState(null)      // { name, hasPermission }
+  const [backupMenuOpen, setBackupMenuOpen] = useState(false)
   const importRef = useRef(null)
   const navigate = useNavigate()
   const location = useLocation()
@@ -29,6 +36,40 @@ export default function Shell({ children }) {
     const handler = () => setIsMobile(window.innerWidth < 700)
     window.addEventListener('resize', handler)
     return () => window.removeEventListener('resize', handler)
+  }, [])
+
+  // Check backup file state on mount
+  useEffect(() => {
+    if (!FILE_SYNC_SUPPORTED) return
+    getLinkedHandle().then(async h => {
+      if (!h) return
+      const hasPerm = await hasWritePermission(h)
+      setBackupFile({ name: h.name, hasPermission: hasPerm })
+    })
+  }, [])
+
+  const handleLinkBackup = useCallback(async () => {
+    const handle = await pickAndLinkFile()
+    if (!handle) return
+    // Write current data immediately
+    const chars = (() => { try { return JSON.parse(localStorage.getItem('rm_characters') || '{}') } catch { return {} } })()
+    const nb    = (() => { try { return JSON.parse(localStorage.getItem('rm_notebook') || 'null') } catch { return null } })()
+    await writeToHandle(handle, { _version: 1, _type: 'backup', characters: chars, notebook: nb, _saved_at: new Date().toISOString() })
+    setBackupFile({ name: handle.name, hasPermission: true })
+    setBackupMenuOpen(false)
+  }, [])
+
+  const handleUnlinkBackup = useCallback(async () => {
+    await clearLinkedHandle()
+    setBackupFile(null)
+    setBackupMenuOpen(false)
+  }, [])
+
+  const handleRequestPermission = useCallback(async () => {
+    const handle = await getLinkedHandle()
+    if (!handle) return
+    const ok = await requestWritePermission(handle)
+    setBackupFile(prev => prev ? { ...prev, hasPermission: ok } : null)
   }, [])
 
   // Close nav menu on route change
@@ -193,6 +234,71 @@ export default function Shell({ children }) {
           )}
         </div>
 
+        {/* Backup indicator */}
+        {FILE_SYNC_SUPPORTED && (
+          <div style={{ position: 'relative', flexShrink: 0 }}>
+            <button
+              onClick={() => setBackupMenuOpen(p => !p)}
+              title={backupFile ? `Backup: ${backupFile.name}` : 'No backup file linked'}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 5,
+                background: backupMenuOpen ? 'var(--surface2)' : 'transparent',
+                border: '1px solid ' + (backupMenuOpen ? 'var(--border2)' : 'transparent'),
+                borderRadius: 7, padding: '4px 8px', cursor: 'pointer', color: 'var(--text3)',
+              }}>
+              <span style={{ fontSize: 13 }}>💾</span>
+              <span style={{
+                width: 7, height: 7, borderRadius: '50%', flexShrink: 0,
+                background: backupFile
+                  ? (backupFile.hasPermission ? '#22c55e' : '#f59e0b')
+                  : 'var(--border2)',
+              }} />
+            </button>
+
+            {backupMenuOpen && (
+              <>
+                <div style={{ position: 'fixed', inset: 0, zIndex: 98 }} onClick={() => setBackupMenuOpen(false)} />
+                <div style={{
+                  position: 'absolute', top: '110%', right: 0, zIndex: 99,
+                  background: 'var(--surface)', border: '1px solid var(--border2)',
+                  borderRadius: 10, minWidth: 230, boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+                  overflow: 'hidden',
+                }}>
+                  <div style={{ padding: '10px 14px', borderBottom: '1px solid var(--border)' }}>
+                    <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text)', marginBottom: 2 }}>Auto-backup</div>
+                    {backupFile ? (
+                      <>
+                        <div style={{ fontSize: 11, color: 'var(--text2)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          {backupFile.name}
+                        </div>
+                        <div style={{ fontSize: 10, marginTop: 3, display: 'flex', alignItems: 'center', gap: 4 }}>
+                          <span style={{ width: 6, height: 6, borderRadius: '50%', background: backupFile.hasPermission ? '#22c55e' : '#f59e0b', display: 'inline-block' }} />
+                          <span style={{ color: backupFile.hasPermission ? '#22c55e' : '#f59e0b' }}>
+                            {backupFile.hasPermission ? 'Active — syncs every 2 s' : 'Permission needed'}
+                          </span>
+                        </div>
+                      </>
+                    ) : (
+                      <div style={{ fontSize: 11, color: 'var(--text3)' }}>No file linked. Link a .json file and all changes will be auto-saved to it in the background.</div>
+                    )}
+                  </div>
+                  {backupFile && !backupFile.hasPermission && (
+                    <BackupMenuItem onClick={handleRequestPermission}>Grant write access</BackupMenuItem>
+                  )}
+                  {backupFile ? (
+                    <BackupMenuItem onClick={handleLinkBackup}>Change backup file…</BackupMenuItem>
+                  ) : (
+                    <BackupMenuItem onClick={handleLinkBackup} accent>Link backup file…</BackupMenuItem>
+                  )}
+                  {backupFile && (
+                    <BackupMenuItem onClick={handleUnlinkBackup} danger>Unlink backup file</BackupMenuItem>
+                  )}
+                </div>
+              </>
+            )}
+          </div>
+        )}
+
         {/* HP / PP */}
         {activeChar && (
           <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
@@ -301,6 +407,20 @@ export default function Shell({ children }) {
         </nav>
       )}
     </div>
+  )
+}
+
+function BackupMenuItem({ onClick, children, danger, accent }) {
+  return (
+    <button onClick={onClick} style={{
+      display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none',
+      padding: '9px 14px', fontSize: 12, cursor: 'pointer', fontFamily: 'inherit',
+      color: danger ? 'var(--danger)' : accent ? 'var(--accent)' : 'var(--text)',
+    }}
+      onMouseEnter={e => e.currentTarget.style.background = 'var(--surface2)'}
+      onMouseLeave={e => e.currentTarget.style.background = 'none'}>
+      {children}
+    </button>
   )
 }
 

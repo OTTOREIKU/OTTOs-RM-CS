@@ -7,6 +7,7 @@ import {
   loadNotebook, saveNotebook, loadOpenFolders, saveOpenFolders,
   loadActiveNoteId, saveActiveNoteId, nbUid,
 } from '../store/notebook.js'
+import { importNotebookFromFile } from '../store/characters.js'
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -201,10 +202,12 @@ export default function NotebookView() {
   const [confirmDlg,     setConfirmDlg]     = useState(null)  // { message, onConfirm }
   const [selectedIds,    setSelectedIds]    = useState({})    // { [noteId]: bool }
 
-  const renameRef   = useRef(null)
-  const titleRef    = useRef(null)
-  const textareaRef = useRef(null)
-  const dragItemRef = useRef(null)   // sync ref — avoids stale closure in drag events
+  const renameRef    = useRef(null)
+  const titleRef     = useRef(null)
+  const textareaRef  = useRef(null)
+  const dragItemRef  = useRef(null)   // sync ref — avoids stale closure in drag events
+  const nbImportRef  = useRef(null)
+  const [nbImportStatus, setNbImportStatus] = useState(null)
 
   useEffect(() => {
     const h = () => setIsMobile(window.innerWidth < 700)
@@ -866,6 +869,17 @@ export default function NotebookView() {
 
       {/* Sidebar footer — export buttons */}
       <div style={{ borderTop: '1px solid var(--border)', padding: '8px 10px', flexShrink: 0 }}>
+        {/* Notebook import status */}
+        {nbImportStatus && (
+          <div style={{
+            marginBottom: 6, fontSize: 11, padding: '5px 8px', borderRadius: 6,
+            background: nbImportStatus.startsWith('Error') ? 'var(--danger)22' : 'var(--success)22',
+            color: nbImportStatus.startsWith('Error') ? 'var(--danger)' : 'var(--success)',
+            border: '1px solid ' + (nbImportStatus.startsWith('Error') ? 'var(--danger)44' : 'var(--success)44'),
+          }}>{nbImportStatus}</div>
+        )}
+        {/* Hidden file input for notebook import */}
+        <input ref={nbImportRef} type="file" accept=".json" style={{ display: 'none' }} onChange={handleImportNotebook} />
         {/* Hide sidebar (desktop only) */}
         {!isMobile && (
           <button
@@ -904,6 +918,16 @@ export default function NotebookView() {
           onMouseEnter={e => { e.currentTarget.style.background = 'var(--accent)22'; e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.color = 'var(--text)' }}
           onMouseLeave={e => { e.currentTarget.style.background = 'var(--surface2)'; e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text2)' }}>
           Export Notebook
+        </button>
+        <button
+          onClick={() => nbImportRef.current?.click()}
+          title="Import a previously exported notebook JSON file"
+          style={{ flex: 1, background: 'var(--surface2)', border: '1px solid var(--border)',
+            borderRadius: 7, padding: '7px 8px', cursor: 'pointer',
+            color: 'var(--text2)', fontSize: 11, fontWeight: 500 }}
+          onMouseEnter={e => { e.currentTarget.style.background = 'var(--accent)22'; e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.color = 'var(--text)' }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'var(--surface2)'; e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text2)' }}>
+          Import Notebook
         </button>
         </div>
       </div>
