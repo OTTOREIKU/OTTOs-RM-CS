@@ -351,21 +351,21 @@
   },
   {
     "category": "Lore",
-    "name": "Creature Lore",
+    "name": "Creature Lore: <creature>",
     "dev_cost": "1/3",
     "prof_type": "Normal",
     "stat_keys": "Re"
   },
   {
     "category": "Lore",
-    "name": "Historic Lore",
+    "name": "Historic Lore: <topic>",
     "dev_cost": "1/3",
     "prof_type": "Normal",
     "stat_keys": "Re"
   },
   {
     "category": "Lore",
-    "name": "Materials Lore",
+    "name": "Materials Lore: <material>",
     "dev_cost": "1/3",
     "prof_type": "Normal",
     "stat_keys": "Re"
@@ -386,21 +386,21 @@
   },
   {
     "category": "Lore",
-    "name": "Region Lore: <region 1>",
+    "name": "Region Lore: <own region>",
     "dev_cost": "1/3",
     "prof_type": "Normal",
     "stat_keys": "Re"
   },
   {
     "category": "Lore",
-    "name": "Region Lore: <region 2>",
+    "name": "Region Lore: <other region>",
     "dev_cost": "1/3",
     "prof_type": "Normal",
     "stat_keys": "Re"
   },
   {
     "category": "Lore",
-    "name": "Religion/Philosophy",
+    "name": "Religion/Philosophy: <topic>",
     "dev_cost": "1/3",
     "prof_type": "Normal",
     "stat_keys": "Re"
@@ -408,6 +408,13 @@
   {
     "category": "Lore",
     "name": "Spell Lore",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore",
+    "name": "Spell Lore: <topic>",
     "dev_cost": "1/3",
     "prof_type": "Normal",
     "stat_keys": "Re"
