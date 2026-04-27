@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @layer base {
+  /* ── Dark theme (default) ───────────────────────────────────── */
   :root {
     --bg:        #0e1117;
     --surface:   #161b27;
@@ -17,6 +18,69 @@
     --text2:     #8892a8;
     --text3:     #4f5a6e;
   }
+
+  /* ── Light theme ────────────────────────────────────────────── */
+  html.theme-light {
+    --bg:        #f3f4f6;
+    --surface:   #ffffff;
+    --surface2:  #e9eaed;
+    --border:    #d1d5db;
+    --border2:   #b0b7c3;
+    --accent:    #4c8bf5;
+    --accent-dim:#2d5dbf;
+    --danger:    #ef4444;
+    --success:   #16a34a;
+    --warning:   #d97706;
+    --purple:    #7c3aed;
+    --text:      #111827;
+    --text2:     #4b5563;
+    --text3:     #9ca3af;
+  }
+
+  /* ── E-Ink theme — flat, high-contrast, no animations ───────── */
+  /* Base colors (accent overridden via JS inline style)           */
+  html.theme-eink {
+    --bg:        #ffffff;
+    --surface:   #ffffff;
+    --surface2:  #f0f0f0;
+    --border:    #aaaaaa;
+    --border2:   #777777;
+    --accent:    #1a4fa3;   /* fallback; JS sets this from user pref */
+    --accent-dim:#103080;
+    --danger:    #cc0000;
+    --success:   #006622;
+    --warning:   #996600;
+    --purple:    #660099;
+    --text:      #000000;
+    --text2:     #333333;
+    --text3:     #777777;
+  }
+
+  /* Kill all motion & shadow on e-ink — prevents ghosting/flicker */
+  html.theme-eink *,
+  html.theme-eink *::before,
+  html.theme-eink *::after {
+    transition:   none !important;
+    animation:    none !important;
+    box-shadow:   none !important;
+    text-shadow:  none !important;
+  }
+
+  /* E-ink bold variant — heavier borders, darker secondary text */
+  html.eink-bold {
+    --border:  #666666;
+    --border2: #444444;
+    --text2:   #111111;
+    --text3:   #555555;
+  }
+  html.eink-bold input,
+  html.eink-bold select,
+  html.eink-bold textarea {
+    border-width: 2px !important;
+  }
+
+  /* E-ink large text variant */
+  html.eink-large body { font-size: 15px; }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 

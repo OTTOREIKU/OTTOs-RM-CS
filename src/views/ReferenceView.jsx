@@ -1,5 +1,8 @@
 import React, { useState, useMemo } from 'react'
-import { ChevronDownIcon, ChevronUpIcon } from '../components/Icons.jsx'
+import { ChevronDownIcon, ChevronUpIcon, GearIcon } from '../components/Icons.jsx'
+import {
+  loadTheme, loadEinkSettings, saveTheme, saveEinkSettings, EINK_ACCENT_PRESETS,
+} from '../store/theme.js'
 import racesData          from '../data/races.json'
 import cultureSkillsData  from '../data/culture_skills.json'
 import armorData    from '../data/armor.json'
@@ -233,20 +236,164 @@ export default function ReferenceView() {
   const [calcFumbleRoll, setCalcFumbleRoll] = useState('')
   const [critOnly, setCritOnly]           = useState(false)
 
+  // ── Settings state ──────────────────────────────────────────────────────────
+  const [showSettings,  setShowSettings]  = useState(false)
+  const [theme,         setTheme]         = useState(loadTheme)
+  const [einkSettings,  setEinkSettings]  = useState(loadEinkSettings)
+
+  function handleThemeChange(t) {
+    setTheme(t); saveTheme(t)
+  }
+  function handleEinkChange(patch) {
+    const next = { ...einkSettings, ...patch }
+    setEinkSettings(next); saveEinkSettings(next)
+  }
+
   return (
     <div style={{ maxWidth: 900, margin: '0 auto', padding: '16px 12px' }}>
-      {/* Tab strip */}
-      <div style={{ display: 'flex', gap: 4, marginBottom: 16, flexWrap: 'wrap' }}>
-        {TABS.map(t => (
-          <button key={t} onClick={() => setTab(t)} style={{
-            background: tab === t ? 'var(--accent)' : 'var(--surface2)',
-            color: tab === t ? '#fff' : 'var(--text2)',
-            border: '1px solid ' + (tab === t ? 'transparent' : 'var(--border)'),
-            borderRadius: 7, padding: '6px 14px', cursor: 'pointer',
-            fontWeight: tab === t ? 700 : 400, fontSize: 12,
-          }}>{t}</button>
-        ))}
+      {/* Tab strip + Settings gear */}
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 6, marginBottom: 16 }}>
+        <div style={{ display: 'flex', gap: 4, flex: 1, flexWrap: 'wrap' }}>
+          {TABS.map(t => (
+            <button key={t} onClick={() => setTab(t)} style={{
+              background: tab === t ? 'var(--accent)' : 'var(--surface2)',
+              color: tab === t ? '#fff' : 'var(--text2)',
+              border: '1px solid ' + (tab === t ? 'transparent' : 'var(--border)'),
+              borderRadius: 7, padding: '6px 14px', cursor: 'pointer',
+              fontWeight: tab === t ? 700 : 400, fontSize: 12,
+            }}>{t}</button>
+          ))}
+        </div>
+        <button onClick={() => setShowSettings(s => !s)}
+          title="App settings"
+          style={{
+            flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
+            background: showSettings ? 'var(--accent)' : 'var(--surface2)',
+            color: showSettings ? '#fff' : 'var(--text3)',
+            border: '1px solid ' + (showSettings ? 'var(--accent)' : 'var(--border)'),
+            borderRadius: 7, padding: '6px 8px', cursor: 'pointer',
+          }}>
+          <GearIcon size={14} color="currentColor" />
+        </button>
       </div>
+
+      {/* ── SETTINGS PANEL ─────────────────────────────────────────────────── */}
+      {showSettings && (
+        <div style={{
+          background: 'var(--surface)', border: '1px solid var(--border2)',
+          borderRadius: 12, padding: '18px 20px', marginBottom: 20,
+        }}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text)', marginBottom: 14 }}>
+            Appearance
+          </div>
+
+          {/* Theme selector */}
+          <div style={{ marginBottom: 16 }}>
+            <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 8 }}>
+              Theme
+            </div>
+            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+              {[
+                { id: 'dark',  label: 'Dark',  desc: 'Default dark UI' },
+                { id: 'light', label: 'Light', desc: 'Light background' },
+                { id: 'eink',  label: 'E-Ink', desc: 'E-paper optimized' },
+              ].map(({ id, label, desc }) => (
+                <button key={id} onClick={() => handleThemeChange(id)}
+                  style={{
+                    padding: '8px 16px', borderRadius: 8, cursor: 'pointer',
+                    border: '2px solid ' + (theme === id ? 'var(--accent)' : 'var(--border2)'),
+                    background: theme === id ? 'var(--accent)22' : 'var(--surface2)',
+                    color: theme === id ? 'var(--accent)' : 'var(--text2)',
+                    textAlign: 'left', transition: 'all .15s',
+                  }}>
+                  <div style={{ fontSize: 13, fontWeight: 700 }}>{label}</div>
+                  <div style={{ fontSize: 10, opacity: 0.7, marginTop: 2 }}>{desc}</div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* E-Ink specific settings */}
+          {theme === 'eink' && (
+            <div style={{ borderTop: '1px solid var(--border)', paddingTop: 16 }}>
+              <div style={{ fontSize: 11, color: 'var(--text3)', marginBottom: 14, lineHeight: 1.5 }}>
+                Optimized for e-paper displays — flat colors, no shadows or animations.
+                Color e-ink screens (Kaleido, etc.) render saturated colors best; pick a deeper tone
+                as it will appear more muted on-device.
+              </div>
+
+              {/* Accent color */}
+              <div style={{ marginBottom: 14 }}>
+                <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 8 }}>
+                  Accent Color
+                </div>
+                <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+                  {EINK_ACCENT_PRESETS.map(p => (
+                    <button key={p.hex} onClick={() => handleEinkChange({ accent: p.hex })}
+                      title={p.label}
+                      style={{
+                        width: 30, height: 30, borderRadius: 7, background: p.hex,
+                        border: einkSettings.accent === p.hex
+                          ? '3px solid var(--text)' : '2px solid var(--border2)',
+                        cursor: 'pointer', flexShrink: 0,
+                      }} />
+                  ))}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <input type="color" value={einkSettings.accent}
+                      onChange={e => handleEinkChange({ accent: e.target.value })}
+                      title="Custom color"
+                      style={{
+                        width: 30, height: 30, padding: 2, border: '2px solid var(--border2)',
+                        borderRadius: 7, cursor: 'pointer', background: 'none',
+                      }} />
+                    <span style={{ fontSize: 11, color: 'var(--text3)' }}>Custom</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Bold borders toggle */}
+              <label style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10, cursor: 'pointer' }}>
+                <div onClick={() => handleEinkChange({ bold: !einkSettings.bold })}
+                  style={{
+                    width: 36, height: 20, borderRadius: 10, flexShrink: 0,
+                    background: einkSettings.bold ? 'var(--accent)' : 'var(--border2)',
+                    position: 'relative', cursor: 'pointer', transition: 'background .2s',
+                  }}>
+                  <div style={{
+                    position: 'absolute', top: 3, left: einkSettings.bold ? 18 : 3,
+                    width: 14, height: 14, borderRadius: '50%', background: '#fff',
+                    transition: 'left .2s',
+                  }} />
+                </div>
+                <div>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text)' }}>Heavier borders & text</div>
+                  <div style={{ fontSize: 10, color: 'var(--text3)' }}>Thicker borders, darker secondary text — improves readability on low-contrast displays</div>
+                </div>
+              </label>
+
+              {/* Larger text toggle */}
+              <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}>
+                <div onClick={() => handleEinkChange({ large: !einkSettings.large })}
+                  style={{
+                    width: 36, height: 20, borderRadius: 10, flexShrink: 0,
+                    background: einkSettings.large ? 'var(--accent)' : 'var(--border2)',
+                    position: 'relative', cursor: 'pointer', transition: 'background .2s',
+                  }}>
+                  <div style={{
+                    position: 'absolute', top: 3, left: einkSettings.large ? 18 : 3,
+                    width: 14, height: 14, borderRadius: '50%', background: '#fff',
+                    transition: 'left .2s',
+                  }} />
+                </div>
+                <div>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text)' }}>Larger base text</div>
+                  <div style={{ fontSize: 10, color: 'var(--text3)' }}>Increases base font size slightly — also use your browser zoom for finer control</div>
+                </div>
+              </label>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* ── RACES ── */}
       {tab === 'Races' && (
