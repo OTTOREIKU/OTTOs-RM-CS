@@ -49,7 +49,9 @@ const COMMON_ITEMS = [
   ['Healing Herb',0],['Antidote',0],['Poison',0],
 ]
 
-function tierCost(def, tier) {
+function tierCost(def, tier, param) {
+  // param_costs: variable cost based on chosen param (e.g. Missing Sense varies by sense)
+  if (def.param_costs && param && def.param_costs[param] != null) return def.param_costs[param]
   if (def.tier_costs) return def.tier_costs[tier - 1] ?? null
   if (def.cost_tier1 != null && tier === 1) return def.cost_tier1
   if (def.cost_tier1 != null) return def.cost_tier1 + (tier - 1) * Math.abs(def.cost_per_tier) * (def.is_flaw ? -1 : 1)
@@ -89,6 +91,11 @@ function effectSummary(def, inst) {
 }
 
 function costLabel(def) {
+  if (def.param_costs) {
+    const vals = Object.values(def.param_costs)
+    const lo = Math.min(...vals), hi = Math.max(...vals)
+    return (lo > 0 ? '+' : '') + lo + ' to ' + (hi > 0 ? '+' : '') + hi + ' DP'
+  }
   if (def.max_tiers === 1) return (def.cost_per_tier > 0 ? '+' : '') + def.cost_per_tier + ' DP'
   if (def.cost_tier1 != null) return def.cost_tier1 + '+' + Math.abs(def.cost_per_tier) + '/Tier DP'
   return (def.cost_per_tier > 0 ? '+' : '') + def.cost_per_tier + '/Tier DP'
@@ -431,7 +438,7 @@ function TalentsCard({ activeChar, addTalent, updateTalent, removeTalent }) {
           if (!def) return null
           const isOpen = expanded === inst.id
           const summary = effectSummary(def, inst)
-          const cost = tierCost(def, inst.tier)
+          const cost = tierCost(def, inst.tier, inst.param)
           const tierLabel = def.max_tiers > 1 ? ' ' + (ROMAN[inst.tier-1] || inst.tier) : ''
           const extraCount = (inst.extra_params || []).filter(Boolean).length
           const paramLabel = inst.param
@@ -609,7 +616,7 @@ function TalentsCard({ activeChar, addTalent, updateTalent, removeTalent }) {
                   <div style={{fontSize:10,color:'var(--text3)',marginBottom:5,fontWeight:600,letterSpacing:'0.06em',textTransform:'uppercase'}}>Tier</div>
                   <div style={{display:'flex',gap:4,flexWrap:'wrap'}}>
                     {Array.from({length:configuring.max_tiers},(_,i)=>i+1).map(t => {
-                      const cost = tierCost(configuring, t)
+                      const cost = tierCost(configuring, t, configParam)
                       return (
                         <button key={t} onClick={()=>setConfigTier(t)}
                           style={{padding:'4px 10px',borderRadius:5,fontSize:12,cursor:'pointer',fontWeight:configTier===t?700:400,
@@ -639,6 +646,13 @@ function TalentsCard({ activeChar, addTalent, updateTalent, removeTalent }) {
               {configuring.effects?.some(e=>e.type!==undefined) && configuring.effects.length > 0 && (configParam || !configuring.param) && (
                 <div style={{marginBottom:10,padding:'6px 8px',background:'rgba(139,92,246,0.1)',borderRadius:6,fontSize:12,color:'var(--purple)'}}>
                   Auto-applies: {effectSummary(configuring,{tier:configTier,param:configParam}) || 'none'}
+                </div>
+              )}
+
+              {/* Live cost preview for param_costs talents (e.g. Missing Sense) */}
+              {configuring.param_costs && configParam && configuring.param_costs[configParam] != null && (
+                <div style={{marginBottom:10,padding:'5px 8px',background:'rgba(239,68,68,0.08)',borderRadius:6,fontSize:12,color:'var(--danger)'}}>
+                  Cost for {configParam}: {configuring.param_costs[configParam]} DP
                 </div>
               )}
 
