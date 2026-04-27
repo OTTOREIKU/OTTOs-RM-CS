@@ -234,6 +234,14 @@ export function getEndurance(char) {
   return bdBonus + racialEndurance
 }
 
+export function getWeightAllowance(char) {
+  const st = char.stats?.Strength
+  const stBonus = st ? getTotalStatBonus(st) : 0
+  const pct = 15 + (2 * stBonus)
+  const lbs = char.weight ? Math.round(pct * Number(char.weight) / 100) : null
+  return { pct, lbs }
+}
+
 export function getPowerPoints(char) {
   if (char.power_points_max !== null && char.power_points_max !== undefined) return char.power_points_max
   // PP = Power Development skill bonus (the full skill total IS the PP pool)

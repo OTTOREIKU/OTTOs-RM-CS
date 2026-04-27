@@ -12,7 +12,7 @@ import combatGuide  from '../data/combat_guide.json'
 import weaponsData  from '../data/weapons.json'
 import fumbleTables from '../data/fumble_tables.json'
 
-const TABS = ['Races', 'Cultures', 'Armor', 'Stat Bonuses', 'Skill Costs', 'Weapons', 'Spell Types', 'Crit Tables', 'Attack Tables', 'Combat Calc', 'Combat Guide']
+const TABS = ['Races', 'Cultures', 'Armor', 'Stat Bonuses', 'Skill Costs', 'Weapons', 'Spell Types', 'Crit Tables', 'Attack Tables', 'Combat Calc', 'Combat Guide', 'Formulas']
 const STAT_COLS = ['Agility','Constitution','Empathy','Intuition','Memory',
                    'Presence','Quickness','Reasoning','Self Discipline','Strength']
 const STAT_ABR  = ['Ag','Co','Em','In','Me','Pr','Qu','Re','SD','St']
@@ -456,6 +456,9 @@ export default function ReferenceView() {
 
       {/* ── COMBAT GUIDE ── */}
       {tab === 'Combat Guide' && <CombatGuidePanel />}
+
+      {/* ── FORMULAS ── */}
+      {tab === 'Formulas' && <FormulasPanel />}
     </div>
   )
 }
@@ -1689,6 +1692,202 @@ function CombatGuidePanel() {
         </div>
       </GuideSection>
 
+    </div>
+  )
+}
+
+/* ─────────────────────────────────────────────── */
+/*  FORMULAS PANEL                                 */
+/* ─────────────────────────────────────────────── */
+
+const FORMULA_SECTIONS = [
+  {
+    key: 'hits',
+    title: 'Base Hits (Max HP)',
+    color: '#ef4444',
+    formula: 'Race Base + Rank Bonus(BD) + 2×Co Bonus + SD Bonus + Item + Talent',
+    components: [
+      { label: 'Race Base', desc: 'Fixed base hits from your race (e.g. Human = 25, Dwarf = 30)', example: '25' },
+      { label: 'Rank Bonus (BD)', desc: 'Body Development skill rank bonus — see Rank Bonus table', example: 'Rank 10 → +50' },
+      { label: '2 × Co Bonus', desc: 'Constitution stat bonus × 2 (BD is an individual Co skill in the Brawn category)', example: 'Co 75 → +10 bonus → +20' },
+      { label: 'SD Bonus', desc: 'Self Discipline bonus (Brawn category stat for BD)', example: 'SD 60 → +5' },
+      { label: 'Item Bonus', desc: 'Magic item or other flat bonus applied to Body Development', example: '+10' },
+      { label: 'Talent Bonus', desc: 'Talents such as Tough/Fragile add a flat bonus per tier', example: 'Tough T2 → +10' },
+    ],
+    note: 'Body Development is in the Brawn category (Co/SD). The category stat bonus is the average of Co and SD, but since BD\'s individual stat is also Co, it contributes twice. Formula matches CoreLaw character development rules.',
+  },
+  {
+    key: 'pp',
+    title: 'Power Points (Max PP)',
+    color: '#8b5cf6',
+    formula: 'Rank Bonus(PD) + 2×RS Bonus + Co Bonus + Item + Talent',
+    components: [
+      { label: 'Rank Bonus (PD)', desc: 'Power Development skill rank bonus', example: 'Rank 8 → +40' },
+      { label: '2 × RS Bonus', desc: 'Realm Stat bonus × 2 (In for Channeling, Em for Essence, Pr for Mentalism). PD is in Power Manipulation (RS/RS) category.', example: 'In 80 → +15 → +30' },
+      { label: 'Co Bonus', desc: 'Constitution bonus (PD individual skill stat)', example: 'Co 60 → +5' },
+      { label: 'Item Bonus', desc: 'Flat item bonus to Power Development', example: '+5' },
+      { label: 'Talent Bonus', desc: 'Talent contributions to Power Development', example: '—' },
+    ],
+    note: 'Only applies if a realm is selected. No realm = no PP. Power Development is in the Power Manipulation category (RS/RS) with Co as the individual skill stat.',
+  },
+  {
+    key: 'endurance',
+    title: 'Endurance',
+    color: '#84cc16',
+    formula: 'Rank Bonus(BD) + 2×Co Bonus + SD Bonus + Item + Talent + Racial Endurance',
+    components: [
+      { label: 'BD Skill Bonus', desc: 'Full Body Development skill total (same calculation as Base Hits, minus the racial base_hits)', example: 'Rank 10, Co +10, SD +5 → +75' },
+      { label: 'Racial Endurance', desc: 'Race-specific endurance modifier from race table (separate from base hits)', example: 'Elf → +20, Dwarf → +15' },
+    ],
+    note: 'Endurance uses the same BD skill bonus as Base Hits, but adds the racial endurance modifier instead of the racial base hits. CoreLaw p.74.',
+  },
+  {
+    key: 'db',
+    title: 'Defensive Bonus (DB)',
+    color: '#22c55e',
+    formula: 'Quickness Bonus × 3 + Shield DB + Talent DB',
+    components: [
+      { label: 'Quickness Bonus × 3', desc: 'Your Qu stat bonus multiplied by 3', example: 'Qu 75 → +10 bonus → +30 DB' },
+      { label: 'Shield DB', desc: 'Target Shield +15, Normal +20, Full +25, Wall +30', example: 'Normal Shield → +20' },
+      { label: 'Talent DB', desc: 'Defensive Aura talent: +5 DB per tier', example: 'T3 → +15 DB' },
+    ],
+    note: 'The displayed DB on the sheet is Qu×3 + talent only (no shield). Total DB in the Armor section includes shield.',
+  },
+  {
+    key: 'initiative',
+    title: 'Initiative Bonus',
+    color: '#f59e0b',
+    formula: 'Quickness Bonus + Talent Initiative',
+    components: [
+      { label: 'Quickness Bonus', desc: 'Your Qu stat bonus', example: 'Qu 80 → +15' },
+      { label: 'Talent Initiative', desc: 'Fast Attack talent: +5 initiative per tier', example: 'T2 → +10' },
+    ],
+    note: 'Added to your Open-Ended d100 roll at the start of each round to determine action order.',
+  },
+  {
+    key: 'rr',
+    title: 'Resistance Rolls (RR)',
+    color: '#60a5fa',
+    formula: 'Stat Bonus + Level × 2 + Special Bonus + Talent Bonus',
+    components: [
+      { label: 'Stat Bonus', desc: 'Channeling → In, Essence → Em, Mentalism → Pr, Physical → Co, Fear → SD', example: 'In 70 → +7 for Channeling RR' },
+      { label: 'Level × 2', desc: 'Your character level × 2', example: 'Level 5 → +10' },
+      { label: 'Special Bonus', desc: 'Per-type override field on the sheet (racial, item, etc.)', example: '+10 racial' },
+      { label: 'Talent Bonus', desc: 'Magical/Physical Resistance, Iron Will talents', example: 'Iron Will T2 → +10 Mentalism RR' },
+    ],
+    note: 'RR result = your bonus vs. caster\'s level × 3 + spell\'s RR modifier. Beat the target number to resist.',
+  },
+  {
+    key: 'spellcasting',
+    title: 'Spell Casting Bonus',
+    color: '#a855f7',
+    formula: 'Rank Bonus(list) + 2×RS Bonus + Me Bonus + Item + Prof + Talent',
+    components: [
+      { label: 'Rank Bonus', desc: 'Rank bonus from ranks in the specific spell list', example: 'Rank 10 → +50' },
+      { label: '2 × RS Bonus', desc: 'Realm Stat × 2 (In/Em/Pr). Spell lists are in the Power Manipulation (RS/RS) category.', example: 'Em 85 → +20 → +40' },
+      { label: 'Me Bonus', desc: 'Memory bonus (individual skill stat for spell lists)', example: 'Me 65 → +7' },
+      { label: 'Item Bonus', desc: 'Flat item bonus to this spell list', example: '+10' },
+      { label: 'Prof Bonus', desc: 'Proficient: +1 per rank up to 30 (base lists only)', example: 'Rank 15, prof → +15' },
+      { label: 'Talent Bonus', desc: 'Eloquence +5/tier, Mumbler −5/tier', example: 'Eloquence T1 → +5' },
+    ],
+    note: 'Each spell list is a separate skill in the Power Manipulation category. Casting roll = this bonus + OE d100 vs. spell level × 5.',
+  },
+  {
+    key: 'wa',
+    title: 'Weight Allowance (WA)',
+    color: '#14b8a6',
+    formula: 'WA% = 15 + (2 × Strength Bonus)   ·   WA(lbs) = WA% × Body Weight / 100',
+    components: [
+      { label: 'Base 15%', desc: 'Every character can carry at least 15% of their body weight without penalty', example: '150 lb character → 22.5 lbs base' },
+      { label: '2 × Strength Bonus', desc: 'Strength stat bonus × 2, added to the percentage', example: 'St 80 → +15 bonus → +30% capacity' },
+      { label: 'WA in lbs', desc: 'WA% × body weight (from Identity card) ÷ 100', example: 'WA 45%, 150 lbs → 67 lbs' },
+    ],
+    note: 'Encumbrance penalty begins when Load% exceeds WA%. Each (body_weight / 20) lbs over WA = −5 to all actions. Set your body weight in the Identity card to see lbs on the sheet.',
+  },
+  {
+    key: 'rankbonus',
+    title: 'Rank Bonus Table',
+    color: '#64748b',
+    formula: '0 ranks → −25   ·   1–10: +5/rank   ·   11–20: +3/rank   ·   21–30: +2/rank   ·   31+: +1/rank',
+    components: [
+      { label: '0 ranks', desc: 'Untrained penalty', example: '−25' },
+      { label: '1–10 ranks', desc: '+5 per rank', example: 'Rank 5 → +25, Rank 10 → +50' },
+      { label: '11–20 ranks', desc: '+3 per rank (from +50 base)', example: 'Rank 15 → +65, Rank 20 → +80' },
+      { label: '21–30 ranks', desc: '+2 per rank (from +80 base)', example: 'Rank 25 → +90, Rank 30 → +100' },
+      { label: '31+ ranks', desc: '+1 per rank (from +100 base)', example: 'Rank 40 → +110' },
+    ],
+    note: 'CoreLaw Table 3-0b. This progression applies to all skills, spells, and development abilities.',
+  },
+]
+
+function FormulasPanel() {
+  const [open, setOpen] = useState(() => Object.fromEntries(FORMULA_SECTIONS.map(s => [s.key, s.key === 'hits'])))
+  const toggle = key => setOpen(o => ({ ...o, [key]: !o[key] }))
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <div style={{ fontSize: 12, color: 'var(--text3)', marginBottom: 4 }}>
+        Reference for how derived stats and bonuses are calculated in RMU (Rolemaster Unified / CoreLaw).
+      </div>
+
+      {FORMULA_SECTIONS.map(({ key, title, color, formula, components, note }) => (
+        <div key={key} style={{ border: '1px solid var(--border)', borderRadius: 10, overflow: 'hidden' }}>
+          {/* Header */}
+          <button onClick={() => toggle(key)} style={{
+            width: '100%', display: 'flex', alignItems: 'center', gap: 10,
+            padding: '10px 14px', background: open[key] ? color + '18' : 'var(--surface2)',
+            border: 'none', cursor: 'pointer', textAlign: 'left',
+          }}>
+            <div style={{ width: 3, height: 16, borderRadius: 2, background: color, flexShrink: 0 }} />
+            <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text)', flex: 1 }}>{title}</span>
+            {open[key]
+              ? <ChevronUpIcon size={13} color="var(--text3)" />
+              : <ChevronDownIcon size={13} color="var(--text3)" />
+            }
+          </button>
+
+          {open[key] && (
+            <div style={{ padding: '12px 14px', borderTop: '1px solid var(--border)' }}>
+              {/* Formula bar */}
+              <div style={{
+                background: color + '14', border: '1px solid ' + color + '44',
+                borderRadius: 7, padding: '8px 12px', marginBottom: 12,
+                fontFamily: 'monospace', fontSize: 12, color,
+                fontWeight: 700, lineHeight: 1.5,
+              }}>
+                {formula}
+              </div>
+
+              {/* Components table */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 3, marginBottom: 10 }}>
+                {components.map((c, i) => (
+                  <div key={i} style={{
+                    display: 'grid', gridTemplateColumns: '140px 1fr 100px',
+                    gap: 10, padding: '5px 10px',
+                    background: i % 2 === 0 ? 'var(--surface)' : 'var(--surface2)',
+                    borderRadius: 5, fontSize: 12, alignItems: 'start',
+                  }}>
+                    <span style={{ fontWeight: 700, color, flexShrink: 0 }}>{c.label}</span>
+                    <span style={{ color: 'var(--text2)', lineHeight: 1.4 }}>{c.desc}</span>
+                    <span style={{ color: 'var(--text3)', fontStyle: 'italic', fontSize: 11, textAlign: 'right' }}>{c.example}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Note */}
+              {note && (
+                <div style={{
+                  fontSize: 11, color: 'var(--text3)', lineHeight: 1.5,
+                  padding: '6px 10px', background: 'var(--surface2)',
+                  borderRadius: 6, borderLeft: '3px solid ' + color + '66',
+                }}>
+                  {note}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      ))}
     </div>
   )
 }
