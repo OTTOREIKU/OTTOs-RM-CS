@@ -427,71 +427,15 @@
     "stat_keys": "Re"
   },
   {
-    "category": "Lore",
-    "name": "<specialization 3> Lore",
+    "category": "Lore: Languages",
+    "name": "Own Spoken",
     "dev_cost": "1/3",
     "prof_type": "Normal",
     "stat_keys": "Re"
   },
   {
-    "category": "Lore",
-    "name": "<specialization 4> Lore",
-    "dev_cost": "1/3",
-    "prof_type": "Normal",
-    "stat_keys": "Re"
-  },
-  {
-    "category": "Lore",
-    "name": "<specialization 5> Lore",
-    "dev_cost": "1/3",
-    "prof_type": "Normal",
-    "stat_keys": "Re"
-  },
-  {
-    "category": "Lore",
-    "name": "<specialization 6> Lore",
-    "dev_cost": "1/3",
-    "prof_type": "Normal",
-    "stat_keys": "Re"
-  },
-  {
-    "category": "Lore",
-    "name": "<specialization 7> Lore",
-    "dev_cost": "1/3",
-    "prof_type": "Normal",
-    "stat_keys": "Re"
-  },
-  {
-    "category": "Lore",
-    "name": "<specialization 8> Lore",
-    "dev_cost": "1/3",
-    "prof_type": "Normal",
-    "stat_keys": "Re"
-  },
-  {
-    "category": "Lore",
-    "name": "<specialization 9> Lore",
-    "dev_cost": "1/3",
-    "prof_type": "Normal",
-    "stat_keys": "Re"
-  },
-  {
-    "category": "Lore",
-    "name": "<specialization 10> Lore",
-    "dev_cost": "1/3",
-    "prof_type": "Normal",
-    "stat_keys": "Re"
-  },
-  {
-    "category": "Lore",
-    "name": "<specialization 11> Lore",
-    "dev_cost": "1/3",
-    "prof_type": "Normal",
-    "stat_keys": "Re"
-  },
-  {
-    "category": "Lore",
-    "name": "<specialization 12> Lore",
+    "category": "Lore: Languages",
+    "name": "Own Written",
     "dev_cost": "1/3",
     "prof_type": "Normal",
     "stat_keys": "Re"
@@ -505,7 +449,7 @@
   },
   {
     "category": "Lore: Languages",
-    "name": "Writting: <language 1>",
+    "name": "Written: <language 1>",
     "dev_cost": "1/3",
     "prof_type": "Normal",
     "stat_keys": "Re"
@@ -519,119 +463,7 @@
   },
   {
     "category": "Lore: Languages",
-    "name": "Writting: <language 2>",
-    "dev_cost": "1/3",
-    "prof_type": "Normal",
-    "stat_keys": "Re"
-  },
-  {
-    "category": "Lore: Languages",
-    "name": "Spoken: <language 3>",
-    "dev_cost": "1/3",
-    "prof_type": "Normal",
-    "stat_keys": "Re"
-  },
-  {
-    "category": "Lore: Languages",
-    "name": "Writting: <language 3>",
-    "dev_cost": "1/3",
-    "prof_type": "Normal",
-    "stat_keys": "Re"
-  },
-  {
-    "category": "Lore: Languages",
-    "name": "Spoken: <language 4>",
-    "dev_cost": "1/3",
-    "prof_type": "Normal",
-    "stat_keys": "Re"
-  },
-  {
-    "category": "Lore: Languages",
-    "name": "Writting: <language 4>",
-    "dev_cost": "1/3",
-    "prof_type": "Normal",
-    "stat_keys": "Re"
-  },
-  {
-    "category": "Lore: Languages",
-    "name": "Spoken: <language 5>",
-    "dev_cost": "1/3",
-    "prof_type": "Normal",
-    "stat_keys": "Re"
-  },
-  {
-    "category": "Lore: Languages",
-    "name": "Writting: <language 5>",
-    "dev_cost": "1/3",
-    "prof_type": "Normal",
-    "stat_keys": "Re"
-  },
-  {
-    "category": "Lore: Languages",
-    "name": "Spoken: <language 6>",
-    "dev_cost": "1/3",
-    "prof_type": "Normal",
-    "stat_keys": "Re"
-  },
-  {
-    "category": "Lore: Languages",
-    "name": "Writting: <language 6>",
-    "dev_cost": "1/3",
-    "prof_type": "Normal",
-    "stat_keys": "Re"
-  },
-  {
-    "category": "Lore: Languages",
-    "name": "Spoken: <language 7>",
-    "dev_cost": "1/3",
-    "prof_type": "Normal",
-    "stat_keys": "Re"
-  },
-  {
-    "category": "Lore: Languages",
-    "name": "Writting: <language 7>",
-    "dev_cost": "1/3",
-    "prof_type": "Normal",
-    "stat_keys": "Re"
-  },
-  {
-    "category": "Lore: Languages",
-    "name": "Spoken: <language 8>",
-    "dev_cost": "1/3",
-    "prof_type": "Normal",
-    "stat_keys": "Re"
-  },
-  {
-    "category": "Lore: Languages",
-    "name": "Writting: <language 8>",
-    "dev_cost": "1/3",
-    "prof_type": "Normal",
-    "stat_keys": "Re"
-  },
-  {
-    "category": "Lore: Languages",
-    "name": "Spoken: <language 9>",
-    "dev_cost": "1/3",
-    "prof_type": "Normal",
-    "stat_keys": "Re"
-  },
-  {
-    "category": "Lore: Languages",
-    "name": "Writting: <language 9>",
-    "dev_cost": "1/3",
-    "prof_type": "Normal",
-    "stat_keys": "Re"
-  },
-  {
-    "category": "Lore: Languages",
-    "name": "Spoken: <language 10>",
-    "dev_cost": "1/3",
-    "prof_type": "Normal",
-    "stat_keys": "Re"
-  },
-  {
-    "category": "Lore: Languages",
-    "name": "Writting: <language 10>",
+    "name": "Written: <language 2>",
     "dev_cost": "1/3",
     "prof_type": "Normal",
     "stat_keys": "Re"
