@@ -190,14 +190,16 @@ export default function NotebookView() {
   const [sortBy,         setSortBy]         = useState('modified')
   const [activeTag,      setActiveTag]      = useState(null)
   const [showSidebar,    setShowSidebar]    = useState(true)
+  const [sidebarHidden,  setSidebarHidden]  = useState(false)
   const [isMobile,       setIsMobile]       = useState(() => window.innerWidth < 700)
   const [ctxMenu,        setCtxMenu]        = useState(null)
   const [renaming,       setRenaming]       = useState(null)
   const [renameVal,      setRenameVal]      = useState('')
-  const [dragItem,       setDragItem]       = useState(null)  // { type: 'note'|'folder', id }
+  const [dragItem,       setDragItem]       = useState(null)  // { type: 'note'|'folder', id, ids? }
   const [dragOverTarget, setDragOverTarget] = useState(null)
   const [plusOpen,       setPlusOpen]       = useState(false)
   const [confirmDlg,     setConfirmDlg]     = useState(null)  // { message, onConfirm }
+  const [selectedIds,    setSelectedIds]    = useState({})    // { [noteId]: bool }
 
   const renameRef   = useRef(null)
   const titleRef    = useRef(null)
@@ -237,6 +239,7 @@ export default function NotebookView() {
   })
 
   const activeNote = activeId ? data.notes[activeId] : null
+  const selCount   = useMemo(() => Object.values(selectedIds).filter(Boolean).length, [selectedIds])
 
   // ── Mutations ──────────────────────────────────────────────────────────────
   function mutate(fn) {
@@ -315,6 +318,37 @@ export default function NotebookView() {
     updateFolder(folderId, { parent_id: newParentId ?? null })
   }
 
+  // ── Copy note ──────────────────────────────────────────────────────────────
+  function copyNote(id) {
+    const note = data.notes[id]; if (!note) return
+    const newId = nbUid('note'), now = new Date().toISOString()
+    mutate(d => {
+      d.notes[newId] = { ...note, id: newId, title: `Copy of ${note.title}`, created_at: now, updated_at: now }
+      return d
+    })
+    setActiveId(newId); setMode('edit')
+    if (isMobile) setShowSidebar(false)
+    setCtxMenu(null)
+  }
+
+  // ── Multi-select ───────────────────────────────────────────────────────────
+  function toggleSelect(id) {
+    setSelectedIds(prev => ({ ...prev, [id]: !prev[id] }))
+  }
+  function clearSelection() { setSelectedIds({}) }
+  function deleteSelected() {
+    const ids = Object.entries(selectedIds).filter(([, v]) => v).map(([k]) => k)
+    if (!ids.length) return
+    setConfirmDlg({
+      message: `Delete ${ids.length} note${ids.length !== 1 ? 's' : ''}? This cannot be undone.`,
+      onConfirm: () => {
+        mutate(d => { ids.forEach(id => delete d.notes[id]); return d })
+        if (ids.includes(activeId)) setActiveId(null)
+        clearSelection()
+      }
+    })
+  }
+
   // ── Rename ─────────────────────────────────────────────────────────────────
   function startRename(type, id, val) { setRenaming({ type, id }); setRenameVal(val); setCtxMenu(null) }
   function commitRename() {
@@ -335,7 +369,11 @@ export default function NotebookView() {
 
   // ── Drag & drop ────────────────────────────────────────────────────────────
   function onNoteDragStart(e, noteId) {
-    const item = { type: 'note', id: noteId }
+    // If dragging a selected note, carry all selected notes; otherwise just this one
+    const dragIds = (selCount > 0 && selectedIds[noteId])
+      ? Object.entries(selectedIds).filter(([, v]) => v).map(([k]) => k)
+      : [noteId]
+    const item = { type: 'note', id: noteId, ids: dragIds }
     e.dataTransfer.effectAllowed = 'move'
     e.dataTransfer.setData('text/plain', `note:${noteId}`)
     dragItemRef.current = item
@@ -367,7 +405,12 @@ export default function NotebookView() {
     e.stopPropagation()  // prevent bubbling to root onDrop which would move to root
     const raw = e.dataTransfer.getData('text/plain') || (dragItem ? `${dragItem.type}:${dragItem.id}` : '')
     const [type, id] = raw.split(':')
-    if (type === 'note')   moveNote(id, folderId === '__unfiled__' ? null : folderId)
+    if (type === 'note') {
+      const target = folderId === '__unfiled__' ? null : folderId
+      const idsToMove = dragItemRef.current?.ids ?? [id]
+      idsToMove.forEach(nid => moveNote(nid, target))
+      if (idsToMove.length > 1) clearSelection()
+    }
     if (type === 'folder') moveFolder(id, folderId === '__unfiled__' ? null : folderId)
     setDragItem(null); setDragOverTarget(null)
   }
@@ -458,6 +501,7 @@ export default function NotebookView() {
       const note = data.notes[ctxMenu.id]; if (!note) return null
       return <>
         <CtxItem icon={<PencilIcon size={12} />} onClick={() => startRename('note', ctxMenu.id, note.title)}>Rename</CtxItem>
+        <CtxItem icon={<FileIcon size={12} color="currentColor" />} onClick={() => copyNote(ctxMenu.id)}>Duplicate note</CtxItem>
         <CtxItem icon={<PinIcon size={12} filled={note.pinned} color="currentColor" />}
           onClick={() => { updateNote(ctxMenu.id, { pinned: !note.pinned }); setCtxMenu(null) }}>
           {note.pinned ? 'Unpin' : 'Pin to top'}
@@ -604,12 +648,15 @@ export default function NotebookView() {
             {children.map(cf => renderFolderNode(cf.id, depth + 1))}
             {notes.map(note => (
               <NoteRow key={note.id} note={note} active={activeId === note.id}
-                dragging={dragItem?.type === 'note' && dragItem.id === note.id}
+                dragging={dragItem?.type === 'note' && dragItem.ids?.includes(note.id)}
+                selected={!!selectedIds[note.id]}
+                inSelectionMode={selCount > 0}
                 indent={pad + 14}
                 renaming={renaming?.type === 'note' && renaming.id === note.id}
                 renameVal={renameVal} renameRef={renameRef}
                 onRenameChange={setRenameVal} onRenameCommit={commitRename}
                 onSelect={() => { setActiveId(note.id); if (isMobile) setShowSidebar(false) }}
+                onToggleSelect={() => toggleSelect(note.id)}
                 onContextMenu={e => openCtx('note', note.id, e)}
                 onDotsClick={e => openCtx('note', note.id, e)}
                 onDragStart={e => onNoteDragStart(e, note.id)}
@@ -702,6 +749,27 @@ export default function NotebookView() {
             color: 'var(--text)', boxSizing: 'border-box' }} />
       </div>
 
+      {/* Selection bar — shown when notes are ctrl+clicked */}
+      {selCount > 0 && (
+        <div style={{ padding: '6px 10px', background: 'var(--accent)22',
+          borderBottom: '1px solid var(--accent)44', flexShrink: 0,
+          display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span style={{ flex: 1, fontSize: 11, fontWeight: 700, color: 'var(--accent)' }}>
+            {selCount} selected
+          </span>
+          <button onClick={deleteSelected}
+            style={{ background: 'var(--danger)', color: '#fff', border: 'none',
+              borderRadius: 5, padding: '3px 10px', fontSize: 11, fontWeight: 600, cursor: 'pointer' }}>
+            Delete
+          </button>
+          <button onClick={clearSelection}
+            style={{ background: 'var(--surface2)', border: '1px solid var(--border)',
+              color: 'var(--text2)', borderRadius: 5, padding: '3px 8px', fontSize: 11, cursor: 'pointer' }}>
+            ✕
+          </button>
+        </div>
+      )}
+
       {/* Tree / search / tag results */}
       <div style={{ flex: 1, overflowY: 'auto', padding: '4px 0', WebkitOverflowScrolling: 'touch' }}
         onContextMenu={e => {
@@ -719,11 +787,13 @@ export default function NotebookView() {
             )}
             {searchResults.map(note => (
               <NoteRow key={note.id} note={note} active={activeId === note.id}
-                dragging={dragItem?.type === 'note' && dragItem.id === note.id} indent={10}
+                dragging={dragItem?.type === 'note' && dragItem.ids?.includes(note.id)}
+                selected={!!selectedIds[note.id]} inSelectionMode={selCount > 0} indent={10}
                 renaming={renaming?.type === 'note' && renaming.id === note.id}
                 renameVal={renameVal} renameRef={renameRef}
                 onRenameChange={setRenameVal} onRenameCommit={commitRename}
                 onSelect={() => { setActiveId(note.id); if (isMobile) setShowSidebar(false) }}
+                onToggleSelect={() => toggleSelect(note.id)}
                 onContextMenu={e => openCtx('note', note.id, e)}
                 onDotsClick={e => openCtx('note', note.id, e)}
                 onDragStart={e => onNoteDragStart(e, note.id)}
@@ -744,11 +814,13 @@ export default function NotebookView() {
             )}
             {tagResults.map(note => (
               <NoteRow key={note.id} note={note} active={activeId === note.id}
-                dragging={dragItem?.type === 'note' && dragItem.id === note.id} indent={10}
+                dragging={dragItem?.type === 'note' && dragItem.ids?.includes(note.id)}
+                selected={!!selectedIds[note.id]} inSelectionMode={selCount > 0} indent={10}
                 renaming={renaming?.type === 'note' && renaming.id === note.id}
                 renameVal={renameVal} renameRef={renameRef}
                 onRenameChange={setRenameVal} onRenameCommit={commitRename}
                 onSelect={() => { setActiveId(note.id); if (isMobile) setShowSidebar(false) }}
+                onToggleSelect={() => toggleSelect(note.id)}
                 onContextMenu={e => openCtx('note', note.id, e)}
                 onDotsClick={e => openCtx('note', note.id, e)}
                 onDragStart={e => onNoteDragStart(e, note.id)}
@@ -793,7 +865,20 @@ export default function NotebookView() {
       </div>
 
       {/* Sidebar footer — export buttons */}
-      <div style={{ borderTop: '1px solid var(--border)', padding: '8px 10px', flexShrink: 0, display: 'flex', gap: 6 }}>
+      <div style={{ borderTop: '1px solid var(--border)', padding: '8px 10px', flexShrink: 0 }}>
+        {/* Hide sidebar (desktop only) */}
+        {!isMobile && (
+          <button
+            onClick={() => setSidebarHidden(true)}
+            style={{ width: '100%', marginBottom: 6, background: 'none', border: '1px solid var(--border)',
+              borderRadius: 7, padding: '5px 8px', cursor: 'pointer',
+              color: 'var(--text3)', fontSize: 11, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5 }}
+            onMouseEnter={e => { e.currentTarget.style.background = 'var(--surface2)'; e.currentTarget.style.color = 'var(--text2)' }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'none'; e.currentTarget.style.color = 'var(--text3)' }}>
+            ‹ Hide sidebar
+          </button>
+        )}
+        <div style={{ display: 'flex', gap: 6 }}>
         {activeNote && (
           <button onClick={() => exportNoteAsMd(activeNote)}
             title="Download current note as a .md file"
@@ -820,6 +905,7 @@ export default function NotebookView() {
           onMouseLeave={e => { e.currentTarget.style.background = 'var(--surface2)'; e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text2)' }}>
           Export Notebook
         </button>
+        </div>
       </div>
     </>
   )
@@ -828,7 +914,7 @@ export default function NotebookView() {
     <div style={{ display: 'flex', height: OUTER_H, overflow: 'hidden', position: 'relative' }}>
 
       {/* ── DESKTOP SIDEBAR — inline ──────────────────────────── */}
-      {!isMobile && (
+      {!isMobile && !sidebarHidden && (
         <div style={{ width: SIDEBAR_W, flexShrink: 0, display: 'flex',
           flexDirection: 'column', borderRight: '1px solid var(--border)',
           background: 'var(--surface)', overflow: 'hidden' }}>
@@ -861,8 +947,9 @@ export default function NotebookView() {
               <div style={{ padding: '10px 16px 0', borderBottom: '1px solid var(--border)',
                 background: 'var(--surface)', flexShrink: 0 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-                  {isMobile && (
-                    <button onClick={() => setShowSidebar(true)}
+                  {(isMobile || sidebarHidden) && (
+                    <button
+                      onClick={() => isMobile ? setShowSidebar(true) : setSidebarHidden(false)}
                       title="Open notes list"
                       style={{ background: 'none', border: '1px solid var(--border)', borderRadius: 6,
                         color: 'var(--text2)', cursor: 'pointer', padding: '4px 8px',
@@ -984,11 +1071,16 @@ export default function NotebookView() {
             /* Empty state */
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center',
               justifyContent: 'center', color: 'var(--text3)', gap: 12, padding: 24, position: 'relative' }}>
-              {isMobile && (
-                <button onClick={() => setShowSidebar(true)}
-                  style={{ position: 'absolute', top: 12, left: 12, background: 'none', border: 'none',
-                    color: 'var(--accent)', cursor: 'pointer', fontSize: 13, fontWeight: 700 }}>
-                  ← Notes
+              {(isMobile || sidebarHidden) && (
+                <button
+                  onClick={() => isMobile ? setShowSidebar(true) : setSidebarHidden(false)}
+                  title="Open notes list"
+                  style={{ position: 'absolute', top: 12, left: 12,
+                    background: 'var(--surface)', border: '1px solid var(--border2)',
+                    borderRadius: 8, color: 'var(--text2)', cursor: 'pointer',
+                    padding: '7px 10px', fontSize: 16, lineHeight: 1,
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.25)', display: 'flex', alignItems: 'center' }}>
+                  ☰
                 </button>
               )}
               <div style={{ opacity: 0.25 }}><FileIcon size={44} color="var(--text)" /></div>
@@ -1051,32 +1143,54 @@ export default function NotebookView() {
 
 // ── NoteRow ───────────────────────────────────────────────────────────────────
 
-function NoteRow({ note, active, dragging, indent = 10, renaming, renameVal, renameRef,
-  onRenameChange, onRenameCommit, onSelect, onContextMenu, onDotsClick, onDragStart, onDragEnd }) {
+function NoteRow({ note, active, dragging, selected, inSelectionMode, indent = 10,
+  renaming, renameVal, renameRef,
+  onRenameChange, onRenameCommit, onSelect, onToggleSelect, onContextMenu, onDotsClick,
+  onDragStart, onDragEnd }) {
   const dotColor = note.color ? NOTE_COLORS[note.color] : null
+
+  function handleClick(e) {
+    if (e.ctrlKey || e.metaKey) { e.preventDefault(); onToggleSelect?.(); return }
+    if (inSelectionMode) { onToggleSelect?.(); return }
+    onSelect()
+  }
+
+  const bg = dragging ? 'var(--surface2)'
+    : selected    ? 'var(--accent)33'
+    : active      ? (note.color ? NOTE_COLOR_ACTIVE[note.color]  : 'var(--accent)20')
+    :               (note.color ? NOTE_COLOR_PASSIVE[note.color] : 'transparent')
+
   return (
     <div
       draggable
       onDragStart={onDragStart}
       onDragEnd={onDragEnd}
       onContextMenu={onContextMenu}
-      onClick={onSelect}
+      onClick={handleClick}
       style={{ display: 'flex', alignItems: 'flex-start',
         padding: `5px 8px 5px ${indent}px`,
         gap: 5, cursor: 'pointer', borderRadius: 6, margin: '0 4px 1px',
-        background: dragging ? 'var(--surface2)' : active
-          ? (note.color ? NOTE_COLOR_ACTIVE[note.color] : 'var(--accent)20')
-          : (note.color ? NOTE_COLOR_PASSIVE[note.color] : 'transparent'),
+        background: bg,
+        outline: selected ? '1.5px solid var(--accent)' : 'none',
+        outlineOffset: -1,
         opacity: dragging ? 0.4 : 1, transition: 'opacity .15s, background .1s' }}
-      onMouseEnter={e => { if (!active && !dragging) e.currentTarget.style.background = note.color ? NOTE_COLOR_ACTIVE[note.color] : 'var(--surface2)' }}
-      onMouseLeave={e => { if (!active && !dragging) e.currentTarget.style.background = note.color ? NOTE_COLOR_PASSIVE[note.color] : 'transparent' }}>
+      onMouseEnter={e => { if (!active && !dragging && !selected) e.currentTarget.style.background = note.color ? NOTE_COLOR_ACTIVE[note.color] : 'var(--surface2)' }}
+      onMouseLeave={e => { if (!active && !dragging && !selected) e.currentTarget.style.background = bg }}>
 
+      {/* Selection checkbox or note icon */}
       <span style={{
-        color: dotColor ?? (active ? 'var(--accent)' : note.pinned ? 'var(--accent)' : 'var(--text3)'),
+        color: selected ? 'var(--accent)' : dotColor ?? (active ? 'var(--accent)' : note.pinned ? 'var(--accent)' : 'var(--text3)'),
         flexShrink: 0, marginTop: 1, display: 'flex' }}>
-        {note.pinned
-          ? <PinIcon size={11} filled color="currentColor" />
-          : <FileIcon size={11} color="currentColor" />}
+        {selected ? (
+          <span style={{ width: 11, height: 11, borderRadius: 3, background: 'var(--accent)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <span style={{ color: '#fff', fontSize: 8, fontWeight: 900, lineHeight: 1 }}>✓</span>
+          </span>
+        ) : note.pinned ? (
+          <PinIcon size={11} filled color="currentColor" />
+        ) : (
+          <FileIcon size={11} color="currentColor" />
+        )}
       </span>
 
       <div style={{ flex: 1, minWidth: 0 }}>
