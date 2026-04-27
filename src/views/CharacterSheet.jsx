@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react'
 import { ChevronDownIcon, ChevronUpIcon } from '../components/Icons.jsx'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { STATS } from '../store/characters.js'
-import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getBaseHits, getEndurance, getPowerPoints, getTalentBonuses } from '../utils/calc.js'
+import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getBaseHits, getEndurance, getPowerPoints, getWeightAllowance, getTalentBonuses } from '../utils/calc.js'
 import races from '../data/races.json'
 import professions from '../data/professions.json'
 import cultures from '../data/cultures.json'
@@ -336,6 +336,7 @@ export default function CharacterSheet() {
   const autoHitsMax    = getBaseHits(c)
   const autoPPMax      = getPowerPoints(c)     // null if no realm selected
   const autoEndurance  = getEndurance(c)
+  const wa             = getWeightAllowance(c)
   const effHitsMax     = c.hits_max          ?? autoHitsMax
   const effPPMax       = c.power_points_max  ?? autoPPMax
 
@@ -409,10 +410,16 @@ export default function CharacterSheet() {
           <StatCard label="Def Bonus" value={fmt(db)} color={db > 0 ? 'var(--success)' : 'var(--text)'} sub={talentB.db ? `Qu×3 + ${talentB.db} talent` : 'Qu×3'} />
           <StatCard label="Initiative" value={fmt(ini)} color={ini > 0 ? 'var(--accent)' : 'var(--text)'} sub={talentB.initiative ? `Qu + ${talentB.initiative} talent` : 'Qu bonus'} />
           <EditStat label="Endurance" field="endurance"   char={c} onUpdate={updateCharacter} autoValue={autoEndurance} sub="Race base" />
+          <StatCard
+            label="Wt Allow"
+            value={`${wa.pct}%`}
+            color={wa.pct > 15 ? 'var(--success)' : wa.pct < 15 ? 'var(--danger)' : 'var(--text)'}
+            sub={wa.lbs != null ? `${wa.lbs} lbs` : 'set weight'}
+          />
           <EditStat label="Experience" field="experience" char={c} onUpdate={updateCharacter} />
         </div>
         <p style={{ fontSize: 10, color: 'var(--text3)', marginTop: 8, marginBottom: 0 }}>
-          Auto values shown in grey — type to override, clear to revert
+          Auto values shown in grey — type to override, clear to revert · Wt Allow = 15% + 2×St bonus
         </p>
       </Card>
 

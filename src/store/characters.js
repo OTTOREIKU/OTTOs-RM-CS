@@ -346,6 +346,7 @@ export function removeSpellList(id, listName) {
 // ── Export / Import ────────────────────────────────────────────────────────────
 
 const EXPORT_VERSION = 1
+const NB_KEY = 'rm_notebook'
 
 function triggerDownload(filename, jsonStr) {
   const blob = new Blob([jsonStr], { type: 'application/json' })
@@ -361,7 +362,9 @@ export function exportCharacter(id) {
   const chars = loadCharacters()
   const char  = chars[id]
   if (!char) return
-  const payload    = { _version: EXPORT_VERSION, _type: 'single', character: char }
+  let notebook = null
+  try { const raw = localStorage.getItem(NB_KEY); notebook = raw ? JSON.parse(raw) : null } catch {}
+  const payload    = { _version: EXPORT_VERSION, _type: 'single', character: char, notebook }
   const safe       = s => (s || '').replace(/[^a-z0-9]/gi, '_').replace(/_+/g, '_').replace(/^_|_$/g, '')
   const name       = safe(char.name) || 'Character'
   const race       = safe(char.race) || 'Unknown'
@@ -407,13 +410,29 @@ export function importCharactersFromFile(file, mode = 'merge') {
           if (chars[char.id] && mode === 'merge') {
             skipped++
           } else {
-            // Give a fresh ID if merging and the name collides badly, but keep original
             chars[char.id] = { ...char, updated_at: new Date().toISOString() }
             imported++
           }
         }
 
         saveCharacters(chars)
+
+        // Merge notebook if present
+        if (payload.notebook) {
+          try {
+            const raw = localStorage.getItem(NB_KEY)
+            const existing = raw ? JSON.parse(raw) : { folders: {}, notes: {} }
+            const nb = payload.notebook
+            if (mode === 'merge') {
+              Object.keys(nb.folders || {}).forEach(k => { if (!existing.folders[k]) existing.folders[k] = nb.folders[k] })
+              Object.keys(nb.notes   || {}).forEach(k => { if (!existing.notes[k])   existing.notes[k]   = nb.notes[k]   })
+            } else {
+              Object.assign(existing.folders, nb.folders || {})
+              Object.assign(existing.notes,   nb.notes   || {})
+            }
+            localStorage.setItem(NB_KEY, JSON.stringify(existing))
+          } catch {}
+        }
         // Switch to first imported character if none active
         const activeId = loadActiveId()
         if (!activeId || !chars[activeId]) {

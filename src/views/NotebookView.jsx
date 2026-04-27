@@ -1,0 +1,1072 @@
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
+import {
+  ChevronDownIcon, ChevronRightIcon, PlusIcon, TrashIcon,
+  PencilIcon, PinIcon, FolderIcon, FolderOpenIcon, DotsHIcon, FileIcon, CalendarIcon,
+} from '../components/Icons.jsx'
+import {
+  loadNotebook, saveNotebook, loadOpenFolders, saveOpenFolders,
+  loadActiveNoteId, saveActiveNoteId, nbUid,
+} from '../store/notebook.js'
+
+// ── Constants ─────────────────────────────────────────────────────────────────
+
+const NOTE_COLORS = {
+  red:    '#ef4444',
+  orange: '#f97316',
+  yellow: '#eab308',
+  green:  '#22c55e',
+  blue:   'var(--accent)',
+  purple: 'var(--purple)',
+}
+const COLOR_KEYS = Object.keys(NOTE_COLORS)
+
+// ── Markdown renderer ─────────────────────────────────────────────────────────
+
+function escHtml(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+}
+function inlineMd(text) {
+  return escHtml(text)
+    .replace(/\[\[([^\]]+)\]\]/g, '<a href="#" data-note-link="$1" style="color:var(--accent);text-decoration:underline;cursor:pointer">$1</a>')
+    .replace(/#([a-zA-Z][a-zA-Z0-9_-]*)/g, '<span style="background:var(--accent)22;color:var(--accent);border-radius:10px;padding:1px 6px;font-size:.88em">#$1</span>')
+    .replace(/`([^`]+)`/g, '<code style="background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-size:.88em;font-family:monospace">$1</code>')
+    .replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/~~(.+?)~~/g, '<del>$1</del>')
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" style="color:var(--accent);text-decoration:underline">$1</a>')
+}
+function renderMarkdown(src) {
+  if (!src?.trim()) return '<p style="color:var(--text3);font-style:italic;margin:0">Nothing here yet — switch to Edit to start writing.</p>'
+  const lines = src.split('\n')
+  const out = []
+  let inCode = false, codeLang = '', codeBuf = []
+  let inUl = false, inOl = false, inTaskUl = false
+  function closeList() {
+    if (inTaskUl) { out.push('</ul>'); inTaskUl = false }
+    if (inUl)     { out.push('</ul>'); inUl     = false }
+    if (inOl)     { out.push('</ol>'); inOl     = false }
+  }
+  for (const raw of lines) {
+    if (raw.startsWith('```')) {
+      if (!inCode) { closeList(); codeLang = raw.slice(3).trim(); codeBuf = []; inCode = true }
+      else {
+        const lbl = codeLang ? `<span style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:4px">${escHtml(codeLang)}</span>` : ''
+        out.push(`<pre style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;overflow-x:auto;margin:8px 0;line-height:1.5">${lbl}<code style="font-size:12px;font-family:monospace;white-space:pre">${codeBuf.map(escHtml).join('\n')}</code></pre>`)
+        inCode = false; codeLang = ''; codeBuf = []
+      }
+      continue
+    }
+    if (inCode) { codeBuf.push(raw); continue }
+    if (!raw.trim()) { closeList(); out.push('<div style="height:8px"></div>'); continue }
+    const hm = raw.match(/^(#{1,6})\s+(.+)$/)
+    if (hm) {
+      closeList()
+      const l = hm[1].length
+      const sz = ['1.7em','1.35em','1.12em','1em','0.95em','0.88em'][l - 1]
+      const bb = l <= 2 ? 'border-bottom:1px solid var(--border);padding-bottom:6px;' : ''
+      out.push(`<div style="font-size:${sz};font-weight:700;color:var(--text);margin:${l===1?'18px':'12px'} 0 6px;line-height:1.3;${bb}">${inlineMd(hm[2])}</div>`)
+      continue
+    }
+    if (/^[-*_]{3,}$/.test(raw.trim())) { closeList(); out.push('<hr style="border:none;border-top:1px solid var(--border);margin:14px 0">'); continue }
+    if (raw.startsWith('> ')) { closeList(); out.push(`<blockquote style="border-left:3px solid var(--accent);margin:6px 0;padding:6px 14px;color:var(--text2);font-style:italic;background:var(--surface2);border-radius:0 6px 6px 0">${inlineMd(raw.slice(2))}</blockquote>`); continue }
+    const tm = raw.match(/^(\s*)- \[([ xX])\] (.+)$/)
+    if (tm) {
+      if (inUl) { out.push('</ul>'); inUl = false } if (inOl) { out.push('</ol>'); inOl = false }
+      if (!inTaskUl) { out.push('<ul style="list-style:none;padding:0;margin:4px 0">'); inTaskUl = true }
+      const done = tm[2].toLowerCase() === 'x'
+      out.push(`<li style="display:flex;align-items:flex-start;gap:8px;margin:4px 0"><span style="flex-shrink:0;width:15px;height:15px;border:2px solid ${done?'var(--accent)':'var(--border2)'};border-radius:3px;background:${done?'var(--accent)':'transparent'};display:inline-flex;align-items:center;justify-content:center;margin-top:2px">${done?'<span style="color:#fff;font-size:9px;font-weight:900">✓</span>':''}</span><span style="${done?'text-decoration:line-through;color:var(--text3)':'color:var(--text);line-height:1.5'}">${inlineMd(tm[3])}</span></li>`)
+      continue
+    }
+    const um = raw.match(/^(\s*)[-*+] (.+)$/)
+    if (um) { if (inTaskUl) { out.push('</ul>'); inTaskUl = false } if (inOl) { out.push('</ol>'); inOl = false } if (!inUl) { out.push('<ul style="padding-left:22px;margin:4px 0">'); inUl = true } out.push(`<li style="margin:3px 0;color:var(--text);line-height:1.55">${inlineMd(um[2])}</li>`); continue }
+    const om = raw.match(/^(\s*)\d+\. (.+)$/)
+    if (om) { if (inTaskUl) { out.push('</ul>'); inTaskUl = false } if (inUl) { out.push('</ul>'); inUl = false } if (!inOl) { out.push('<ol style="padding-left:22px;margin:4px 0">'); inOl = true } out.push(`<li style="margin:3px 0;color:var(--text);line-height:1.55">${inlineMd(om[2])}</li>`); continue }
+    closeList()
+    out.push(`<p style="margin:4px 0;color:var(--text);line-height:1.65">${inlineMd(raw)}</p>`)
+  }
+  closeList()
+  if (inCode) out.push(`<pre><code>${codeBuf.map(escHtml).join('\n')}</code></pre>`)
+  return out.join('')
+}
+
+// ── Toolbar helpers ───────────────────────────────────────────────────────────
+
+function wrapSel(ta, before, after) {
+  const a = after ?? before, { selectionStart: s, selectionEnd: e, value: v } = ta
+  const sel = v.slice(s, e) || 'text'
+  return { value: v.slice(0, s) + before + sel + a + v.slice(e), selStart: s + before.length, selEnd: s + before.length + sel.length }
+}
+function toggleLinePrefix(ta, prefix) {
+  const { selectionStart: s, value: v } = ta
+  const ls = v.lastIndexOf('\n', s - 1) + 1, le = v.indexOf('\n', s), end = le === -1 ? v.length : le
+  const line = v.slice(ls, end), has = line.startsWith(prefix)
+  const d = has ? -prefix.length : prefix.length
+  return { value: v.slice(0, ls) + (has ? line.slice(prefix.length) : prefix + line) + v.slice(end), selStart: s + d, selEnd: s + d }
+}
+function insertAt(ta, text) {
+  const { selectionStart: s, value: v } = ta
+  return { value: v.slice(0, s) + text + v.slice(s), selStart: s + text.length, selEnd: s + text.length }
+}
+
+// ── Utilities ─────────────────────────────────────────────────────────────────
+
+function fmtRelative(iso) {
+  if (!iso) return ''
+  const d = Date.now() - new Date(iso).getTime()
+  if (d < 60000) return 'just now'
+  if (d < 3600000) return `${Math.floor(d / 60000)}m ago`
+  if (d < 86400000) return `${Math.floor(d / 3600000)}h ago`
+  if (d < 604800000) return `${Math.floor(d / 86400000)}d ago`
+  return new Date(iso).toLocaleDateString()
+}
+function wordCount(t) { return (t || '').trim().split(/\s+/).filter(Boolean).length }
+
+function extractTags(content) {
+  const m = (content || '').match(/#([a-zA-Z][a-zA-Z0-9_-]*)/g) || []
+  return [...new Set(m.map(t => t.slice(1).toLowerCase()))]
+}
+
+function exportNoteAsMd(note) {
+  const blob = new Blob([note.content || ''], { type: 'text/markdown' })
+  const url  = URL.createObjectURL(blob)
+  const a    = document.createElement('a')
+  a.href     = url
+  const safe = s => (s || '').replace(/[^a-z0-9 ]/gi, '').trim().replace(/\s+/g, '_') || 'note'
+  a.download = safe(note.title) + '.md'
+  a.click()
+  URL.revokeObjectURL(url)
+}
+
+function getSubfolders(folders, parentId) {
+  return Object.values(folders)
+    .filter(f => (f.parent_id ?? null) === parentId)
+    .sort((a, b) => a.name.localeCompare(b.name))
+}
+
+function collectDescendants(folders, rootId) {
+  const ids = new Set([rootId])
+  let changed = true
+  while (changed) {
+    changed = false
+    for (const f of Object.values(folders)) {
+      if (!ids.has(f.id) && ids.has(f.parent_id)) { ids.add(f.id); changed = true }
+    }
+  }
+  return ids
+}
+
+// Sort notes array by sortBy key
+function sortNotes(arr, sortBy) {
+  return [...arr].sort((a, b) => {
+    if (a.pinned !== b.pinned) return a.pinned ? -1 : 1
+    if (sortBy === 'title')   return (a.title || '').localeCompare(b.title || '')
+    if (sortBy === 'created') return new Date(b.created_at) - new Date(a.created_at)
+    return new Date(b.updated_at) - new Date(a.updated_at) // modified (default)
+  })
+}
+
+// ── Main view ─────────────────────────────────────────────────────────────────
+
+export default function NotebookView() {
+  const [data,           setData]           = useState(() => loadNotebook())
+  const [activeId,       setActiveId]       = useState(() => {
+    const id = loadActiveNoteId(), nb = loadNotebook()
+    return id && nb.notes[id] ? id : null
+  })
+  const [openFolders,    setOpenFolders]    = useState(() => loadOpenFolders())
+  const [mode,           setMode]           = useState('edit')
+  const [search,         setSearch]         = useState('')
+  const [sortBy,         setSortBy]         = useState('modified')
+  const [activeTag,      setActiveTag]      = useState(null)
+  const [showSidebar,    setShowSidebar]    = useState(true)
+  const [isMobile,       setIsMobile]       = useState(() => window.innerWidth < 700)
+  const [ctxMenu,        setCtxMenu]        = useState(null)
+  const [renaming,       setRenaming]       = useState(null)
+  const [renameVal,      setRenameVal]      = useState('')
+  const [dragItem,       setDragItem]       = useState(null)  // { type: 'note'|'folder', id }
+  const [dragOverTarget, setDragOverTarget] = useState(null)
+  const [plusOpen,       setPlusOpen]       = useState(false)
+
+  const renameRef   = useRef(null)
+  const titleRef    = useRef(null)
+  const textareaRef = useRef(null)
+  const dragItemRef = useRef(null)   // sync ref — avoids stale closure in drag events
+
+  useEffect(() => {
+    const h = () => setIsMobile(window.innerWidth < 700)
+    window.addEventListener('resize', h); return () => window.removeEventListener('resize', h)
+  }, [])
+  useEffect(() => { saveOpenFolders(openFolders) }, [openFolders])
+  useEffect(() => { saveActiveNoteId(activeId)   }, [activeId])
+
+  useEffect(() => {
+    if (!renaming) return
+    let attempts = 0
+    const tryFocus = () => {
+      if (renameRef.current) { renameRef.current.focus(); renameRef.current.select() }
+      else if (++attempts < 10) requestAnimationFrame(tryFocus)
+    }
+    requestAnimationFrame(tryFocus)
+  }, [renaming?.id]) // eslint-disable-line
+
+  useEffect(() => {
+    const onDown = () => { setCtxMenu(null); setPlusOpen(false) }
+    window.addEventListener('mousedown', onDown)
+    return () => window.removeEventListener('mousedown', onDown)
+  }, [])
+
+  useEffect(() => {
+    const onKey = e => {
+      if (e.key === 'Escape') { setCtxMenu(null); setPlusOpen(false); if (renaming) commitRename() }
+      if ((e.ctrlKey || e.metaKey) && e.key === 'b' && document.activeElement === textareaRef.current) { e.preventDefault(); applyFormat('bold') }
+      if ((e.ctrlKey || e.metaKey) && e.key === 'i' && document.activeElement === textareaRef.current) { e.preventDefault(); applyFormat('italic') }
+    }
+    window.addEventListener('keydown', onKey); return () => window.removeEventListener('keydown', onKey)
+  })
+
+  const activeNote = activeId ? data.notes[activeId] : null
+
+  // ── Mutations ──────────────────────────────────────────────────────────────
+  function mutate(fn) {
+    setData(prev => { const next = fn(JSON.parse(JSON.stringify(prev))); saveNotebook(next); return next })
+  }
+
+  const createNote = useCallback((folderId = null) => {
+    const id = nbUid('note'), now = new Date().toISOString()
+    mutate(d => { d.notes[id] = { id, title: 'Untitled', content: '', folder_id: folderId, pinned: false, color: null, created_at: now, updated_at: now }; return d })
+    setActiveId(id); setMode('edit')
+    if (isMobile) setShowSidebar(false)
+    requestAnimationFrame(() => requestAnimationFrame(() => titleRef.current?.select()))
+  }, [isMobile])
+
+  function createDailyNote() {
+    const today = new Date().toISOString().slice(0, 10)
+    const existing = Object.values(data.notes).find(n => n.title === today)
+    if (existing) { setActiveId(existing.id); if (isMobile) setShowSidebar(false); setPlusOpen(false); return }
+    const id = nbUid('note'), now = new Date().toISOString()
+    mutate(d => { d.notes[id] = { id, title: today, content: `# ${today}\n\n`, folder_id: null, pinned: false, color: null, created_at: now, updated_at: now }; return d })
+    setActiveId(id); setMode('edit'); setPlusOpen(false)
+    if (isMobile) setShowSidebar(false)
+  }
+
+  function updateNote(id, patch) {
+    mutate(d => { if (d.notes[id]) d.notes[id] = { ...d.notes[id], ...patch, updated_at: new Date().toISOString() }; return d })
+  }
+  function deleteNote(id) {
+    if (!confirm('Delete this note? This cannot be undone.')) return
+    mutate(d => { delete d.notes[id]; return d })
+    if (activeId === id) setActiveId(null)
+    setCtxMenu(null)
+  }
+
+  function createFolder(parentId = null) {
+    const id = nbUid('folder'), now = new Date().toISOString()
+    mutate(d => { d.folders[id] = { id, name: 'New Folder', parent_id: parentId, created_at: now, updated_at: now }; return d })
+    setOpenFolders(o => {
+      const next = { ...o, [id]: true }
+      if (parentId) next[parentId] = true
+      return next
+    })
+    setRenaming({ type: 'folder', id }); setRenameVal('New Folder')
+  }
+
+  function updateFolder(id, patch) {
+    mutate(d => { if (d.folders[id]) d.folders[id] = { ...d.folders[id], ...patch, updated_at: new Date().toISOString() }; return d })
+  }
+  function deleteFolder(id) {
+    if (!confirm('Delete this folder and all subfolders? Notes inside will become Unfiled.')) return
+    mutate(d => {
+      const toDelete = collectDescendants(d.folders, id)
+      Object.values(d.notes).forEach(n => { if (toDelete.has(n.folder_id)) n.folder_id = null })
+      toDelete.forEach(fId => delete d.folders[fId])
+      return d
+    })
+    setCtxMenu(null)
+  }
+  function moveNote(noteId, folderId) {
+    updateNote(noteId, { folder_id: folderId ?? null }); setCtxMenu(null)
+  }
+  function moveFolder(folderId, newParentId) {
+    if (folderId === newParentId) return
+    if (newParentId !== null) {
+      const desc = collectDescendants(data.folders, folderId)
+      if (desc.has(newParentId)) return // would create cycle
+    }
+    updateFolder(folderId, { parent_id: newParentId ?? null })
+  }
+
+  // ── Rename ─────────────────────────────────────────────────────────────────
+  function startRename(type, id, val) { setRenaming({ type, id }); setRenameVal(val); setCtxMenu(null) }
+  function commitRename() {
+    if (!renaming) return
+    const val = renameVal.trim() || 'Untitled'
+    if (renaming.type === 'folder') updateFolder(renaming.id, { name: val })
+    else updateNote(renaming.id, { title: val })
+    setRenaming(null)
+  }
+
+  // ── Context menu ───────────────────────────────────────────────────────────
+  function openCtx(type, id, e) {
+    e.preventDefault(); e.stopPropagation()
+    const x = Math.min(e.clientX, window.innerWidth  - 190)
+    const y = Math.min(e.clientY, window.innerHeight - 300)
+    setCtxMenu({ type, id, x, y })
+  }
+
+  // ── Drag & drop ────────────────────────────────────────────────────────────
+  function onNoteDragStart(e, noteId) {
+    const item = { type: 'note', id: noteId }
+    e.dataTransfer.effectAllowed = 'move'
+    e.dataTransfer.setData('text/plain', `note:${noteId}`)
+    dragItemRef.current = item
+    setDragItem(item)
+  }
+  function onFolderDragStart(e, folderId) {
+    e.stopPropagation()
+    const item = { type: 'folder', id: folderId }
+    e.dataTransfer.effectAllowed = 'move'
+    e.dataTransfer.setData('text/plain', `folder:${folderId}`)
+    dragItemRef.current = item
+    setDragItem(item)
+  }
+  function onDragEnd() { dragItemRef.current = null; setDragItem(null); setDragOverTarget(null) }
+
+  function onFolderDragOver(e, folderId) {
+    // Use ref (not state) — state may still be null on first render after dragstart
+    const item = dragItemRef.current
+    if (!item) return
+    if (item.type === 'folder' && item.id === folderId) return // self
+    e.preventDefault(); e.dataTransfer.dropEffect = 'move'
+    setDragOverTarget(folderId)
+  }
+  function onFolderDragLeave(e) {
+    if (!e.currentTarget.contains(e.relatedTarget)) setDragOverTarget(null)
+  }
+  function onFolderDrop(e, folderId) {
+    e.preventDefault()
+    const raw = e.dataTransfer.getData('text/plain') || (dragItem ? `${dragItem.type}:${dragItem.id}` : '')
+    const [type, id] = raw.split(':')
+    if (type === 'note')   moveNote(id, folderId === '__unfiled__' ? null : folderId)
+    if (type === 'folder') moveFolder(id, folderId === '__unfiled__' ? null : folderId)
+    setDragItem(null); setDragOverTarget(null)
+  }
+  // Root-level drop zone (between folders in sidebar)
+  function onRootDrop(e) {
+    e.preventDefault()
+    const raw = e.dataTransfer.getData('text/plain') || (dragItem ? `${dragItem.type}:${dragItem.id}` : '')
+    const [type, id] = raw.split(':')
+    if (type === 'folder') moveFolder(id, null) // move to root
+    setDragItem(null); setDragOverTarget(null)
+  }
+
+  // ── Editor ─────────────────────────────────────────────────────────────────
+  function handleContentChange(val) {
+    if (!activeId) return
+    mutate(d => { if (d.notes[activeId]) { d.notes[activeId].content = val; d.notes[activeId].updated_at = new Date().toISOString() }; return d })
+  }
+  function applyFormat(action) {
+    const ta = textareaRef.current; if (!ta) return
+    let r
+    switch (action) {
+      case 'bold':      r = wrapSel(ta, '**'); break
+      case 'italic':    r = wrapSel(ta, '*'); break
+      case 'strike':    r = wrapSel(ta, '~~'); break
+      case 'code':      r = wrapSel(ta, '`'); break
+      case 'codeblock': r = wrapSel(ta, '```\n', '\n```'); break
+      case 'h1':        r = toggleLinePrefix(ta, '# '); break
+      case 'h2':        r = toggleLinePrefix(ta, '## '); break
+      case 'h3':        r = toggleLinePrefix(ta, '### '); break
+      case 'quote':     r = toggleLinePrefix(ta, '> '); break
+      case 'ul':        r = toggleLinePrefix(ta, '- '); break
+      case 'ol':        r = toggleLinePrefix(ta, '1. '); break
+      case 'task':      r = toggleLinePrefix(ta, '- [ ] '); break
+      case 'hr':        r = insertAt(ta, '\n\n---\n\n'); break
+      default: return
+    }
+    if (!r) return
+    handleContentChange(r.value)
+    requestAnimationFrame(() => { ta.focus(); ta.setSelectionRange(r.selStart, r.selEnd) })
+  }
+
+  // ── Derived data ───────────────────────────────────────────────────────────
+  const q = search.toLowerCase()
+
+  const notesByFolder = useMemo(() => {
+    const map = {}
+    for (const note of Object.values(data.notes)) {
+      const key = note.folder_id || '__unfiled__'
+      if (!map[key]) map[key] = []
+      map[key].push(note)
+    }
+    for (const key of Object.keys(map)) map[key] = sortNotes(map[key], sortBy)
+    return map
+  }, [data.notes, sortBy])
+
+  const searchResults = useMemo(() => {
+    if (!q) return []
+    return sortNotes(
+      Object.values(data.notes).filter(n => n.title.toLowerCase().includes(q) || n.content.toLowerCase().includes(q)),
+      sortBy
+    )
+  }, [data.notes, q, sortBy])
+
+  const tagResults = useMemo(() => {
+    if (!activeTag || q) return []
+    return sortNotes(
+      Object.values(data.notes).filter(n => extractTags(n.content).includes(activeTag)),
+      sortBy
+    )
+  }, [data.notes, activeTag, q, sortBy])
+
+  const allTags = useMemo(() => {
+    const s = new Set()
+    Object.values(data.notes).forEach(n => extractTags(n.content).forEach(t => s.add(t)))
+    return [...s].sort()
+  }, [data.notes])
+
+  const rootFolders = useMemo(() => getSubfolders(data.folders, null), [data.folders])
+
+  const allFoldersSorted = useMemo(() =>
+    Object.values(data.folders).sort((a, b) => a.name.localeCompare(b.name)),
+  [data.folders])
+
+  // ── Context menu content ───────────────────────────────────────────────────
+  function renderCtxItems() {
+    if (!ctxMenu) return null
+    if (ctxMenu.type === 'note') {
+      const note = data.notes[ctxMenu.id]; if (!note) return null
+      return <>
+        <CtxItem icon={<PencilIcon size={12} />} onClick={() => startRename('note', ctxMenu.id, note.title)}>Rename</CtxItem>
+        <CtxItem icon={<PinIcon size={12} filled={note.pinned} color="currentColor" />}
+          onClick={() => { updateNote(ctxMenu.id, { pinned: !note.pinned }); setCtxMenu(null) }}>
+          {note.pinned ? 'Unpin' : 'Pin to top'}
+        </CtxItem>
+        <CtxDivider label="Label" />
+        <div onMouseDown={e => e.stopPropagation()}
+          style={{ display: 'flex', gap: 6, padding: '4px 12px 8px', flexWrap: 'wrap' }}>
+          {[null, ...COLOR_KEYS].map(c => (
+            <button key={c ?? 'none'} title={c ?? 'None'}
+              onClick={() => { updateNote(ctxMenu.id, { color: c ?? null }); setCtxMenu(null) }}
+              style={{
+                width: 18, height: 18, borderRadius: '50%', cursor: 'pointer', padding: 0,
+                background: c ? NOTE_COLORS[c] : 'transparent',
+                border: `2px solid ${c ? NOTE_COLORS[c] : 'var(--border2)'}`,
+                outline: (note.color ?? null) === (c ?? null) ? '2px solid var(--text)' : 'none',
+                outlineOffset: 2,
+              }} />
+          ))}
+        </div>
+        {(allFoldersSorted.length > 0 || note.folder_id) && <>
+          <CtxDivider label="Move to" />
+          {note.folder_id && <CtxItem icon={<FolderIcon size={12} color="currentColor" />} onClick={() => moveNote(ctxMenu.id, null)}>Unfiled</CtxItem>}
+          {allFoldersSorted.filter(f => f.id !== note.folder_id).map(f => (
+            <CtxItem key={f.id} icon={<FolderIcon size={12} color="currentColor" />} onClick={() => moveNote(ctxMenu.id, f.id)}>{f.name}</CtxItem>
+          ))}
+        </>}
+        <CtxDivider />
+        <CtxItem icon={<TrashIcon size={12} />} onClick={() => deleteNote(ctxMenu.id)} danger>Delete note</CtxItem>
+      </>
+    }
+    if (ctxMenu.type === 'folder') {
+      const folder = data.folders[ctxMenu.id]; if (!folder) return null
+      const parentFolders = allFoldersSorted.filter(f => f.id !== ctxMenu.id && !collectDescendants(data.folders, ctxMenu.id).has(f.id))
+      return <>
+        <CtxItem icon={<PencilIcon size={12} />} onClick={() => startRename('folder', ctxMenu.id, folder.name)}>Rename</CtxItem>
+        <CtxItem icon={<FileIcon size={12} color="currentColor" />} onClick={() => { createNote(ctxMenu.id); setOpenFolders(o => ({ ...o, [ctxMenu.id]: true })); setCtxMenu(null) }}>New note here</CtxItem>
+        <CtxItem icon={<FolderIcon size={12} color="currentColor" />} onClick={() => { createFolder(ctxMenu.id); setCtxMenu(null) }}>New subfolder</CtxItem>
+        {(parentFolders.length > 0 || folder.parent_id) && <>
+          <CtxDivider label="Move to" />
+          {folder.parent_id && <CtxItem icon={<FolderIcon size={12} color="currentColor" />} onClick={() => { moveFolder(ctxMenu.id, null); setCtxMenu(null) }}>Root (top level)</CtxItem>}
+          {parentFolders.filter(f => f.id !== folder.parent_id).map(f => (
+            <CtxItem key={f.id} icon={<FolderIcon size={12} color="currentColor" />} onClick={() => { moveFolder(ctxMenu.id, f.id); setCtxMenu(null) }}>{f.name}</CtxItem>
+          ))}
+        </>}
+        <CtxDivider />
+        <CtxItem icon={<TrashIcon size={12} />} onClick={() => deleteFolder(ctxMenu.id)} danger>Delete folder</CtxItem>
+      </>
+    }
+    return null
+  }
+
+  // ── Recursive folder tree renderer ─────────────────────────────────────────
+  function renderFolderNode(folderId, depth = 0) {
+    const isUnfiled = folderId === '__unfiled__'
+    const folder    = isUnfiled ? { id: '__unfiled__', name: 'Unfiled' } : data.folders[folderId]
+    if (!folder) return null
+
+    const notes      = notesByFolder[folderId] || []
+    const children   = isUnfiled ? [] : getSubfolders(data.folders, folderId)
+    const isOpen     = openFolders[folderId] !== false
+    const isDrop     = dragOverTarget === folderId
+    const isDragging = !isUnfiled && dragItem?.type === 'folder' && dragItem.id === folderId
+    const isRenaming = !isUnfiled && renaming?.type === 'folder' && renaming.id === folderId
+    const pad        = 10 + depth * 14
+    const FIcon      = isOpen ? FolderOpenIcon : FolderIcon
+
+    return (
+      <div key={folderId} style={{ opacity: isDragging ? 0.4 : 1 }}>
+        {/* Folder header row */}
+        <div
+          draggable={!isUnfiled}
+          onDragStart={isUnfiled ? undefined : e => onFolderDragStart(e, folderId)}
+          onDragEnd={onDragEnd}
+          onDragOver={e => onFolderDragOver(e, folderId)}
+          onDragLeave={onFolderDragLeave}
+          onDrop={e => onFolderDrop(e, folderId)}
+          onContextMenu={isUnfiled ? undefined : e => openCtx('folder', folderId, e)}
+          style={{ display: 'flex', alignItems: 'center', gap: 4,
+            padding: `5px 8px 5px ${pad}px`, margin: '0 4px 1px', borderRadius: 6,
+            background: isDrop ? 'var(--accent)22' : 'transparent',
+            border: isDrop ? '1px dashed var(--accent)' : '1px solid transparent',
+            cursor: isUnfiled ? 'default' : 'grab',
+            transition: 'background .1s, border-color .1s' }}>
+
+          <span onClick={() => setOpenFolders(o => ({ ...o, [folderId]: !isOpen }))}
+            style={{ display: 'flex', alignItems: 'center', gap: 5, flex: 1, minWidth: 0, cursor: 'pointer' }}>
+            <span style={{ color: 'var(--text3)', flexShrink: 0, display: 'flex' }}>
+              {isOpen ? <ChevronDownIcon  size={10} color="currentColor" />
+                      : <ChevronRightIcon size={10} color="currentColor" />}
+            </span>
+            <span style={{ color: isUnfiled ? 'var(--text3)' : 'var(--accent)', flexShrink: 0, display: 'flex' }}>
+              <FIcon size={12} color="currentColor" />
+            </span>
+            {isRenaming ? (
+              <input ref={renameRef} value={renameVal}
+                onChange={e => setRenameVal(e.target.value)}
+                onBlur={commitRename}
+                onKeyDown={e => { if (e.key === 'Enter' || e.key === 'Escape') commitRename() }}
+                onClick={e => e.stopPropagation()}
+                style={{ flex: 1, fontSize: 12, fontWeight: 600, background: 'var(--surface2)',
+                  border: '1px solid var(--accent)', borderRadius: 4, padding: '1px 5px',
+                  color: 'var(--text)', minWidth: 0 }} />
+            ) : (
+              <span style={{ flex: 1, fontSize: 12, fontWeight: 600,
+                color: isUnfiled ? 'var(--text3)' : 'var(--text2)',
+                overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {folder.name}
+              </span>
+            )}
+          </span>
+
+          <span style={{ fontSize: 10, color: 'var(--text3)', flexShrink: 0 }}>{notes.length}</span>
+
+          {!isUnfiled && (
+            <button onClick={e => openCtx('folder', folderId, e)}
+              style={{ background: 'none', border: 'none', cursor: 'pointer',
+                color: 'var(--text3)', padding: '1px 3px', borderRadius: 3, flexShrink: 0, display: 'flex' }}
+              onMouseEnter={e => { e.stopPropagation(); e.currentTarget.style.background = 'var(--surface2)' }}
+              onMouseLeave={e => e.currentTarget.style.background = 'none'}>
+              <DotsHIcon size={12} color="currentColor" />
+            </button>
+          )}
+        </div>
+
+        {/* Expanded content */}
+        {isOpen && (
+          <div>
+            {children.map(cf => renderFolderNode(cf.id, depth + 1))}
+            {notes.map(note => (
+              <NoteRow key={note.id} note={note} active={activeId === note.id}
+                dragging={dragItem?.type === 'note' && dragItem.id === note.id}
+                indent={pad + 14}
+                renaming={renaming?.type === 'note' && renaming.id === note.id}
+                renameVal={renameVal} renameRef={renameRef}
+                onRenameChange={setRenameVal} onRenameCommit={commitRename}
+                onSelect={() => { setActiveId(note.id); if (isMobile) setShowSidebar(false) }}
+                onContextMenu={e => openCtx('note', note.id, e)}
+                onDotsClick={e => openCtx('note', note.id, e)}
+                onDragStart={e => onNoteDragStart(e, note.id)}
+                onDragEnd={onDragEnd}
+              />
+            ))}
+            <button onClick={() => { createNote(isUnfiled ? null : folderId); if (!isUnfiled) setOpenFolders(o => ({ ...o, [folderId]: true })) }}
+              style={{ display: 'flex', alignItems: 'center', gap: 5, width: '100%',
+                background: 'none', border: 'none', cursor: 'pointer',
+                padding: `3px 8px 4px ${pad + 14}px`, fontSize: 11, color: 'var(--text3)', borderRadius: 4 }}
+              onMouseEnter={e => { e.currentTarget.style.background = 'var(--surface2)'; e.currentTarget.style.color = 'var(--text)' }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'none'; e.currentTarget.style.color = 'var(--text3)' }}>
+              <PlusIcon size={9} color="currentColor" /> New note here
+            </button>
+          </div>
+        )}
+      </div>
+    )
+  }
+
+  // ── Layout ─────────────────────────────────────────────────────────────────
+  const OUTER_H   = 'calc(100dvh - 52px - 56px)'
+  const SIDEBAR_W = 260
+
+  // Determine sidebar display mode
+  const sidebarMode = q ? 'search' : activeTag ? 'tag' : 'tree'
+
+  // Sidebar content — shared between desktop inline and mobile drawer
+  const sidebarContent = (
+    <>
+      {/* Header */}
+      <div style={{ padding: '10px 12px 8px', borderBottom: '1px solid var(--border)', flexShrink: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+          {isMobile && (
+            <button onClick={() => setShowSidebar(false)}
+              style={{ background: 'none', border: 'none', color: 'var(--accent)', cursor: 'pointer',
+                fontSize: 20, lineHeight: 1, padding: '0 6px 0 0', flexShrink: 0, display: 'flex', alignItems: 'center' }}>
+              ‹
+            </button>
+          )}
+          <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text)', flex: 1 }}>Notebook</span>
+          <span style={{ fontSize: 10, color: 'var(--text3)' }}>
+            {Object.keys(data.notes).length} note{Object.keys(data.notes).length !== 1 ? 's' : ''}
+          </span>
+          {/* Sort picker */}
+          <select value={sortBy} onChange={e => setSortBy(e.target.value)}
+            title="Sort notes by"
+            style={{ fontSize: 10, background: 'var(--surface2)', border: '1px solid var(--border)',
+              borderRadius: 5, padding: '2px 4px', color: 'var(--text2)', cursor: 'pointer' }}>
+            <option value="modified">Modified</option>
+            <option value="created">Created</option>
+            <option value="title">Title</option>
+          </select>
+          {/* + dropdown */}
+          <div style={{ position: 'relative' }}>
+            <button
+              onMouseDown={e => e.stopPropagation()}
+              onClick={e => { e.stopPropagation(); setPlusOpen(p => !p); setCtxMenu(null) }}
+              style={{ display: 'flex', alignItems: 'center', gap: 3,
+                background: plusOpen ? 'var(--accent)' : 'var(--surface2)',
+                color: plusOpen ? '#fff' : 'var(--text2)',
+                border: '1px solid ' + (plusOpen ? 'transparent' : 'var(--border)'),
+                borderRadius: 6, padding: '3px 7px', cursor: 'pointer' }}
+              title="New…">
+              <PlusIcon size={11} color="currentColor" />
+              <ChevronDownIcon size={9} color="currentColor" />
+            </button>
+            {plusOpen && (
+              <div onMouseDown={e => e.stopPropagation()}
+                style={{ position: 'absolute', right: 0, top: '110%', zIndex: 300,
+                  background: 'var(--surface)', border: '1px solid var(--border2)',
+                  borderRadius: 8, boxShadow: '0 4px 16px rgba(0,0,0,0.4)',
+                  minWidth: 160, overflow: 'hidden' }}>
+                <CtxItem icon={<FileIcon size={12} color="currentColor" />}
+                  onClick={() => { createNote(); setPlusOpen(false) }}>New note</CtxItem>
+                <CtxItem icon={<FolderIcon size={12} color="currentColor" />}
+                  onClick={() => { createFolder(); setPlusOpen(false) }}>New folder</CtxItem>
+                <CtxDivider />
+                <CtxItem icon={<CalendarIcon size={12} color="currentColor" />}
+                  onClick={createDailyNote}>Today's note</CtxItem>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <input type="text" value={search} onChange={e => { setSearch(e.target.value); if (e.target.value) setActiveTag(null) }}
+          placeholder="Search notes…"
+          style={{ width: '100%', padding: '6px 10px', fontSize: 13, borderRadius: 6,
+            background: 'var(--surface2)', border: '1px solid var(--border2)',
+            color: 'var(--text)', boxSizing: 'border-box' }} />
+      </div>
+
+      {/* Tree / search / tag results */}
+      <div style={{ flex: 1, overflowY: 'auto', padding: '4px 0', WebkitOverflowScrolling: 'touch' }}>
+        {sidebarMode === 'search' ? (
+          <div>
+            <SectionLabel>{searchResults.length} result{searchResults.length !== 1 ? 's' : ''}</SectionLabel>
+            {searchResults.length === 0 && (
+              <div style={{ padding: '12px 14px', fontSize: 12, color: 'var(--text3)', fontStyle: 'italic' }}>No matches.</div>
+            )}
+            {searchResults.map(note => (
+              <NoteRow key={note.id} note={note} active={activeId === note.id}
+                dragging={dragItem?.type === 'note' && dragItem.id === note.id} indent={10}
+                renaming={renaming?.type === 'note' && renaming.id === note.id}
+                renameVal={renameVal} renameRef={renameRef}
+                onRenameChange={setRenameVal} onRenameCommit={commitRename}
+                onSelect={() => { setActiveId(note.id); if (isMobile) setShowSidebar(false) }}
+                onContextMenu={e => openCtx('note', note.id, e)}
+                onDotsClick={e => openCtx('note', note.id, e)}
+                onDragStart={e => onNoteDragStart(e, note.id)}
+                onDragEnd={onDragEnd}
+              />
+            ))}
+          </div>
+        ) : sidebarMode === 'tag' ? (
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', padding: '2px 8px 4px' }}>
+              <SectionLabel>#{activeTag}</SectionLabel>
+              <button onClick={() => setActiveTag(null)}
+                style={{ background: 'none', border: 'none', fontSize: 11, color: 'var(--text3)',
+                  cursor: 'pointer', padding: '0 4px' }}>✕ clear</button>
+            </div>
+            {tagResults.length === 0 && (
+              <div style={{ padding: '12px 14px', fontSize: 12, color: 'var(--text3)', fontStyle: 'italic' }}>No notes with #{activeTag}.</div>
+            )}
+            {tagResults.map(note => (
+              <NoteRow key={note.id} note={note} active={activeId === note.id}
+                dragging={dragItem?.type === 'note' && dragItem.id === note.id} indent={10}
+                renaming={renaming?.type === 'note' && renaming.id === note.id}
+                renameVal={renameVal} renameRef={renameRef}
+                onRenameChange={setRenameVal} onRenameCommit={commitRename}
+                onSelect={() => { setActiveId(note.id); if (isMobile) setShowSidebar(false) }}
+                onContextMenu={e => openCtx('note', note.id, e)}
+                onDotsClick={e => openCtx('note', note.id, e)}
+                onDragStart={e => onNoteDragStart(e, note.id)}
+                onDragEnd={onDragEnd}
+              />
+            ))}
+          </div>
+        ) : (
+          /* Folder tree */
+          <div
+            onDragOver={e => { if (dragItemRef.current?.type === 'folder') { e.preventDefault(); e.dataTransfer.dropEffect = 'move' } }}
+            onDrop={onRootDrop}>
+            {rootFolders.map(f => renderFolderNode(f.id, 0))}
+            {/* Unfiled — visually separated with subtle tint */}
+            <div style={{ margin: '6px 4px 0', borderTop: '1px solid var(--border)' }} />
+            <div style={{ background: 'var(--surface2)', borderRadius: 8, margin: '4px 4px 0', padding: '2px 0 4px' }}>
+              {renderFolderNode('__unfiled__', 0)}
+            </div>
+          </div>
+        )}
+
+        {/* Tags section */}
+        {sidebarMode === 'tree' && allTags.length > 0 && (
+          <div style={{ borderTop: '1px solid var(--border)', marginTop: 6, paddingTop: 6 }}>
+            <SectionLabel>Tags</SectionLabel>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, padding: '0 8px 8px' }}>
+              {allTags.map(tag => (
+                <button key={tag} onClick={() => setActiveTag(t => t === tag ? null : tag)}
+                  style={{
+                    background: activeTag === tag ? 'var(--accent)' : 'var(--surface2)',
+                    color: activeTag === tag ? '#fff' : 'var(--text2)',
+                    border: '1px solid ' + (activeTag === tag ? 'var(--accent)' : 'var(--border)'),
+                    borderRadius: 10, padding: '2px 8px', fontSize: 11, cursor: 'pointer',
+                    transition: 'background .1s',
+                  }}>
+                  #{tag}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Sidebar footer — export current note */}
+      {activeNote && (
+        <div style={{ borderTop: '1px solid var(--border)', padding: '8px 10px', flexShrink: 0 }}>
+          <button onClick={() => exportNoteAsMd(activeNote)}
+            title="Download current note as a .md file"
+            style={{ display: 'flex', alignItems: 'center', gap: 6, width: '100%',
+              background: 'var(--surface2)', border: '1px solid var(--border)',
+              borderRadius: 7, padding: '7px 10px', cursor: 'pointer',
+              color: 'var(--text2)', fontSize: 12, fontWeight: 500 }}
+            onMouseEnter={e => { e.currentTarget.style.background = 'var(--accent)22'; e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.color = 'var(--text)' }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'var(--surface2)'; e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text2)' }}>
+            <span style={{ fontSize: 14 }}>↓</span>
+            <span style={{ flex: 1, textAlign: 'left', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              Export as .md
+            </span>
+          </button>
+        </div>
+      )}
+    </>
+  )
+
+  return (
+    <div style={{ display: 'flex', height: OUTER_H, overflow: 'hidden', position: 'relative' }}>
+
+      {/* ── DESKTOP SIDEBAR — inline ──────────────────────────── */}
+      {!isMobile && (
+        <div style={{ width: SIDEBAR_W, flexShrink: 0, display: 'flex',
+          flexDirection: 'column', borderRight: '1px solid var(--border)',
+          background: 'var(--surface)', overflow: 'hidden' }}>
+          {sidebarContent}
+        </div>
+      )}
+
+      {/* ── MOBILE SIDEBAR — overlay drawer ──────────────────── */}
+      {isMobile && showSidebar && (
+        <>
+          {/* Backdrop */}
+          <div onClick={() => setShowSidebar(false)}
+            style={{ position: 'fixed', inset: 0, zIndex: 198,
+              background: 'rgba(0,0,0,0.55)', top: 52, bottom: 56 }} />
+          {/* Drawer */}
+          <div style={{ position: 'fixed', top: 52, bottom: 56, left: 0, zIndex: 199,
+            width: '82vw', maxWidth: 320, display: 'flex', flexDirection: 'column',
+            background: 'var(--surface)', boxShadow: '4px 0 28px rgba(0,0,0,0.5)',
+            overflow: 'hidden' }}>
+            {sidebarContent}
+          </div>
+        </>
+      )}
+
+      {/* ── EDITOR — always visible ───────────────────────────── */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: 'var(--bg)' }}>
+        {activeNote ? (
+            <>
+              {/* Header */}
+              <div style={{ padding: '10px 16px 0', borderBottom: '1px solid var(--border)',
+                background: 'var(--surface)', flexShrink: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                  {isMobile && (
+                    <button onClick={() => setShowSidebar(true)}
+                      title="Open notes list"
+                      style={{ background: 'none', border: '1px solid var(--border)', borderRadius: 6,
+                        color: 'var(--text2)', cursor: 'pointer', padding: '4px 8px',
+                        fontSize: 14, lineHeight: 1, flexShrink: 0, display: 'flex', alignItems: 'center', gap: 4 }}>
+                      ☰
+                    </button>
+                  )}
+                  <input ref={titleRef} value={activeNote.title}
+                    onChange={e => updateNote(activeId, { title: e.target.value })}
+                    onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); textareaRef.current?.focus() } }}
+                    style={{ flex: 1, fontSize: 18, fontWeight: 700, color: 'var(--text)',
+                      background: 'transparent', border: 'none', boxShadow: 'none', padding: '2px 0', minWidth: 0 }}
+                    placeholder="Note title…" />
+                  <button onClick={() => updateNote(activeId, { pinned: !activeNote.pinned })}
+                    title={activeNote.pinned ? 'Unpin' : 'Pin note'}
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '2px 4px',
+                      color: activeNote.pinned ? 'var(--accent)' : 'var(--text3)', flexShrink: 0, display: 'flex' }}>
+                    <PinIcon size={15} filled={activeNote.pinned} color="currentColor" />
+                  </button>
+                  <select value={activeNote.folder_id || ''}
+                    onChange={e => updateNote(activeId, { folder_id: e.target.value || null })}
+                    style={{ fontSize: 11, background: 'var(--surface2)', border: '1px solid var(--border)',
+                      borderRadius: 5, padding: '3px 6px', color: 'var(--text2)', maxWidth: 120, flexShrink: 0 }}>
+                    <option value="">Unfiled</option>
+                    {allFoldersSorted.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
+                  </select>
+                  <button onClick={() => deleteNote(activeId)} title="Delete note"
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '2px 4px',
+                      color: 'var(--text3)', flexShrink: 0, display: 'flex' }}
+                    onMouseEnter={e => e.currentTarget.style.color = 'var(--danger)'}
+                    onMouseLeave={e => e.currentTarget.style.color = 'var(--text3)'}>
+                    <TrashIcon size={14} color="currentColor" />
+                  </button>
+                </div>
+
+                {/* Toolbar */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 2, paddingBottom: 8, flexWrap: 'wrap' }}>
+                  <TGroup>
+                    <TBtn onClick={() => applyFormat('bold')}   title="Bold (Ctrl+B)"><strong>B</strong></TBtn>
+                    <TBtn onClick={() => applyFormat('italic')} title="Italic (Ctrl+I)"><em>I</em></TBtn>
+                    <TBtn onClick={() => applyFormat('strike')} title="Strikethrough"><del>S</del></TBtn>
+                  </TGroup>
+                  <TGroup>
+                    <TBtn onClick={() => applyFormat('h1')} title="Heading 1">H1</TBtn>
+                    <TBtn onClick={() => applyFormat('h2')} title="Heading 2">H2</TBtn>
+                    <TBtn onClick={() => applyFormat('h3')} title="Heading 3">H3</TBtn>
+                  </TGroup>
+                  <TGroup>
+                    <TBtn onClick={() => applyFormat('code')}      title="Inline code">{'<>'}</TBtn>
+                    <TBtn onClick={() => applyFormat('codeblock')} title="Code block">{'```'}</TBtn>
+                    <TBtn onClick={() => applyFormat('quote')}     title="Blockquote">"</TBtn>
+                  </TGroup>
+                  <TGroup>
+                    <TBtn onClick={() => applyFormat('ul')}   title="Bullet list">• List</TBtn>
+                    <TBtn onClick={() => applyFormat('ol')}   title="Numbered list">1. List</TBtn>
+                    <TBtn onClick={() => applyFormat('task')} title="Task checkbox">☐ Task</TBtn>
+                    <TBtn onClick={() => applyFormat('hr')}   title="Horizontal rule">─</TBtn>
+                  </TGroup>
+                  <div style={{ flex: 1 }} />
+                  <div style={{ display: 'flex', border: '1px solid var(--border)', borderRadius: 6, overflow: 'hidden' }}>
+                    {['edit','preview'].map(m => (
+                      <button key={m} onClick={() => setMode(m)}
+                        style={{ background: mode === m ? 'var(--accent)' : 'transparent',
+                          color: mode === m ? '#fff' : 'var(--text2)', border: 'none',
+                          padding: '3px 10px', fontSize: 11, fontWeight: 600, cursor: 'pointer', textTransform: 'capitalize' }}>
+                        {m}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Content */}
+              {mode === 'edit' ? (
+                <textarea ref={textareaRef}
+                  value={activeNote.content}
+                  onChange={e => handleContentChange(e.target.value)}
+                  placeholder={'Start writing…\n\nMarkdown supported:\n# Heading 1\n**bold**, *italic*, `code`\n- [ ] Task\n- Bullet\n> Blockquote\n\n[[Link to note]] — links other notes\n#tag — adds a tag'}
+                  spellCheck
+                  style={{ flex: 1, width: '100%', padding: '16px 20px', resize: 'none',
+                    fontFamily: 'ui-monospace, monospace', fontSize: 13, lineHeight: 1.65,
+                    color: 'var(--text)', background: 'var(--bg)',
+                    border: 'none', boxShadow: 'none', outline: 'none', boxSizing: 'border-box' }} />
+              ) : (
+                <div style={{ flex: 1, overflowY: 'auto', padding: '16px 20px', maxWidth: 720 }}
+                  onClick={e => {
+                    const link = e.target.dataset?.noteLink
+                    if (link) {
+                      e.preventDefault()
+                      const target = Object.values(data.notes).find(n => n.title === link)
+                      if (target) { setActiveId(target.id) }
+                    }
+                  }}
+                  dangerouslySetInnerHTML={{ __html: renderMarkdown(activeNote.content) }} />
+              )}
+
+              {/* Status bar */}
+              <div style={{ padding: '4px 16px', borderTop: '1px solid var(--border)', flexShrink: 0,
+                display: 'flex', gap: 12, alignItems: 'center', fontSize: 10, color: 'var(--text3)' }}>
+                <span>{wordCount(activeNote.content)} words</span>
+                <span>·</span>
+                <span>{activeNote.content?.length ?? 0} chars</span>
+                <span>·</span>
+                <span>Saved {fmtRelative(activeNote.updated_at)}</span>
+                {activeNote.pinned && (
+                  <><span>·</span><span style={{ color: 'var(--accent)', display: 'flex', alignItems: 'center', gap: 3 }}>
+                    <PinIcon size={9} filled color="currentColor" /> Pinned
+                  </span></>
+                )}
+                {activeNote.color && (
+                  <><span>·</span><span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <span style={{ width: 8, height: 8, borderRadius: '50%', background: NOTE_COLORS[activeNote.color], display: 'inline-block' }} />
+                    {activeNote.color}
+                  </span></>
+                )}
+              </div>
+            </>
+          ) : (
+            /* Empty state */
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center',
+              justifyContent: 'center', color: 'var(--text3)', gap: 12, padding: 24, position: 'relative' }}>
+              {isMobile && (
+                <button onClick={() => setShowSidebar(true)}
+                  style={{ position: 'absolute', top: 12, left: 12, background: 'none', border: 'none',
+                    color: 'var(--accent)', cursor: 'pointer', fontSize: 13, fontWeight: 700 }}>
+                  ← Notes
+                </button>
+              )}
+              <div style={{ opacity: 0.25 }}><FileIcon size={44} color="var(--text)" /></div>
+              <div style={{ fontSize: 14, fontWeight: 600 }}>No note open</div>
+              <div style={{ fontSize: 12, textAlign: 'center', maxWidth: 240 }}>
+                Select a note from the sidebar or create a new one
+              </div>
+              <button onClick={() => createNote()}
+                style={{ display: 'flex', alignItems: 'center', gap: 6,
+                  background: 'var(--accent)', color: '#fff', border: 'none',
+                  borderRadius: 8, padding: '8px 18px', fontSize: 13, fontWeight: 600, cursor: 'pointer', marginTop: 4 }}>
+                <PlusIcon size={13} color="#fff" /> New Note
+              </button>
+            </div>
+          )}
+        </div>
+
+      {/* ── CONTEXT MENU ─────────────────────────────────────────── */}
+      {ctxMenu && (
+        <div onMouseDown={e => e.stopPropagation()}
+          style={{ position: 'fixed', left: ctxMenu.x, top: ctxMenu.y, zIndex: 9999,
+            background: 'var(--surface)', border: '1px solid var(--border2)', borderRadius: 9,
+            boxShadow: '0 6px 24px rgba(0,0,0,0.5)', minWidth: 170, overflow: 'hidden' }}>
+          {renderCtxItems()}
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ── NoteRow ───────────────────────────────────────────────────────────────────
+
+function NoteRow({ note, active, dragging, indent = 10, renaming, renameVal, renameRef,
+  onRenameChange, onRenameCommit, onSelect, onContextMenu, onDotsClick, onDragStart, onDragEnd }) {
+  const dotColor = note.color ? NOTE_COLORS[note.color] : null
+  return (
+    <div
+      draggable
+      onDragStart={onDragStart}
+      onDragEnd={onDragEnd}
+      onContextMenu={onContextMenu}
+      onClick={onSelect}
+      style={{ display: 'flex', alignItems: 'flex-start',
+        padding: `5px 8px 5px ${indent}px`,
+        gap: 5, cursor: 'pointer', borderRadius: 6, margin: '0 4px 1px',
+        background: active ? 'var(--accent)20' : dragging ? 'var(--surface2)' : 'transparent',
+        opacity: dragging ? 0.4 : 1, transition: 'opacity .15s, background .1s' }}
+      onMouseEnter={e => { if (!active && !dragging) e.currentTarget.style.background = 'var(--surface2)' }}
+      onMouseLeave={e => { if (!active && !dragging) e.currentTarget.style.background = 'transparent' }}>
+
+      <span style={{
+        color: dotColor ?? (active ? 'var(--accent)' : note.pinned ? 'var(--accent)' : 'var(--text3)'),
+        flexShrink: 0, marginTop: 1, display: 'flex' }}>
+        {note.pinned
+          ? <PinIcon size={11} filled color="currentColor" />
+          : <FileIcon size={11} color="currentColor" />}
+      </span>
+
+      <div style={{ flex: 1, minWidth: 0 }}>
+        {renaming ? (
+          <input ref={renameRef} value={renameVal}
+            onChange={e => onRenameChange(e.target.value)}
+            onBlur={onRenameCommit}
+            onKeyDown={e => { if (e.key === 'Enter' || e.key === 'Escape') onRenameCommit() }}
+            onClick={e => e.stopPropagation()}
+            style={{ width: '100%', fontSize: 12, fontWeight: 600, background: 'var(--surface2)',
+              border: '1px solid var(--accent)', borderRadius: 4, padding: '1px 5px',
+              color: 'var(--text)', boxSizing: 'border-box' }} />
+        ) : (
+          <div style={{ fontSize: 12, fontWeight: active ? 700 : 500,
+            color: active ? 'var(--text)' : 'var(--text2)',
+            overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {note.title || 'Untitled'}
+          </div>
+        )}
+        <div style={{ fontSize: 10, color: 'var(--text3)', marginTop: 1 }}>
+          {fmtRelative(note.updated_at)}
+        </div>
+      </div>
+
+      <button onClick={onDotsClick}
+        style={{ background: 'none', border: 'none', cursor: 'pointer',
+          color: 'var(--text3)', padding: '1px 2px', flexShrink: 0, marginTop: 1,
+          display: 'flex', alignItems: 'center', borderRadius: 3 }}
+        onMouseEnter={e => { e.stopPropagation(); e.currentTarget.style.color = 'var(--text)' }}
+        onMouseLeave={e => e.currentTarget.style.color = 'var(--text3)'}>
+        <DotsHIcon size={13} color="currentColor" />
+      </button>
+    </div>
+  )
+}
+
+// ── Shared primitives ─────────────────────────────────────────────────────────
+
+function TGroup({ children }) {
+  return (
+    <div style={{ display: 'flex', border: '1px solid var(--border)', borderRadius: 5, overflow: 'hidden', marginRight: 2 }}>
+      {children}
+    </div>
+  )
+}
+function TBtn({ onClick, title, children }) {
+  return (
+    <button onClick={onClick} title={title}
+      style={{ background: 'transparent', border: 'none', borderRight: '1px solid var(--border)',
+        color: 'var(--text2)', padding: '3px 8px', fontSize: 12, cursor: 'pointer', fontFamily: 'inherit', lineHeight: 1.4 }}
+      onMouseEnter={e => { e.currentTarget.style.background = 'var(--surface2)'; e.currentTarget.style.color = 'var(--text)' }}
+      onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text2)' }}>
+      {children}
+    </button>
+  )
+}
+function CtxItem({ onClick, icon, children, danger }) {
+  return (
+    <button onClick={onClick}
+      style={{ display: 'flex', alignItems: 'center', gap: 8, width: '100%',
+        textAlign: 'left', background: 'none', border: 'none', padding: '7px 12px',
+        fontSize: 12, cursor: 'pointer', color: danger ? 'var(--danger)' : 'var(--text)', fontFamily: 'inherit' }}
+      onMouseEnter={e => e.currentTarget.style.background = 'var(--surface2)'}
+      onMouseLeave={e => e.currentTarget.style.background = 'none'}>
+      {icon && <span style={{ color: danger ? 'var(--danger)' : 'var(--text3)', flexShrink: 0 }}>{icon}</span>}
+      {children}
+    </button>
+  )
+}
+function CtxDivider({ label }) {
+  return (
+    <div style={{ borderTop: '1px solid var(--border)', margin: '2px 0' }}>
+      {label && <div style={{ padding: '4px 12px 0', fontSize: 10, color: 'var(--text3)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.07em' }}>{label}</div>}
+    </div>
+  )
+}
+function SectionLabel({ children }) {
+  return <div style={{ padding: '2px 14px 4px', fontSize: 10, fontWeight: 700, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>{children}</div>
+}
