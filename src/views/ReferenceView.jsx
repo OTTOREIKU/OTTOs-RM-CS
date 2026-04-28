@@ -1,7 +1,9 @@
 import React, { useState, useMemo } from 'react'
 import { ChevronDownIcon, ChevronUpIcon, GearIcon } from '../components/Icons.jsx'
 import {
-  loadTheme, loadEinkSettings, saveTheme, saveEinkSettings, EINK_ACCENT_PRESETS,
+  loadTheme, saveTheme,
+  loadDisplaySettings, saveDisplaySettings,
+  ACCENT_PRESETS, COLORBLIND_MODES,
   loadNavPos, saveNavPos,
 } from '../store/theme.js'
 import racesData          from '../data/races.json'
@@ -240,15 +242,15 @@ export default function ReferenceView() {
   // ── Settings state ──────────────────────────────────────────────────────────
   const [showSettings,  setShowSettings]  = useState(false)
   const [theme,         setTheme]         = useState(loadTheme)
-  const [einkSettings,  setEinkSettings]  = useState(loadEinkSettings)
+  const [display,       setDisplay]       = useState(loadDisplaySettings)
   const [navPos,        setNavPos]        = useState(loadNavPos)
 
   function handleThemeChange(t) {
     setTheme(t); saveTheme(t)
   }
-  function handleEinkChange(patch) {
-    const next = { ...einkSettings, ...patch }
-    setEinkSettings(next); saveEinkSettings(next)
+  function handleDisplayChange(patch) {
+    const next = { ...display, ...patch }
+    setDisplay(next); saveDisplaySettings(patch)
   }
   function handleNavPosChange(pos) {
     setNavPos(pos); saveNavPos(pos)
@@ -288,38 +290,133 @@ export default function ReferenceView() {
           background: 'var(--surface)', border: '1px solid var(--border2)',
           borderRadius: 12, padding: '18px 20px', marginBottom: 20,
         }}>
-          <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text)', marginBottom: 14 }}>
-            Appearance
+          <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text)', marginBottom: 16 }}>
+            Appearance &amp; Accessibility
           </div>
 
-          {/* Theme selector */}
-          <div style={{ marginBottom: 16 }}>
+          {/* ── Base Theme ── */}
+          <div style={{ marginBottom: 18 }}>
             <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 8 }}>
               Theme
             </div>
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
               {[
-                { id: 'dark',  label: 'Dark',  desc: 'Default dark UI' },
-                { id: 'light', label: 'Light', desc: 'Light background' },
-                { id: 'eink',  label: 'E-Ink', desc: 'E-paper optimized' },
+                { id: 'default',       label: 'Default',       desc: 'Dark UI'            },
+                { id: 'midnight',      label: 'Midnight',      desc: 'OLED black'          },
+                { id: 'light',         label: 'Light',         desc: 'Light background'    },
+                { id: 'high-contrast', label: 'High Contrast', desc: 'Maximum readability' },
+                { id: 'eink',          label: 'E-Ink',         desc: 'E-paper optimized'   },
               ].map(({ id, label, desc }) => (
                 <button key={id} onClick={() => handleThemeChange(id)}
                   style={{
-                    padding: '8px 16px', borderRadius: 8, cursor: 'pointer',
+                    padding: '8px 14px', borderRadius: 8, cursor: 'pointer',
                     border: '2px solid ' + (theme === id ? 'var(--accent)' : 'var(--border2)'),
                     background: theme === id ? 'var(--accent)22' : 'var(--surface2)',
                     color: theme === id ? 'var(--accent)' : 'var(--text2)',
                     textAlign: 'left', transition: 'all .15s',
                   }}>
-                  <div style={{ fontSize: 13, fontWeight: 700 }}>{label}</div>
-                  <div style={{ fontSize: 10, opacity: 0.7, marginTop: 2 }}>{desc}</div>
+                  <div style={{ fontSize: 12, fontWeight: 700 }}>{label}</div>
+                  <div style={{ fontSize: 10, opacity: 0.7, marginTop: 1 }}>{desc}</div>
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Navigation position */}
-          <div style={{ marginTop: 16, paddingTop: 16, borderTop: '1px solid var(--border)' }}>
+          {/* ── Accent Color ── */}
+          <div style={{ marginBottom: 18, paddingTop: 16, borderTop: '1px solid var(--border)' }}>
+            <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 8 }}>
+              Accent Color
+            </div>
+            <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+              {ACCENT_PRESETS.map(p => (
+                <button key={p.hex} onClick={() => handleDisplayChange({ accent: p.hex })}
+                  title={p.label}
+                  style={{
+                    width: 30, height: 30, borderRadius: 7, background: p.hex, flexShrink: 0,
+                    border: display.accent === p.hex ? '3px solid var(--text)' : '2px solid var(--border2)',
+                    cursor: 'pointer',
+                  }} />
+              ))}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <input type="color" value={display.accent || '#4c8bf5'}
+                  onChange={e => handleDisplayChange({ accent: e.target.value })}
+                  title="Custom color"
+                  style={{
+                    width: 30, height: 30, padding: 2, border: '2px solid var(--border2)',
+                    borderRadius: 7, cursor: 'pointer', background: 'none',
+                  }} />
+                <span style={{ fontSize: 11, color: 'var(--text3)' }}>Custom</span>
+              </div>
+              {display.accent && (
+                <button onClick={() => handleDisplayChange({ accent: '' })}
+                  title="Reset to theme default"
+                  style={{
+                    fontSize: 11, color: 'var(--text3)', background: 'none',
+                    border: '1px solid var(--border)', borderRadius: 6,
+                    padding: '4px 8px', cursor: 'pointer',
+                  }}>Reset</button>
+              )}
+            </div>
+          </div>
+
+          {/* ── Colorblind Mode ── */}
+          <div style={{ marginBottom: 18, paddingTop: 16, borderTop: '1px solid var(--border)' }}>
+            <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 8 }}>
+              Colorblind Mode
+            </div>
+            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+              {COLORBLIND_MODES.map(({ id, label, desc }) => (
+                <button key={id} onClick={() => handleDisplayChange({ colorblind: id })}
+                  style={{
+                    padding: '7px 13px', borderRadius: 8, cursor: 'pointer',
+                    border: '2px solid ' + (display.colorblind === id ? 'var(--accent)' : 'var(--border2)'),
+                    background: display.colorblind === id ? 'var(--accent)22' : 'var(--surface2)',
+                    color: display.colorblind === id ? 'var(--accent)' : 'var(--text2)',
+                    textAlign: 'left', transition: 'all .15s',
+                  }}>
+                  <div style={{ fontSize: 12, fontWeight: 700 }}>{label}</div>
+                  <div style={{ fontSize: 10, opacity: 0.7, marginTop: 1 }}>{desc}</div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Display Options ── */}
+          <div style={{ marginBottom: 18, paddingTop: 16, borderTop: '1px solid var(--border)' }}>
+            <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 10 }}>
+              Display Options
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {[
+                { key: 'grayscale', label: 'Grayscale',         desc: 'Removes all color — desaturates the entire UI including images and icons' },
+                { key: 'flatBg',    label: 'Flat backgrounds',  desc: 'Collapses all surface layers to match the base background color' },
+                { key: 'boldUi',    label: 'Bold UI',           desc: 'Heavier borders and thicker input outlines — improves visibility on low-contrast screens' },
+                { key: 'largeText', label: 'Larger text',       desc: 'Increases base font size — use browser zoom for finer control' },
+              ].map(({ key, label, desc }) => (
+                <label key={key} style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}>
+                  <div onClick={() => handleDisplayChange({ [key]: !display[key] })}
+                    style={{
+                      width: 36, height: 20, borderRadius: 10, flexShrink: 0,
+                      background: display[key] ? 'var(--accent)' : 'var(--border2)',
+                      position: 'relative', cursor: 'pointer', transition: 'background .2s',
+                    }}>
+                    <div style={{
+                      position: 'absolute', top: 3, left: display[key] ? 18 : 3,
+                      width: 14, height: 14, borderRadius: '50%', background: '#fff',
+                      transition: 'left .2s',
+                    }} />
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text)' }}>{label}</div>
+                    <div style={{ fontSize: 10, color: 'var(--text3)' }}>{desc}</div>
+                  </div>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Navigation ── */}
+          <div style={{ paddingTop: 16, borderTop: '1px solid var(--border)' }}>
             <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 8 }}>
               Navigation Bar
             </div>
@@ -342,126 +439,6 @@ export default function ReferenceView() {
               ))}
             </div>
           </div>
-
-          {/* E-Ink specific settings */}
-          {theme === 'eink' && (
-            <div style={{ borderTop: '1px solid var(--border)', paddingTop: 16 }}>
-              <div style={{ fontSize: 11, color: 'var(--text3)', marginBottom: 14, lineHeight: 1.5 }}>
-                Optimized for e-paper displays — flat colors, no shadows or animations.
-                Color e-ink screens (Kaleido, etc.) render saturated colors best; pick a deeper tone
-                as it will appear more muted on-device.
-              </div>
-
-              {/* Accent color */}
-              <div style={{ marginBottom: 14 }}>
-                <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 8 }}>
-                  Accent Color
-                </div>
-                <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
-                  {EINK_ACCENT_PRESETS.map(p => (
-                    <button key={p.hex} onClick={() => handleEinkChange({ accent: p.hex })}
-                      title={p.label}
-                      style={{
-                        width: 30, height: 30, borderRadius: 7, background: p.hex,
-                        border: einkSettings.accent === p.hex
-                          ? '3px solid var(--text)' : '2px solid var(--border2)',
-                        cursor: 'pointer', flexShrink: 0,
-                      }} />
-                  ))}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                    <input type="color" value={einkSettings.accent}
-                      onChange={e => handleEinkChange({ accent: e.target.value })}
-                      title="Custom color"
-                      style={{
-                        width: 30, height: 30, padding: 2, border: '2px solid var(--border2)',
-                        borderRadius: 7, cursor: 'pointer', background: 'none',
-                      }} />
-                    <span style={{ fontSize: 11, color: 'var(--text3)' }}>Custom</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Bold borders toggle */}
-              <label style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10, cursor: 'pointer' }}>
-                <div onClick={() => handleEinkChange({ bold: !einkSettings.bold })}
-                  style={{
-                    width: 36, height: 20, borderRadius: 10, flexShrink: 0,
-                    background: einkSettings.bold ? 'var(--accent)' : 'var(--border2)',
-                    position: 'relative', cursor: 'pointer', transition: 'background .2s',
-                  }}>
-                  <div style={{
-                    position: 'absolute', top: 3, left: einkSettings.bold ? 18 : 3,
-                    width: 14, height: 14, borderRadius: '50%', background: '#fff',
-                    transition: 'left .2s',
-                  }} />
-                </div>
-                <div>
-                  <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text)' }}>Heavier borders & text</div>
-                  <div style={{ fontSize: 10, color: 'var(--text3)' }}>Thicker borders, darker secondary text — improves readability on low-contrast displays</div>
-                </div>
-              </label>
-
-              {/* Larger text toggle */}
-              <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}>
-                <div onClick={() => handleEinkChange({ large: !einkSettings.large })}
-                  style={{
-                    width: 36, height: 20, borderRadius: 10, flexShrink: 0,
-                    background: einkSettings.large ? 'var(--accent)' : 'var(--border2)',
-                    position: 'relative', cursor: 'pointer', transition: 'background .2s',
-                  }}>
-                  <div style={{
-                    position: 'absolute', top: 3, left: einkSettings.large ? 18 : 3,
-                    width: 14, height: 14, borderRadius: '50%', background: '#fff',
-                    transition: 'left .2s',
-                  }} />
-                </div>
-                <div>
-                  <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text)' }}>Larger base text</div>
-                  <div style={{ fontSize: 10, color: 'var(--text3)' }}>Increases base font size slightly — also use your browser zoom for finer control</div>
-                </div>
-              </label>
-
-              {/* Grayscale toggle */}
-              <label style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10, cursor: 'pointer' }}>
-                <div onClick={() => handleEinkChange({ gray: !einkSettings.gray })}
-                  style={{
-                    width: 36, height: 20, borderRadius: 10, flexShrink: 0,
-                    background: einkSettings.gray ? 'var(--accent)' : 'var(--border2)',
-                    position: 'relative', cursor: 'pointer', transition: 'background .2s',
-                  }}>
-                  <div style={{
-                    position: 'absolute', top: 3, left: einkSettings.gray ? 18 : 3,
-                    width: 14, height: 14, borderRadius: '50%', background: '#fff',
-                    transition: 'left .2s',
-                  }} />
-                </div>
-                <div>
-                  <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text)' }}>Grayscale mode</div>
-                  <div style={{ fontSize: 10, color: 'var(--text3)' }}>Overrides all accent/status colors to pure black — for monochrome e-ink panels</div>
-                </div>
-              </label>
-
-              {/* Flat backgrounds toggle */}
-              <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}>
-                <div onClick={() => handleEinkChange({ flatBg: !einkSettings.flatBg })}
-                  style={{
-                    width: 36, height: 20, borderRadius: 10, flexShrink: 0,
-                    background: einkSettings.flatBg ? 'var(--accent)' : 'var(--border2)',
-                    position: 'relative', cursor: 'pointer', transition: 'background .2s',
-                  }}>
-                  <div style={{
-                    position: 'absolute', top: 3, left: einkSettings.flatBg ? 18 : 3,
-                    width: 14, height: 14, borderRadius: '50%', background: '#fff',
-                    transition: 'left .2s',
-                  }} />
-                </div>
-                <div>
-                  <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text)' }}>Flat white backgrounds</div>
-                  <div style={{ fontSize: 10, color: 'var(--text3)' }}>Removes all gray card fills — cards and surfaces become pure white, reducing visual noise on e-ink</div>
-                </div>
-              </label>
-            </div>
-          )}
         </div>
       )}
 

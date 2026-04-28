@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @layer base {
-  /* ── Dark theme (default) ───────────────────────────────────── */
+  /* ── Default theme (dark) ───────────────────────────────────── */
   :root {
     --bg:        #0e1117;
     --surface:   #161b27;
@@ -17,6 +17,24 @@
     --text:      #e8eaf0;
     --text2:     #8892a8;
     --text3:     #4f5a6e;
+  }
+
+  /* ── Midnight theme — OLED black ───────────────────────────── */
+  html.theme-midnight {
+    --bg:        #000000;
+    --surface:   #0d0d0d;
+    --surface2:  #1a1a1a;
+    --border:    #2a2a2a;
+    --border2:   #3a3a3a;
+    --accent:    #3b82f6;
+    --accent-dim:#1d4ed8;
+    --danger:    #f87171;
+    --success:   #4ade80;
+    --warning:   #fb923c;
+    --purple:    #c084fc;
+    --text:      #ffffff;
+    --text2:     #9ca3af;
+    --text3:     #4b5563;
   }
 
   /* ── Light theme ────────────────────────────────────────────── */
@@ -37,15 +55,38 @@
     --text3:     #9ca3af;
   }
 
+  /* ── High Contrast theme ────────────────────────────────────── */
+  html.theme-high-contrast {
+    --bg:        #ffffff;
+    --surface:   #ffffff;
+    --surface2:  #f0f0f0;
+    --border:    #000000;
+    --border2:   #000000;
+    --accent:    #0000cc;
+    --accent-dim:#000099;
+    --danger:    #cc0000;
+    --success:   #006600;
+    --warning:   #885500;
+    --purple:    #660099;
+    --text:      #000000;
+    --text2:     #111111;
+    --text3:     #333333;
+  }
+  html.theme-high-contrast input,
+  html.theme-high-contrast select,
+  html.theme-high-contrast textarea {
+    border-width: 2px !important;
+    border-color: #000000 !important;
+  }
+
   /* ── E-Ink theme — flat, high-contrast, no animations ───────── */
-  /* Base colors (accent overridden via JS inline style)           */
   html.theme-eink {
     --bg:        #ffffff;
     --surface:   #ffffff;
     --surface2:  #f0f0f0;
     --border:    #aaaaaa;
     --border2:   #777777;
-    --accent:    #1a4fa3;   /* fallback; JS sets this from user pref */
+    --accent:    #1a4fa3;
     --accent-dim:#103080;
     --danger:    #cc0000;
     --success:   #006622;
@@ -55,7 +96,6 @@
     --text2:     #333333;
     --text3:     #777777;
   }
-
   /* Kill all motion & shadow on e-ink — prevents ghosting/flicker */
   html.theme-eink *,
   html.theme-eink *::before,
@@ -66,31 +106,37 @@
     text-shadow:  none !important;
   }
 
-  /* E-ink bold variant — heavier borders, darker secondary text */
-  html.eink-bold {
+  /* ── Universal modifier classes ─────────────────────────────── */
+
+  /* Flat backgrounds — collapse all surfaces to match base bg */
+  /* (must be defined AFTER theme blocks so it wins in the cascade) */
+  html.flat-bg {
+    --surface:  var(--bg);
+    --surface2: var(--bg);
+  }
+  /* E-ink flat: surface is already white, just ensure surface2 matches */
+  html.theme-eink.flat-bg {
+    --surface2: #ffffff;
+  }
+
+  /* Bold UI — heavier borders + thicker input outlines */
+  html.ui-bold {
+    --border:  #555577;
+    --border2: #3a3d55;
+  }
+  html.theme-light.ui-bold,
+  html.theme-high-contrast.ui-bold,
+  html.theme-eink.ui-bold {
     --border:  #666666;
     --border2: #444444;
-    --text2:   #111111;
-    --text3:   #555555;
   }
-  html.eink-bold input,
-  html.eink-bold select,
-  html.eink-bold textarea {
-    border-width: 2px !important;
-  }
+  html.ui-bold input,
+  html.ui-bold select,
+  html.ui-bold textarea { border-width: 2px !important; }
 
-  /* E-ink large text variant — font-size applied via JS to document.body */
-
-  /* E-ink grayscale — desaturate everything that uses hardcoded colors */
-  html.eink-gray svg                          { filter: grayscale(1) !important; }
-  html.eink-gray img                          { filter: grayscale(1) !important; }
-  /* Colored badge/pill spans (hardcoded hex backgrounds) */
-  html.eink-gray [style*="background:#"],
-  html.eink-gray [style*="background: #"]     { filter: grayscale(1) !important; }
-
-  /* E-ink flat backgrounds — remove all non-white surface fills */
-  html.eink-flatbg table tr:nth-child(even)   { background: #ffffff !important; }
-  html.eink-flatbg [style*="var(--surface2)"] { background: #ffffff !important; }
+  /* Legacy eink-specific classes — kept for backward compat but no longer applied */
+  html.eink-bold { --border: #666666; --border2: #444444; --text2: #111111; --text3: #555555; }
+  html.eink-bold input, html.eink-bold select, html.eink-bold textarea { border-width: 2px !important; }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
