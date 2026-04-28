@@ -332,6 +332,26 @@ export default function CharacterSheet() {
   const rrBonuses = getResistanceBonuses(c)
   const talentB   = getTalentBonuses(c)
 
+  // Combat talent chips — display-only reminders in the weapons area
+  const ct = useMemo(() => {
+    const find = id => c.talents?.find(t => t.talent_id === id)
+    return {
+      deadeye:              find('deadeye'),
+      sharpshooter:         find('sharpshooter'),
+      foiler:               find('foiler'),
+      pressing:             find('pressing_the_advantage'),
+      opp_strike:           find('opportunistic_strike'),
+      riposte:              find('riposte'),
+      sense_weakness:       find('sense_weakness'),
+      quickdraw:            find('quickdraw'),
+      slow_draw:            find('slow_on_the_draw'),
+      frenzy:               find('frenzy'),
+      strike_reflex:        find('strike_reflex'),
+      non_violent:          find('non_violent'),
+    }
+  }, [c.talents])
+  const hasCombatTalents = Object.values(ct).some(Boolean)
+
   // Auto-calculated derived stats (shown as placeholder when field is null / not overridden)
   const autoHitsMax    = getBaseHits(c)
   const autoPPMax      = getPowerPoints(c)     // null if no realm selected
@@ -663,6 +683,90 @@ export default function CharacterSheet() {
             )
           })}
         </div>
+
+        {/* Combat talent reminder chips */}
+        {hasCombatTalents && (
+          <div style={{ marginTop:10, paddingTop:10, borderTop:'1px solid var(--border)' }}>
+            <div style={{ fontSize:10, fontWeight:700, color:'var(--text3)', textTransform:'uppercase', letterSpacing:'0.08em', marginBottom:6 }}>Combat Talents</div>
+            <div style={{ display:'flex', flexWrap:'wrap', gap:5 }}>
+              {/* Ranged */}
+              {ct.deadeye && (
+                <span style={{ fontSize:10, fontWeight:600, padding:'2px 8px', borderRadius:10, background:'var(--success)18', color:'var(--success)', border:'1px solid var(--success)44' }}
+                  title="Deadeye: range penalties reduced by 10/Tier">
+                  🎯 Deadeye {ct.deadeye.tier > 1 ? `T${ct.deadeye.tier}` : ''} −{ct.deadeye.tier * 10} range pen
+                </span>
+              )}
+              {ct.sharpshooter && (
+                <span style={{ fontSize:10, fontWeight:600, padding:'2px 8px', borderRadius:10, background:'var(--success)18', color:'var(--success)', border:'1px solid var(--success)44' }}
+                  title="Sharpshooter: +5/Tier OB per round aiming, max +5/Tier">
+                  🎯 Sharpshooter {ct.sharpshooter.tier > 1 ? `T${ct.sharpshooter.tier}` : ''} +{ct.sharpshooter.tier * 5}/rnd aim (max +{ct.sharpshooter.tier * 5})
+                </span>
+              )}
+              {/* Melee */}
+              {ct.foiler && (
+                <span style={{ fontSize:10, fontWeight:600, padding:'2px 8px', borderRadius:10, background:'var(--success)18', color:'var(--success)', border:'1px solid var(--success)44' }}
+                  title="Foiler: foe fumble range increased by 1/Tier">
+                  ⚔ Foiler {ct.foiler.tier > 1 ? `T${ct.foiler.tier}` : ''} foe fumble +{ct.foiler.tier}
+                </span>
+              )}
+              {ct.pressing && (
+                <span style={{ fontSize:10, fontWeight:600, padding:'2px 8px', borderRadius:10, background:'var(--success)18', color:'var(--success)', border:'1px solid var(--success)44' }}
+                  title="Pressing the Advantage: +10/Tier OB on next attack after landing a critical">
+                  ⚔ Press Adv {ct.pressing.tier > 1 ? `T${ct.pressing.tier}` : ''} +{ct.pressing.tier * 10} OB after crit
+                </span>
+              )}
+              {ct.opp_strike && (
+                <span style={{ fontSize:10, fontWeight:600, padding:'2px 8px', borderRadius:10, background:'var(--success)18', color:'var(--success)', border:'1px solid var(--success)44' }}
+                  title="Opportunistic Strike: free attack (0 AP) when foe fumbles">
+                  ⚔ Opp. Strike free atk on fumble
+                </span>
+              )}
+              {ct.riposte && (
+                <span style={{ fontSize:10, fontWeight:600, padding:'2px 8px', borderRadius:10, background:'var(--success)18', color:'var(--success)', border:'1px solid var(--success)44' }}
+                  title="Riposte: counter-attack when using full OB to parry">
+                  ⚔ Riposte counter when parrying
+                </span>
+              )}
+              {ct.sense_weakness && (
+                <span style={{ fontSize:10, fontWeight:600, padding:'2px 8px', borderRadius:10, background:'var(--success)18', color:'var(--success)', border:'1px solid var(--success)44' }}
+                  title="Sense Weakness: after 1 round observing foe, may reroll one critical">
+                  👁 Sense Weakness reroll crit after observe
+                </span>
+              )}
+              {/* General */}
+              {ct.quickdraw && (
+                <span style={{ fontSize:10, fontWeight:600, padding:'2px 8px', borderRadius:10, background:'var(--accent)18', color:'var(--accent)', border:'1px solid var(--accent)44' }}
+                  title="Quickdraw: drawing weapon costs 0 AP instead of 1 AP">
+                  ⚡ Quickdraw draw 0 AP
+                </span>
+              )}
+              {ct.frenzy && (
+                <span style={{ fontSize:10, fontWeight:600, padding:'2px 8px', borderRadius:10, background:'var(--accent)18', color:'var(--accent)', border:'1px solid var(--accent)44' }}
+                  title="Frenzy: while frenzied +5 St, attacks +1 size, no hit-loss penalties">
+                  🔥 Frenzy +5 St / +1 atk size
+                </span>
+              )}
+              {ct.strike_reflex && (
+                <span style={{ fontSize:10, fontWeight:600, padding:'2px 8px', borderRadius:10, background:'var(--accent)18', color:'var(--accent)', border:'1px solid var(--accent)44' }}
+                  title="Strike Reflex: +20 initiative when sudden movement triggers reflex">
+                  ⚡ Strike Reflex +20 init on movement
+                </span>
+              )}
+              {ct.slow_draw && (
+                <span style={{ fontSize:10, fontWeight:600, padding:'2px 8px', borderRadius:10, background:'var(--danger)18', color:'var(--danger)', border:'1px solid var(--danger)44' }}
+                  title="Slow on the Draw: drawing weapon costs 2 AP">
+                  🐢 Slow Draw 2 AP
+                </span>
+              )}
+              {ct.non_violent && (
+                <span style={{ fontSize:10, fontWeight:600, padding:'2px 8px', borderRadius:10, background:'var(--danger)18', color:'var(--danger)', border:'1px solid var(--danger)44' }}
+                  title={`Non-violent: after inflicting a critical, all actions next round −${ct.non_violent.tier * 20}`}>
+                  😬 Non-violent −{ct.non_violent.tier * 20} after crit
+                </span>
+              )}
+            </div>
+          </div>
+        )}
       </Card>
 
       {/* Armor by Body Part */}
