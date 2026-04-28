@@ -2092,8 +2092,24 @@ const FORMULA_SECTIONS = [
 /* ─────────────────────────────────────────────── */
 /*  EQUIPMENT PANEL                                */
 /* ─────────────────────────────────────────────── */
+const BREAKAGE_ROWS = [
+  { roll: '< 1',      label: 'Absolute Failure', ammo: '0%',   color: 'var(--danger)',
+    desc: 'Hopefully, this wasn\'t a keepsake, or wanted in any way, because it is broken. Did you come prepared with a backup?' },
+  { roll: '1 – 75',   label: 'Failure',          ammo: '10%',  color: '#f97316',
+    desc: 'Even quality items cannot take such punishment over and over again. The item has been damaged and is at −20 until repaired.' },
+  { roll: 'UM 66',    label: 'Unusual Event',    ammo: '25%',  color: 'var(--purple)',
+    desc: 'Perhaps it\'s weird lighting, or your growing senility, but the item is not as damaged as you believed it to be. If a failure, it turns out the damage is only temporary. If a success, the item has miraculously been repaired of prior damage (reduce damage to item by up to 10).' },
+  { roll: '76 – 100', label: 'Partial Success',  ammo: '50%',  color: 'var(--warning)',
+    desc: 'The item was either hit in the right spot, or the creator cut some corners in the durability department. In any case the item is at −10 until it is repaired.' },
+  { roll: '101 – 175',label: 'Success',          ammo: '75%',  color: 'var(--success)',
+    desc: 'What a finely crafted item this is. Despite the beating that it receives it holds steady and true. If you are religious, this is a good time to thank your patron.' },
+  { roll: '176 +',    label: 'Absolute Success', ammo: '100%', color: '#22d3ee',
+    desc: 'This item must be made of the finest materials known to mankind! It appears completely impervious to damage. Maybe it\'s magic! Maybe it\'s been blessed! Or maybe the damage was just paltry.' },
+]
+
 function EquipmentPanel() {
   const [search, setSearch] = useState('')
+  const [breakageOpen, setBreakageOpen] = useState(true)
   const query = search.toLowerCase()
   const filtered = useMemo(() =>
     query ? equipmentData.filter(e =>
@@ -2104,6 +2120,63 @@ function EquipmentPanel() {
 
   return (
     <div>
+      {/* ── Breakage table ── */}
+      <div style={{ marginBottom: 20 }}>
+        <button onClick={() => setBreakageOpen(o => !o)}
+          style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'none', border: 'none',
+            cursor: 'pointer', padding: 0, marginBottom: 8 }}>
+          <span style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text2)' }}>
+            Table 6-1: Equipment Breakage
+          </span>
+          <span style={{ fontSize: 10, color: 'var(--text3)' }}>{breakageOpen ? '▲' : '▼'}</span>
+        </button>
+        {breakageOpen && (
+          <>
+            <div style={{ overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 11, tableLayout: 'fixed' }}>
+                <colgroup>
+                  <col style={{ width: 86 }} />
+                  <col style={{ width: 120 }} />
+                  <col style={{ width: 52 }} />
+                  <col />
+                </colgroup>
+                <thead>
+                  <tr style={{ background: 'var(--surface2)', borderBottom: '2px solid var(--border)' }}>
+                    {['Roll', 'Result', 'Ammo%', 'Description'].map(h => (
+                      <th key={h} style={{ padding: '5px 8px', textAlign: h === 'Roll' || h === 'Ammo%' ? 'center' : 'left',
+                        fontSize: 10, fontWeight: 700, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {BREAKAGE_ROWS.map((row, i) => (
+                    <tr key={row.roll} style={{ borderBottom: '1px solid var(--border)', background: i % 2 === 0 ? 'transparent' : 'color-mix(in srgb, var(--surface2) 40%, transparent)' }}>
+                      <td style={{ padding: '5px 8px', textAlign: 'center', fontWeight: 700, color: row.color, fontSize: 11, whiteSpace: 'nowrap' }}>{row.roll}</td>
+                      <td style={{ padding: '5px 8px', fontWeight: 600, color: row.color, fontSize: 11 }}>{row.label}</td>
+                      <td style={{ padding: '5px 8px', textAlign: 'center', fontWeight: 600, color: 'var(--text2)', fontSize: 11 }}>{row.ammo}</td>
+                      <td style={{ padding: '5px 8px', color: 'var(--text2)', fontSize: 11, lineHeight: 1.4 }}>{row.desc}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div style={{ marginTop: 8, display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+              {[
+                ['+ ST',   'Inherent item strength (durability)'],
+                ['+ Qual', 'Quality / material modifier'],
+                ['− Dam',  'All damage penalties from previous checks'],
+              ].map(([mod, desc]) => (
+                <div key={mod} style={{ display: 'flex', alignItems: 'baseline', gap: 5, fontSize: 11 }}>
+                  <span style={{ fontWeight: 700, color: 'var(--accent)', fontFamily: 'monospace' }}>{mod}</span>
+                  <span style={{ color: 'var(--text3)' }}>{desc}</span>
+                </div>
+              ))}
+            </div>
+            <div style={{ marginTop: 4, fontSize: 10, color: 'var(--text3)' }}>Source: CoreLaw Table 6-1 (p. 137) · Ammo% = percentage of ammunition surviving</div>
+          </>
+        )}
+      </div>
+
       <div style={{ marginBottom: 10 }}>
         <input
           type="text" placeholder="Search equipment…" value={search}
