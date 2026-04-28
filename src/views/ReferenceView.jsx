@@ -17,8 +17,9 @@ import attackTables from '../data/attack_tables.json'
 import combatGuide  from '../data/combat_guide.json'
 import weaponsData  from '../data/weapons.json'
 import fumbleTables from '../data/fumble_tables.json'
+import equipmentData from '../data/equipment.json'
 
-const TABS = ['Races', 'Cultures', 'Armor', 'Stat Bonuses', 'Skill Costs', 'Weapons', 'Spell Types', 'Crit Tables', 'Attack Tables', 'Combat Calc', 'Combat Guide', 'Formulas']
+const TABS = ['Races', 'Cultures', 'Armor', 'Stat Bonuses', 'Skill Costs', 'Weapons', 'Equipment', 'Spell Types', 'Crit Tables', 'Attack Tables', 'Combat Calc', 'Combat Guide', 'Formulas']
 const STAT_COLS = ['Agility','Constitution','Empathy','Intuition','Memory',
                    'Presence','Quickness','Reasoning','Self Discipline','Strength']
 const STAT_ABR  = ['Ag','Co','Em','In','Me','Pr','Qu','Re','SD','St']
@@ -515,45 +516,54 @@ export default function ReferenceView() {
       {/* ── ARMOR ── */}
       {tab === 'Armor' && (
         <div>
-          {Object.entries(armorData).filter(([, types]) => types.length > 0).map(([section, types]) => {
+          {(() => {
             const SECTION_LABELS = { full_suit:'Full Suits', torso:'Torso Armor', helmet:'Helmets', vambraces:'Vambraces', greaves:'Greaves', shields:'Shields' }
-            const isShield = section === 'shields'
-            const headers = isShield
-              ? ['Name','Cost (Med)','Wt%','Str','Difficulty','Craft Time']
-              : ['AT','Name','Cost (Med)','Wt%','Str','Man','Rang','Perc','Difficulty','Time']
-            return (
-              <div key={section} style={{ marginBottom: 20 }}>
-                <h3 style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text2)', marginBottom: 8 }}>
-                  {SECTION_LABELS[section] ?? section.replace('_',' ')}
-                </h3>
-                <div style={{ overflowX: 'auto' }}>
-                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 11 }}>
-                    <thead>
-                      <tr style={{ background: 'var(--surface2)' }}>
-                        {headers.map(h => <Th key={h}>{h}</Th>)}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {types.filter(a => a.at !== 1 && a.name !== 'None').map((a, i) => (
-                        <tr key={i} style={{ borderBottom: '1px solid var(--border)', background: i % 2 === 0 ? 'transparent' : 'var(--surface2)' }}>
-                          {!isShield && <td style={{ padding:'4px 8px', textAlign:'center', fontWeight:700, color:'var(--accent)', fontSize:11 }}>{a.at ?? '—'}</td>}
-                          <td style={{ padding:'4px 8px', fontWeight:600, fontSize:11, whiteSpace:'nowrap' }}>{a.name}</td>
-                          <td style={{ padding:'4px 8px', textAlign:'center', fontSize:11, color:'var(--text2)' }}>{a.cost_medium != null ? a.cost_medium : '—'}</td>
-                          <td style={{ padding:'4px 8px', textAlign:'center', fontSize:11, color:'var(--text2)' }}>{a.weight_pct != null ? `${a.weight_pct}%` : '—'}</td>
-                          <td style={{ padding:'4px 8px', textAlign:'center', fontSize:11, color:'var(--text2)' }}>{a.str_req || '—'}</td>
-                          {!isShield && [a.maneuver_penalty, a.ranged_penalty, a.perception_penalty].map((v, j) => (
-                            <td key={j} style={{ padding:'4px 8px', textAlign:'center', fontSize:11, color: v < 0 ? 'var(--danger)' : 'var(--text3)', fontWeight: v < 0 ? 600 : 400 }}>{v ? v : '—'}</td>
-                          ))}
-                          <td style={{ padding:'4px 8px', textAlign:'center', fontSize:11, color: a.difficulty?.startsWith('E') ? 'var(--success)' : a.difficulty?.startsWith('SF') ? 'var(--danger)' : a.difficulty?.startsWith('VH') || a.difficulty?.startsWith('XH') ? '#f97316' : 'var(--text2)' }}>{a.difficulty ?? '—'}</td>
-                          <td style={{ padding:'4px 8px', textAlign:'center', fontSize:11, color:'var(--text3)' }}>{a.craft_time ?? '—'}</td>
+            // Fixed column widths shared across all non-shield tables so columns align
+            const ARMOR_COLS  = [32, null, 72, 44, 44, 46, 46, 46, 72, 54] // AT, Name(flex), Cost, Wt%, Str, Man, Rang, Perc, Diff, Time
+            const SHIELD_COLS = [null, 72, 44, 44, 72, 54]                  // Name(flex), Cost, Wt%, Str, Diff, Time
+            return Object.entries(armorData).filter(([, types]) => types.length > 0).map(([section, types]) => {
+              const isShield = section === 'shields'
+              const headers  = isShield
+                ? ['Name','Cost (Med)','Wt%','Str','Difficulty','Craft Time']
+                : ['AT','Name','Cost (Med)','Wt%','Str','Man','Rang','Perc','Difficulty','Time']
+              const colWidths = isShield ? SHIELD_COLS : ARMOR_COLS
+              return (
+                <div key={section} style={{ marginBottom: 20 }}>
+                  <h3 style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text2)', marginBottom: 8 }}>
+                    {SECTION_LABELS[section] ?? section.replace('_',' ')}
+                  </h3>
+                  <div style={{ overflowX: 'auto' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 11, tableLayout: 'fixed' }}>
+                      <colgroup>
+                        {colWidths.map((w, i) => <col key={i} style={{ width: w ? w : undefined }} />)}
+                      </colgroup>
+                      <thead>
+                        <tr style={{ background: 'var(--surface2)' }}>
+                          {headers.map(h => <Th key={h}>{h}</Th>)}
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {types.filter(a => a.at !== 1 && a.name !== 'None').map((a, i) => (
+                          <tr key={i} style={{ borderBottom: '1px solid var(--border)', background: i % 2 === 0 ? 'transparent' : 'var(--surface2)' }}>
+                            {!isShield && <td style={{ padding:'4px 6px', textAlign:'center', fontWeight:700, color:'var(--accent)', fontSize:11 }}>{a.at ?? '—'}</td>}
+                            <td style={{ padding:'4px 6px', fontWeight:600, fontSize:11, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{a.name}</td>
+                            <td style={{ padding:'4px 6px', textAlign:'center', fontSize:11, color:'var(--text2)' }}>{a.cost_medium != null ? a.cost_medium : '—'}</td>
+                            <td style={{ padding:'4px 6px', textAlign:'center', fontSize:11, color:'var(--text2)' }}>{a.weight_pct != null ? `${a.weight_pct}%` : '—'}</td>
+                            <td style={{ padding:'4px 6px', textAlign:'center', fontSize:11, color:'var(--text2)' }}>{a.str_req || '—'}</td>
+                            {!isShield && [a.maneuver_penalty, a.ranged_penalty, a.perception_penalty].map((v, j) => (
+                              <td key={j} style={{ padding:'4px 6px', textAlign:'center', fontSize:11, color: v < 0 ? 'var(--danger)' : 'var(--text3)', fontWeight: v < 0 ? 600 : 400 }}>{v ? v : '—'}</td>
+                            ))}
+                            <td style={{ padding:'4px 6px', textAlign:'center', fontSize:11, color: a.difficulty?.startsWith('E') ? 'var(--success)' : a.difficulty?.startsWith('SF') ? 'var(--danger)' : a.difficulty?.startsWith('VH') || a.difficulty?.startsWith('XH') ? '#f97316' : 'var(--text2)' }}>{a.difficulty ?? '—'}</td>
+                            <td style={{ padding:'4px 6px', textAlign:'center', fontSize:11, color:'var(--text3)' }}>{a.craft_time ?? '—'}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
-              </div>
-            )
-          })}
+              )
+            })
+          })()}
           <TableKey entries={[
             ['AT','Armor Type (1–20)'], ['Wt%','Weight as % of wearer\'s body weight'],
             ['Str','Strength requirement'], ['Man','Maneuver penalty'],
@@ -692,6 +702,9 @@ export default function ReferenceView() {
 
       {/* ── COMBAT GUIDE ── */}
       {tab === 'Combat Guide' && <CombatGuidePanel />}
+
+      {/* ── EQUIPMENT ── */}
+      {tab === 'Equipment' && <EquipmentPanel />}
 
       {/* ── FORMULAS ── */}
       {tab === 'Formulas' && <FormulasPanel />}
@@ -2075,6 +2088,67 @@ const FORMULA_SECTIONS = [
     note: 'CoreLaw Table 3-0b. This progression applies to all skills, spells, and development abilities.',
   },
 ]
+
+/* ─────────────────────────────────────────────── */
+/*  EQUIPMENT PANEL                                */
+/* ─────────────────────────────────────────────── */
+function EquipmentPanel() {
+  const [search, setSearch] = useState('')
+  const query = search.toLowerCase()
+  const filtered = useMemo(() =>
+    query ? equipmentData.filter(e =>
+      e.name.toLowerCase().includes(query) ||
+      (e.notes || '').toLowerCase().includes(query)
+    ) : equipmentData
+  , [query])
+
+  return (
+    <div>
+      <div style={{ marginBottom: 10 }}>
+        <input
+          type="text" placeholder="Search equipment…" value={search}
+          onChange={e => setSearch(e.target.value)}
+          style={{ width: '100%', boxSizing: 'border-box' }}
+        />
+      </div>
+      <div style={{ overflowX: 'auto' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+          <thead>
+            <tr style={{ color: 'var(--text3)', fontSize: 11, borderBottom: '2px solid var(--border)' }}>
+              <th style={{ textAlign: 'left',   padding: '5px 6px', fontWeight: 600 }}>Item</th>
+              <th style={{ textAlign: 'center', padding: '5px 6px', fontWeight: 600, width: 60  }}>Wt (lbs)</th>
+              <th style={{ textAlign: 'center', padding: '5px 6px', fontWeight: 600, width: 64  }}>Cost</th>
+              <th style={{ textAlign: 'center', padding: '5px 6px', fontWeight: 600, width: 40  }}>Str</th>
+              <th style={{ textAlign: 'left',   padding: '5px 6px', fontWeight: 600 }}>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filtered.map((item, i) => (
+              <tr key={item.name} style={{ borderTop: i === 0 ? 'none' : '1px solid var(--border)', background: i % 2 === 0 ? 'transparent' : 'color-mix(in srgb, var(--surface2) 40%, transparent)' }}>
+                <td style={{ padding: '5px 6px', fontWeight: 500, color: 'var(--text)' }}>{item.name}</td>
+                <td style={{ padding: '5px 6px', textAlign: 'center', color: 'var(--text2)' }}>
+                  {item.weight != null ? item.weight : '—'}
+                </td>
+                <td style={{ padding: '5px 6px', textAlign: 'center', color: 'var(--text2)', whiteSpace: 'nowrap' }}>
+                  {item.cost}
+                </td>
+                <td style={{ padding: '5px 6px', textAlign: 'center', color: 'var(--text3)' }}>
+                  {item.str_req ?? '—'}
+                </td>
+                <td style={{ padding: '5px 6px', color: 'var(--text2)', fontSize: 11 }}>
+                  {item.notes || ''}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div style={{ marginTop: 8, fontSize: 11, color: 'var(--text3)' }}>
+        {filtered.length} item{filtered.length !== 1 ? 's' : ''} · Source: CoreLaw Table 6-3 (pp. 139–141)
+      </div>
+    </div>
+  )
+}
 
 function FormulasPanel() {
   const [open, setOpen] = useState(() => Object.fromEntries(FORMULA_SECTIONS.map(s => [s.key, s.key === 'hits'])))

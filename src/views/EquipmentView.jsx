@@ -7,7 +7,7 @@ import weaponsData from '../data/weapons.json'
 import armorData from '../data/armor.json'
 import equipmentData from '../data/equipment.json'
 import { getWeaponOB } from '../utils/calc.js'
-import { XIcon, ChevronDownIcon, ChevronRightIcon, ArrowDownIcon } from '../components/Icons.jsx'
+import { XIcon, ChevronDownIcon, ChevronRightIcon, ArrowDownIcon, PencilIcon } from '../components/Icons.jsx'
 
 const LOCATIONS = ['Carried', 'Pack', 'Belt', 'Worn', 'Stored', 'Mount']
 const STATS = ['Agility','Constitution','Empathy','Intuition','Memory','Presence','Quickness','Reasoning','Self Discipline','Strength']
@@ -169,7 +169,7 @@ function WeaponsCard({ activeChar, addWeapon, updateWeapon, removeWeapon }) {
   }, [browseSearch, catFilter, obFilter])
 
   function selectWeapon(wDef) {
-    addWeapon({ name: wDef.name, fumble: wDef.fumble, str_req: wDef.str_req, skill_name: wDef.skill_name, ob_type: wDef.ob_type })
+    addWeapon({ name: wDef.name, fumble: wDef.fumble, str_req: wDef.str_req, skill_name: wDef.skill_name, ob_type: wDef.ob_type, weight: wDef.weight ?? null })
     setBrowseOpen(false)
     setBrowseSearch('')
     setCatFilter('All')
@@ -228,6 +228,9 @@ function WeaponsCard({ activeChar, addWeapon, updateWeapon, removeWeapon }) {
                 <span style={{fontSize:11,color:fumbleReduced?'var(--success)':'var(--text3)',flexShrink:0}}>
                   F:{effFumble}{fumbleReduced ? <ArrowDownIcon size={9} color="currentColor" /> : ''}
                 </span>
+                {w.weight != null && (
+                  <span style={{fontSize:11,color:'var(--text3)',flexShrink:0}}>{w.weight}lb</span>
+                )}
                 <button onClick={e=>{e.stopPropagation();removeWeapon(w.id)}}
                   onMouseEnter={e=>e.currentTarget.style.color='var(--danger)'}
                   onMouseLeave={e=>e.currentTarget.style.color='var(--text3)'}
@@ -238,7 +241,7 @@ function WeaponsCard({ activeChar, addWeapon, updateWeapon, removeWeapon }) {
 
               {isOpen && (
                 <div style={{padding:'8px 10px 10px',borderTop:'1px solid var(--border)',background:'var(--surface2)'}}>
-                  <div style={{display:'grid',gridTemplateColumns:'1fr 70px 70px 80px',gap:6,marginBottom:8}}>
+                  <div style={{display:'grid',gridTemplateColumns:'1fr 70px 70px 60px 80px',gap:6,marginBottom:8}}>
                     <div>
                       <div style={{fontSize:10,color:'var(--text3)',marginBottom:3,textTransform:'uppercase',letterSpacing:'0.06em'}}>Name</div>
                       <input value={w.name||''} onChange={e=>updateWeapon(w.id,{name:e.target.value})}
@@ -259,6 +262,13 @@ function WeaponsCard({ activeChar, addWeapon, updateWeapon, removeWeapon }) {
                       <div style={{fontSize:10,color:'var(--text3)',marginBottom:3,textTransform:'uppercase',letterSpacing:'0.06em'}}>Str Req</div>
                       <input type="number" value={w.str_req??0} min={0}
                         onChange={e=>updateWeapon(w.id,{str_req:Number(e.target.value)||0})}
+                        style={{width:'100%',boxSizing:'border-box',background:'var(--surface)',border:'1px solid var(--border2)',
+                          borderRadius:5,padding:'4px 6px',color:'var(--text)',fontSize:12,textAlign:'center'}}/>
+                    </div>
+                    <div>
+                      <div style={{fontSize:10,color:'var(--text3)',marginBottom:3,textTransform:'uppercase',letterSpacing:'0.06em'}}>Wt (lbs)</div>
+                      <input type="number" value={w.weight??''} min={0} step={0.1} placeholder="—"
+                        onChange={e=>updateWeapon(w.id,{weight:e.target.value===''?null:Number(e.target.value)})}
                         style={{width:'100%',boxSizing:'border-box',background:'var(--surface)',border:'1px solid var(--border2)',
                           borderRadius:5,padding:'4px 6px',color:'var(--text)',fontSize:12,textAlign:'center'}}/>
                     </div>
@@ -907,17 +917,11 @@ export default function EquipmentView() {
                         </datalist>
                       </>
                     ) : (
-                      <div style={{ display:'flex', alignItems:'flex-start', gap:4, minHeight:24 }}>
-                        <div style={{ flex:1 }}>
-                          <div style={{ fontSize:12, fontWeight:500, color:'var(--text)', paddingTop:3 }}>{item.name}</div>
-                          {ref?.notes && (
-                            <div style={{ fontSize:10, color:'var(--text2)', marginTop:1, lineHeight:1.3 }}>{ref.notes}</div>
-                          )}
-                        </div>
-                        <button onClick={() => unlockName(item.id)} title="Edit item name"
-                          onMouseEnter={e=>e.currentTarget.style.color='var(--text)'}
-                          onMouseLeave={e=>e.currentTarget.style.color='var(--text3)'}
-                          style={{background:'none',border:'none',color:'var(--text3)',cursor:'pointer',fontSize:11,padding:'2px 2px',flexShrink:0,marginTop:1}}>✏</button>
+                      <div>
+                        <div style={{ fontSize:12, fontWeight:500, color:'var(--text)', paddingTop:3 }}>{item.name}</div>
+                        {ref?.notes && (
+                          <div style={{ fontSize:10, color:'var(--text2)', marginTop:1, lineHeight:1.3 }}>{ref.notes}</div>
+                        )}
                       </div>
                     )}
                   </td>
@@ -934,11 +938,21 @@ export default function EquipmentView() {
                       {LOCATIONS.map(l=><option key={l} value={l}>{l}</option>)}
                     </select>
                   </td>
-                  <td style={{ padding:'3px 4px', textAlign:'center' }}>
+                  <td style={{ padding:'3px 2px', textAlign:'center', whiteSpace:'nowrap' }}>
+                    {!nameEditing && (
+                      <button onClick={() => unlockName(item.id)} title="Edit item name"
+                        onMouseEnter={e=>e.currentTarget.style.color='var(--text)'}
+                        onMouseLeave={e=>e.currentTarget.style.color='var(--text3)'}
+                        style={{background:'none',border:'none',color:'var(--text3)',cursor:'pointer',padding:'2px 3px',display:'inline-flex',alignItems:'center'}}>
+                        <PencilIcon size={11} color="currentColor"/>
+                      </button>
+                    )}
                     <button onClick={()=>removeEquipment(item.id)}
                       onMouseEnter={e=>e.currentTarget.style.color='var(--danger)'}
                       onMouseLeave={e=>e.currentTarget.style.color='var(--text3)'}
-                      style={{background:'none',border:'none',color:'var(--text3)',cursor:'pointer',fontSize:14,padding:2}}>&#x2715;</button>
+                      style={{background:'none',border:'none',color:'var(--text3)',cursor:'pointer',padding:'2px 3px',display:'inline-flex',alignItems:'center'}}>
+                      <XIcon size={11} color="currentColor"/>
+                    </button>
                   </td>
                 </tr>
                 )
