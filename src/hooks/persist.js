@@ -1,4 +1,25 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
+
+/**
+ * useState backed by localStorage. Reads initial value from storage,
+ * returns a setter that writes through to storage on every call.
+ */
+export function useLocalStorage(key, defaultValue) {
+  const [value, setInner] = useState(() => {
+    try {
+      const raw = localStorage.getItem(key)
+      return raw != null ? JSON.parse(raw) : defaultValue
+    } catch { return defaultValue }
+  })
+  const setValue = useCallback(valOrFn => {
+    setInner(prev => {
+      const next = typeof valOrFn === 'function' ? valOrFn(prev) : valOrFn
+      try { localStorage.setItem(key, JSON.stringify(next)) } catch {}
+      return next
+    })
+  }, [key])
+  return [value, setValue]
+}
 
 /**
  * useState that persists its value to localStorage.

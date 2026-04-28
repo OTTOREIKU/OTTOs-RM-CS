@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react'
-import { ChevronDownIcon, ChevronUpIcon, GearIcon } from '../components/Icons.jsx'
+import { ChevronDownIcon, ChevronRightIcon, ChevronUpIcon, GearIcon } from '../components/Icons.jsx'
+import { useLocalStorage, useScrollRestore } from '../hooks/persist.js'
 import {
   loadTheme, saveTheme,
   loadDisplaySettings, saveDisplaySettings,
@@ -232,31 +233,33 @@ function CulturesTab() {
 }
 
 export default function ReferenceView() {
-  const [tab, setTab]             = useState('Races')
+  useScrollRestore('rm_scroll_ref')
+
+  const [tab, setTab]             = useLocalStorage('rm_ref_tab', 'Races')
   const [raceSearch, setRaceSearch]   = useState('')
   const [skillSearch, setSkillSearch] = useState('')
-  const [selectedProf, setSelectedProf] = useState('Magician')
-  const [statVal, setStatVal]     = useState(50)
+  const [selectedProf, setSelectedProf] = useLocalStorage('rm_ref_prof', 'Magician')
+  const [statVal, setStatVal]     = useLocalStorage('rm_ref_statval', 50)
 
   // Crit Tables state
-  const [critType, setCritType]   = useState('Slash')
-  const [critSev, setCritSev]     = useState('A')
+  const [critType, setCritType]   = useLocalStorage('rm_ref_crit_type', 'Slash')
+  const [critSev, setCritSev]     = useLocalStorage('rm_ref_crit_sev', 'A')
   const [critRoll, setCritRoll]   = useState('')
 
   // Attack Tables state
-  const [atWeapon, setAtWeapon]   = useState(WEAPON_KEYS[0])
+  const [atWeapon, setAtWeapon]   = useLocalStorage('rm_ref_at_weapon', WEAPON_KEYS[0])
   const [atRoll, setAtRoll]       = useState('')
   const [atAT, setAtAT]           = useState(null)
 
   // Combat Calc state
-  const [calcWeapon, setCalcWeapon]       = useState(WEAPON_KEYS[0])
+  const [calcWeapon, setCalcWeapon]       = useLocalStorage('rm_ref_calc_weapon', WEAPON_KEYS[0])
   const [calcRoll, setCalcRoll]           = useState('')
-  const [calcAT, setCalcAT]               = useState(null)
+  const [calcAT, setCalcAT]               = useLocalStorage('rm_ref_calc_at', null)
   const [calcCritRoll, setCalcCritRoll]   = useState('')
-  const [calcCritType, setCalcCritType]   = useState(null)
-  const [calcCritSev, setCalcCritSev]     = useState(null)
+  const [calcCritType, setCalcCritType]   = useLocalStorage('rm_ref_calc_crit_type', null)
+  const [calcCritSev, setCalcCritSev]     = useLocalStorage('rm_ref_calc_crit_sev', null)
   const [calcFumbleRoll, setCalcFumbleRoll] = useState('')
-  const [critOnly, setCritOnly]           = useState(false)
+  const [critOnly, setCritOnly]           = useLocalStorage('rm_ref_crit_only', false)
 
   // ── Settings state ──────────────────────────────────────────────────────────
   const [showSettings,  setShowSettings]  = useState(false)
@@ -1598,7 +1601,7 @@ function GuideSection({ title, color, open, onToggle, children }) {
 }
 
 function CombatGuidePanel() {
-  const [open, setOpen] = useState({
+  const [open, setOpen] = useLocalStorage('rm_ref_guide_open', {
     actions: true, round: true, oeRolls: false, fumbles: false, size: false, vision: false, multiAtk: false, situational: false, mounts: false, recovery: false,
   })
   const toggle = key => setOpen(o => ({ ...o, [key]: !o[key] }))
@@ -2109,7 +2112,7 @@ const BREAKAGE_ROWS = [
 
 function EquipmentPanel() {
   const [search, setSearch] = useState('')
-  const [breakageOpen, setBreakageOpen] = useState(true)
+  const [breakageOpen, setBreakageOpen] = useLocalStorage('rm_ref_breakage_open', true)
   const query = search.toLowerCase()
   const filtered = useMemo(() =>
     query ? equipmentData.filter(e =>
@@ -2125,10 +2128,12 @@ function EquipmentPanel() {
         <button onClick={() => setBreakageOpen(o => !o)}
           style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'none', border: 'none',
             cursor: 'pointer', padding: 0, marginBottom: 8 }}>
+          {breakageOpen
+            ? <ChevronDownIcon size={11} color="var(--text3)" />
+            : <ChevronRightIcon size={11} color="var(--text3)" />}
           <span style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text2)' }}>
             Table 6-1: Equipment Breakage
           </span>
-          <span style={{ fontSize: 10, color: 'var(--text3)' }}>{breakageOpen ? '▲' : '▼'}</span>
         </button>
         {breakageOpen && (
           <>
@@ -2172,7 +2177,7 @@ function EquipmentPanel() {
                 </div>
               ))}
             </div>
-            <div style={{ marginTop: 4, fontSize: 10, color: 'var(--text3)' }}>Source: CoreLaw Table 6-1 (p. 137) · Ammo% = percentage of ammunition surviving</div>
+            <div style={{ marginTop: 4, fontSize: 10, color: 'var(--text3)' }}>Ammo% = percentage of ammunition surviving on that result</div>
           </>
         )}
       </div>
@@ -2217,14 +2222,16 @@ function EquipmentPanel() {
         </table>
       </div>
       <div style={{ marginTop: 8, fontSize: 11, color: 'var(--text3)' }}>
-        {filtered.length} item{filtered.length !== 1 ? 's' : ''} · Source: CoreLaw Table 6-3 (pp. 139–141)
+        {filtered.length} item{filtered.length !== 1 ? 's' : ''}
       </div>
     </div>
   )
 }
 
 function FormulasPanel() {
-  const [open, setOpen] = useState(() => Object.fromEntries(FORMULA_SECTIONS.map(s => [s.key, s.key === 'hits'])))
+  const [open, setOpen] = useLocalStorage('rm_ref_formulas_open',
+    Object.fromEntries(FORMULA_SECTIONS.map(s => [s.key, s.key === 'hits']))
+  )
   const toggle = key => setOpen(o => ({ ...o, [key]: !o[key] }))
 
   return (
