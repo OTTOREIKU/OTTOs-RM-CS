@@ -451,7 +451,8 @@ export default function CharacterSheet() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(110px,1fr))', gap: 8 }}>
           <StatCard label="Def Bonus" value={fmt(db)} color={db > 0 ? 'var(--success)' : 'var(--text)'} sub={talentB.db ? `Qu×3 + ${talentB.db} talent` : 'Qu×3'} />
           <StatCard label="Initiative" value={fmt(ini)} color={ini > 0 ? 'var(--accent)' : 'var(--text)'} sub={talentB.initiative ? `Qu + ${talentB.initiative} talent` : 'Qu bonus'} />
-          <EditStat label="Endurance" field="endurance"   char={c} onUpdate={updateCharacter} autoValue={autoEndurance} sub="Race base" />
+          <EditStat label="Endurance" field="endurance"   char={c} onUpdate={updateCharacter} autoValue={autoEndurance}
+            sub={talentB.endurance ? `BD + ${talentB.endurance > 0 ? '+' : ''}${talentB.endurance} talent + race` : 'BD + race'} />
           <StatCard
             label="Wt Allow"
             value={`${wa.pct}%`}
