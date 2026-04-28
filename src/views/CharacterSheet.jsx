@@ -322,7 +322,8 @@ function WeaponBrowser({ onSelect, onCancel }) {
 // ── Main view ─────────────────────────────────────────────────────────────────
 export default function CharacterSheet() {
   const { activeChar, updateCharacter, updateStat, updateSkill, addWeapon, updateWeapon, removeWeapon, updateArmorPart } = useCharacter()
-  const [wBrowse, setWBrowse] = useState(false)
+  const [wBrowse,   setWBrowse]   = useState(false)
+  const [paceOpen,  setPaceOpen]  = useState(false)
   const c = activeChar
   if (!c) return null
 
@@ -900,44 +901,47 @@ export default function CharacterSheet() {
       <TraitsPanel c={c} />
 
       {/* Pace & Encumbrance */}
-      <Card title="Pace & Encumbrance">
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(110px,1fr))', gap:8, marginBottom:12 }}>
-          <StatCard label="BMR (m/rnd)" value={bmr} color="var(--accent)" sub={talentB.stride ? `${talentB.stride > 0 ? '+' : ''}${talentB.stride} stride talent` : undefined} />
-          <StatCard label="Armor Man." value={armorTotals.man || '—'} color={armorTotals.man < 0 ? 'var(--danger)' : 'var(--text3)'} />
-          <StatCard label="Armor Rang." value={armorTotals.rang || '—'} color={armorTotals.rang < 0 ? 'var(--danger)' : 'var(--text3)'} />
-          <StatCard label="Armor Perc." value={armorTotals.perc || '—'} color={armorTotals.perc < 0 ? 'var(--danger)' : 'var(--text3)'} />
-        </div>
-        <div style={{ overflowX:'auto' }}>
-          <table style={{ width:'100%', borderCollapse:'collapse', fontSize:11 }}>
-            <thead>
-              <tr style={{ background:'var(--surface2)' }}>
-                {['Pace','Metres/Rnd','Man. Pen','AP Cost'].map(h => (
-                  <th key={h} style={{ padding:'5px 8px', fontSize:10, fontWeight:600, color:'var(--text3)', textAlign:'center', textTransform:'uppercase', letterSpacing:'0.07em', borderBottom:'1px solid var(--border)' }}>{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {PACE_TABLE.map((p, i) => (
-                <tr key={p.label} style={{ borderBottom:'1px solid var(--border)', background: i%2===0 ? 'transparent' : 'var(--surface2)' }}>
-                  <td style={{ padding:'4px 8px', fontWeight:600, fontSize:12 }}>{p.label}</td>
-                  <td style={{ padding:'4px 8px', textAlign:'center', fontSize:12, color:'var(--accent)', fontWeight:700 }}>{Math.round(bmr * p.mult)}</td>
-                  <td style={{ padding:'4px 8px', textAlign:'center', fontSize:12, color: p.man_pen < 0 ? 'var(--danger)' : p.man_pen > 0 ? 'var(--success)' : 'var(--text3)', fontWeight: p.man_pen !== 0 ? 600 : 400 }}>
-                    {p.man_pen > 0 ? `+${p.man_pen}` : p.man_pen === 0 ? '—' : p.man_pen}
-                  </td>
-                  <td style={{ padding:'4px 8px', textAlign:'center', fontSize:12, color:'var(--text2)' }}>{p.ap}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+      <Card title="Pace & Encumbrance" action={
+        <button onClick={() => setPaceOpen(o => !o)}
+          style={{ background:'none', border:'none', cursor:'pointer', color:'var(--text3)', display:'flex', alignItems:'center' }}>
+          {paceOpen ? <ChevronUpIcon size={12} color="currentColor" /> : <ChevronDownIcon size={12} color="currentColor" />}
+        </button>
+      }>
+        {paceOpen && (
+          <>
+            <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(110px,1fr))', gap:8, marginBottom:12 }}>
+              <StatCard label="BMR (m/rnd)" value={bmr} color="var(--accent)" sub={talentB.stride ? `${talentB.stride > 0 ? '+' : ''}${talentB.stride} stride talent` : undefined} />
+              <StatCard label="Armor Man." value={armorTotals.man || '—'} color={armorTotals.man < 0 ? 'var(--danger)' : 'var(--text3)'} />
+              <StatCard label="Armor Rang." value={armorTotals.rang || '—'} color={armorTotals.rang < 0 ? 'var(--danger)' : 'var(--text3)'} />
+              <StatCard label="Armor Perc." value={armorTotals.perc || '—'} color={armorTotals.perc < 0 ? 'var(--danger)' : 'var(--text3)'} />
+            </div>
+            <div style={{ overflowX:'auto' }}>
+              <table style={{ width:'100%', borderCollapse:'collapse', fontSize:11 }}>
+                <thead>
+                  <tr style={{ background:'var(--surface2)' }}>
+                    {['Pace','Metres/Rnd','Man. Pen','AP Cost'].map(h => (
+                      <th key={h} style={{ padding:'5px 8px', fontSize:10, fontWeight:600, color:'var(--text3)', textAlign:'center', textTransform:'uppercase', letterSpacing:'0.07em', borderBottom:'1px solid var(--border)' }}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {PACE_TABLE.map((p, i) => (
+                    <tr key={p.label} style={{ borderBottom:'1px solid var(--border)', background: i%2===0 ? 'transparent' : 'var(--surface2)' }}>
+                      <td style={{ padding:'4px 8px', fontWeight:600, fontSize:12 }}>{p.label}</td>
+                      <td style={{ padding:'4px 8px', textAlign:'center', fontSize:12, color:'var(--accent)', fontWeight:700 }}>{Math.round(bmr * p.mult)}</td>
+                      <td style={{ padding:'4px 8px', textAlign:'center', fontSize:12, color: p.man_pen < 0 ? 'var(--danger)' : p.man_pen > 0 ? 'var(--success)' : 'var(--text3)', fontWeight: p.man_pen !== 0 ? 600 : 400 }}>
+                        {p.man_pen > 0 ? `+${p.man_pen}` : p.man_pen === 0 ? '—' : p.man_pen}
+                      </td>
+                      <td style={{ padding:'4px 8px', textAlign:'center', fontSize:12, color:'var(--text2)' }}>{p.ap}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )}
       </Card>
 
-      {/* Notes */}
-      <Card title="Notes">
-        <textarea value={c.notes || ''} onChange={e => updateCharacter({ notes: e.target.value })}
-          placeholder="Session notes, injuries, reminders…"
-          style={{ width: '100%', minHeight: 90, resize: 'vertical', fontFamily: 'inherit', fontSize: 13, lineHeight: 1.5 }} />
-      </Card>
     </div>
   )
 }
@@ -1196,19 +1200,19 @@ function EditStat({ label, field, char, onUpdate, danger, autoValue, sub }) {
   const stored  = char[field]
   const isAuto  = stored == null && autoValue != null
   return (
-    <div style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 10, padding: '10px 8px', textAlign: 'center' }}>
-      <div style={{ fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>{label}</div>
+    <div style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 10, padding: '12px 8px', textAlign: 'center' }}>
       <input type="number" value={stored ?? ''}
         placeholder={autoValue != null ? String(autoValue) : ''}
         onChange={e => onUpdate({ [field]: e.target.value === '' ? null : Number(e.target.value) })}
-        style={{ width: 64, textAlign: 'center', fontSize: 18, fontWeight: 700, padding: '2px',
+        style={{ width: 64, textAlign: 'center', fontSize: 22, fontWeight: 700, padding: '2px', lineHeight: 1,
           background: 'transparent', border: 'none', boxShadow: 'none',
           color: danger ? 'var(--danger)' : 'var(--text)' }}
       />
       {isAuto
-        ? <div style={{ fontSize: 8, color: 'var(--accent)', letterSpacing: '0.06em', marginTop: 1 }}>AUTO</div>
-        : sub && <div style={{ fontSize: 9, color: 'var(--text3)', marginTop: 2 }}>{sub}</div>
+        ? <div style={{ fontSize: 8, color: 'var(--accent)', letterSpacing: '0.06em', marginTop: 2 }}>AUTO</div>
+        : sub && <div style={{ fontSize: 11, color: 'var(--text2)', marginTop: 2 }}>{sub}</div>
       }
+      <div style={{ fontSize: 10, color: 'var(--text3)', marginTop: 4, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{label}</div>
     </div>
   )
 }

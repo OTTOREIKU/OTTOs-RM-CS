@@ -996,12 +996,6 @@ export default function EquipmentView() {
         </button>
       </Card>
 
-      <Card title="Notes">
-        <textarea value={activeChar.notes||''} onChange={e=>updateCharacter({notes:e.target.value})}
-          rows={6} placeholder="Character notes, background, connections..."
-          style={{width:'100%',boxSizing:'border-box',background:'var(--surface2)',border:'1px solid var(--border2)',
-            borderRadius:6,padding:'8px 10px',color:'var(--text)',fontSize:13,resize:'vertical',fontFamily:'inherit',lineHeight:1.5}}/>
-      </Card>
       <div style={{ height: 16 }} />
     </div>
   )
