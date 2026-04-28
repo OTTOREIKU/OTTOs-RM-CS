@@ -110,7 +110,7 @@ function reducer(state, action) {
 
 // ── Main component ────────────────────────────────────────────────────────────
 export default function LevelUpView() {
-  const { activeChar, updateCharacter, updateStat, updateSkill, updateSpellList } = useCharacter()
+  const { activeChar, updateCharacter, updateStat, updateSkill, updateCustomSkill, updateSpellList } = useCharacter()
   const navigate = useNavigate()
   const c = activeChar
 
@@ -142,9 +142,14 @@ export default function LevelUpView() {
     })
 
     // 3. Apply skill rank purchases
+    const customSkillIds = new Set((c.custom_skills || []).map(cs => cs.id))
     Object.entries(lu.skillBuys).forEach(([name, newRanks]) => {
-      const curRanks = c.skills?.[name]?.ranks || 0
-      updateSkill(name, 'ranks', curRanks + newRanks)
+      if (customSkillIds.has(name)) {
+        const cs = c.custom_skills.find(cs => cs.id === name)
+        updateCustomSkill(name, { ranks: (cs?.ranks || 0) + newRanks })
+      } else {
+        updateSkill(name, 'ranks', (c.skills?.[name]?.ranks || 0) + newRanks)
+      }
     })
 
     // 4. Apply spell list rank purchases
@@ -281,8 +286,21 @@ function SkillStep({ c, lu, dispatch, skillSearch, setSkillSearch, dpLeft,
       if (!map[cat]) map[cat] = []
       map[cat].push(sk)
     }
+    // Include custom skills (placeholder skills the user has personalised or added)
+    for (const cs of (c.custom_skills || [])) {
+      const cat = cs.category || 'Other'
+      if (!map[cat]) map[cat] = []
+      map[cat].push({
+        name:        cs.id,                         // key for skillBuys
+        displayName: cs.label || cs.template_name,  // human-readable label
+        category:    cs.category,
+        dev_cost:    cs.dev_cost,
+        _isCustom:   true,
+        _curRanks:   cs.ranks || 0,
+      })
+    }
     return map
-  }, [])
+  }, [c.custom_skills])
 
   const [expanded, setExpanded] = useState({})
 
@@ -298,9 +316,10 @@ function SkillStep({ c, lu, dispatch, skillSearch, setSkillSearch, dpLeft,
       </div>
 
       {Object.entries(grouped).map(([cat, skills]) => {
-        const filtered = skills.filter(sk =>
-          !query || sk.name.toLowerCase().includes(query) || cat.toLowerCase().includes(query)
-        )
+        const filtered = skills.filter(sk => {
+          const label = (sk.displayName || sk.name).toLowerCase()
+          return !query || label.includes(query) || cat.toLowerCase().includes(query)
+        })
         if (!filtered.length) return null
         const isOpen = !!expanded[cat]
         const hasBuys = filtered.some(sk => lu.skillBuys[sk.name] > 0)
@@ -317,8 +336,9 @@ function SkillStep({ c, lu, dispatch, skillSearch, setSkillSearch, dpLeft,
             {isOpen && (
               <div style={{ border: '1px solid var(--border)', borderTop: 'none', borderRadius: '0 0 7px 7px', overflow: 'hidden' }}>
                 {filtered.map((skill, idx) => {
+                  const displayName = skill.displayName || skill.name
                   const costs    = getSkillCostsForChar(skill, c.profession)
-                  const curRanks = c.skills?.[skill.name]?.ranks || 0
+                  const curRanks = skill._isCustom ? (skill._curRanks || 0) : (c.skills?.[skill.name]?.ranks || 0)
                   const buying   = lu.skillBuys[skill.name] || 0
                   const newRanks = curRanks + buying
                   const curBonus = rankBonus(curRanks)
@@ -333,8 +353,9 @@ function SkillStep({ c, lu, dispatch, skillSearch, setSkillSearch, dpLeft,
                       background: idx % 2 === 0 ? 'var(--surface)' : 'var(--surface2)',
                     }}>
                       <div>
-                        <span>{skill.name}</span>
-                        <span style={{ marginLeft: 6, fontSize: 10, color: 'var(--text3)' }}>{costs.first}/{costs.second} DP · cur {curRanks} ranks</span>
+                        <span>{displayName}</span>
+                        {skill._isCustom && <span style={{ marginLeft: 4, fontSize: 9, color: 'var(--text3)', background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 3, padding: '0 3px' }}>custom</span>}
+                        <span style={{ marginLeft: 6, fontSize: 10, color: curRanks > 0 ? 'var(--accent)' : 'var(--text3)' }}>{costs.first}/{costs.second} DP · cur {curRanks} ranks</span>
                       </div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                         <button onClick={() => buying > 0 && dispatch({ type: 'SKILL_BUY', name: skill.name, ranks: buying - 1, costs })}
@@ -480,9 +501,12 @@ function ReviewStep({ c, lu, onConfirm }) {
       {skillChanges.length > 0 && (
         <Section title={`Skill Ranks (${skillChanges.length} skills)`}>
           {skillChanges.map(([name, ranks]) => {
-            const costs = getSkillCostsForChar(skillsData.find(s => s.name === name) || {}, c.profession)
-            const cur   = c.skills?.[name]?.ranks || 0
-            return <Row key={name} label={name} value={`+${ranks} rank${ranks > 1 ? 's' : ''} (${cur} → ${cur + ranks}) · −${rankCostDelta(0, ranks, costs)} DP`} color="var(--accent)" />
+            const cs          = c.custom_skills?.find(cs => cs.id === name)
+            const displayName = cs ? (cs.label || cs.template_name) : name
+            const skillDef    = cs ? { category: cs.category, dev_cost: cs.dev_cost } : (skillsData.find(s => s.name === name) || {})
+            const costs       = getSkillCostsForChar(skillDef, c.profession)
+            const cur         = cs ? (cs.ranks || 0) : (c.skills?.[name]?.ranks || 0)
+            return <Row key={name} label={displayName} value={`+${ranks} rank${ranks > 1 ? 's' : ''} (${cur} → ${cur + ranks}) · −${rankCostDelta(0, ranks, costs)} DP`} color="var(--accent)" />
           })}
         </Section>
       )}
