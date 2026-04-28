@@ -1,4 +1,9 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
+import { useEditor, useEditorState, EditorContent } from '@tiptap/react'
+import StarterKit from '@tiptap/starter-kit'
+import { TaskList } from '@tiptap/extension-task-list'
+import { TaskItem } from '@tiptap/extension-task-item'
+import Placeholder from '@tiptap/extension-placeholder'
 import {
   ChevronDownIcon, ChevronRightIcon, PlusIcon, TrashIcon,
   PencilIcon, PinIcon, FolderIcon, FolderOpenIcon, DotsHIcon, FileIcon, CalendarIcon,
@@ -242,7 +247,6 @@ export default function NotebookView() {
 
   const renameRef    = useRef(null)
   const titleRef     = useRef(null)
-  const editorRef    = useRef(null)
   const dragItemRef  = useRef(null)   // sync ref — avoids stale closure in drag events
   const nbImportRef  = useRef(null)
   const [nbImportStatus, setNbImportStatus] = useState(null)
@@ -288,8 +292,7 @@ export default function NotebookView() {
   const createNote = useCallback((folderId = null) => {
     const id = nbUid('note'), now = new Date().toISOString()
     mutate(d => { d.notes[id] = { id, title: 'Untitled', content: '', folder_id: folderId, pinned: false, color: null, created_at: now, updated_at: now }; return d })
-    setActiveId(id); setMode('edit')
-    if (isMobile) setShowSidebar(false)
+    setActiveId(id);     if (isMobile) setShowSidebar(false)
     requestAnimationFrame(() => requestAnimationFrame(() => titleRef.current?.select()))
   }, [isMobile])
 
@@ -365,8 +368,7 @@ export default function NotebookView() {
       d.notes[newId] = { ...note, id: newId, title: `Copy of ${note.title}`, created_at: now, updated_at: now }
       return d
     })
-    setActiveId(newId); setMode('edit')
-    if (isMobile) setShowSidebar(false)
+    setActiveId(newId);     if (isMobile) setShowSidebar(false)
     setCtxMenu(null)
   }
 
@@ -478,54 +480,60 @@ export default function NotebookView() {
     setDragItem(null); setDragOverTarget(null)
   }
 
-  // ── Editor ─────────────────────────────────────────────────────────────────
-
-  // When the active note changes, load its content into the contentEditable div
-  useEffect(() => {
-    if (!editorRef.current) return
-    if (!activeNote) { editorRef.current.innerHTML = ''; return }
-    const html = noteToHtml(activeNote.content)
-    editorRef.current.innerHTML = html
-    // One-time migration: save converted HTML so legacy markdown isn't re-converted
-    if (activeNote.content && activeNote.content.trim() && !activeNote.content.trimStart().startsWith('<')) {
-      mutate(d => { if (d.notes[activeNote.id]) d.notes[activeNote.id].content = html; return d })
-    }
-  }, [activeNote?.id]) // eslint-disable-line
+  // ── Editor (Tiptap) ──────────────────────────────────────────────────────────
 
   function handleContentChange(val) {
     if (!activeId) return
     mutate(d => { if (d.notes[activeId]) { d.notes[activeId].content = val; d.notes[activeId].updated_at = new Date().toISOString() }; return d })
   }
 
-  function applyFormat(action) {
-    const el = editorRef.current; if (!el) return
-    el.focus()
-    switch (action) {
-      case 'bold':      document.execCommand('bold');                         break
-      case 'italic':    document.execCommand('italic');                       break
-      case 'strike':    document.execCommand('strikeThrough');                break
-      case 'h1':        document.execCommand('formatBlock', false, 'H1');     break
-      case 'h2':        document.execCommand('formatBlock', false, 'H2');     break
-      case 'h3':        document.execCommand('formatBlock', false, 'H3');     break
-      case 'ul':        document.execCommand('insertUnorderedList');          break
-      case 'ol':        document.execCommand('insertOrderedList');            break
-      case 'quote':     document.execCommand('formatBlock', false, 'BLOCKQUOTE'); break
-      case 'codeblock': document.execCommand('formatBlock', false, 'PRE');   break
-      case 'hr':        document.execCommand('insertHorizontalRule');         break
-      case 'code': {
-        const sel = window.getSelection()
-        const txt = (sel && !sel.isCollapsed) ? sel.toString() : 'code'
-        document.execCommand('insertHTML', false, `<code>${txt}</code>`)
-        break
-      }
-      case 'task':
-        document.execCommand('insertUnorderedList')
-        document.execCommand('insertHTML', false, '<li>☐ </li>')
-        break
-      default: break
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      TaskList,
+      TaskItem.configure({ nested: true }),
+      Placeholder.configure({ placeholder: 'Start writing…' }),
+    ],
+    content: activeNote ? noteToHtml(activeNote.content) : '',
+    onUpdate: ({ editor: e }) => {
+      if (activeId) handleContentChange(e.getHTML())
+    },
+    editorProps: {
+      attributes: { class: 'rich-editor' },
+    },
+  })
+
+  // When active note changes, load its content into the editor
+  useEffect(() => {
+    if (!editor) return
+    if (!activeNote) { editor.commands.setContent('', false); return }
+    const html = noteToHtml(activeNote.content)
+    editor.commands.setContent(html, false) // false = don't trigger onUpdate
+    // One-time migration: save converted HTML so legacy markdown isn't re-converted
+    if (activeNote.content?.trim() && !activeNote.content.trimStart().startsWith('<')) {
+      mutate(d => { if (d.notes[activeNote.id]) d.notes[activeNote.id].content = html; return d })
     }
-    setTimeout(() => { if (editorRef.current && activeId) handleContentChange(editorRef.current.innerHTML) }, 0)
-  }
+  }, [activeNote?.id, editor]) // eslint-disable-line
+
+  // Reactive toolbar state — useEditorState subscribes to every transaction so
+  // isActive values update immediately on selection/content change (Tiptap v3 requirement)
+  const fmt = useEditorState({
+    editor,
+    selector: ({ editor: e }) => ({
+      bold:      e?.isActive('bold')                    ?? false,
+      italic:    e?.isActive('italic')                  ?? false,
+      strike:    e?.isActive('strike')                  ?? false,
+      h1:        e?.isActive('heading', { level: 1 })   ?? false,
+      h2:        e?.isActive('heading', { level: 2 })   ?? false,
+      h3:        e?.isActive('heading', { level: 3 })   ?? false,
+      code:      e?.isActive('code')                    ?? false,
+      codeBlock: e?.isActive('codeBlock')               ?? false,
+      quote:     e?.isActive('blockquote')              ?? false,
+      ul:        e?.isActive('bulletList')              ?? false,
+      ol:        e?.isActive('orderedList')             ?? false,
+      task:      e?.isActive('taskList')                ?? false,
+    }),
+  })
 
   // ── Derived data ───────────────────────────────────────────────────────────
   const q = search.toLowerCase()
@@ -1058,7 +1066,7 @@ export default function NotebookView() {
                   )}
                   <input ref={titleRef} value={activeNote.title}
                     onChange={e => updateNote(activeId, { title: e.target.value })}
-                    onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); textareaRef.current?.focus() } }}
+                    onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); editor?.commands.focus() } }}
                     style={{ flex: 1, fontSize: 18, fontWeight: 700, color: 'var(--text)',
                       background: 'transparent', border: 'none', boxShadow: 'none', padding: '2px 0', minWidth: 0 }}
                     placeholder="Note title…" />
@@ -1087,47 +1095,47 @@ export default function NotebookView() {
                 {/* Toolbar */}
                 <div className="notebook-toolbar" style={{ display: 'flex', alignItems: 'center', gap: 2, paddingBottom: 8, flexWrap: 'wrap' }}>
                   <TGroup>
-                    <TBtn onClick={() => applyFormat('bold')}   title="Bold (Ctrl+B)"><strong>B</strong></TBtn>
-                    <TBtn onClick={() => applyFormat('italic')} title="Italic (Ctrl+I)"><em>I</em></TBtn>
-                    <TBtn onClick={() => applyFormat('strike')} title="Strikethrough"><del>S</del></TBtn>
+                    <TBtn onClick={() => editor?.chain().focus().toggleBold().run()}
+                      active={fmt.bold}      title="Bold (Ctrl+B)"><strong>B</strong></TBtn>
+                    <TBtn onClick={() => editor?.chain().focus().toggleItalic().run()}
+                      active={fmt.italic}    title="Italic (Ctrl+I)"><em>I</em></TBtn>
+                    <TBtn onClick={() => editor?.chain().focus().toggleStrike().run()}
+                      active={fmt.strike}    title="Strikethrough"><del>S</del></TBtn>
                   </TGroup>
                   <TGroup>
-                    <TBtn onClick={() => applyFormat('h1')} title="Heading 1">H1</TBtn>
-                    <TBtn onClick={() => applyFormat('h2')} title="Heading 2">H2</TBtn>
-                    <TBtn onClick={() => applyFormat('h3')} title="Heading 3">H3</TBtn>
+                    <TBtn onClick={() => editor?.chain().focus().toggleHeading({ level: 1 }).run()}
+                      active={fmt.h1}        title="Heading 1">H1</TBtn>
+                    <TBtn onClick={() => editor?.chain().focus().toggleHeading({ level: 2 }).run()}
+                      active={fmt.h2}        title="Heading 2">H2</TBtn>
+                    <TBtn onClick={() => editor?.chain().focus().toggleHeading({ level: 3 }).run()}
+                      active={fmt.h3}        title="Heading 3">H3</TBtn>
                   </TGroup>
                   <TGroup>
-                    <TBtn onClick={() => applyFormat('code')}      title="Inline code">{'<>'}</TBtn>
-                    <TBtn onClick={() => applyFormat('codeblock')} title="Code block">{'```'}</TBtn>
-                    <TBtn onClick={() => applyFormat('quote')}     title="Blockquote">"</TBtn>
+                    <TBtn onClick={() => editor?.chain().focus().toggleCode().run()}
+                      active={fmt.code}      title="Inline code">{'<>'}</TBtn>
+                    <TBtn onClick={() => editor?.chain().focus().toggleCodeBlock().run()}
+                      active={fmt.codeBlock} title="Code block">{'```'}</TBtn>
+                    <TBtn onClick={() => editor?.chain().focus().toggleBlockquote().run()}
+                      active={fmt.quote}     title="Blockquote">"</TBtn>
                   </TGroup>
                   <TGroup>
-                    <TBtn onClick={() => applyFormat('ul')}   title="Bullet list">• List</TBtn>
-                    <TBtn onClick={() => applyFormat('ol')}   title="Numbered list">1. List</TBtn>
-                    <TBtn onClick={() => applyFormat('task')} title="Task checkbox">[ ] Task</TBtn>
-                    <TBtn onClick={() => applyFormat('hr')}   title="Horizontal rule">─</TBtn>
+                    <TBtn onClick={() => editor?.chain().focus().toggleBulletList().run()}
+                      active={fmt.ul}        title="Bullet list">• List</TBtn>
+                    <TBtn onClick={() => editor?.chain().focus().toggleOrderedList().run()}
+                      active={fmt.ol}        title="Numbered list">1. List</TBtn>
+                    <TBtn onClick={() => editor?.chain().focus().toggleTaskList().run()}
+                      active={fmt.task}      title="Task checkbox">[ ] Task</TBtn>
+                    <TBtn onClick={() => editor?.chain().focus().setHorizontalRule().run()}
+                      title="Horizontal rule">─</TBtn>
                   </TGroup>
                   <div style={{ flex: 1 }} />
                 </div>
               </div>
 
-              {/* Rich text editor */}
-              <div
-                ref={editorRef}
-                contentEditable
-                suppressContentEditableWarning
-                className="rich-editor"
-                onInput={() => { if (activeId && editorRef.current) handleContentChange(editorRef.current.innerHTML) }}
-                onKeyDown={e => {
-                  if ((e.ctrlKey || e.metaKey) && e.key === 'b') { e.preventDefault(); applyFormat('bold') }
-                  if ((e.ctrlKey || e.metaKey) && e.key === 'i') { e.preventDefault(); applyFormat('italic') }
-                }}
-                data-placeholder="Start writing…"
-                style={{ flex: 1, width: '100%', padding: '16px 20px',
-                  outline: 'none', overflowY: 'auto',
-                  fontFamily: 'inherit', fontSize: 14, lineHeight: 1.65,
-                  color: 'var(--text)', background: 'var(--bg)',
-                  boxSizing: 'border-box', wordBreak: 'break-word' }}
+              {/* Rich text editor — Tiptap */}
+              <EditorContent
+                editor={editor}
+                style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}
               />
 
               {/* Status bar */}
@@ -1320,13 +1328,24 @@ function TGroup({ children }) {
     </div>
   )
 }
-function TBtn({ onClick, title, children }) {
+function TBtn({ onClick, title, active, children }) {
   return (
     <button onClick={onClick} title={title}
-      style={{ background: 'transparent', border: 'none', borderRight: '1px solid var(--border)',
-        color: 'var(--text2)', padding: '3px 8px', fontSize: 12, cursor: 'pointer', fontFamily: 'inherit', lineHeight: 1.4 }}
-      onMouseEnter={e => { e.currentTarget.style.background = 'var(--surface2)'; e.currentTarget.style.color = 'var(--text)' }}
-      onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text2)' }}>
+      style={{
+        background: active ? 'var(--accent)' : 'transparent',
+        border: 'none', borderRight: '1px solid var(--border)',
+        color: active ? '#fff' : 'var(--text2)',
+        padding: '3px 8px', fontSize: 12, cursor: 'pointer', fontFamily: 'inherit', lineHeight: 1.4,
+        transition: 'background 0.1s, color 0.1s',
+      }}
+      onMouseEnter={e => {
+        if (active) return
+        e.currentTarget.style.background = 'var(--surface2)'; e.currentTarget.style.color = 'var(--text)'
+      }}
+      onMouseLeave={e => {
+        if (active) return
+        e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text2)'
+      }}>
       {children}
     </button>
   )
