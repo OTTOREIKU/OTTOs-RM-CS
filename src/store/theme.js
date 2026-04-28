@@ -7,7 +7,6 @@ const COLORBLIND_KEY = 'rm_colorblind'
 const GRAYSCALE_KEY  = 'rm_grayscale'
 const FLAT_BG_KEY    = 'rm_flat_bg'
 const BOLD_UI_KEY    = 'rm_bold_ui'
-const LARGE_TEXT_KEY = 'rm_large_text'
 
 // ── Presets ───────────────────────────────────────────────────────────────────
 
@@ -92,18 +91,16 @@ export function loadDisplaySettings() {
     grayscale:  localStorage.getItem(GRAYSCALE_KEY)  === 'true',
     flatBg:     localStorage.getItem(FLAT_BG_KEY)    === 'true',
     boldUi:     localStorage.getItem(BOLD_UI_KEY)    === 'true',
-    largeText:  localStorage.getItem(LARGE_TEXT_KEY) === 'true',
   }
 }
 
 export function saveDisplaySettings(patch) {
   const next = { ...loadDisplaySettings(), ...patch }
-  if (patch.accent     !== undefined) localStorage.setItem(ACCENT_KEY,      next.accent)
-  if (patch.colorblind !== undefined) localStorage.setItem(COLORBLIND_KEY,  next.colorblind)
-  if (patch.grayscale  !== undefined) localStorage.setItem(GRAYSCALE_KEY,   String(next.grayscale))
-  if (patch.flatBg     !== undefined) localStorage.setItem(FLAT_BG_KEY,     String(next.flatBg))
-  if (patch.boldUi     !== undefined) localStorage.setItem(BOLD_UI_KEY,     String(next.boldUi))
-  if (patch.largeText  !== undefined) localStorage.setItem(LARGE_TEXT_KEY,  String(next.largeText))
+  if (patch.accent     !== undefined) localStorage.setItem(ACCENT_KEY,     next.accent)
+  if (patch.colorblind !== undefined) localStorage.setItem(COLORBLIND_KEY, next.colorblind)
+  if (patch.grayscale  !== undefined) localStorage.setItem(GRAYSCALE_KEY,  String(next.grayscale))
+  if (patch.flatBg     !== undefined) localStorage.setItem(FLAT_BG_KEY,    String(next.flatBg))
+  if (patch.boldUi     !== undefined) localStorage.setItem(BOLD_UI_KEY,    String(next.boldUi))
   applyTheme(loadTheme(), next)
 }
 
@@ -143,8 +140,7 @@ export function applyTheme(theme, settings) {
   if (settings.boldUi) html.classList.add('ui-bold')
   if (settings.flatBg) html.classList.add('flat-bg')
 
-  // 5. Large text
-  if (settings.largeText) document.body.style.fontSize = '16px'
+  // 5. (large text removed)
 
   // 6. Colorblind palette — override semantic color CSS vars
   if (settings.colorblind && settings.colorblind !== 'none') {

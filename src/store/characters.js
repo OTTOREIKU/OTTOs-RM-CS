@@ -1,5 +1,11 @@
 // Character store — persists to localStorage, supports multiple characters
 import { scheduleBackup } from './fileSync.js'
+import {
+  loadTheme, saveTheme,
+  loadDisplaySettings, saveDisplaySettings,
+  loadNavPos, saveNavPos,
+  applyTheme,
+} from './theme.js'
 
 function buildBackupPayload() {
   const EXPORT_V = 1
@@ -374,7 +380,8 @@ export function exportCharacter(id) {
   if (!char) return
   let notebook = null
   try { const raw = localStorage.getItem(NB_KEY); notebook = raw ? JSON.parse(raw) : null } catch {}
-  const payload    = { _version: EXPORT_VERSION, _type: 'single', character: char, notebook }
+  const _settings  = { theme: loadTheme(), display: loadDisplaySettings(), navPos: loadNavPos() }
+  const payload    = { _version: EXPORT_VERSION, _type: 'single', character: char, notebook, _settings }
   const safe       = s => (s || '').replace(/[^a-z0-9]/gi, '_').replace(/_+/g, '_').replace(/^_|_$/g, '')
   const name       = safe(char.name) || 'Character'
   const race       = safe(char.race) || 'Unknown'
@@ -426,6 +433,15 @@ export function importCharactersFromFile(file, mode = 'merge') {
         }
 
         saveCharacters(chars)
+
+        // Apply embedded settings if present (travels with exported character)
+        if (payload._settings) {
+          const { theme, display, navPos } = payload._settings
+          if (theme)   saveTheme(theme)
+          if (display) saveDisplaySettings(display)
+          if (navPos)  saveNavPos(navPos)
+          applyTheme(theme || loadTheme(), display || loadDisplaySettings())
+        }
 
         // Merge notebook if present
         if (payload.notebook) {

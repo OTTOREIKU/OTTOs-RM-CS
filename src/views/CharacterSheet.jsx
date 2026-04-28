@@ -467,10 +467,10 @@ export default function CharacterSheet() {
           <EditStat label="Endurance" field="endurance" char={c} onUpdate={updateCharacter} autoValue={autoEndurance}
             sub={talentB.endurance ? `BD + ${talentB.endurance > 0 ? '+' : ''}${talentB.endurance} talent + race` : 'BD + race'} showDetail={showDetail} />
           <StatCard
-            label="Wt Allow"
-            value={`${wa.pct}%`}
+            label="Carry Weight"
+            value={wa.lbs != null ? `${wa.lbs} lbs` : '—'}
             color={wa.pct > 15 ? 'var(--success)' : wa.pct < 15 ? 'var(--danger)' : 'var(--text)'}
-            sub={wa.lbs != null ? `${wa.lbs} lbs${wa.carryBonus ? ` (+${wa.carryBonus}% talent)` : ''}` : 'set weight'}
+            sub={wa.lbs != null ? `${wa.pct}%${wa.carryBonus ? ` (+${wa.carryBonus}% talent)` : ''}` : 'set weight'}
             showDetail={showDetail}
           />
           <EditStat label="Experience" field="experience" char={c} onUpdate={updateCharacter} showDetail={showDetail} />

@@ -310,9 +310,9 @@ export default function ReferenceView() {
                 <button key={id} onClick={() => handleThemeChange(id)}
                   style={{
                     padding: '8px 14px', borderRadius: 8, cursor: 'pointer',
-                    border: '2px solid ' + (theme === id ? 'var(--accent)' : 'var(--border2)'),
-                    background: theme === id ? 'var(--accent)22' : 'var(--surface2)',
-                    color: theme === id ? 'var(--accent)' : 'var(--text2)',
+                    border: '1px solid ' + (theme === id ? 'transparent' : 'var(--border2)'),
+                    background: theme === id ? 'var(--accent)' : 'var(--surface2)',
+                    color: theme === id ? '#fff' : 'var(--text2)',
                     textAlign: 'left', transition: 'all .15s',
                   }}>
                   <div style={{ fontSize: 12, fontWeight: 700 }}>{label}</div>
@@ -365,17 +365,16 @@ export default function ReferenceView() {
               Colorblind Mode
             </div>
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-              {COLORBLIND_MODES.map(({ id, label, desc }) => (
+              {COLORBLIND_MODES.map(({ id, label }) => (
                 <button key={id} onClick={() => handleDisplayChange({ colorblind: id })}
                   style={{
                     padding: '7px 13px', borderRadius: 8, cursor: 'pointer',
-                    border: '2px solid ' + (display.colorblind === id ? 'var(--accent)' : 'var(--border2)'),
-                    background: display.colorblind === id ? 'var(--accent)22' : 'var(--surface2)',
-                    color: display.colorblind === id ? 'var(--accent)' : 'var(--text2)',
-                    textAlign: 'left', transition: 'all .15s',
+                    border: '1px solid ' + (display.colorblind === id ? 'transparent' : 'var(--border2)'),
+                    background: display.colorblind === id ? 'var(--accent)' : 'var(--surface2)',
+                    color: display.colorblind === id ? '#fff' : 'var(--text2)',
+                    fontSize: 12, fontWeight: 600, transition: 'all .15s',
                   }}>
-                  <div style={{ fontSize: 12, fontWeight: 700 }}>{label}</div>
-                  <div style={{ fontSize: 10, opacity: 0.7, marginTop: 1 }}>{desc}</div>
+                  {label}
                 </button>
               ))}
             </div>
@@ -388,10 +387,9 @@ export default function ReferenceView() {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               {[
-                { key: 'grayscale', label: 'Grayscale',         desc: 'Removes all color — desaturates the entire UI including images and icons' },
-                { key: 'flatBg',    label: 'Flat backgrounds',  desc: 'Collapses all surface layers to match the base background color' },
-                { key: 'boldUi',    label: 'Bold UI',           desc: 'Heavier borders and thicker input outlines — improves visibility on low-contrast screens' },
-                { key: 'largeText', label: 'Larger text',       desc: 'Increases base font size — use browser zoom for finer control' },
+                { key: 'grayscale', label: 'Grayscale',        desc: 'Removes all color — desaturates the entire UI including images and icons' },
+                { key: 'flatBg',    label: 'Flat backgrounds', desc: 'Collapses all surface layers to match the base background color' },
+                { key: 'boldUi',    label: 'Bold UI',          desc: 'Heavier borders and thicker input outlines — improves visibility on low-contrast screens' },
               ].map(({ key, label, desc }) => (
                 <label key={key} style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}>
                   <div onClick={() => handleDisplayChange({ [key]: !display[key] })}
@@ -428,9 +426,9 @@ export default function ReferenceView() {
                 <button key={id} onClick={() => handleNavPosChange(id)}
                   style={{
                     padding: '8px 16px', borderRadius: 8, cursor: 'pointer',
-                    border: '2px solid ' + (navPos === id ? 'var(--accent)' : 'var(--border2)'),
-                    background: navPos === id ? 'var(--accent)22' : 'var(--surface2)',
-                    color: navPos === id ? 'var(--accent)' : 'var(--text2)',
+                    border: '1px solid ' + (navPos === id ? 'transparent' : 'var(--border2)'),
+                    background: navPos === id ? 'var(--accent)' : 'var(--surface2)',
+                    color: navPos === id ? '#fff' : 'var(--text2)',
                     textAlign: 'left', transition: 'all .15s',
                   }}>
                   <div style={{ fontSize: 13, fontWeight: 700 }}>{label}</div>
