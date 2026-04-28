@@ -32,7 +32,7 @@ export const COLORBLIND_MODES = [
 ]
 
 const COLORBLIND_VARS = {
-  // Okabe-Ito: blue accent, vermillion danger, teal success, orange-yellow warning, pink purple
+  // Okabe-Ito: blue accent, vermillion danger, teal success, orange-yellow warning, pink purple, sky-blue info
   deuteranopia: {
     '--accent':     '#0072B2',
     '--accent-dim': '#004f80',
@@ -40,6 +40,7 @@ const COLORBLIND_VARS = {
     '--success':    '#009E73',
     '--warning':    '#E69F00',
     '--purple':     '#CC79A7',
+    '--info':       '#56B4E9',
   },
   protanopia: {
     '--accent':     '#0072B2',
@@ -48,8 +49,9 @@ const COLORBLIND_VARS = {
     '--success':    '#009E73',
     '--warning':    '#E69F00',
     '--purple':     '#CC79A7',
+    '--info':       '#56B4E9',
   },
-  // Tritanopia: orange accent, pink danger, light-blue success, teal warning, vermillion purple
+  // Tritanopia: orange accent, pink danger, light-blue success, teal warning, vermillion purple, yellow info
   tritanopia: {
     '--accent':     '#E69F00',
     '--accent-dim': '#b57800',
@@ -57,6 +59,7 @@ const COLORBLIND_VARS = {
     '--success':    '#56B4E9',
     '--warning':    '#009E73',
     '--purple':     '#D55E00',
+    '--info':       '#F0E442',
   },
 }
 
@@ -114,7 +117,7 @@ const ALL_CLASSES = [
 ]
 
 const CSS_VARS = [
-  '--accent', '--accent-dim', '--danger', '--success', '--warning', '--purple',
+  '--accent', '--accent-dim', '--danger', '--success', '--warning', '--purple', '--info',
   '--surface', '--surface2', '--bg',
 ]
 
@@ -167,6 +170,36 @@ function _darken(hex, amount = 30) {
   const g = Math.max(0, parseInt(hex.slice(3, 5), 16) - amount)
   const b = Math.max(0, parseInt(hex.slice(5, 7), 16) - amount)
   return `#${r.toString(16).padStart(2,'0')}${g.toString(16).padStart(2,'0')}${b.toString(16).padStart(2,'0')}`
+}
+
+// ── Shared semantic color maps ────────────────────────────────────────────────
+// Use these everywhere instead of hardcoded hex so colorblind / theme overrides work.
+
+/** Spell realm → semantic CSS variable */
+export const REALM_COLORS = {
+  Channeling: 'var(--warning)',   // amber  — divine / elemental
+  Essence:    'var(--accent)',    // blue   — arcane / raw magic
+  Mentalism:  'var(--purple)',    // purple — mind / spirit
+  Hybrid:     'var(--success)',   // green  — combined forces
+}
+
+/** Spell list section → semantic CSS variable */
+export const SPELL_SECTION_COLORS = {
+  'Magic Ritual': 'var(--purple)',
+  Base:           'var(--accent)',
+  Open:           'var(--success)',
+  Closed:         'var(--warning)',
+  Arcane:         'var(--info)',
+  Restricted:     'var(--danger)',
+}
+
+/** Resistance roll type → semantic CSS variable */
+export const RR_COLORS = {
+  channeling: 'var(--warning)',
+  essence:    'var(--accent)',
+  mentalism:  'var(--purple)',
+  physical:   'var(--success)',
+  fear:       'var(--danger)',
 }
 
 // Auto-apply persisted theme on module load (client only)

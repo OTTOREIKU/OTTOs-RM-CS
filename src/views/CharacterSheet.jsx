@@ -4,6 +4,7 @@ import { ChevronDownIcon, ChevronUpIcon, XIcon, CheckIcon, DiamondIcon, EyeOpenI
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { STATS } from '../store/characters.js'
 import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getBaseHits, getEndurance, getPowerPoints, getWeightAllowance, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus } from '../utils/calc.js'
+import { REALM_COLORS, SPELL_SECTION_COLORS, RR_COLORS } from '../store/theme.js'
 import races from '../data/races.json'
 import professions from '../data/professions.json'
 import cultures from '../data/cultures.json'
@@ -885,12 +886,13 @@ export default function CharacterSheet() {
           </div>
           <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(130px,1fr))', gap:6 }}>
             {[
-              { key:'channeling', label:'Channeling', stat:'Intuition',    color:'#f59e0b' },
-              { key:'essence',    label:'Essence',    stat:'Empathy',      color:'#4c8bf5' },
-              { key:'mentalism',  label:'Mentalism',  stat:'Presence',     color:'#8b5cf6' },
-              { key:'physical',   label:'Physical',   stat:'Constitution', color:'#22c55e' },
-              { key:'fear',       label:'Fear',       stat:'Self Disc.',   color:'#ef4444' },
-            ].map(({ key, label, stat, color }) => {
+              { key:'channeling', label:'Channeling', stat:'Intuition'    },
+              { key:'essence',    label:'Essence',    stat:'Empathy'      },
+              { key:'mentalism',  label:'Mentalism',  stat:'Presence'     },
+              { key:'physical',   label:'Physical',   stat:'Constitution' },
+              { key:'fear',       label:'Fear',       stat:'Self Disc.'   },
+            ].map(({ key, label, stat }) => {
+              const color = RR_COLORS[key] || 'var(--accent)'
               const total = rrBonuses[key] ?? 0
               return (
                 <div key={key} style={{ background:'var(--surface2)', border:'1px solid var(--border)', borderRadius:8, padding:'8px 10px' }}>
@@ -1048,7 +1050,7 @@ function StarredSkillsPanel({ c }) {
 // Per CoreLaw: Mentalism realm stat is Presence, not Self Discipline
 const REALM_STAT_MAP = { Channeling: 'Intuition', Essence: 'Empathy', Mentalism: 'Presence' }
 const SPELL_SUBS = ['Magic Ritual', 'Base', 'Open', 'Closed', 'Arcane', 'Restricted']
-const SUB_COLOR  = { 'Magic Ritual': '#a855f7', Base: '#4c8bf5', Open: '#22c55e', Closed: '#f59e0b', Arcane: '#ec4899', Restricted: '#ef4444' }
+const SUB_COLOR  = SPELL_SECTION_COLORS
 
 function SpellListsPanel({ c }) {
   const [open, setOpen] = usePersistentOpen('rm_panel_spells', true)

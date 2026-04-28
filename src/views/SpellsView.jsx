@@ -5,6 +5,7 @@ import { ChevronDownIcon, ChevronUpIcon, ChevronRightIcon, InfoIcon } from '../c
 import { rankBonus, getTotalStatBonus, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus } from '../utils/calc.js'
 import spellLists from '../data/spell_lists.json'
 import spellDescs from '../data/spell_descriptions.json'
+import { REALM_COLORS } from '../store/theme.js'
 
 const SPELL_GRID   = '36px 1fr 80px 90px 64px 32px'   // desktop
 const SPELL_GRID_M = '28px 1fr 58px 78px 42px 28px'   // mobile: tighter fixed cols → ~128px for name
@@ -23,7 +24,7 @@ const SPELL_TYPES = [
 ]
 
 const REALMS = ['All', 'Channeling', 'Essence', 'Mentalism', 'Hybrid']
-const REALM_COLOR = { Channeling:'#f59e0b', Essence:'#4c8bf5', Mentalism:'#8b5cf6', Hybrid:'#22c55e' }
+const REALM_COLOR = REALM_COLORS   // shared CSS-variable map from theme.js
 // Per CoreLaw: Mentalism realm stat is Presence, not Self Discipline
 const REALM_STAT  = { Channeling:'Intuition', Essence:'Empathy', Mentalism:'Presence' }
 

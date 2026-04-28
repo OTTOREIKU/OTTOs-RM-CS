@@ -11,17 +11,22 @@ import armorData      from '../data/armor.json'
 import spellListsData from '../data/spell_lists.json'
 
 // ── Type configuration ─────────────────────────────────────────────────────────
+// cssVar references --accent/--danger/etc so colorblind overrides apply automatically.
 
 const TYPES = ['skill', 'weapon', 'talent', 'race', 'armor', 'spell']
 
 const TYPE_CFG = {
-  skill:  { label: 'Skill',   color: '#6366f1' },
-  weapon: { label: 'Weapon',  color: '#ef4444' },
-  talent: { label: 'Talent',  color: '#a855f7' },
-  race:   { label: 'Race',    color: '#22c55e' },
-  armor:  { label: 'Armor',   color: '#f97316' },
-  spell:  { label: 'Spell',   color: '#06b6d4' },
+  skill:  { label: 'Skill',  cssVar: '--accent'  },
+  weapon: { label: 'Weapon', cssVar: '--danger'  },
+  talent: { label: 'Talent', cssVar: '--purple'  },
+  race:   { label: 'Race',   cssVar: '--success' },
+  armor:  { label: 'Armor',  cssVar: '--warning' },
+  spell:  { label: 'Spell',  cssVar: '--info'    },
 }
+
+// Helpers — keeps inline style strings clean
+const cv   = v => `var(${v})`
+const cmix = (v, pct) => `color-mix(in srgb, var(${v}) ${pct}%, transparent)`
 
 // ── Data helpers ───────────────────────────────────────────────────────────────
 
@@ -178,7 +183,7 @@ function RaceTooltip({ item }) {
             letterSpacing: '0.06em', marginBottom: 4 }}>Stat Bonuses</div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2px 10px' }}>
             {nonZero.map(([stat, val]) => (
-              <span key={stat} style={{ fontSize: 11, color: val > 0 ? '#22c55e' : '#ef4444', fontWeight: 600 }}>
+              <span key={stat} style={{ fontSize: 11, color: val > 0 ? 'var(--success)' : 'var(--danger)', fontWeight: 600 }}>
                 {stat.slice(0, 3)} {val > 0 ? `+${val}` : val}
               </span>
             ))}
@@ -251,7 +256,7 @@ function TooltipContent({ type, item }) {
 function TooltipPopup({ type, id, label, anchorRef, onClose }) {
   const popupRef = useRef(null)
   const item     = useMemo(() => findItem(type, id), [type, id])
-  const cfg      = TYPE_CFG[type] || { label: '?', color: '#888' }
+  const cfg      = TYPE_CFG[type] || { label: '?', cssVar: '--text2' }
   const [style, setStyle] = useState({ position: 'fixed', top: 0, left: 0, opacity: 0 })
 
   useEffect(() => {
@@ -283,8 +288,8 @@ function TooltipPopup({ type, id, label, anchorRef, onClose }) {
       ...style,
       zIndex: 99999,
       background: 'var(--surface)',
-      border: `1px solid ${cfg.color}66`,
-      borderTop: `2px solid ${cfg.color}`,
+      border: `1px solid ${cmix(cfg.cssVar, 50)}`,
+      borderTop: `2px solid ${cv(cfg.cssVar)}`,
       borderRadius: 8,
       boxShadow: '0 8px 24px rgba(0,0,0,0.5)',
       padding: '10px 14px',
@@ -296,8 +301,8 @@ function TooltipPopup({ type, id, label, anchorRef, onClose }) {
         paddingBottom: 6, borderBottom: '1px solid var(--border)' }}>
         <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text)', flex: 1, minWidth: 0,
           overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{label}</span>
-        <span style={{ fontSize: 9, color: cfg.color, background: cfg.color + '22',
-          border: `1px solid ${cfg.color}44`, borderRadius: 3, padding: '1px 5px',
+        <span style={{ fontSize: 9, color: cv(cfg.cssVar), background: cmix(cfg.cssVar, 15),
+          border: `1px solid ${cmix(cfg.cssVar, 35)}`, borderRadius: 3, padding: '1px 5px',
           fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', flexShrink: 0 }}>
           {cfg.label}
         </span>
@@ -312,7 +317,7 @@ function TooltipPopup({ type, id, label, anchorRef, onClose }) {
 
 function RMRefNodeView({ node }) {
   const { refType, refId, refLabel } = node.attrs
-  const cfg     = TYPE_CFG[refType] || { label: '?', color: '#888' }
+  const cfg     = TYPE_CFG[refType] || { label: '?', cssVar: '--text2' }
   const chipRef = useRef(null)
   const [open, setOpen] = useState(false)
 
@@ -325,7 +330,7 @@ function RMRefNodeView({ node }) {
         style={{
           display: 'inline',
           background: 'transparent',
-          color: cfg.color,
+          color: cv(cfg.cssVar),
           border: 'none',
           padding: 0,
           fontWeight: 800,
@@ -501,9 +506,9 @@ export function RMRefPicker({ open, onClose, editor }) {
                   style={{
                     padding: '3px 10px', borderRadius: 6, fontSize: 11, fontWeight: 600,
                     cursor: 'pointer',
-                    background: active ? c.color : 'transparent',
-                    color: active ? '#fff' : 'var(--text)',
-                    border: `1px solid ${active ? 'transparent' : c.color}`,
+                    background: active ? cv(c.cssVar) : 'transparent',
+                    color: active ? 'var(--surface)' : cv(c.cssVar),
+                    border: `1px solid ${active ? 'transparent' : cv(c.cssVar)}`,
                     transition: 'all .1s',
                   }}>
                   {c.label}
@@ -587,7 +592,7 @@ function SpellResultsList({ groups, query, onInsert, cfg }) {
                 marginTop: gi > 0 ? 4 : 0,
                 fontSize: 11,
                 fontWeight: 800,
-                color: cfg.color,
+                color: cv(cfg.cssVar),
                 textTransform: 'uppercase',
                 letterSpacing: '0.1em',
                 borderTop: gi > 0 ? '1px solid var(--border)' : 'none',

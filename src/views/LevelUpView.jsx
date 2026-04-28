@@ -9,6 +9,7 @@ import spellLists from '../data/spell_lists.json'
 import professionDP from '../data/profession_dp.json'
 import racesData from '../data/races.json'
 import { ChevronDownIcon, ChevronRightIcon, ChevronLeftIcon, ArrowRightIcon, MinusIcon, SparkleIcon } from '../components/Icons.jsx'
+import { REALM_COLORS } from '../store/theme.js'
 
 const STAT_MAP = {
   Ag:'Agility', Co:'Constitution', Em:'Empathy', In:'Intuition',
@@ -435,7 +436,7 @@ function SkillStep({ c, lu, dispatch, skillSearch, setSkillSearch, dpLeft,
 function SpellListsSection({ c, lu, dispatch, dpLeft, spellSearch, setSpellSearch, spellRealm, setSpellRealm }) {
   const query = spellSearch.toLowerCase()
   const REALMS = ['All', 'Channeling', 'Essence', 'Mentalism', 'Hybrid']
-  const REALM_COLOR = { Channeling:'#f59e0b', Essence:'#4c8bf5', Mentalism:'#8b5cf6', Hybrid:'#22c55e' }
+  const REALM_COLOR = REALM_COLORS   // shared CSS-variable map from theme.js
 
   const filtered = useMemo(() => Object.entries(spellLists).filter(([name, list]) => {
     const matchRealm  = spellRealm === 'All' || list.realm === spellRealm
