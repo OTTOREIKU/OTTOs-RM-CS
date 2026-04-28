@@ -26,34 +26,46 @@ const STAT_COLS = ['Agility','Constitution','Empathy','Intuition','Memory',
 const STAT_ABR  = ['Ag','Co','Em','In','Me','Pr','Qu','Re','SD','St']
 
 const SEV_META = {
-  A: { label:'A – Minor',    color:'#22c55e' },
-  B: { label:'B – Light',    color:'#86efac' },
-  C: { label:'C – Moderate', color:'#fbbf24' },
-  D: { label:'D – Serious',  color:'#f97316' },
-  E: { label:'E – Severe',   color:'#ef4444' },
-  F: { label:'F – Extreme',  color:'#dc2626' },
+  A: { label:'A – Minor',      color:'#22c55e' },
+  B: { label:'B – Light',      color:'#86efac' },
+  C: { label:'C – Moderate',   color:'#fbbf24' },
+  D: { label:'D – Serious',    color:'#f97316' },
+  E: { label:'E – Severe',     color:'#ef4444' },
+  F: { label:'F – Extreme',    color:'#dc2626' },
+  G: { label:'G – Extreme+',   color:'#b91c1c' },
+  H: { label:'H – Extreme++',  color:'#991b1b' },
+  I: { label:'I – Extreme+++', color:'#7f1d1d' },
 }
 const CRIT_KEYS   = Object.keys(critTables)
-const WEAPON_KEYS = Object.keys(attackTables)
 const AT_LABELS   = ['AT 1','AT 2','AT 3','AT 4','AT 5','AT 6','AT 7','AT 8','AT 9','AT 10']
+
+// Grouped attack tables for select dropdowns
+const WEAPON_GROUPS = [
+  { label: 'Weapons',          keys: ['Arming Sword','Battle Axe','Bola','Bow, Long','Bow, Short','Broadsword','Club','Crossbow','Dagger','Falchion','Fighting Stick','Flail','Mace','Rapier','Rock','Scimitar','Shield','Sling','Spear','War Hammer','Whip'] },
+  { label: 'Creature Attacks', keys: ['Beak','Bite','Claw','Crush','Grapple','Horn','Ram','Stinger','Trample'] },
+  { label: 'Spell Attacks',    keys: ['Ball, Cold','Ball, Fire','Ball, Lightning','Bolt, Fire','Bolt, Ice','Bolt, Lightning','Bolt, Water'] },
+]
+const WEAPON_KEYS = WEAPON_GROUPS.flatMap(g => g.keys)
 
 const CRIT_CODE_MAP = {
   S:'Slash', K:'Krush', P:'Puncture', U:'Unbalancing',
-  G:'Grapple', C:'Cold', H:'Heat', E:'Electricity', I:'Impact',
-  T:'Strike', Su:'Subdual', Sw:'Sweeps',
+  G:'Grapple', C:'Cold', O:'Cold', H:'Heat', E:'Electricity', L:'Electricity',
+  I:'Impact', T:'Strike', Su:'Subdual', Sw:'Sweeps',
 }
 
+// Severities beyond E (F, G, H, I…) are treated as E for crit table lookups
 function parseAtCell(val) {
   if (!val) return null
-  const m = val.match(/^(\d+)([A-F])([A-Z])$/)
+  const m = val.match(/^(\d+)([A-Z])([A-Z])$/)
   if (m) return { hits: parseInt(m[1]), severity: m[2], critCode: m[3], critType: CRIT_CODE_MAP[m[3]] || m[3] }
   const n = val.match(/^(\d+)$/)
   if (n) return { hits: parseInt(n[1]), severity: null, critCode: null, critType: null }
   return null
 }
 
+const MAPPED_SEVS = new Set(['A','B','C','D','E'])
 function findCritRow(type, sev, roll) {
-  const mappedSev = (sev === 'F' || !critTables[type]?.[sev]) ? 'E' : sev
+  const mappedSev = MAPPED_SEVS.has(sev) ? sev : 'E'
   const rows = critTables[type]?.[mappedSev] ?? []
   const r = parseInt(roll, 10)
   if (isNaN(r) || r < 1 || r > 100) return null
@@ -1047,9 +1059,13 @@ function AttackTablesPanel({ atWeapon, setAtWeapon, atRoll, setAtRoll, atAT, set
       {/* Controls */}
       <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'flex-end' }}>
         <div style={{ flex: '0 0 auto' }}>
-          <SectionLabel>Weapon</SectionLabel>
-          <select value={atWeapon} onChange={e => setAtWeapon(e.target.value)} style={{ padding: '7px 10px', fontSize: 13, minWidth: 160 }}>
-            {WEAPON_KEYS.map(w => <option key={w}>{w}</option>)}
+          <SectionLabel>Attack</SectionLabel>
+          <select value={atWeapon} onChange={e => setAtWeapon(e.target.value)} style={{ padding: '7px 10px', fontSize: 13, minWidth: 170 }}>
+            {WEAPON_GROUPS.map(g => (
+              <optgroup key={g.label} label={g.label}>
+                {g.keys.map(w => <option key={w}>{w}</option>)}
+              </optgroup>
+            ))}
           </select>
         </div>
         <div>
@@ -1258,8 +1274,12 @@ function CombatCalcPanel({
               <SectionLabel>Weapon / Attack</SectionLabel>
               <select value={calcWeapon}
                 onChange={e => { setCalcWeapon(e.target.value); setCalcCritType(null); setCalcCritSev(null); setOeRolls(null); setCalcFumbleRoll('') }}
-                style={{ padding: '7px 10px', fontSize: 13, minWidth: 150 }}>
-                {WEAPON_KEYS.map(w => <option key={w}>{w}</option>)}
+                style={{ padding: '7px 10px', fontSize: 13, minWidth: 170 }}>
+                {WEAPON_GROUPS.map(g => (
+                  <optgroup key={g.label} label={g.label}>
+                    {g.keys.map(w => <option key={w}>{w}</option>)}
+                  </optgroup>
+                ))}
               </select>
             </div>
             <div>
