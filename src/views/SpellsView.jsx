@@ -30,6 +30,11 @@ const REALM_STAT  = { Channeling:'Intuition', Essence:'Empathy', Mentalism:'Pres
 function isConcentration(dur) {
   return dur === 'C' || !!(dur?.includes('(C)'))
 }
+// Spell property helpers for annotation talents
+function hasRange(spell)        { const r = spell.range;    return !!(r && r !== '—' && r !== '-' && r.toLowerCase() !== 'self' && r.toLowerCase() !== 'touch') }
+function hasAoE(spell)          { const a = spell.aoe;     return !!(a && a !== '—' && a !== '-') }
+function hasNonCDuration(spell) { const d = spell.duration; return !!(d && d !== '—' && d !== '-' && !isConcentration(d)) }
+function isTouchSelf(spell)     { return !!(spell.type?.includes('s')) }
 
 export default function SpellsView() {
   const { activeChar } = useCharacter()
@@ -60,6 +65,23 @@ export default function SpellsView() {
     if (!c) return 0
     const inst = c.talents?.find(t => t.talent_id === 'subconscious_discipline')
     return inst?.tier ?? 0
+  }, [c?.talents])
+
+  // Phase 3 spell annotation talents
+  const spellTalents = useMemo(() => {
+    if (!c) return { grTier: 0, ifTier: 0, prTier: 0, mute: false }
+    const find = id => c.talents?.find(t => t.talent_id === id)
+    return {
+      temporal:  find('temporal_skills'),   // param = list name
+      spatial:   find('spatial_skills'),    // param = list name
+      scope:     find('scope_skills'),      // param = list name
+      extReach:  find('extended_reach'),    // param = list name
+      quickCast: find('quick_caster'),      // param = list name
+      grTier:    find('graceful_recovery')?.tier ?? 0,   // global
+      ifTier:    find('inglorious_failure')?.tier ?? 0,  // global
+      prTier:    find('power_recycling')?.tier ?? 0,     // global
+      mute:      !!find('mute'),                         // global
+    }
   }, [c?.talents])
 
   const filteredLists = useMemo(() => Object.entries(spellLists).filter(([name, list]) => {
@@ -155,6 +177,13 @@ export default function SpellsView() {
           ? list.spells?.filter(s => s.name.toLowerCase().includes(query)) ?? []
           : list.spells ?? []
 
+        // Per-list annotation tier (0 = talent doesn't apply to this list)
+        const temporalTier  = spellTalents.temporal?.param === listName  ? (spellTalents.temporal?.tier  ?? 0) : 0
+        const spatialTier   = spellTalents.spatial?.param === listName   ? (spellTalents.spatial?.tier   ?? 0) : 0
+        const scopeTier     = spellTalents.scope?.param === listName     ? (spellTalents.scope?.tier     ?? 0) : 0
+        const extReachTier  = spellTalents.extReach?.param === listName  ? (spellTalents.extReach?.tier  ?? 0) : 0
+        const quickCastTier = spellTalents.quickCast?.param === listName ? (spellTalents.quickCast?.tier ?? 0) : 0
+
         return (
           <div key={listName} style={{
             marginBottom: 4, border: '1px solid ' + (isOpen ? rc + '88' : 'var(--border)'),
@@ -203,7 +232,103 @@ export default function SpellsView() {
                     <span key={h} style={{ fontSize: 9, fontWeight: 600, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>{h}</span>
                   ))}
                 </div>
-                {/* Subconscious Discipline banner — only shown when char has the talent and list has C spells */}
+                {/* ── Talent annotation banners ─────────────────────── */}
+                {/* Mute — always shown on every list, most prominent */}
+                {spellTalents.mute && (
+                  <div style={{ padding: '5px 14px', display: 'flex', alignItems: 'center', gap: 8, borderTop: '1px solid var(--border)', background: 'var(--danger)12' }}>
+                    <span style={{ fontSize: 10, background: 'var(--danger)', color: '#fff', borderRadius: 3, padding: '1px 6px', fontWeight: 700, flexShrink: 0 }}>⚠ MUTE</span>
+                    <span style={{ fontSize: 11, color: 'var(--danger)', fontWeight: 600 }}>Cannot cast verbal spells — all spell casting is blocked unless a silent casting option exists</span>
+                  </div>
+                )}
+                {/* Graceful Recovery — global */}
+                {spellTalents.grTier > 0 && (
+                  <div style={{ padding: '5px 14px', display: 'flex', alignItems: 'center', gap: 8, borderTop: '1px solid var(--border)', background: 'var(--success)0d' }}>
+                    <span style={{ fontSize: 10, background: 'var(--success)22', color: 'var(--success)', border: '1px solid var(--success)44', borderRadius: 3, padding: '1px 5px', fontWeight: 700, flexShrink: 0 }}>
+                      GR {'I II III IV V'.split(' ')[spellTalents.grTier - 1]}
+                    </span>
+                    <span style={{ fontSize: 11, color: 'var(--text3)' }}>
+                      Spell failure roll <strong style={{ color: 'var(--success)' }}>−{spellTalents.grTier * 5}</strong> (min 1)
+                    </span>
+                  </div>
+                )}
+                {/* Inglorious Failure — global */}
+                {spellTalents.ifTier > 0 && (
+                  <div style={{ padding: '5px 14px', display: 'flex', alignItems: 'center', gap: 8, borderTop: '1px solid var(--border)', background: 'var(--danger)0d' }}>
+                    <span style={{ fontSize: 10, background: 'var(--danger)22', color: 'var(--danger)', border: '1px solid var(--danger)44', borderRadius: 3, padding: '1px 5px', fontWeight: 700, flexShrink: 0 }}>
+                      IF {'I II III IV V'.split(' ')[spellTalents.ifTier - 1]}
+                    </span>
+                    <span style={{ fontSize: 11, color: 'var(--text3)' }}>
+                      Spell failure roll <strong style={{ color: 'var(--danger)' }}>+{spellTalents.ifTier * 5}</strong>
+                    </span>
+                  </div>
+                )}
+                {/* Power Recycling — global */}
+                {spellTalents.prTier > 0 && (
+                  <div style={{ padding: '5px 14px', display: 'flex', alignItems: 'center', gap: 8, borderTop: '1px solid var(--border)', background: 'var(--purple)0d' }}>
+                    <span style={{ fontSize: 10, background: 'var(--purple)22', color: 'var(--purple)', border: '1px solid var(--purple)44', borderRadius: 3, padding: '1px 5px', fontWeight: 700, flexShrink: 0 }}>
+                      PR {spellTalents.prTier === 1 ? 'I' : 'II'}
+                    </span>
+                    <span style={{ fontSize: 11, color: 'var(--text3)' }}>
+                      On spell failure: recover <strong style={{ color: 'var(--purple)' }}>{spellTalents.prTier === 1 ? '½ PP used' : 'all PP used'}</strong>
+                    </span>
+                  </div>
+                )}
+                {/* Quick Caster — per list */}
+                {quickCastTier > 0 && (
+                  <div style={{ padding: '5px 14px', display: 'flex', alignItems: 'center', gap: 8, borderTop: '1px solid var(--border)', background: 'var(--accent)0d' }}>
+                    <span style={{ fontSize: 10, background: 'var(--accent)22', color: 'var(--accent)', border: '1px solid var(--accent)44', borderRadius: 3, padding: '1px 5px', fontWeight: 700, flexShrink: 0 }}>
+                      QC {quickCastTier === 1 ? 'I' : 'II'}
+                    </span>
+                    <span style={{ fontSize: 11, color: 'var(--text3)' }}>
+                      Casting cost: <strong style={{ color: 'var(--accent)' }}>{quickCastTier === 1 ? '2–3 AP' : '2 AP'}</strong> (instead of standard)
+                    </span>
+                  </div>
+                )}
+                {/* Temporal Skills — per list, non-C duration spells */}
+                {temporalTier > 0 && spells.some(s => hasNonCDuration(s)) && (
+                  <div style={{ padding: '5px 14px', display: 'flex', alignItems: 'center', gap: 8, borderTop: '1px solid var(--border)', background: '#f59e0b0d' }}>
+                    <span style={{ fontSize: 10, background: '#f59e0b22', color: '#f59e0b', border: '1px solid #f59e0b44', borderRadius: 3, padding: '1px 5px', fontWeight: 700, flexShrink: 0 }}>
+                      TS {'I II III IV V'.split(' ')[temporalTier - 1]}
+                    </span>
+                    <span style={{ fontSize: 11, color: 'var(--text3)' }}>
+                      Duration <strong style={{ color: '#f59e0b' }}>×{(1 + 0.5 * temporalTier).toFixed(1)}</strong> on timed spells (not concentration)
+                    </span>
+                  </div>
+                )}
+                {/* Spatial Skills — per list, ranged spells */}
+                {spatialTier > 0 && spells.some(s => hasRange(s)) && (
+                  <div style={{ padding: '5px 14px', display: 'flex', alignItems: 'center', gap: 8, borderTop: '1px solid var(--border)', background: '#4c8bf50d' }}>
+                    <span style={{ fontSize: 10, background: '#4c8bf522', color: '#4c8bf5', border: '1px solid #4c8bf544', borderRadius: 3, padding: '1px 5px', fontWeight: 700, flexShrink: 0 }}>
+                      SS {'I II III IV V'.split(' ')[spatialTier - 1]}
+                    </span>
+                    <span style={{ fontSize: 11, color: 'var(--text3)' }}>
+                      Range <strong style={{ color: '#4c8bf5' }}>×{(1 + 0.5 * spatialTier).toFixed(1)}</strong> on ranged spells
+                    </span>
+                  </div>
+                )}
+                {/* Scope Skills — per list, AoE spells */}
+                {scopeTier > 0 && spells.some(s => hasAoE(s)) && (
+                  <div style={{ padding: '5px 14px', display: 'flex', alignItems: 'center', gap: 8, borderTop: '1px solid var(--border)', background: '#22c55e0d' }}>
+                    <span style={{ fontSize: 10, background: '#22c55e22', color: '#22c55e', border: '1px solid #22c55e44', borderRadius: 3, padding: '1px 5px', fontWeight: 700, flexShrink: 0 }}>
+                      SK {'I II III IV V'.split(' ')[scopeTier - 1]}
+                    </span>
+                    <span style={{ fontSize: 11, color: 'var(--text3)' }}>
+                      AoE / targets <strong style={{ color: '#22c55e' }}>×{1 + scopeTier}</strong> on area spells
+                    </span>
+                  </div>
+                )}
+                {/* Extended Reach — per list, touch/self spells */}
+                {extReachTier > 0 && spells.some(s => isTouchSelf(s)) && (
+                  <div style={{ padding: '5px 14px', display: 'flex', alignItems: 'center', gap: 8, borderTop: '1px solid var(--border)', background: 'var(--purple)0d' }}>
+                    <span style={{ fontSize: 10, background: 'var(--purple)22', color: 'var(--purple)', border: '1px solid var(--purple)44', borderRadius: 3, padding: '1px 5px', fontWeight: 700, flexShrink: 0 }}>
+                      ER {'I II III IV V'.split(' ')[extReachTier - 1]}
+                    </span>
+                    <span style={{ fontSize: 11, color: 'var(--text3)' }}>
+                      Touch/self spells gain range <strong style={{ color: 'var(--purple)' }}>{extReachTier * 5}′</strong>
+                    </span>
+                  </div>
+                )}
+                {/* Subconscious Discipline — concentration spells */}
                 {sdTier > 0 && spells.some(s => isConcentration(s.duration)) && (
                   <div style={{ padding: '5px 14px', display: 'flex', alignItems: 'center', gap: 8, borderTop: '1px solid var(--border)', background: 'var(--purple)0d' }}>
                     <span style={{ fontSize: 10, background: 'var(--purple)22', color: 'var(--purple)', border: '1px solid var(--purple)44', borderRadius: 3, padding: '1px 5px', fontWeight: 700, flexShrink: 0 }}>
@@ -231,7 +356,15 @@ export default function SpellsView() {
                         }}>
                         <span style={{ color: rc, fontWeight: 700 }}>{spell.level}</span>
                         <span style={{ display: 'flex', alignItems: 'center', gap: 3 }}>{spell.name}{hasDetail && <InfoIcon size={9} color="var(--text3)" />}</span>
-                        <span style={{ color: 'var(--text2)', fontSize: 11 }}>{spell.aoe || '—'}</span>
+                        <span style={{ color: 'var(--text2)', fontSize: 11, display: 'flex', alignItems: 'center', gap: 3, flexWrap: 'nowrap' }}>
+                          {spell.aoe || '—'}
+                          {scopeTier > 0 && hasAoE(spell) && (
+                            <span style={{ fontSize: 9, background: '#22c55e22', color: '#22c55e', border: '1px solid #22c55e44', borderRadius: 3, padding: '0 3px', fontWeight: 700, flexShrink: 0 }}
+                              title={`Scope Skills ${['I','II','III','IV','V'][scopeTier-1]}: AoE ×${1+scopeTier}`}>
+                              ×{1 + scopeTier}
+                            </span>
+                          )}
+                        </span>
                         <span style={{ color: 'var(--text2)', fontSize: 11, display: 'flex', alignItems: 'center', gap: 3, flexWrap: 'nowrap' }}>
                           {spell.duration || '—'}
                           {sdTier > 0 && isConcentration(spell.duration) && (
@@ -240,8 +373,28 @@ export default function SpellsView() {
                               +{sdTier === 1 ? '½T' : 'T'}
                             </span>
                           )}
+                          {temporalTier > 0 && hasNonCDuration(spell) && (
+                            <span style={{ fontSize: 9, background: '#f59e0b22', color: '#f59e0b', border: '1px solid #f59e0b44', borderRadius: 3, padding: '0 3px', fontWeight: 700, flexShrink: 0 }}
+                              title={`Temporal Skills ${['I','II','III','IV','V'][temporalTier-1]}: Duration ×${(1+0.5*temporalTier).toFixed(1)}`}>
+                              ×{(1 + 0.5 * temporalTier).toFixed(1)}
+                            </span>
+                          )}
                         </span>
-                        <span style={{ color: 'var(--text2)', fontSize: 11 }}>{spell.range || '—'}</span>
+                        <span style={{ color: 'var(--text2)', fontSize: 11, display: 'flex', alignItems: 'center', gap: 3, flexWrap: 'nowrap' }}>
+                          {spell.range || '—'}
+                          {spatialTier > 0 && hasRange(spell) && (
+                            <span style={{ fontSize: 9, background: '#4c8bf522', color: '#4c8bf5', border: '1px solid #4c8bf544', borderRadius: 3, padding: '0 3px', fontWeight: 700, flexShrink: 0 }}
+                              title={`Spatial Skills ${['I','II','III','IV','V'][spatialTier-1]}: Range ×${(1+0.5*spatialTier).toFixed(1)}`}>
+                              ×{(1 + 0.5 * spatialTier).toFixed(1)}
+                            </span>
+                          )}
+                          {extReachTier > 0 && isTouchSelf(spell) && (
+                            <span style={{ fontSize: 9, background: 'var(--purple)22', color: 'var(--purple)', border: '1px solid var(--purple)44', borderRadius: 3, padding: '0 3px', fontWeight: 700, flexShrink: 0 }}
+                              title={`Extended Reach ${['I','II','III','IV','V'][extReachTier-1]}: +${extReachTier*5}′ range on touch/self spells`}>
+                              +{extReachTier * 5}′
+                            </span>
+                          )}
+                        </span>
                         <span style={{ fontSize: 10, color: rc, background: rc + '18', padding: '1px 4px', borderRadius: 3, textAlign: 'center' }}>{spell.type || '—'}</span>
                       </div>
                       {open && hasDetail && (
