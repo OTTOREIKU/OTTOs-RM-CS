@@ -449,15 +449,10 @@ export function RMRefPicker({ open, onClose, editor }) {
     onClose()
   }, [editor, type, onClose])
 
-  if (!open) return null
-
-  const cfg = TYPE_CFG[type]
-
-  // Spell results grouped by realm → section → list
+  // Must be before early return — hooks cannot be called conditionally
   const spellGroups = useMemo(() => {
     if (type !== 'spell') return null
     const grouped = groupSpellResults(results)
-    // Sort by realm order, then section, then list
     grouped.sort((a, b) => {
       const ra = REALM_ORDER.indexOf(a.realm)
       const rb = REALM_ORDER.indexOf(b.realm)
@@ -467,6 +462,10 @@ export function RMRefPicker({ open, onClose, editor }) {
     })
     return grouped
   }, [type, results])
+
+  if (!open) return null
+
+  const cfg = TYPE_CFG[type]
 
   const totalResults = type === 'spell'
     ? (spellGroups?.reduce((s, g) => s + g.spells.length, 0) ?? 0)
