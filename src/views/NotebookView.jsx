@@ -15,6 +15,7 @@ import {
 } from '../store/notebook.js'
 import { usePersistentOpen } from '../hooks/persist.js'
 import { importNotebookFromFile } from '../store/characters.js'
+import { RMRefExtension, RMRefPicker } from '../components/RMRef.jsx'
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -153,6 +154,12 @@ function htmlToMarkdown(html) {
       case 'ul': case 'ol': return kids + '\n'
       case 'hr': return `\n---\n`
       case 'a': return `[${kids}](${node.getAttribute('href') || ''})`
+      case 'span':
+        if (node.hasAttribute('data-rmref')) {
+          const label = node.getAttribute('data-ref-label') || kids
+          return `[${label}]`
+        }
+        return kids
       default: return kids
     }
   }
@@ -245,6 +252,7 @@ export default function NotebookView() {
   const [plusOpen,       setPlusOpen]       = useState(false)
   const [confirmDlg,     setConfirmDlg]     = useState(null)  // { message, onConfirm }
   const [selectedIds,    setSelectedIds]    = useState({})    // { [noteId]: bool }
+  const [pickerOpen,     setPickerOpen]     = useState(false)
 
   const renameRef    = useRef(null)
   const titleRef     = useRef(null)
@@ -494,6 +502,7 @@ export default function NotebookView() {
       TaskList,
       TaskItem.configure({ nested: true }),
       Placeholder.configure({ placeholder: 'Start writing…' }),
+      RMRefExtension,
     ],
     content: activeNote ? noteToHtml(activeNote.content) : '',
     onUpdate: ({ editor: e }) => {
@@ -1129,6 +1138,11 @@ export default function NotebookView() {
                     <TBtn onClick={() => editor?.chain().focus().setHorizontalRule().run()}
                       title="Horizontal rule">─</TBtn>
                   </TGroup>
+                  <TGroup>
+                    <TBtn onClick={() => setPickerOpen(true)} title="Insert RM Reference chip">
+                      ✦ Ref
+                    </TBtn>
+                  </TGroup>
                   <div style={{ flex: 1 }} />
                 </div>
               </div>
@@ -1200,6 +1214,9 @@ export default function NotebookView() {
           {renderCtxItems()}
         </div>
       )}
+
+      {/* ── RMREF PICKER ─────────────────────────────────────────── */}
+      <RMRefPicker open={pickerOpen} onClose={() => setPickerOpen(false)} editor={editor} />
 
       {/* ── CONFIRM DIALOG ───────────────────────────────────────── */}
       {confirmDlg && (
