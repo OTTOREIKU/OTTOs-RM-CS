@@ -13,6 +13,7 @@ import {
   loadNotebook, saveNotebook, loadOpenFolders, saveOpenFolders,
   loadActiveNoteId, saveActiveNoteId, nbUid,
 } from '../store/notebook.js'
+import { usePersistentOpen } from '../hooks/persist.js'
 import { importNotebookFromFile } from '../store/characters.js'
 
 // ── Constants ─────────────────────────────────────────────────────────────────
@@ -231,8 +232,8 @@ export default function NotebookView() {
   })
   const [openFolders,    setOpenFolders]    = useState(() => loadOpenFolders())
   const [search,         setSearch]         = useState('')
-  const [sortBy,         setSortBy]         = useState('modified')
-  const [activeTag,      setActiveTag]      = useState(null)
+  const [sortBy,,        setSortBy]         = usePersistentOpen('rm_nb_sort',  'title')
+  const [activeTag,,     setActiveTag]      = usePersistentOpen('rm_nb_tag',   null)
   const [showSidebar,    setShowSidebar]    = useState(() => window.innerWidth >= 700)
   const [sidebarHidden,  setSidebarHidden]  = useState(false)
   const [isMobile,       setIsMobile]       = useState(() => window.innerWidth < 700)
