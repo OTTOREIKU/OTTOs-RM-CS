@@ -343,10 +343,12 @@ function WeaponBrowser({ onSelect, onCancel }) {
 export default function CharacterSheet() {
   const { activeChar, updateCharacter, updateStat, updateSkill, addWeapon, updateWeapon, removeWeapon, updateArmorPart } = useCharacter()
   const [wBrowse,    setWBrowse]        = useState(false)
-  const [paceOpen,    setPaceOpen]    = usePersistentOpen('rm_panel_pace',    false)
-  const [weaponsOpen, setWeaponsOpen] = usePersistentOpen('rm_panel_weapons', true)
-  const [armorOpen,   setArmorOpen]   = usePersistentOpen('rm_panel_armor',   true)
-  const [showDetail, toggleDetail]      = usePersistentOpen('rm_derived_detail', false)
+  const [identityOpen,    setIdentityOpen]    = usePersistentOpen('rm_panel_identity',    true)
+  const [paceOpen,        setPaceOpen]        = usePersistentOpen('rm_panel_pace',         false)
+  const [weaponsOpen,     setWeaponsOpen]     = usePersistentOpen('rm_panel_weapons',      true)
+  const [armorOpen,       setArmorOpen]       = usePersistentOpen('rm_panel_armor',        true)
+  const [showDetail,      toggleDetail]       = usePersistentOpen('rm_derived_detail',     false)
+  const [showArmorDetail, toggleArmorDetail]  = usePersistentOpen('rm_armor_detail',       false)
   useScrollRestore('rm_scroll_sheet')
   const c = activeChar
   if (!c) return null
@@ -415,7 +417,7 @@ export default function CharacterSheet() {
     <div style={{ maxWidth: 680, margin: '0 auto', padding: '16px 12px', display: 'flex', flexDirection: 'column', gap: 12 }}>
 
       {/* Identity card */}
-      <Card title="Identity">
+      <Card title="Identity" onToggle={setIdentityOpen} isOpen={identityOpen}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 10 }}>
           <FieldRow label="Name"><TInput value={c.name} onChange={v => updateCharacter({ name: v })} /></FieldRow>
           <FieldRow label="Player"><TInput value={c.player} onChange={v => updateCharacter({ player: v })} /></FieldRow>
@@ -798,7 +800,12 @@ export default function CharacterSheet() {
       </Card>
 
       {/* Armor by Body Part */}
-      <Card title="Armor & Defense" onToggle={setArmorOpen} isOpen={armorOpen}>
+      <Card title="Armor & Defense" onToggle={setArmorOpen} isOpen={armorOpen} action={armorOpen ? (
+        <button onClick={toggleArmorDetail} title={showArmorDetail ? 'Hide calculation detail' : 'Show calculation detail'}
+          style={{ background:'none', border:'none', cursor:'pointer', color: showArmorDetail ? 'var(--accent)' : 'var(--text3)', display:'flex', alignItems:'center' }}>
+          {showArmorDetail ? <EyeOpenIcon size={14} color="currentColor" /> : <EyeClosedIcon size={14} color="currentColor" />}
+        </button>
+      ) : null}>
         <div style={{ overflowX:'auto' }}>
           <table style={{ width:'100%', borderCollapse:'collapse', fontSize:12 }}>
             <thead>
@@ -862,7 +869,7 @@ export default function CharacterSheet() {
 
         {/* DB breakdown */}
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(100px,1fr))', gap:8, marginTop:12 }}>
-          <StatCard label="Qu DB"     value={fmt(db)}      color={db > 0 ? 'var(--success)' : 'var(--text)'} sub="Qu bonus ×3" />
+          <StatCard label="Qu DB"     value={fmt(db)}      color={db > 0 ? 'var(--success)' : 'var(--text)'} sub="Qu bonus ×3" showDetail={showArmorDetail} />
           <StatCard label="Shield DB" value={shieldDB > 0 ? `+${shieldDB}` : '—'} color="var(--accent)" />
           <StatCard label="Total DB"  value={fmt(totalDB)} color={totalDB > 0 ? 'var(--success)' : 'var(--text)'} />
           <StatCard label="Initiative" value={fmt(ini)} color="var(--accent)" />
@@ -873,7 +880,9 @@ export default function CharacterSheet() {
 
         {/* Resistance Rolls */}
         <div style={{ marginTop:14 }}>
-          <div style={{ fontSize:10, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.08em', color:'var(--text3)', marginBottom:6 }}>Resistance Rolls (Stat + Lvl×2 + Special)</div>
+          <div style={{ fontSize:10, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.08em', color:'var(--text3)', marginBottom:6 }}>
+            Resistance Rolls{showArmorDetail && ' (Stat + Lvl×2 + Special)'}
+          </div>
           <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(130px,1fr))', gap:6 }}>
             {[
               { key:'channeling', label:'Channeling', stat:'Intuition',    color:'#f59e0b' },
@@ -887,7 +896,7 @@ export default function CharacterSheet() {
                 <div key={key} style={{ background:'var(--surface2)', border:'1px solid var(--border)', borderRadius:8, padding:'8px 10px' }}>
                   <div style={{ display:'flex', justifyContent:'space-between', alignItems:'baseline', marginBottom:4 }}>
                     <div style={{ fontSize:9, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.07em', color }}>{label}</div>
-                    <div style={{ fontSize:8, color:'var(--text3)' }}>{stat}</div>
+                    {showArmorDetail && <div style={{ fontSize:8, color:'var(--text3)' }}>{stat}</div>}
                   </div>
                   <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:6 }}>
                     <div style={{ fontSize:20, fontWeight:800, color: total > 0 ? 'var(--success)' : 'var(--text)' }}>{fmt(total)}</div>
