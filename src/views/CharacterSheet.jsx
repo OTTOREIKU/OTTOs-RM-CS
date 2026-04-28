@@ -86,16 +86,33 @@ const STAT_ABBR = {
 const REALM_STAT = { Channeling:'Intuition', Essence:'Empathy', Mentalism:'Presence' }
 
 // ── Small reusable primitives ─────────────────────────────────────────────────
-function Card({ title, action, children }) {
+function Card({ title, action, children, onToggle, isOpen }) {
+  const collapsible = onToggle != null
+  const showContent = !collapsible || isOpen
   return (
     <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, overflow: 'hidden' }}>
       {title && (
-        <div style={{ padding: '10px 16px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div
+          onClick={collapsible ? onToggle : undefined}
+          style={{
+            padding: '10px 16px',
+            borderBottom: showContent ? '1px solid var(--border)' : 'none',
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            cursor: collapsible ? 'pointer' : 'default',
+            userSelect: 'none',
+          }}>
           <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text2)' }}>{title}</span>
-          {action}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}
+            onClick={action ? e => e.stopPropagation() : undefined}>
+            {action}
+            {collapsible && (isOpen
+              ? <ChevronUpIcon size={12} color="var(--text3)" />
+              : <ChevronDownIcon size={12} color="var(--text3)" />
+            )}
+          </div>
         </div>
       )}
-      <div style={{ padding: 16 }}>{children}</div>
+      {showContent && <div style={{ padding: 16 }}>{children}</div>}
     </div>
   )
 }
@@ -326,7 +343,9 @@ function WeaponBrowser({ onSelect, onCancel }) {
 export default function CharacterSheet() {
   const { activeChar, updateCharacter, updateStat, updateSkill, addWeapon, updateWeapon, removeWeapon, updateArmorPart } = useCharacter()
   const [wBrowse,    setWBrowse]        = useState(false)
-  const [paceOpen,   setPaceOpen]       = usePersistentOpen('rm_panel_pace', false)
+  const [paceOpen,    setPaceOpen]    = usePersistentOpen('rm_panel_pace',    false)
+  const [weaponsOpen, setWeaponsOpen] = usePersistentOpen('rm_panel_weapons', true)
+  const [armorOpen,   setArmorOpen]   = usePersistentOpen('rm_panel_armor',   true)
   const [showDetail, toggleDetail]      = usePersistentOpen('rm_derived_detail', false)
   useScrollRestore('rm_scroll_sheet')
   const c = activeChar
@@ -612,7 +631,7 @@ export default function CharacterSheet() {
       </Card>
 
       {/* Weapons */}
-      <Card title="Weapons & Attacks" action={
+      <Card title="Weapons & Attacks" onToggle={setWeaponsOpen} isOpen={weaponsOpen} action={
         <div style={{ display:'flex', gap:6 }}>
           <button onClick={()=>setWBrowse(b=>!b)}
             style={{ background:'var(--surface2)', color:'var(--text2)', border:'1px solid var(--border)', borderRadius:6, padding:'3px 10px', fontSize:11, fontWeight:600, cursor:'pointer', display:'flex', alignItems:'center', gap:4 }}>
@@ -779,7 +798,7 @@ export default function CharacterSheet() {
       </Card>
 
       {/* Armor by Body Part */}
-      <Card title="Armor & Defense">
+      <Card title="Armor & Defense" onToggle={setArmorOpen} isOpen={armorOpen}>
         <div style={{ overflowX:'auto' }}>
           <table style={{ width:'100%', borderCollapse:'collapse', fontSize:12 }}>
             <thead>
@@ -905,13 +924,8 @@ export default function CharacterSheet() {
       <SpellListsPanel c={c} />
 
       {/* Pace & Encumbrance */}
-      <Card title="Pace & Encumbrance" action={
-        <button onClick={setPaceOpen}
-          style={{ background:'none', border:'none', cursor:'pointer', color:'var(--text3)', display:'flex', alignItems:'center' }}>
-          {paceOpen ? <ChevronUpIcon size={12} color="currentColor" /> : <ChevronDownIcon size={12} color="currentColor" />}
-        </button>
-      }>
-        {paceOpen && (
+      <Card title="Pace & Encumbrance" onToggle={setPaceOpen} isOpen={paceOpen}>
+        {(
           <>
             <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(110px,1fr))', gap:8, marginBottom:12 }}>
               <StatCard label="BMR (m/rnd)" value={bmr} color="var(--accent)" sub={talentB.stride ? `${talentB.stride > 0 ? '+' : ''}${talentB.stride} stride talent` : undefined} />
@@ -952,6 +966,7 @@ export default function CharacterSheet() {
 
 /* ─── STARRED SKILLS PANEL ──────────────────────────────── */
 function StarredSkillsPanel({ c }) {
+  const [open, setOpen] = usePersistentOpen('rm_panel_starred', true)
   const talentBonusMap = useMemo(() => {
     const map = {}
     for (const inst of (c.talents || [])) {
@@ -996,7 +1011,7 @@ function StarredSkillsPanel({ c }) {
   if (!starred.length) return null
 
   return (
-    <Card title="Starred Skills">
+    <Card title="Starred Skills" onToggle={setOpen} isOpen={open}>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: 8 }}>
         {starred.map(({ name, total, ranks, notes }) => (
           <div key={name} style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 8, padding: '8px 10px' }}>
@@ -1007,7 +1022,7 @@ function StarredSkillsPanel({ c }) {
                 color: total > 0 ? 'var(--success)' : total < -10 ? 'var(--danger)' : 'var(--text2)' }}>
                 {total >= 0 ? `+${total}` : total}
               </span>
-              <span style={{ fontSize: 10, color: 'var(--text3)' }}>{ranks} rnk</span>
+              <span style={{ fontSize: 10, color: 'var(--text3)' }}>{ranks} rank</span>
             </div>
             {notes && (
               <div style={{ fontSize: 10, color: 'var(--text3)', marginTop: 4, fontStyle: 'italic',
@@ -1027,6 +1042,7 @@ const SPELL_SUBS = ['Magic Ritual', 'Base', 'Open', 'Closed', 'Arcane', 'Restric
 const SUB_COLOR  = { 'Magic Ritual': '#a855f7', Base: '#4c8bf5', Open: '#22c55e', Closed: '#f59e0b', Arcane: '#ec4899', Restricted: '#ef4444' }
 
 function SpellListsPanel({ c }) {
+  const [open, setOpen] = usePersistentOpen('rm_panel_spells', true)
   const lists = Object.entries(c.spell_lists || {})
   if (!lists.length) return null
 
@@ -1041,7 +1057,7 @@ function SpellListsPanel({ c }) {
   const fmt = v => v == null ? '—' : (v >= 0 ? `+${v}` : `${v}`)
 
   return (
-    <Card title="Spell Lists">
+    <Card title="Spell Lists" onToggle={setOpen} isOpen={open}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
         {SPELL_SUBS.map(sub => {
           const subLists = grouped[sub] || []
