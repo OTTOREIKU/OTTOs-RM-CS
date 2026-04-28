@@ -319,7 +319,8 @@ export function getEndurance(char) {
 
   const raceEntry     = racesData.find(r => r.name === char.race)
   const racialEndurance = raceEntry?.endurance ?? 0
-  return bdBonus + racialEndurance
+  const talentEndurance = getTalentBonuses(char).endurance
+  return bdBonus + racialEndurance + talentEndurance
 }
 
 export function getWeightAllowance(char) {
