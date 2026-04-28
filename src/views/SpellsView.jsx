@@ -26,6 +26,11 @@ const REALM_COLOR = { Channeling:'#f59e0b', Essence:'#4c8bf5', Mentalism:'#8b5cf
 // Per CoreLaw: Mentalism realm stat is Presence, not Self Discipline
 const REALM_STAT  = { Channeling:'Intuition', Essence:'Empathy', Mentalism:'Presence' }
 
+// Duration "C" or anything containing "(C)" = concentration-maintained spell
+function isConcentration(dur) {
+  return dur === 'C' || !!(dur?.includes('(C)'))
+}
+
 export default function SpellsView() {
   const { activeChar } = useCharacter()
   const [realm, setRealm]           = useState('All')
@@ -49,6 +54,13 @@ export default function SpellsView() {
   const c = activeChar
   const query = search.toLowerCase()
   const spellGrid = isMobile ? SPELL_GRID_M : SPELL_GRID
+
+  // Subconscious Discipline: 0 = not taken, 1 = Tier I (½ linger), 2 = Tier II (full linger)
+  const sdTier = useMemo(() => {
+    if (!c) return 0
+    const inst = c.talents?.find(t => t.talent_id === 'subconscious_discipline')
+    return inst?.tier ?? 0
+  }, [c?.talents])
 
   const filteredLists = useMemo(() => Object.entries(spellLists).filter(([name, list]) => {
     const matchRealm  = realm === 'All' || list.realm === realm
@@ -191,6 +203,17 @@ export default function SpellsView() {
                     <span key={h} style={{ fontSize: 9, fontWeight: 600, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>{h}</span>
                   ))}
                 </div>
+                {/* Subconscious Discipline banner — only shown when char has the talent and list has C spells */}
+                {sdTier > 0 && spells.some(s => isConcentration(s.duration)) && (
+                  <div style={{ padding: '5px 14px', display: 'flex', alignItems: 'center', gap: 8, borderTop: '1px solid var(--border)', background: 'var(--purple)0d' }}>
+                    <span style={{ fontSize: 10, background: 'var(--purple)22', color: 'var(--purple)', border: '1px solid var(--purple)44', borderRadius: 3, padding: '1px 5px', fontWeight: 700, flexShrink: 0 }}>
+                      SD {sdTier === 1 ? 'I' : 'II'}
+                    </span>
+                    <span style={{ fontSize: 11, color: 'var(--text3)' }}>
+                      Concentration spells linger for <strong style={{ color: 'var(--purple)' }}>{sdTier === 1 ? 'half the' : 'equal'} rounds</strong> spent concentrating after ceasing
+                    </span>
+                  </div>
+                )}
                 {spells.map((spell, i) => {
                   const spKey = `${listName}-${spell.level}`
                   const open  = openSpell === spKey
@@ -209,7 +232,15 @@ export default function SpellsView() {
                         <span style={{ color: rc, fontWeight: 700 }}>{spell.level}</span>
                         <span style={{ display: 'flex', alignItems: 'center', gap: 3 }}>{spell.name}{hasDetail && <InfoIcon size={9} color="var(--text3)" />}</span>
                         <span style={{ color: 'var(--text2)', fontSize: 11 }}>{spell.aoe || '—'}</span>
-                        <span style={{ color: 'var(--text2)', fontSize: 11 }}>{spell.duration || '—'}</span>
+                        <span style={{ color: 'var(--text2)', fontSize: 11, display: 'flex', alignItems: 'center', gap: 3, flexWrap: 'nowrap' }}>
+                          {spell.duration || '—'}
+                          {sdTier > 0 && isConcentration(spell.duration) && (
+                            <span style={{ fontSize: 9, background: 'var(--purple)22', color: 'var(--purple)', border: '1px solid var(--purple)44', borderRadius: 3, padding: '0 3px', fontWeight: 700, flexShrink: 0 }}
+                              title={`Subconscious Discipline ${sdTier === 1 ? 'I' : 'II'}: lingers for ${sdTier === 1 ? '½×' : ''}the rounds you concentrated after ceasing`}>
+                              +{sdTier === 1 ? '½T' : 'T'}
+                            </span>
+                          )}
+                        </span>
                         <span style={{ color: 'var(--text2)', fontSize: 11 }}>{spell.range || '—'}</span>
                         <span style={{ fontSize: 10, color: rc, background: rc + '18', padding: '1px 4px', borderRadius: 3, textAlign: 'center' }}>{spell.type || '—'}</span>
                       </div>
