@@ -102,23 +102,55 @@ function renderMarkdown(src) {
   return out.join('')
 }
 
-// ── Toolbar helpers ───────────────────────────────────────────────────────────
+// ── HTML ↔ content helpers ────────────────────────────────────────────────────
 
-function wrapSel(ta, before, after) {
-  const a = after ?? before, { selectionStart: s, selectionEnd: e, value: v } = ta
-  const sel = v.slice(s, e) || 'text'
-  return { value: v.slice(0, s) + before + sel + a + v.slice(e), selStart: s + before.length, selEnd: s + before.length + sel.length }
+/** Get plain text from possibly-HTML content */
+function htmlText(content) {
+  if (!content) return ''
+  if (!content.includes('<')) return content
+  const d = document.createElement('div')
+  d.innerHTML = content
+  return d.textContent || ''
 }
-function toggleLinePrefix(ta, prefix) {
-  const { selectionStart: s, value: v } = ta
-  const ls = v.lastIndexOf('\n', s - 1) + 1, le = v.indexOf('\n', s), end = le === -1 ? v.length : le
-  const line = v.slice(ls, end), has = line.startsWith(prefix)
-  const d = has ? -prefix.length : prefix.length
-  return { value: v.slice(0, ls) + (has ? line.slice(prefix.length) : prefix + line) + v.slice(end), selStart: s + d, selEnd: s + d }
+
+/** Convert legacy markdown to HTML for the rich editor (runs once per note) */
+function noteToHtml(content) {
+  if (!content) return ''
+  if (content.trimStart().startsWith('<')) return content
+  return renderMarkdown(content)
 }
-function insertAt(ta, text) {
-  const { selectionStart: s, value: v } = ta
-  return { value: v.slice(0, s) + text + v.slice(s), selStart: s + text.length, selEnd: s + text.length }
+
+/** Walk DOM tree to produce markdown for .md export */
+function htmlToMarkdown(html) {
+  if (!html) return ''
+  const div = document.createElement('div')
+  div.innerHTML = html
+  function walk(node) {
+    if (node.nodeType === 3) return node.textContent
+    if (node.nodeType !== 1) return ''
+    const tag = node.tagName.toLowerCase()
+    const kids = [...node.childNodes].map(walk).join('')
+    switch (tag) {
+      case 'h1': return `\n# ${kids.trim()}\n`
+      case 'h2': return `\n## ${kids.trim()}\n`
+      case 'h3': return `\n### ${kids.trim()}\n`
+      case 'strong': case 'b': return `**${kids}**`
+      case 'em': case 'i': return `*${kids}*`
+      case 'del': case 's': return `~~${kids}~~`
+      case 'code': return node.parentElement?.tagName === 'PRE' ? kids : `\`${kids}\``
+      case 'pre': return `\n\`\`\`\n${kids.trim()}\n\`\`\`\n`
+      case 'blockquote': return kids.trim().split('\n').map(l => `> ${l}`).join('\n') + '\n'
+      case 'br': return '\n'
+      case 'p': return `${kids}\n`
+      case 'div': return kids ? `${kids}\n` : ''
+      case 'li': return node.parentElement?.tagName === 'OL' ? `1. ${kids}\n` : `- ${kids}\n`
+      case 'ul': case 'ol': return kids + '\n'
+      case 'hr': return `\n---\n`
+      case 'a': return `[${kids}](${node.getAttribute('href') || ''})`
+      default: return kids
+    }
+  }
+  return walk(div).replace(/\n{3,}/g, '\n\n').trim()
 }
 
 // ── Utilities ─────────────────────────────────────────────────────────────────
@@ -132,15 +164,21 @@ function fmtRelative(iso) {
   if (d < 604800000) return `${Math.floor(d / 86400000)}d ago`
   return new Date(iso).toLocaleDateString()
 }
-function wordCount(t) { return (t || '').trim().split(/\s+/).filter(Boolean).length }
+function wordCount(t) {
+  const text = htmlText(t)
+  return text.trim().split(/\s+/).filter(Boolean).length
+}
 
 function extractTags(content) {
-  const m = (content || '').match(/#([a-zA-Z][a-zA-Z0-9_-]*)/g) || []
+  const text = htmlText(content)
+  const m = text.match(/#([a-zA-Z][a-zA-Z0-9_-]*)/g) || []
   return [...new Set(m.map(t => t.slice(1).toLowerCase()))]
 }
 
 function exportNoteAsMd(note) {
-  const blob = new Blob([note.content || ''], { type: 'text/markdown' })
+  const content = note.content || ''
+  const md = content.trimStart().startsWith('<') ? htmlToMarkdown(content) : content
+  const blob = new Blob([md], { type: 'text/markdown' })
   const url  = URL.createObjectURL(blob)
   const a    = document.createElement('a')
   a.href     = url
@@ -187,11 +225,10 @@ export default function NotebookView() {
     return id && nb.notes[id] ? id : null
   })
   const [openFolders,    setOpenFolders]    = useState(() => loadOpenFolders())
-  const [mode,           setMode]           = useState('edit')
   const [search,         setSearch]         = useState('')
   const [sortBy,         setSortBy]         = useState('modified')
   const [activeTag,      setActiveTag]      = useState(null)
-  const [showSidebar,    setShowSidebar]    = useState(true)
+  const [showSidebar,    setShowSidebar]    = useState(() => window.innerWidth >= 700)
   const [sidebarHidden,  setSidebarHidden]  = useState(false)
   const [isMobile,       setIsMobile]       = useState(() => window.innerWidth < 700)
   const [ctxMenu,        setCtxMenu]        = useState(null)
@@ -205,7 +242,7 @@ export default function NotebookView() {
 
   const renameRef    = useRef(null)
   const titleRef     = useRef(null)
-  const textareaRef  = useRef(null)
+  const editorRef    = useRef(null)
   const dragItemRef  = useRef(null)   // sync ref — avoids stale closure in drag events
   const nbImportRef  = useRef(null)
   const [nbImportStatus, setNbImportStatus] = useState(null)
@@ -236,8 +273,6 @@ export default function NotebookView() {
   useEffect(() => {
     const onKey = e => {
       if (e.key === 'Escape') { setCtxMenu(null); setPlusOpen(false); if (renaming) commitRename() }
-      if ((e.ctrlKey || e.metaKey) && e.key === 'b' && document.activeElement === textareaRef.current) { e.preventDefault(); applyFormat('bold') }
-      if ((e.ctrlKey || e.metaKey) && e.key === 'i' && document.activeElement === textareaRef.current) { e.preventDefault(); applyFormat('italic') }
     }
     window.addEventListener('keydown', onKey); return () => window.removeEventListener('keydown', onKey)
   })
@@ -444,32 +479,52 @@ export default function NotebookView() {
   }
 
   // ── Editor ─────────────────────────────────────────────────────────────────
+
+  // When the active note changes, load its content into the contentEditable div
+  useEffect(() => {
+    if (!editorRef.current) return
+    if (!activeNote) { editorRef.current.innerHTML = ''; return }
+    const html = noteToHtml(activeNote.content)
+    editorRef.current.innerHTML = html
+    // One-time migration: save converted HTML so legacy markdown isn't re-converted
+    if (activeNote.content && activeNote.content.trim() && !activeNote.content.trimStart().startsWith('<')) {
+      mutate(d => { if (d.notes[activeNote.id]) d.notes[activeNote.id].content = html; return d })
+    }
+  }, [activeNote?.id]) // eslint-disable-line
+
   function handleContentChange(val) {
     if (!activeId) return
     mutate(d => { if (d.notes[activeId]) { d.notes[activeId].content = val; d.notes[activeId].updated_at = new Date().toISOString() }; return d })
   }
+
   function applyFormat(action) {
-    const ta = textareaRef.current; if (!ta) return
-    let r
+    const el = editorRef.current; if (!el) return
+    el.focus()
     switch (action) {
-      case 'bold':      r = wrapSel(ta, '**'); break
-      case 'italic':    r = wrapSel(ta, '*'); break
-      case 'strike':    r = wrapSel(ta, '~~'); break
-      case 'code':      r = wrapSel(ta, '`'); break
-      case 'codeblock': r = wrapSel(ta, '```\n', '\n```'); break
-      case 'h1':        r = toggleLinePrefix(ta, '# '); break
-      case 'h2':        r = toggleLinePrefix(ta, '## '); break
-      case 'h3':        r = toggleLinePrefix(ta, '### '); break
-      case 'quote':     r = toggleLinePrefix(ta, '> '); break
-      case 'ul':        r = toggleLinePrefix(ta, '- '); break
-      case 'ol':        r = toggleLinePrefix(ta, '1. '); break
-      case 'task':      r = toggleLinePrefix(ta, '- [ ] '); break
-      case 'hr':        r = insertAt(ta, '\n\n---\n\n'); break
-      default: return
+      case 'bold':      document.execCommand('bold');                         break
+      case 'italic':    document.execCommand('italic');                       break
+      case 'strike':    document.execCommand('strikeThrough');                break
+      case 'h1':        document.execCommand('formatBlock', false, 'H1');     break
+      case 'h2':        document.execCommand('formatBlock', false, 'H2');     break
+      case 'h3':        document.execCommand('formatBlock', false, 'H3');     break
+      case 'ul':        document.execCommand('insertUnorderedList');          break
+      case 'ol':        document.execCommand('insertOrderedList');            break
+      case 'quote':     document.execCommand('formatBlock', false, 'BLOCKQUOTE'); break
+      case 'codeblock': document.execCommand('formatBlock', false, 'PRE');   break
+      case 'hr':        document.execCommand('insertHorizontalRule');         break
+      case 'code': {
+        const sel = window.getSelection()
+        const txt = (sel && !sel.isCollapsed) ? sel.toString() : 'code'
+        document.execCommand('insertHTML', false, `<code>${txt}</code>`)
+        break
+      }
+      case 'task':
+        document.execCommand('insertUnorderedList')
+        document.execCommand('insertHTML', false, '<li>☐ </li>')
+        break
+      default: break
     }
-    if (!r) return
-    handleContentChange(r.value)
-    requestAnimationFrame(() => { ta.focus(); ta.setSelectionRange(r.selStart, r.selEnd) })
+    setTimeout(() => { if (editorRef.current && activeId) handleContentChange(editorRef.current.innerHTML) }, 0)
   }
 
   // ── Derived data ───────────────────────────────────────────────────────────
@@ -489,7 +544,7 @@ export default function NotebookView() {
   const searchResults = useMemo(() => {
     if (!q) return []
     return sortNotes(
-      Object.values(data.notes).filter(n => n.title.toLowerCase().includes(q) || n.content.toLowerCase().includes(q)),
+      Object.values(data.notes).filter(n => n.title.toLowerCase().includes(q) || htmlText(n.content).toLowerCase().includes(q)),
       sortBy
     )
   }, [data.notes, q, sortBy])
@@ -1053,42 +1108,27 @@ export default function NotebookView() {
                     <TBtn onClick={() => applyFormat('hr')}   title="Horizontal rule">─</TBtn>
                   </TGroup>
                   <div style={{ flex: 1 }} />
-                  <div style={{ display: 'flex', border: '1px solid var(--border)', borderRadius: 6, overflow: 'hidden' }}>
-                    {['edit','preview'].map(m => (
-                      <button key={m} onClick={() => setMode(m)}
-                        style={{ background: mode === m ? 'var(--accent)' : 'transparent',
-                          color: mode === m ? '#fff' : 'var(--text2)', border: 'none',
-                          padding: '3px 10px', fontSize: 11, fontWeight: 600, cursor: 'pointer', textTransform: 'capitalize' }}>
-                        {m}
-                      </button>
-                    ))}
-                  </div>
                 </div>
               </div>
 
-              {/* Content */}
-              {mode === 'edit' ? (
-                <textarea ref={textareaRef}
-                  value={activeNote.content}
-                  onChange={e => handleContentChange(e.target.value)}
-                  placeholder={'Start writing…\n\nMarkdown supported:\n# Heading 1\n**bold**, *italic*, `code`\n- [ ] Task\n- Bullet\n> Blockquote\n\n[[Link to note]] — links other notes\n#tag — adds a tag'}
-                  spellCheck
-                  style={{ flex: 1, width: '100%', padding: '16px 20px', resize: 'none',
-                    fontFamily: 'ui-monospace, monospace', fontSize: 13, lineHeight: 1.65,
-                    color: 'var(--text)', background: 'var(--bg)',
-                    border: 'none', boxShadow: 'none', outline: 'none', boxSizing: 'border-box' }} />
-              ) : (
-                <div style={{ flex: 1, overflowY: 'auto', padding: '16px 20px', maxWidth: 720 }}
-                  onClick={e => {
-                    const link = e.target.dataset?.noteLink
-                    if (link) {
-                      e.preventDefault()
-                      const target = Object.values(data.notes).find(n => n.title === link)
-                      if (target) { setActiveId(target.id) }
-                    }
-                  }}
-                  dangerouslySetInnerHTML={{ __html: renderMarkdown(activeNote.content) }} />
-              )}
+              {/* Rich text editor */}
+              <div
+                ref={editorRef}
+                contentEditable
+                suppressContentEditableWarning
+                className="rich-editor"
+                onInput={() => { if (activeId && editorRef.current) handleContentChange(editorRef.current.innerHTML) }}
+                onKeyDown={e => {
+                  if ((e.ctrlKey || e.metaKey) && e.key === 'b') { e.preventDefault(); applyFormat('bold') }
+                  if ((e.ctrlKey || e.metaKey) && e.key === 'i') { e.preventDefault(); applyFormat('italic') }
+                }}
+                data-placeholder="Start writing…"
+                style={{ flex: 1, width: '100%', padding: '16px 20px',
+                  outline: 'none', overflowY: 'auto',
+                  fontFamily: 'inherit', fontSize: 14, lineHeight: 1.65,
+                  color: 'var(--text)', background: 'var(--bg)',
+                  boxSizing: 'border-box', wordBreak: 'break-word' }}
+              />
 
               {/* Status bar */}
               <div style={{ padding: '4px 16px', borderTop: '1px solid var(--border)', flexShrink: 0,
