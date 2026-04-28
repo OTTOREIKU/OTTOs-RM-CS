@@ -7,7 +7,7 @@ import Placeholder from '@tiptap/extension-placeholder'
 import {
   ChevronDownIcon, ChevronRightIcon, PlusIcon, TrashIcon,
   PencilIcon, PinIcon, FolderIcon, FolderOpenIcon, DotsHIcon, FileIcon, CalendarIcon,
-  XIcon, MenuIcon, ChevronLeftIcon, CheckIcon,
+  XIcon, MenuIcon, ChevronLeftIcon, CheckIcon, CircleIcon,
 } from '../components/Icons.jsx'
 import {
   loadNotebook, saveNotebook, loadOpenFolders, saveOpenFolders,
@@ -1167,9 +1167,8 @@ export default function NotebookView() {
                   </span></>
                 )}
                 {activeNote.color && (
-                  <><span>·</span><span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                  <><span>·</span><span style={{ display: 'flex', alignItems: 'center' }}>
                     <span style={{ width: 8, height: 8, borderRadius: '50%', background: NOTE_COLORS[activeNote.color], display: 'inline-block' }} />
-                    {activeNote.color}
                   </span></>
                 )}
               </div>
@@ -1299,7 +1298,7 @@ function NoteRow({ note, active, dragging, selected, inSelectionMode, indent = 1
         ) : note.pinned ? (
           <PinIcon size={11} filled color="currentColor" />
         ) : (
-          <FileIcon size={11} color="currentColor" />
+          <CircleIcon size={10} color="currentColor" filled={active} />
         )}
       </span>
 

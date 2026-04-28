@@ -110,6 +110,15 @@ export function NoteIcon({ size, color }) {
   )
 }
 
+export function CircleIcon({ size = 24, color = 'currentColor', filled = false }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill={filled ? color : 'none'}
+      stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="7" />
+    </svg>
+  )
+}
+
 export function TrashIcon({ size, color }) {
   return (
     <Icon size={size} color={color}>

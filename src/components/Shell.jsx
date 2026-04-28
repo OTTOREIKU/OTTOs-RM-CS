@@ -97,7 +97,12 @@ export default function Shell({ children }) {
 
   function handleExport(e) {
     e.stopPropagation()
-    if (activeId) exportCharacter(activeId)
+    if (activeId) exportCharacter(activeId, { includeNotebook: false })
+  }
+
+  function handleExportWithNotebook(e) {
+    e.stopPropagation()
+    if (activeId) exportCharacter(activeId, { includeNotebook: true })
   }
 
   async function handleImport(e) {
@@ -205,21 +210,26 @@ export default function Shell({ children }) {
                     fontWeight: 600, fontSize: 13, cursor: 'pointer', letterSpacing: '0.01em',
                   }}>+ New Character</button>
 
-                  <div style={{ display: 'flex', gap: 6 }}>
-                    <input ref={importRef} type="file" accept=".json" style={{ display: 'none' }} onChange={handleImport} />
-                    <button onClick={() => importRef.current?.click()} style={{
-                      flex: 1, background: 'var(--surface2)', color: 'var(--text2)',
-                      border: '1px solid var(--border)', borderRadius: 7, padding: '7px 10px',
-                      fontSize: 12, cursor: 'pointer', fontWeight: 500,
-                    }}>Import</button>
-                    {activeId && (
+                  <input ref={importRef} type="file" accept=".json" style={{ display: 'none' }} onChange={handleImport} />
+                  <button onClick={() => importRef.current?.click()} style={{
+                    width: '100%', background: 'var(--surface2)', color: 'var(--text2)',
+                    border: '1px solid var(--border)', borderRadius: 7, padding: '7px 10px',
+                    fontSize: 12, cursor: 'pointer', fontWeight: 500,
+                  }}>Import</button>
+                  {activeId && (
+                    <div style={{ display: 'flex', gap: 6 }}>
                       <button onClick={handleExport} style={{
                         flex: 1, background: 'var(--surface2)', color: 'var(--text2)',
                         border: '1px solid var(--border)', borderRadius: 7, padding: '7px 10px',
                         fontSize: 12, cursor: 'pointer', fontWeight: 500,
                       }}>Export</button>
-                    )}
-                  </div>
+                      <button onClick={handleExportWithNotebook} style={{
+                        flex: 1, background: 'var(--surface2)', color: 'var(--text2)',
+                        border: '1px solid var(--border)', borderRadius: 7, padding: '7px 10px',
+                        fontSize: 12, cursor: 'pointer', fontWeight: 500,
+                      }}>Export + Notebook</button>
+                    </div>
+                  )}
 
                   {importStatus && (
                     <div style={{

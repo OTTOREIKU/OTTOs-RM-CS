@@ -150,8 +150,18 @@ export default function LevelUpView() {
   if (!c) return <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text3)' }}>No character selected.</div>
   if (confirmed) return <ConfirmedScreen char={c} lu={lu} onDone={() => navigate('/sheet')} />
 
-  const dpLeft = lu.dpTotal - lu.dpSpent
-  const step   = lu.step
+  const dpLeft  = lu.dpTotal - lu.dpSpent
+  const dpPct   = lu.dpTotal > 0 ? dpLeft / lu.dpTotal : 1
+  const dpColor = dpPct > 0.5 ? 'var(--success)' : dpPct > 0.2 ? 'var(--warning)' : 'var(--danger)'
+  const step    = lu.step
+  const hasAllocations = lu.dpSpent > 0 || Object.keys(lu.skillBuys).length > 0 ||
+    Object.keys(lu.spellBuys).length > 0 || Object.values(lu.statGains).some(v => v > 0) ||
+    Object.values(lu.potGains).some(v => v > 0)
+
+  function confirmBonusEdit() {
+    dispatch({ type: 'SET_BONUS_DP', value: bonusInput })
+    setEditingBonus(false)
+  }
 
   function applyLevelUp() {
     // 1. Increment level + decrement racial bonus DP pool
@@ -201,78 +211,69 @@ export default function LevelUpView() {
             {c.name} · Level {c.level} → {(c.level || 1) + 1}
           </div>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 6 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            {(lu.dpSpent > 0 || Object.keys(lu.skillBuys).length > 0 || Object.keys(lu.spellBuys).length > 0 ||
-              Object.values(lu.statGains).some(v => v > 0) || Object.values(lu.potGains).some(v => v > 0)) && (
-              <button
-                onClick={() => dispatch({ type: 'RESET', char: c })}
-                title="Clear all allocations and start over"
-                style={{
-                  background: 'none', border: '1px solid var(--border)', borderRadius: 6,
-                  color: 'var(--text3)', fontSize: 11, padding: '3px 9px', cursor: 'pointer',
-                }}>
-                ↺ Reset
-              </button>
-            )}
-            <DPBadge spent={lu.dpSpent} total={lu.dpTotal} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          {hasAllocations && (
+            <button
+              onClick={() => dispatch({ type: 'RESET', char: c })}
+              title="Clear all allocations and start over"
+              style={{
+                background: 'none', border: '1px solid var(--border)', borderRadius: 6,
+                color: 'var(--text3)', fontSize: 11, padding: '3px 9px', cursor: 'pointer',
+              }}>
+              ↺ Reset
+            </button>
+          )}
+          {/* DP square — base DP allocation */}
+          <div style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 7, padding: '4px 12px', textAlign: 'center', flexShrink: 0 }}>
+            <div style={{ fontSize: 9, color: 'var(--text2)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 2 }}>DP</div>
+            <div style={{ fontWeight: 700, fontSize: 15, color: 'var(--text)' }}>60</div>
           </div>
+          {/* RACE square — only shown when the character has a racial bonus pool */}
           {getRaceBonusDP(c).poolTotal > 0 && (
-            editingBonus ? (
-              <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 11 }}>
-                <span style={{ color: 'var(--text2)' }}>Racial bonus DP:</span>
+            <div
+              onClick={() => { if (!editingBonus) { setBonusInput(String(lu.bonusDP)); setEditingBonus(true) } }}
+              title={editingBonus ? undefined : 'Click to set racial bonus DP'}
+              style={{
+                background: 'var(--surface2)', border: `1px solid ${editingBonus ? 'var(--accent)' : 'var(--border)'}`,
+                borderRadius: 7, padding: '4px 10px', textAlign: 'center', flexShrink: 0,
+                cursor: editingBonus ? 'default' : 'pointer', minWidth: 54,
+              }}>
+              <div style={{ fontSize: 9, color: 'var(--text2)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 2 }}>
+                RACE{lu.bonusDPOverride ? ' !' : ''}
+              </div>
+              {editingBonus ? (
                 <input
                   type="number" min={0} max={25}
                   value={bonusInput}
                   onChange={e => setBonusInput(e.target.value)}
                   onKeyDown={e => {
-                    if (e.key === 'Enter') {
-                      dispatch({ type: 'SET_BONUS_DP', value: bonusInput })
-                      setEditingBonus(false)
-                    }
+                    if (e.key === 'Enter') confirmBonusEdit()
                     if (e.key === 'Escape') setEditingBonus(false)
                   }}
+                  onBlur={confirmBonusEdit}
+                  onClick={e => e.stopPropagation()}
                   autoFocus
                   style={{
-                    width: 46, textAlign: 'center', fontSize: 12, fontWeight: 700,
-                    padding: '2px 4px', borderRadius: 5,
-                    background: 'var(--surface2)', border: '1px solid var(--accent)',
-                    color: 'var(--text)',
+                    width: 44, textAlign: 'center', fontSize: 14, fontWeight: 700,
+                    padding: '0', borderRadius: 4, display: 'block',
+                    background: 'transparent', border: 'none', outline: 'none',
+                    color: lu.bonusDP > 0 ? dpColor : 'var(--text3)',
                   }}
                 />
-                <button
-                  onClick={() => { dispatch({ type: 'SET_BONUS_DP', value: bonusInput }); setEditingBonus(false) }}
-                  style={{ background: 'var(--accent)', color: '#fff', border: 'none',
-                    borderRadius: 4, padding: '2px 7px', fontSize: 11, cursor: 'pointer', fontWeight: 700 }}>
-                  ✓
-                </button>
-                <button
-                  onClick={() => setEditingBonus(false)}
-                  style={{ background: 'none', border: '1px solid var(--border)', color: 'var(--text2)',
-                    borderRadius: 4, padding: '2px 6px', fontSize: 11, cursor: 'pointer' }}>
-                  ✕
-                </button>
-              </div>
-            ) : (
-              <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 10 }}>
-                <span style={{ color: lu.bonusDP > 0 ? 'var(--accent)' : 'var(--text3)' }}>
-                  +{lu.bonusDP} racial bonus
-                </span>
-                {lu.bonusDPOverride && (
-                  <span style={{ color: 'var(--warning)', fontWeight: 700 }}>override</span>
-                )}
-                <button
-                  onClick={() => { setBonusInput(String(lu.bonusDP)); setEditingBonus(true) }}
-                  title="Override racial bonus DP for this level-up"
-                  style={{ background: 'none', border: 'none', color: 'var(--text3)',
-                    cursor: 'pointer', padding: '0 2px', fontSize: 11, lineHeight: 1 }}
-                  onMouseEnter={e => e.currentTarget.style.color = 'var(--text)'}
-                  onMouseLeave={e => e.currentTarget.style.color = 'var(--text3)'}>
-                  ✏
-                </button>
-              </div>
-            )
+              ) : (
+                <div style={{ fontWeight: 700, fontSize: 15, color: lu.bonusDP > 0 ? dpColor : 'var(--text3)' }}>
+                  +{lu.bonusDP}
+                </div>
+              )}
+            </div>
           )}
+          {/* TOTAL square */}
+          <div style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 7, padding: '4px 12px', textAlign: 'center', flexShrink: 0 }}>
+            <div style={{ fontSize: 9, color: 'var(--text2)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 2 }}>TOTAL</div>
+            <div style={{ fontWeight: 700, fontSize: 15, color: dpColor }}>
+              {dpLeft}<span style={{ color: 'var(--text2)', fontWeight: 400, fontSize: 11 }}>/{lu.dpTotal}</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -414,7 +415,7 @@ function SkillStep({ c, lu, dispatch, skillSearch, setSkillSearch, dpLeft,
       </InfoBox>
       <div style={{ display: 'flex', gap: 8, marginBottom: 12, alignItems: 'center' }}>
         <input type="text" placeholder="Search skills…" value={skillSearch} onChange={e => setSkillSearch(e.target.value)} style={{ flex: 1 }} />
-        <DPBadge spent={lu.dpSpent} total={lu.dpTotal} />
+        <TotalSquare spent={lu.dpSpent} total={lu.dpTotal} />
       </div>
 
       {Object.entries(grouped).map(([cat, skills]) => {
@@ -516,7 +517,7 @@ function SpellListsSection({ c, lu, dispatch, dpLeft, spellSearch, setSpellSearc
       </InfoBox>
       <div style={{ display: 'flex', gap: 8, marginBottom: 8, flexWrap: 'wrap', alignItems: 'center' }}>
         <input type="text" placeholder="Search spell lists…" value={spellSearch} onChange={e => setSpellSearch(e.target.value)} style={{ flex: 1, minWidth: 140 }} />
-        <DPBadge spent={lu.dpSpent} total={lu.dpTotal} />
+        <TotalSquare spent={lu.dpSpent} total={lu.dpTotal} />
       </div>
       <div style={{ display: 'flex', gap: 4, marginBottom: 12, flexWrap: 'wrap' }}>
         {REALMS.map(r => (
@@ -650,15 +651,29 @@ function ConfirmedScreen({ char, lu, onDone }) {
 }
 
 // ── Small helpers ─────────────────────────────────────────────────────────────
+function TotalSquare({ spent, total }) {
+  const left  = total - spent
+  const pct   = total > 0 ? left / total : 1
+  const color = pct > 0.5 ? 'var(--success)' : pct > 0.2 ? 'var(--warning)' : 'var(--danger)'
+  return (
+    <div style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 7, padding: '4px 12px', textAlign: 'center', flexShrink: 0 }}>
+      <div style={{ fontSize: 9, color: 'var(--text2)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 2 }}>TOTAL</div>
+      <div style={{ fontWeight: 700, fontSize: 15, color }}>
+        {left}<span style={{ color: 'var(--text2)', fontWeight: 400, fontSize: 11 }}>/{total}</span>
+      </div>
+    </div>
+  )
+}
+
 function DPBadge({ spent, total }) {
   const left = total - spent
   const pct  = total > 0 ? left / total : 1
   const color = pct > 0.5 ? 'var(--success)' : pct > 0.2 ? 'var(--warning)' : 'var(--danger)'
   return (
     <div style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 7, padding: '4px 12px', textAlign: 'center', flexShrink: 0 }}>
-      <div style={{ fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 2 }}>DP</div>
+      <div style={{ fontSize: 9, color: 'var(--text2)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 2 }}>DP</div>
       <div style={{ fontWeight: 700, fontSize: 15, color }}>
-        {left}<span style={{ color: 'var(--text3)', fontWeight: 400, fontSize: 11 }}>/{total}</span>
+        {left}<span style={{ color: 'var(--text2)', fontWeight: 400, fontSize: 11 }}>/{total}</span>
       </div>
     </div>
   )
