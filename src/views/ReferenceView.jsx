@@ -504,7 +504,7 @@ export default function ReferenceView() {
             ['Hits','Base Hits'], ['Rec','Recovery Multiplier'],
             ['Ch','Channeling RR'], ['Es','Essence RR'], ['Me*','Mentalism RR'], ['Ph','Physical RR'],
             ['RR','Resistance Roll bonus'],
-            ['Bonus DP','One-time racial bonus DP pool (CoreLaw p.75) — up to 25 spendable per level until exhausted'],
+            ['Bonus DP','One-time racial bonus DP pool — up to 25 spendable per level until exhausted'],
           ]} />
         </>
       )}

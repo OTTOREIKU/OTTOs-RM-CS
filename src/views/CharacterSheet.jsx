@@ -631,7 +631,7 @@ export default function CharacterSheet() {
       </Card>
 
       {/* Weapons */}
-      <Card title="Weapons & Attacks" onToggle={setWeaponsOpen} isOpen={weaponsOpen} action={
+      <Card title="Weapons & Attacks" onToggle={setWeaponsOpen} isOpen={weaponsOpen} action={weaponsOpen ? (
         <div style={{ display:'flex', gap:6 }}>
           <button onClick={()=>setWBrowse(b=>!b)}
             style={{ background:'var(--surface2)', color:'var(--text2)', border:'1px solid var(--border)', borderRadius:6, padding:'3px 10px', fontSize:11, fontWeight:600, cursor:'pointer', display:'flex', alignItems:'center', gap:4 }}>
@@ -640,7 +640,7 @@ export default function CharacterSheet() {
           <button onClick={()=>{addWeapon();setWBrowse(false);}}
             style={{ background:'var(--accent)', color:'#fff', border:'none', borderRadius:6, padding:'3px 10px', fontSize:11, fontWeight:600, cursor:'pointer' }}>+ Custom</button>
         </div>
-      }>
+      ) : null}>
         {wBrowse && (
           <WeaponBrowser
             onSelect={w => {
