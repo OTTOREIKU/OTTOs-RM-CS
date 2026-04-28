@@ -119,7 +119,8 @@ function reducer(state, action) {
       if (action.ranks === 0) delete spellBuys[action.name]
       return { ...state, spellBuys, dpSpent: dpNew }
     }
-    case 'STEP': return { ...state, step: action.step }
+    case 'STEP':  return { ...state, step: action.step }
+    case 'RESET': return { ...initLevelUp(action.char), step: state.step }
     default: return state
   }
 }
@@ -190,10 +191,24 @@ export default function LevelUpView() {
             {c.name} · Level {c.level} → {(c.level || 1) + 1}
           </div>
         </div>
-        <div style={{ textAlign: 'right' }}>
-          <DPBadge spent={lu.dpSpent} total={lu.dpTotal} />
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 6 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            {(lu.dpSpent > 0 || Object.keys(lu.skillBuys).length > 0 || Object.keys(lu.spellBuys).length > 0 ||
+              Object.values(lu.statGains).some(v => v > 0) || Object.values(lu.potGains).some(v => v > 0)) && (
+              <button
+                onClick={() => dispatch({ type: 'RESET', char: c })}
+                title="Clear all allocations and start over"
+                style={{
+                  background: 'none', border: '1px solid var(--border)', borderRadius: 6,
+                  color: 'var(--text3)', fontSize: 11, padding: '3px 9px', cursor: 'pointer',
+                }}>
+                ↺ Reset
+              </button>
+            )}
+            <DPBadge spent={lu.dpSpent} total={lu.dpTotal} />
+          </div>
           {lu.bonusDP > 0 && (
-            <div style={{ fontSize: 10, color: 'var(--accent)', marginTop: 3 }}>
+            <div style={{ fontSize: 10, color: 'var(--accent)' }}>
               +{lu.bonusDP} racial bonus · {lu.poolRemaining - Math.max(0, lu.dpSpent - 60)} pool left after
             </div>
           )}
