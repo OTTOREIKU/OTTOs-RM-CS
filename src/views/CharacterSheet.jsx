@@ -895,6 +895,9 @@ export default function CharacterSheet() {
       {/* Spell Lists */}
       <SpellListsPanel c={c} />
 
+      {/* Active Traits */}
+      <TraitsPanel c={c} />
+
       {/* Pace & Encumbrance */}
       <Card title="Pace & Encumbrance">
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(110px,1fr))', gap:8, marginBottom:12 }}>
@@ -1076,6 +1079,114 @@ function SpellListsPanel({ c }) {
           )
         })}
       </div>
+    </Card>
+  )
+}
+
+/* ─── ACTIVE TRAITS PANEL ───────────────────────────────── */
+const TRAIT_VARIANT = {
+  positive: { background:'var(--success)18', color:'var(--success)', border:'1px solid var(--success)44' },
+  flaw:     { background:'var(--danger)18',  color:'var(--danger)',  border:'1px solid var(--danger)44'  },
+  neutral:  { background:'var(--surface2)',  color:'var(--text2)',   border:'1px solid var(--border)'    },
+}
+
+function TraitsPanel({ c }) {
+  const [open, setOpen] = useState(true)
+
+  const groups = useMemo(() => {
+    const find = id => c.talents?.find(t => t.talent_id === id)
+    // Build a chip entry: returns null when talent not taken, so we can filter easily
+    const chip = (id, makeLbl, variant = 'positive') => {
+      const inst = find(id)
+      if (!inst) return null
+      const t = inst.tier > 1 ? ` T${inst.tier}` : ''
+      const p = inst.param ? ` (${inst.param})` : ''
+      return { label: makeLbl(inst, t, p), variant }
+    }
+
+    return [
+      {
+        label: 'Vision & Perception',
+        items: [
+          chip('nightvision',           (i, t)    => `Nightvision${t}`,                              'positive'),
+          chip('darkvision',            (i, t)    => `Darkvision${t}: see ${i.tier * 10}′ in dark`,  'positive'),
+          chip('tetrachromatic_vision', ()        => 'Tetrachromatic Vision: UV + camouflage−30',    'positive'),
+          chip('third_eyelid',          ()        => 'Third Eyelid: eye protection',                 'neutral'),
+          chip('light_sensitivity',     (i, t)    => `Light Sensitivity${t}: −${i.tier * 25} bright light`, 'flaw'),
+          chip('one_eye',               ()        => 'One Eye: −25 ranged attacks',                  'flaw'),
+          chip('missing_sense',         (i, t, p) => `Missing Sense${p}`,                            'flaw'),
+        ].filter(Boolean),
+      },
+      {
+        label: 'Body & Movement',
+        items: [
+          chip('ambidextrous',      ()        => 'Ambidextrous: no off-hand penalty',           'positive'),
+          chip('additional_limb_pair', (i, t) => `Additional Limb Pair${t}`,                    'positive'),
+          chip('extra_joints',      ()        => 'Extra Joints: +20 all limb actions',          'positive'),
+          chip('breath_holding',    ()        => 'Breath Holding: 1 min/lvl underwater',        'positive'),
+          chip('fast_healer',       ()        => 'Fast Healer: ×½ recovery time',               'positive'),
+          chip('immune_to_disease', (i, t)   => `Immune to Disease${t}`,                        'positive'),
+          chip('efficient_sleeper', (i, t)   => `Efficient Sleeper${t}`,                        'positive'),
+          chip('uncoordinated',     (i, t)   => `Uncoordinated${t}: worse move penalties`,      'flaw'),
+          chip('slow_healer',       ()        => 'Slow Healer: ×2 recovery time',               'flaw'),
+          chip('restless_sleeper',  (i, t)   => `Restless Sleeper${t}: needs extra sleep`,      'flaw'),
+        ].filter(Boolean),
+      },
+      {
+        label: 'Magical',
+        items: [
+          chip('mute',               ()        => 'Mute: cannot speak or cast verbally',              'flaw'),
+          chip('visions',            (i, t)    => `Visions${t}: touch-object divination ${i.tier}×/day`, 'positive'),
+          chip('destiny_sense',      (i, t)    => `Destiny Sense${t}`,                                'positive'),
+          chip('extra_sense',        (i, t, p) => `Extra Sense${t}${p}`,                              'positive'),
+          chip('animal_empathy',     (i, t, p) => `Animal Empathy${t}${p}: +25 maneuvers`,            'positive'),
+          chip('power_recycling',    (i, t)    => `Power Recycling T${i.tier}: ${i.tier === 1 ? '½' : 'full'} PP on failure`, 'positive'),
+          chip('graceful_recovery',  (i, t)    => `Graceful Recovery${t}: failure roll −${i.tier * 5}`, 'positive'),
+          chip('inglorious_failure', (i, t)    => `Inglorious Failure${t}: failure roll +${i.tier * 5}`, 'flaw'),
+          chip('quick_caster',       (i, t)    => `Quick Caster T${i.tier}: ${i.tier === 1 ? '2–3 AP' : '2 AP'} cast`, 'positive'),
+        ].filter(Boolean),
+      },
+      {
+        label: 'Social & Other',
+        items: [
+          chip('multilingual',     ()        => 'Multilingual: +10 ranks in 1 language (or 5+5)', 'positive'),
+          chip('neutral_odor',     ()        => 'Neutral Odor: −50 smell-based tracking vs you',  'positive'),
+          chip('natural_weaponry', ()        => 'Natural Weaponry: bite/claw at −1 size free',    'positive'),
+          chip('poison_injection', ()        => 'Poison Injection: venom on any critical',        'positive'),
+          chip('distinct_odor',    ()        => 'Distinct Odor: +50 smell tracking against you',  'flaw'),
+          chip('math_illiterate',  ()        => 'Math Illiterate: cannot count above 20',         'flaw'),
+          chip('restricted_diet',  ()        => 'Restricted Diet: limited food sources',          'flaw'),
+          chip('revulsion',        ()        => 'Revulsion: Fear RR each round near blood',       'flaw'),
+        ].filter(Boolean),
+      },
+    ].filter(g => g.items.length > 0)
+  }, [c.talents])
+
+  if (!groups.length) return null
+
+  return (
+    <Card title="Active Traits" action={
+      <button onClick={() => setOpen(o => !o)}
+        style={{ background:'none', border:'none', cursor:'pointer', color:'var(--text3)', display:'flex', alignItems:'center' }}>
+        {open ? <ChevronUpIcon size={12} color="currentColor" /> : <ChevronDownIcon size={12} color="currentColor" />}
+      </button>
+    }>
+      {open && (
+        <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
+          {groups.map(g => (
+            <div key={g.label}>
+              <div style={{ fontSize:9, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.09em', color:'var(--text3)', marginBottom:6 }}>{g.label}</div>
+              <div style={{ display:'flex', flexWrap:'wrap', gap:5 }}>
+                {g.items.map((item, i) => (
+                  <span key={i} style={{ fontSize:10, fontWeight:600, padding:'2px 9px', borderRadius:10, ...TRAIT_VARIANT[item.variant] }}>
+                    {item.label}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </Card>
   )
 }
