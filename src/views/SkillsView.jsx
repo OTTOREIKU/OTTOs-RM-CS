@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react'
 import { useCharacter } from '../store/CharacterContext.jsx'
+import { useScrollRestore } from '../hooks/persist.js'
 import { rankBonus, getTotalStatBonus, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getNamedTalentBonus } from '../utils/calc.js'
 import skillsData from '../data/skills.json'
 import skillCosts from '../data/skill_costs.json'
@@ -518,6 +519,7 @@ function SkillRow({
 export default function SkillsView() {
   const { activeChar, updateCharacter, updateSkill, updateSpellList, removeSpellList,
           addCustomSkill, updateCustomSkill, removeCustomSkill } = useCharacter()
+  useScrollRestore('rm_scroll_skills')
   const [search, setSearch]       = useState('')
   const [expanded, setExpanded]   = useState(() =>
     lsGet('rm_skills_expanded', Object.fromEntries(ALL_SKILL_CATEGORIES.map(c => [c, true])))

@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react'
 import { useCharacter } from '../store/CharacterContext.jsx'
+import { useScrollRestore } from '../hooks/persist.js'
 import { ChevronDownIcon, ChevronUpIcon, ChevronRightIcon, InfoIcon } from '../components/Icons.jsx'
 import { rankBonus, getTotalStatBonus, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus } from '../utils/calc.js'
 import spellLists from '../data/spell_lists.json'
@@ -38,6 +39,7 @@ function isTouchSelf(spell)     { return !!(spell.type?.includes('s')) }
 
 export default function SpellsView() {
   const { activeChar } = useCharacter()
+  useScrollRestore('rm_scroll_spells')
   const [realm, setRealm]           = useState('All')
   const [search, setSearch]         = useState('')
   const [openList, setOpenList]     = useState(() => {

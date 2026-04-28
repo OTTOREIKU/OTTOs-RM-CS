@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react'
+import { usePersistentOpen, useScrollRestore } from '../hooks/persist.js'
 import { ChevronDownIcon, ChevronUpIcon, XIcon, CheckIcon, DiamondIcon } from '../components/Icons.jsx'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { STATS } from '../store/characters.js'
@@ -322,8 +323,9 @@ function WeaponBrowser({ onSelect, onCancel }) {
 // ── Main view ─────────────────────────────────────────────────────────────────
 export default function CharacterSheet() {
   const { activeChar, updateCharacter, updateStat, updateSkill, addWeapon, updateWeapon, removeWeapon, updateArmorPart } = useCharacter()
-  const [wBrowse,   setWBrowse]   = useState(false)
-  const [paceOpen,  setPaceOpen]  = useState(false)
+  const [wBrowse,  setWBrowse]          = useState(false)
+  const [paceOpen, setPaceOpen]         = usePersistentOpen('rm_panel_pace', false)
+  useScrollRestore('rm_scroll_sheet')
   const c = activeChar
   if (!c) return null
 
@@ -902,7 +904,7 @@ export default function CharacterSheet() {
 
       {/* Pace & Encumbrance */}
       <Card title="Pace & Encumbrance" action={
-        <button onClick={() => setPaceOpen(o => !o)}
+        <button onClick={setPaceOpen}
           style={{ background:'none', border:'none', cursor:'pointer', color:'var(--text3)', display:'flex', alignItems:'center' }}>
           {paceOpen ? <ChevronUpIcon size={12} color="currentColor" /> : <ChevronDownIcon size={12} color="currentColor" />}
         </button>
@@ -1096,7 +1098,7 @@ const TRAIT_VARIANT = {
 }
 
 function TraitsPanel({ c }) {
-  const [open, setOpen] = useState(true)
+  const [open, toggleOpen] = usePersistentOpen('rm_panel_traits', true)
 
   const groups = useMemo(() => {
     const find = id => c.talents?.find(t => t.talent_id === id)
@@ -1171,7 +1173,7 @@ function TraitsPanel({ c }) {
 
   return (
     <Card title="Active Traits" action={
-      <button onClick={() => setOpen(o => !o)}
+      <button onClick={toggleOpen}
         style={{ background:'none', border:'none', cursor:'pointer', color:'var(--text3)', display:'flex', alignItems:'center' }}>
         {open ? <ChevronUpIcon size={12} color="currentColor" /> : <ChevronDownIcon size={12} color="currentColor" />}
       </button>

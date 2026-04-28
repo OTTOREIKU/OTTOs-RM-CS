@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { useCharacter } from '../store/CharacterContext.jsx'
+import { useScrollRestore } from '../hooks/persist.js'
 import talentsData from '../data/talents.json'
 import skillsData from '../data/skills.json'
 import weaponsData from '../data/weapons.json'
@@ -837,6 +838,7 @@ export default function EquipmentView() {
           addWeapon, updateWeapon, removeWeapon,
           addTalent, updateTalent, removeTalent,
           updateArmorPart } = useCharacter()
+  useScrollRestore('rm_scroll_gear')
   const [expandedMagic, setExpandedMagic] = useState(null)
 
   if (!activeChar) return null
