@@ -323,24 +323,19 @@ function RMRefNodeView({ node }) {
         contentEditable={false}
         onClick={() => setOpen(v => !v)}
         style={{
-          display: 'inline-flex',
-          alignItems: 'center',
+          display: 'inline',
           background: 'transparent',
-          color: 'var(--text)',
-          border: `1px solid ${cfg.color}`,
-          borderRadius: 4,
-          padding: '0 6px',
-          fontSize: '0.82em',
-          fontWeight: 600,
+          color: cfg.color,
+          border: 'none',
+          padding: 0,
+          fontWeight: 800,
           cursor: 'pointer',
           userSelect: 'none',
-          verticalAlign: 'middle',
-          lineHeight: 1.7,
           whiteSpace: 'nowrap',
-          transition: 'background .1s',
+          transition: 'opacity .1s',
         }}
-        onMouseEnter={e => { e.currentTarget.style.background = cfg.color + '22' }}
-        onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}>
+        onMouseEnter={e => { e.currentTarget.style.opacity = '0.7' }}
+        onMouseLeave={e => { e.currentTarget.style.opacity = '1' }}>
         {refLabel}
       </span>
       {open && (
