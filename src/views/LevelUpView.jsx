@@ -60,8 +60,10 @@ function getSpellCostForChar(listName, list, profession) {
 function getRaceBonusDP(char) {
   const raceEntry = racesData.find(r => r.name === char.race)
   const poolTotal = raceEntry?.dp_bonus_pool ?? 0
-  // null means not yet initialised; treat as full pool (character hasn't levelled up yet)
-  const poolRemaining = char.race_dp_pool_remaining ?? poolTotal
+  // null = field never set. Only assume full pool at level 1 (first ever level-up).
+  // At higher levels default to 0 (assume exhausted) so existing chars aren't broken.
+  const level = char.level || 1
+  const poolRemaining = char.race_dp_pool_remaining ?? (level <= 1 ? poolTotal : 0)
   const bonusAvailable = Math.min(25, Math.max(0, poolRemaining))
   return { poolTotal, poolRemaining, bonusAvailable }
 }
@@ -79,6 +81,7 @@ function initLevelUp(char) {
     dpTotal:          dp,
     dpSpent:          0,
     bonusDP:          bonusAvailable,   // racial bonus DP included this level
+    bonusDPOverride:  false,            // true when user has manually set bonusDP
     poolRemaining,                      // pool before this level (for applyLevelUp)
     skillBuys:        {},  // { skillName: ranksAdded }
     spellBuys:        {},  // { listName: ranksAdded }
@@ -120,6 +123,10 @@ function reducer(state, action) {
       if (action.ranks === 0) delete spellBuys[action.name]
       return { ...state, spellBuys, dpSpent: dpNew }
     }
+    case 'SET_BONUS_DP': {
+      const newBonus = Math.max(0, Math.min(25, Number(action.value) || 0))
+      return { ...state, bonusDP: newBonus, dpTotal: 60 + newBonus, bonusDPOverride: true }
+    }
     case 'STEP':  return { ...state, step: action.step }
     case 'RESET': return { ...initLevelUp(action.char), step: state.step }
     default: return state
@@ -137,6 +144,8 @@ export default function LevelUpView() {
   const [spellSearch, setSpellSearch] = useState('')
   const [spellRealm, setSpellRealm]   = useState('All')
   const [confirmed, setConfirmed]     = useState(false)
+  const [editingBonus, setEditingBonus] = useState(false)
+  const [bonusInput,   setBonusInput]   = useState('')
 
   if (!c) return <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text3)' }}>No character selected.</div>
   if (confirmed) return <ConfirmedScreen char={c} lu={lu} onDone={() => navigate('/sheet')} />
@@ -208,10 +217,61 @@ export default function LevelUpView() {
             )}
             <DPBadge spent={lu.dpSpent} total={lu.dpTotal} />
           </div>
-          {lu.bonusDP > 0 && (
-            <div style={{ fontSize: 10, color: 'var(--accent)' }}>
-              +{lu.bonusDP} racial bonus · {lu.poolRemaining - Math.max(0, lu.dpSpent - 60)} pool left after
-            </div>
+          {getRaceBonusDP(c).poolTotal > 0 && (
+            editingBonus ? (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 11 }}>
+                <span style={{ color: 'var(--text2)' }}>Racial bonus DP:</span>
+                <input
+                  type="number" min={0} max={25}
+                  value={bonusInput}
+                  onChange={e => setBonusInput(e.target.value)}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter') {
+                      dispatch({ type: 'SET_BONUS_DP', value: bonusInput })
+                      setEditingBonus(false)
+                    }
+                    if (e.key === 'Escape') setEditingBonus(false)
+                  }}
+                  autoFocus
+                  style={{
+                    width: 46, textAlign: 'center', fontSize: 12, fontWeight: 700,
+                    padding: '2px 4px', borderRadius: 5,
+                    background: 'var(--surface2)', border: '1px solid var(--accent)',
+                    color: 'var(--text)',
+                  }}
+                />
+                <button
+                  onClick={() => { dispatch({ type: 'SET_BONUS_DP', value: bonusInput }); setEditingBonus(false) }}
+                  style={{ background: 'var(--accent)', color: '#fff', border: 'none',
+                    borderRadius: 4, padding: '2px 7px', fontSize: 11, cursor: 'pointer', fontWeight: 700 }}>
+                  ✓
+                </button>
+                <button
+                  onClick={() => setEditingBonus(false)}
+                  style={{ background: 'none', border: '1px solid var(--border)', color: 'var(--text2)',
+                    borderRadius: 4, padding: '2px 6px', fontSize: 11, cursor: 'pointer' }}>
+                  ✕
+                </button>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 10 }}>
+                <span style={{ color: lu.bonusDP > 0 ? 'var(--accent)' : 'var(--text3)' }}>
+                  +{lu.bonusDP} racial bonus
+                </span>
+                {lu.bonusDPOverride && (
+                  <span style={{ color: 'var(--warning)', fontWeight: 700 }}>override</span>
+                )}
+                <button
+                  onClick={() => { setBonusInput(String(lu.bonusDP)); setEditingBonus(true) }}
+                  title="Override racial bonus DP for this level-up"
+                  style={{ background: 'none', border: 'none', color: 'var(--text3)',
+                    cursor: 'pointer', padding: '0 2px', fontSize: 11, lineHeight: 1 }}
+                  onMouseEnter={e => e.currentTarget.style.color = 'var(--text)'}
+                  onMouseLeave={e => e.currentTarget.style.color = 'var(--text3)'}>
+                  ✏
+                </button>
+              </div>
+            )
           )}
         </div>
       </div>
