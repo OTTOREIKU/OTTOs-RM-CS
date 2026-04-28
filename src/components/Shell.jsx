@@ -116,7 +116,7 @@ export default function Shell({ children }) {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100dvh' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100dvh', overflow: 'hidden' }}>
 
       {/* ── Header ───────────────────────────────────────────────── */}
       <header style={{
@@ -362,9 +362,11 @@ export default function Shell({ children }) {
       {/* ── Content ──────────────────────────────────────────────── */}
       <main style={{
         flex: 1,
-        paddingBottom: navPos === 'bottom' ? (isWide ? 84 : 74) : 24,
+        overflow: 'auto',
         overflowX: 'hidden',
         minWidth: 0,
+        WebkitOverflowScrolling: 'touch',
+        paddingBottom: navPos === 'bottom' ? (isWide ? 84 : 74) : 16,
       }}>
         {children}
       </main>

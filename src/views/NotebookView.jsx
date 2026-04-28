@@ -698,7 +698,7 @@ export default function NotebookView() {
   }
 
   // ── Layout ─────────────────────────────────────────────────────────────────
-  const OUTER_H   = 'calc(100dvh - 52px - 56px)'
+  const OUTER_H   = '100%'
   const SIDEBAR_W = 260
 
   // Determine sidebar display mode
@@ -969,12 +969,12 @@ export default function NotebookView() {
       {/* ── MOBILE SIDEBAR — overlay drawer ──────────────────── */}
       {isMobile && showSidebar && (
         <>
-          {/* Backdrop */}
+          {/* Backdrop — absolute within the notebook panel */}
           <div onClick={() => setShowSidebar(false)}
-            style={{ position: 'fixed', inset: 0, zIndex: 198,
-              background: 'rgba(0,0,0,0.55)', top: 52, bottom: 56 }} />
-          {/* Drawer */}
-          <div style={{ position: 'fixed', top: 52, bottom: 56, left: 0, zIndex: 199,
+            style={{ position: 'absolute', inset: 0, zIndex: 198,
+              background: 'rgba(0,0,0,0.55)' }} />
+          {/* Drawer — absolute within the notebook panel */}
+          <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, zIndex: 199,
             width: '82vw', maxWidth: 320, display: 'flex', flexDirection: 'column',
             background: 'var(--surface)', boxShadow: '4px 0 28px rgba(0,0,0,0.5)',
             overflow: 'hidden' }}>
