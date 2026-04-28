@@ -103,7 +103,7 @@ function Row({ label, value, color }) {
   if (value == null || value === '') return null
   return (
     <div style={{ display: 'flex', gap: 6, alignItems: 'baseline', fontSize: 11 }}>
-      <span style={{ color: 'var(--text3)', flexShrink: 0, minWidth: 90 }}>{label}</span>
+      <span style={{ color: 'var(--text2)', flexShrink: 0, minWidth: 90 }}>{label}</span>
       <span style={{ color: color || 'var(--text)', fontWeight: 500 }}>{value}</span>
     </div>
   )
@@ -112,7 +112,7 @@ function Row({ label, value, color }) {
 function SkillTooltip({ item }) {
   return (
     <>
-      <div style={{ fontSize: 10, color: 'var(--text3)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+      <div style={{ fontSize: 10, color: 'var(--text2)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
         {item.category}
       </div>
       <Row label="Dev Cost"  value={item.dev_cost} />
@@ -125,7 +125,7 @@ function SkillTooltip({ item }) {
 function WeaponTooltip({ item }) {
   return (
     <>
-      <div style={{ fontSize: 10, color: 'var(--text3)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+      <div style={{ fontSize: 10, color: 'var(--text2)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
         {item.skill_name} · {item.ob_type}
       </div>
       <Row label="Fumble"  value={item.fumble} />
@@ -207,7 +207,7 @@ function RaceTooltip({ item }) {
 function ArmorTooltip({ item }) {
   return (
     <>
-      <div style={{ fontSize: 10, color: 'var(--text3)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+      <div style={{ fontSize: 10, color: 'var(--text2)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
         {item._section} · AT {item.at}
       </div>
       <Row label="Weight"     value={item.weight_pct != null ? `${item.weight_pct}% body wt` : null} />
@@ -224,10 +224,10 @@ function ArmorTooltip({ item }) {
 function SpellTooltip({ item }) {
   return (
     <>
-      <div style={{ fontSize: 10, color: 'var(--text3)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+      <div style={{ fontSize: 10, color: 'var(--text2)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
         {item.list} · Lv {item.level}
       </div>
-      <div style={{ fontSize: 10, color: 'var(--text3)', marginBottom: 6 }}>
+      <div style={{ fontSize: 10, color: 'var(--text2)', marginBottom: 6 }}>
         {item.realm} — {item.section}
       </div>
       <Row label="AoE"      value={item.aoe} />
