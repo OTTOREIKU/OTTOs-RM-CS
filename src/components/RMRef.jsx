@@ -442,10 +442,10 @@ export function RMRefPicker({ open, onClose, editor }) {
     if (!editor) return
     const id    = getItemId(type, item)
     const label = item.name || item.id
-    editor.chain().focus().insertContent({
-      type: 'rmref',
-      attrs: { refType: type, refId: id, refLabel: label },
-    }).run()
+    editor.chain().focus().insertContent([
+      { type: 'text', text: ' ' },
+      { type: 'rmref', attrs: { refType: type, refId: id, refLabel: label } },
+    ]).run()
     onClose()
   }, [editor, type, onClose])
 
