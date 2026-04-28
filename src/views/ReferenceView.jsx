@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react'
 import { ChevronDownIcon, ChevronUpIcon, GearIcon } from '../components/Icons.jsx'
 import {
   loadTheme, loadEinkSettings, saveTheme, saveEinkSettings, EINK_ACCENT_PRESETS,
+  loadNavPos, saveNavPos,
 } from '../store/theme.js'
 import racesData          from '../data/races.json'
 import cultureSkillsData  from '../data/culture_skills.json'
@@ -240,6 +241,7 @@ export default function ReferenceView() {
   const [showSettings,  setShowSettings]  = useState(false)
   const [theme,         setTheme]         = useState(loadTheme)
   const [einkSettings,  setEinkSettings]  = useState(loadEinkSettings)
+  const [navPos,        setNavPos]        = useState(loadNavPos)
 
   function handleThemeChange(t) {
     setTheme(t); saveTheme(t)
@@ -247,6 +249,9 @@ export default function ReferenceView() {
   function handleEinkChange(patch) {
     const next = { ...einkSettings, ...patch }
     setEinkSettings(next); saveEinkSettings(next)
+  }
+  function handleNavPosChange(pos) {
+    setNavPos(pos); saveNavPos(pos)
   }
 
   return (
@@ -304,6 +309,31 @@ export default function ReferenceView() {
                     border: '2px solid ' + (theme === id ? 'var(--accent)' : 'var(--border2)'),
                     background: theme === id ? 'var(--accent)22' : 'var(--surface2)',
                     color: theme === id ? 'var(--accent)' : 'var(--text2)',
+                    textAlign: 'left', transition: 'all .15s',
+                  }}>
+                  <div style={{ fontSize: 13, fontWeight: 700 }}>{label}</div>
+                  <div style={{ fontSize: 10, opacity: 0.7, marginTop: 2 }}>{desc}</div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Navigation position */}
+          <div style={{ marginTop: 16, paddingTop: 16, borderTop: '1px solid var(--border)' }}>
+            <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 8 }}>
+              Navigation Bar
+            </div>
+            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+              {[
+                { id: 'top',    label: 'Top',    desc: 'Below the header' },
+                { id: 'bottom', label: 'Bottom', desc: 'Fixed to screen bottom' },
+              ].map(({ id, label, desc }) => (
+                <button key={id} onClick={() => handleNavPosChange(id)}
+                  style={{
+                    padding: '8px 16px', borderRadius: 8, cursor: 'pointer',
+                    border: '2px solid ' + (navPos === id ? 'var(--accent)' : 'var(--border2)'),
+                    background: navPos === id ? 'var(--accent)22' : 'var(--surface2)',
+                    color: navPos === id ? 'var(--accent)' : 'var(--text2)',
                     textAlign: 'left', transition: 'all .15s',
                   }}>
                   <div style={{ fontSize: 13, fontWeight: 700 }}>{label}</div>

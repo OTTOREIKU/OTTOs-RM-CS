@@ -1,11 +1,21 @@
 // Theme store — persists to localStorage, applies CSS class to <html>
 
+const NAV_POS_KEY       = 'rm_nav_pos'
 const THEME_KEY         = 'rm_theme'
 const EINK_ACCENT_KEY   = 'rm_eink_accent'
 const EINK_BOLD_KEY     = 'rm_eink_bold'
 const EINK_LARGE_KEY    = 'rm_eink_large'
 const EINK_GRAY_KEY     = 'rm_eink_gray'
 const EINK_FLATBG_KEY   = 'rm_eink_flatbg'
+
+export function loadNavPos() {
+  return localStorage.getItem(NAV_POS_KEY) || 'top'
+}
+
+export function saveNavPos(pos) {
+  localStorage.setItem(NAV_POS_KEY, pos)
+  window.dispatchEvent(new CustomEvent('rm-setting-change'))
+}
 
 export const EINK_ACCENT_PRESETS = [
   { label: 'Navy',     hex: '#1a4fa3' },

@@ -11,6 +11,7 @@ import {
   SwordsIcon, ChevronDownIcon, XIcon, SaveIcon,
   UserIcon, BarChartIcon, ZapIcon, PackageIcon, BookOpenIcon, TrendingUpIcon, BookIcon,
 } from './Icons.jsx'
+import { loadNavPos } from '../store/theme.js'
 
 const NAV = [
   { to: '/sheet',     label: 'Sheet',    Icon: UserIcon       },
@@ -28,9 +29,23 @@ export default function Shell({ children }) {
   const [importStatus, setImportStatus] = useState(null)
   const [backupFile, setBackupFile] = useState(null)
   const [backupMenuOpen, setBackupMenuOpen] = useState(false)
+  const [isWide, setIsWide] = useState(() => window.innerWidth >= 640)
+  const [navPos, setNavPos] = useState(() => loadNavPos())
   const importRef = useRef(null)
   const navigate = useNavigate()
   const location = useLocation()
+
+  // Resize + settings-change listeners
+  useEffect(() => {
+    const onResize = () => setIsWide(window.innerWidth >= 640)
+    const onSetting = () => setNavPos(loadNavPos())
+    window.addEventListener('resize', onResize)
+    window.addEventListener('rm-setting-change', onSetting)
+    return () => {
+      window.removeEventListener('resize', onResize)
+      window.removeEventListener('rm-setting-change', onSetting)
+    }
+  }, [])
 
   // Check backup file state on mount
   useEffect(() => {
@@ -287,46 +302,70 @@ export default function Shell({ children }) {
       </header>
 
       {/* ── Tab bar ──────────────────────────────────────────────── */}
-      <nav style={{
-        position: 'sticky',
-        top: 52,
-        zIndex: 49,
-        background: 'var(--surface)',
-        borderBottom: '1px solid var(--border)',
-        display: 'flex',
-        alignItems: 'center',
-        gap: 6,
-        padding: '8px 12px',
-        overflowX: 'auto',
-        WebkitOverflowScrolling: 'touch',
-        scrollbarWidth: 'none',
-      }}>
-        {NAV.map(({ to, label, Icon: NavIcon }) => (
-          <NavLink
-            key={to}
-            to={to}
-            title={label}
-            style={({ isActive }) => ({
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flex: 1,
-              minWidth: 36,
-              height: 42,
-              borderRadius: 8,
-              textDecoration: 'none',
-              background: isActive ? 'var(--accent)' : 'var(--surface2)',
-              color: isActive ? '#fff' : 'var(--text2)',
-              border: '1px solid ' + (isActive ? 'transparent' : 'var(--border)'),
-            })}
-          >
-            <NavIcon size={17} color="currentColor" />
-          </NavLink>
-        ))}
-      </nav>
+      {(() => {
+        const btnH = isWide ? 52 : 42
+        const navH = btnH + 16  // 8px padding top + bottom
+        const isBottom = navPos === 'bottom'
+        return (
+          <nav style={{
+            ...(isBottom
+              ? { position: 'fixed', bottom: 0, left: 0, right: 0,
+                  borderTop: '1px solid var(--border)',
+                  boxShadow: '0 -4px 16px rgba(0,0,0,0.35)' }
+              : { position: 'sticky', top: 52,
+                  borderBottom: '1px solid var(--border)',
+                  boxShadow: '0 4px 16px rgba(0,0,0,0.35)' }
+            ),
+            zIndex: 49,
+            background: 'var(--surface)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
+            padding: '8px 12px',
+            overflowX: 'auto',
+            WebkitOverflowScrolling: 'touch',
+            scrollbarWidth: 'none',
+          }}>
+            {NAV.map(({ to, label, Icon: NavIcon }) => (
+              <NavLink
+                key={to}
+                to={to}
+                title={label}
+                style={({ isActive }) => ({
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 3,
+                  flex: 1,
+                  minWidth: 36,
+                  height: btnH,
+                  borderRadius: 8,
+                  textDecoration: 'none',
+                  background: isActive ? 'var(--accent)' : 'var(--surface2)',
+                  color: isActive ? '#fff' : 'var(--text2)',
+                  border: '1px solid ' + (isActive ? 'transparent' : 'var(--border)'),
+                })}
+              >
+                <NavIcon size={17} color="currentColor" />
+                {isWide && (
+                  <span style={{ fontSize: 9, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+                    {label}
+                  </span>
+                )}
+              </NavLink>
+            ))}
+          </nav>
+        )
+      })()}
 
       {/* ── Content ──────────────────────────────────────────────── */}
-      <main style={{ flex: 1, paddingBottom: 24, overflowX: 'hidden', minWidth: 0 }}>
+      <main style={{
+        flex: 1,
+        paddingBottom: navPos === 'bottom' ? (isWide ? 84 : 74) : 24,
+        overflowX: 'hidden',
+        minWidth: 0,
+      }}>
         {children}
       </main>
 
