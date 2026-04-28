@@ -1,6 +1,7 @@
-import React, { useState, useMemo, useReducer } from 'react'
+import React, { useState, useMemo, useReducer, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useCharacter } from '../store/CharacterContext.jsx'
+import { useScrollRestore } from '../hooks/persist.js'
 import { STATS } from '../store/characters.js'
 import { getTotalStatBonus, rankBonus } from '../utils/calc.js'
 import skillsData from '../data/skills.json'
@@ -66,6 +67,24 @@ function getRaceBonusDP(char) {
   const poolRemaining = char.race_dp_pool_remaining ?? (level <= 1 ? poolTotal : 0)
   const bonusAvailable = Math.min(25, Math.max(0, poolRemaining))
   return { poolTotal, poolRemaining, bonusAvailable }
+}
+
+// ── Level-up cache (persists across navigation) ───────────────────────────────
+function luCacheKey(char) {
+  return `rm_levelup_${char.id}_${char.level || 1}`
+}
+function loadCachedLU(char) {
+  try {
+    const raw = localStorage.getItem(luCacheKey(char))
+    if (raw) return JSON.parse(raw)
+  } catch {}
+  return null
+}
+function saveCachedLU(char, state) {
+  try { localStorage.setItem(luCacheKey(char), JSON.stringify(state)) } catch {}
+}
+function clearCachedLU(char) {
+  try { localStorage.removeItem(luCacheKey(char)) } catch {}
 }
 
 // ── Reducer for level-up state ────────────────────────────────────────────────
@@ -138,14 +157,23 @@ export default function LevelUpView() {
   const { activeChar, updateCharacter, updateStat, updateSkill, updateCustomSkill, updateSpellList } = useCharacter()
   const navigate = useNavigate()
   const c = activeChar
+  useScrollRestore('rm_scroll_levelup')
 
-  const [lu, dispatch] = useReducer(reducer, null, () => c ? initLevelUp(c) : initLevelUp({ profession: 'Fighter' }))
+  const [lu, dispatch] = useReducer(reducer, null, () => {
+    if (!c) return initLevelUp({ profession: 'Fighter' })
+    return loadCachedLU(c) ?? initLevelUp(c)
+  })
   const [skillSearch, setSkillSearch] = useState('')
   const [spellSearch, setSpellSearch] = useState('')
   const [spellRealm, setSpellRealm]   = useState('All')
   const [confirmed, setConfirmed]     = useState(false)
   const [editingBonus, setEditingBonus] = useState(false)
   const [bonusInput,   setBonusInput]   = useState('')
+
+  // Persist lu state to localStorage whenever it changes
+  useEffect(() => {
+    if (c) saveCachedLU(c, lu)
+  }, [lu]) // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!c) return <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text3)' }}>No character selected.</div>
   if (confirmed) return <ConfirmedScreen char={c} lu={lu} onDone={() => navigate('/sheet')} />
@@ -198,6 +226,7 @@ export default function LevelUpView() {
       updateSpellList(name, curRanks + newRanks)
     })
 
+    clearCachedLU(c)
     setConfirmed(true)
   }
 
@@ -214,7 +243,7 @@ export default function LevelUpView() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           {hasAllocations && (
             <button
-              onClick={() => dispatch({ type: 'RESET', char: c })}
+              onClick={() => { clearCachedLU(c); dispatch({ type: 'RESET', char: c }) }}
               title="Clear all allocations and start over"
               style={{
                 background: 'none', border: '1px solid var(--border)', borderRadius: 6,

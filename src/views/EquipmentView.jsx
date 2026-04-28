@@ -5,6 +5,7 @@ import talentsData from '../data/talents.json'
 import skillsData from '../data/skills.json'
 import weaponsData from '../data/weapons.json'
 import armorData from '../data/armor.json'
+import equipmentData from '../data/equipment.json'
 import { getWeaponOB } from '../utils/calc.js'
 import { XIcon, ChevronDownIcon, ChevronRightIcon, ArrowDownIcon } from '../components/Icons.jsx'
 
@@ -38,17 +39,13 @@ const W_SKILL_COLOR = {
   'Strikes':'#ec4899','Grappling/Wrestling':'#8b5cf6',
 }
 
-// Common equipment items: [name, weight]
-const COMMON_ITEMS = [
-  ['Backpack',2],['Belt Pouch',0.1],['Bedroll',3],['Blanket',2],['Tent (2-person)',6],
-  ['Rope, 50ft',5],['Rope, 100ft',10],['Grappling Hook',3],
-  ['Torch',0.5],['Lantern',1],['Oil Flask',0.5],['Candle',0.1],
-  ['Flint & Steel',0],['Rations (1 day)',1],['Waterskin (full)',4],
-  ['Parchment (sheet)',0],['Quill & Ink',0],['Whetstone',0.5],
-  ['Rope & Pulley',4],['Crowbar',3],['Hammer',1],['Piton',0.1],
-  ['Mirror, small',0],['Chalk',0],['Soap',0],['Bandages',0.1],
-  ['Healing Herb',0],['Antidote',0],['Poison',0],
-]
+// Equipment lookup map: name (lowercase) → { weight, notes, cost }
+const EQ_MAP = Object.fromEntries(
+  equipmentData.map(e => [e.name.toLowerCase(), e])
+)
+function lookupEquipment(name) {
+  return EQ_MAP[(name || '').toLowerCase()] || null
+}
 
 function tierCost(def, tier, param) {
   // param_costs: variable cost based on chosen param (e.g. Missing Sense varies by sense)
@@ -840,6 +837,9 @@ export default function EquipmentView() {
           updateArmorPart } = useCharacter()
   useScrollRestore('rm_scroll_gear')
   const [expandedMagic, setExpandedMagic] = useState(null)
+  const [editingNames, setEditingNames] = useState(() => new Set())
+  const unlockName  = id => setEditingNames(s => new Set([...s, id]))
+  const lockName    = id => setEditingNames(s => { const n = new Set(s); n.delete(id); return n })
 
   if (!activeChar) return null
 
@@ -873,16 +873,53 @@ export default function EquipmentView() {
               </tr>
             </thead>
             <tbody>
-              {equipment.map((item, i) => (
+              {equipment.map((item, i) => {
+                const ref = lookupEquipment(item.name)
+                const nameEditing = !item.name || editingNames.has(item.id)
+                return (
                 <tr key={item.id} style={{ borderTop: i===0?'none':'1px solid var(--border)' }}>
                   <td style={{ padding:'3px 4px' }}>
-                    <input value={item.name||''} onChange={e=>updateEquipment(item.id,{name:e.target.value})}
-                      list="eq-items-dl" placeholder="Item name"
-                      style={{background:'var(--surface2)',border:'1px solid var(--border2)',borderRadius:5,padding:'4px 6px',
-                        color:'var(--text)',fontSize:12,width:'100%',boxSizing:'border-box'}}/>
-                    <datalist id="eq-items-dl">
-                      {COMMON_ITEMS.map(([n])=><option key={n} value={n}/>)}
-                    </datalist>
+                    {nameEditing ? (
+                      <>
+                        <input value={item.name||''} list="eq-items-dl" placeholder="Item name" autoFocus={!item.name}
+                          onChange={e => {
+                            const name = e.target.value
+                            const match = lookupEquipment(name)
+                            const patch = { name }
+                            if (match && item.weight == null) patch.weight = match.weight
+                            updateEquipment(item.id, patch)
+                          }}
+                          onBlur={e => {
+                            const val = e.target.value.trim()
+                            if (val) {
+                              const match = lookupEquipment(val)
+                              if (match && (item.weight == null || item.weight === 0)) {
+                                updateEquipment(item.id, { weight: match.weight })
+                              }
+                              lockName(item.id)
+                            }
+                          }}
+                          onKeyDown={e => { if (e.key === 'Enter' && item.name) lockName(item.id) }}
+                          style={{background:'var(--surface2)',border:'1px solid var(--border2)',borderRadius:5,padding:'4px 6px',
+                            color:'var(--text)',fontSize:12,width:'100%',boxSizing:'border-box'}}/>
+                        <datalist id="eq-items-dl">
+                          {equipmentData.map(e=><option key={e.name} value={e.name}/>)}
+                        </datalist>
+                      </>
+                    ) : (
+                      <div style={{ display:'flex', alignItems:'flex-start', gap:4, minHeight:24 }}>
+                        <div style={{ flex:1 }}>
+                          <div style={{ fontSize:12, fontWeight:500, color:'var(--text)', paddingTop:3 }}>{item.name}</div>
+                          {ref?.notes && (
+                            <div style={{ fontSize:10, color:'var(--text2)', marginTop:1, lineHeight:1.3 }}>{ref.notes}</div>
+                          )}
+                        </div>
+                        <button onClick={() => unlockName(item.id)} title="Edit item name"
+                          onMouseEnter={e=>e.currentTarget.style.color='var(--text)'}
+                          onMouseLeave={e=>e.currentTarget.style.color='var(--text3)'}
+                          style={{background:'none',border:'none',color:'var(--text3)',cursor:'pointer',fontSize:11,padding:'2px 2px',flexShrink:0,marginTop:1}}>✏</button>
+                      </div>
+                    )}
                   </td>
                   <td style={{ padding:'3px 4px' }}>
                     <TinyInput type="number" value={item.qty} onChange={v=>updateEquipment(item.id,{qty:v})} style={{textAlign:'center'}}/>
@@ -904,7 +941,8 @@ export default function EquipmentView() {
                       style={{background:'none',border:'none',color:'var(--text3)',cursor:'pointer',fontSize:14,padding:2}}>&#x2715;</button>
                   </td>
                 </tr>
-              ))}
+                )
+              })}
             </tbody>
           </table>
         </div>
