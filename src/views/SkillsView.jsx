@@ -50,6 +50,14 @@ const CATEGORY_STATS = {
 
 function hasPlaceholder(name) { return /<[^>]+>/.test(name) }
 
+// Resolve a custom/placeholder skill name to the same display form used in talent targets.
+// e.g. template="Music: <instrument 1>", label="Singing" → "Music: Singing"
+function resolveSkillName(templateName, label) {
+  if (!label) return templateName
+  if (hasPlaceholder(templateName)) return templateName.replace(/<[^>]+>/, label)
+  return `${templateName}: ${label}`
+}
+
 // Weapon slot type derived from template skill name
 const WEAPON_SLOT_TYPE = {
   melee:   /^Melee: <weapon/,
@@ -204,7 +212,7 @@ function SkillRow({
   const combinedStatB = catStatB + skillStatB
   const rb      = rankBonus(totalRanks)
   const talentEntries = isCustom
-    ? (talentBonuses[cs.template_name] || [])
+    ? (talentBonuses[resolveSkillName(cs.template_name, cs.label)] || [])
     : (talentBonuses[skill.name] || [])
   const excludedTalents = cs.talent_excluded || []
   const autoBonus = talentEntries
