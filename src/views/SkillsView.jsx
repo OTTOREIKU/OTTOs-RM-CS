@@ -211,9 +211,13 @@ function SkillRow({
   const skillStatB = getStatBonus(c, skill.stat_keys)
   const combinedStatB = catStatB + skillStatB
   const rb      = rankBonus(totalRanks)
-  const talentEntries = isCustom
-    ? (talentBonuses[resolveSkillName(cs.template_name, cs.label)] || [])
-    : (talentBonuses[skill.name] || [])
+  // Resolve the display name used as the talent target key.
+  // Talents store inst.param using the resolved name (e.g. "Music: Singing"),
+  // so we must resolve placeholder skills in the same way as the datalist does.
+  const resolvedSkillName = isCustom
+    ? resolveSkillName(cs.template_name, cs.label)
+    : resolveSkillName(skill.name, cs.label)
+  const talentEntries = talentBonuses[resolvedSkillName] || talentBonuses[skill.name] || []
   const excludedTalents = cs.talent_excluded || []
   const autoBonus = talentEntries
     .filter(e => !excludedTalents.includes(e.instId))
