@@ -363,7 +363,7 @@ export default function CharacterSheet() {
     }
   }, { man: 0, rang: 0, perc: 0, wt: 0 })
 
-  const bmr = BMR_BASE
+  const bmr = BMR_BASE + talentB.stride
   function fmt(n) { return n >= 0 ? `+${n}` : String(n) }
 
   return (
@@ -379,7 +379,29 @@ export default function CharacterSheet() {
           <FieldRow label="Profession"><SInput value={c.profession} onChange={v => updateCharacter({ profession: v })} options={professions} /></FieldRow>
           <FieldRow label="Realm"><SInput value={c.realm} onChange={v => updateCharacter({ realm: v })} options={REALMS} /></FieldRow>
           <FieldRow label="Culture"><SInput value={c.culture} onChange={v => updateCharacter({ culture: v })} options={cultures} /></FieldRow>
-          <FieldRow label="Size"><SInput value={c.size} onChange={v => updateCharacter({ size: v })} options={SIZES} /></FieldRow>
+          <FieldRow label="Size">
+            <div style={{ display:'flex', alignItems:'center', gap:6 }}>
+              <div style={{ flex:1 }}><SInput value={c.size} onChange={v => updateCharacter({ size: v })} options={SIZES} /></div>
+              {(talentB.size !== 0 || talentB.sizeHits !== 0) && (
+                <div style={{ display:'flex', flexDirection:'column', gap:2 }}>
+                  {talentB.size !== 0 && (
+                    <span style={{ fontSize:9, fontWeight:700, padding:'1px 5px', borderRadius:4,
+                      background: talentB.size > 0 ? 'var(--success)' : 'var(--danger)', color:'#fff', whiteSpace:'nowrap' }}
+                      title="Increased/Decreased Size talent">
+                      {talentB.size > 0 ? '+' : ''}{talentB.size} size
+                    </span>
+                  )}
+                  {talentB.sizeHits !== 0 && (
+                    <span style={{ fontSize:9, fontWeight:700, padding:'1px 5px', borderRadius:4,
+                      background:'var(--danger)', color:'#fff', whiteSpace:'nowrap' }}
+                      title="Light-boned: hits treated as smaller size">
+                      {talentB.sizeHits} hits sz
+                    </span>
+                  )}
+                </div>
+              )}
+            </div>
+          </FieldRow>
           <FieldRow label="Gender"><TInput value={c.gender} onChange={v => updateCharacter({ gender: v })} /></FieldRow>
           <FieldRow label="Age"><NInput value={c.age} onChange={v => updateCharacter({ age: v })} min={1} /></FieldRow>
           <FieldRow label="Fate Points"><NInput value={c.fate_points} onChange={v => updateCharacter({ fate_points: v })} min={0} /></FieldRow>
@@ -414,7 +436,7 @@ export default function CharacterSheet() {
             label="Wt Allow"
             value={`${wa.pct}%`}
             color={wa.pct > 15 ? 'var(--success)' : wa.pct < 15 ? 'var(--danger)' : 'var(--text)'}
-            sub={wa.lbs != null ? `${wa.lbs} lbs` : 'set weight'}
+            sub={wa.lbs != null ? `${wa.lbs} lbs${wa.carryBonus ? ` (+${wa.carryBonus}% talent)` : ''}` : 'set weight'}
           />
           <EditStat label="Experience" field="experience" char={c} onUpdate={updateCharacter} />
         </div>
@@ -428,7 +450,16 @@ export default function CharacterSheet() {
         <div style={{ display: 'grid', gridTemplateColumns: effPPMax != null ? '1fr 1fr' : '1fr', gap: 12 }}>
           {/* HP */}
           <div style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 10, padding: '14px 16px' }}>
-            <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--danger)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>Hit Points</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+              <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--danger)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Hit Points</div>
+              {talentB.bleed !== 0 && (
+                <span style={{ fontSize: 9, fontWeight: 700, padding: '1px 6px', borderRadius: 10,
+                  background: talentB.bleed < 0 ? 'var(--success)' : 'var(--danger)', color: '#fff' }}
+                  title={talentB.bleed < 0 ? 'Slow Bleeder: bleeding reduced' : 'Rapid Bleeder: bleeding increased'}>
+                  {talentB.bleed > 0 ? '+' : ''}{talentB.bleed}/rnd bleed
+                </span>
+              )}
+            </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <div style={{ flex: 1 }}>
                 <div style={{ fontSize: 10, color: 'var(--text3)', marginBottom: 3 }}>Current</div>
@@ -535,6 +566,12 @@ export default function CharacterSheet() {
                     </td>
                     <td style={{ padding: '5px 6px', textAlign: 'center', fontWeight: 700, color: bonusColor, fontSize: 14 }}>
                       {fmt(bonus)}
+                      {talentB.stat[stat] ? (
+                        <span style={{ display: 'inline-block', fontSize: 9, fontWeight: 700, marginLeft: 3, padding: '1px 4px', borderRadius: 3,
+                          background: talentB.stat[stat] > 0 ? 'var(--success)' : 'var(--danger)', color: '#fff', verticalAlign: 'middle' }}>
+                          {talentB.stat[stat] > 0 ? `+${talentB.stat[stat]}` : talentB.stat[stat]}T
+                        </span>
+                      ) : null}
                     </td>
                   </tr>
                 )
@@ -566,6 +603,15 @@ export default function CharacterSheet() {
           />
         )}
         {weapons.length === 0 && !wBrowse && <div style={{ fontSize:12, color:'var(--text3)' }}>No weapons. Use + From DB or + Custom to begin.</div>}
+        {talentB.sizeAttack !== 0 && (
+          <div style={{ marginBottom:8, display:'flex', alignItems:'center', gap:6 }}>
+            <span style={{ fontSize:10, fontWeight:700, padding:'2px 8px', borderRadius:10,
+              background: talentB.sizeAttack > 0 ? 'var(--success)' : 'var(--danger)', color:'#fff' }}>
+              Natural attack size {talentB.sizeAttack > 0 ? '+' : ''}{talentB.sizeAttack}
+            </span>
+            <span style={{ fontSize:10, color:'var(--text3)' }}>from {talentB.sizeAttack > 0 ? 'Enhanced Attack' : 'Lesser Attack'} talent</span>
+          </div>
+        )}
         <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
           {weapons.map(w => {
             const ob = getWeaponOB(c, w)
@@ -688,6 +734,9 @@ export default function CharacterSheet() {
           <StatCard label="Shield DB" value={shieldDB > 0 ? `+${shieldDB}` : '—'} color="var(--accent)" />
           <StatCard label="Total DB"  value={fmt(totalDB)} color={totalDB > 0 ? 'var(--success)' : 'var(--text)'} />
           <StatCard label="Initiative" value={fmt(ini)} color="var(--accent)" />
+          {talentB.at > 0 && (
+            <StatCard label="Natural Armor" value={`+${talentB.at} AT`} color="var(--success)" sub="no encumbrance" />
+          )}
         </div>
 
         {/* Resistance Rolls */}
@@ -720,6 +769,18 @@ export default function CharacterSheet() {
                 </div>
               )
             })}
+            {/* Elemental resistance/susceptibility rows from talent */}
+            {Object.entries(talentB.elemental).map(([elem, bonus]) => (
+              <div key={elem} style={{ background:'var(--surface2)', border:`1px solid ${bonus > 0 ? 'var(--success)' : 'var(--danger)'}`, borderRadius:8, padding:'8px 10px' }}>
+                <div style={{ display:'flex', justifyContent:'space-between', alignItems:'baseline', marginBottom:4 }}>
+                  <div style={{ fontSize:9, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.07em', color: bonus > 0 ? 'var(--success)' : 'var(--danger)' }}>{elem}</div>
+                  <div style={{ fontSize:8, color:'var(--text3)' }}>elemental</div>
+                </div>
+                <div style={{ fontSize:20, fontWeight:800, color: bonus > 0 ? 'var(--success)' : 'var(--danger)' }}>
+                  {fmt(bonus)}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </Card>
@@ -733,7 +794,7 @@ export default function CharacterSheet() {
       {/* Pace & Encumbrance */}
       <Card title="Pace & Encumbrance">
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(110px,1fr))', gap:8, marginBottom:12 }}>
-          <StatCard label="BMR (m/rnd)" value={bmr} color="var(--accent)" />
+          <StatCard label="BMR (m/rnd)" value={bmr} color="var(--accent)" sub={talentB.stride ? `${talentB.stride > 0 ? '+' : ''}${talentB.stride} stride talent` : undefined} />
           <StatCard label="Armor Man." value={armorTotals.man || '—'} color={armorTotals.man < 0 ? 'var(--danger)' : 'var(--text3)'} />
           <StatCard label="Armor Rang." value={armorTotals.rang || '—'} color={armorTotals.rang < 0 ? 'var(--danger)' : 'var(--text3)'} />
           <StatCard label="Armor Perc." value={armorTotals.perc || '—'} color={armorTotals.perc < 0 ? 'var(--danger)' : 'var(--text3)'} />

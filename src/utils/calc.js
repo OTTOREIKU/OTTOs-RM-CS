@@ -6,7 +6,19 @@ import talentsData from '../data/talents.json'
 // Aggregate all non-skill talent bonuses from a character's talent list.
 // Returns: { spellcasting, db, hits, initiative, endurance, rr: { [realm]: bonus } }
 export function getTalentBonuses(char) {
-  const result = { spellcasting: 0, db: 0, hits: 0, initiative: 0, endurance: 0, rr: {} }
+  const result = {
+    spellcasting: 0, db: 0, hits: 0, initiative: 0, endurance: 0, rr: {},
+    // Phase 2 additions
+    stride: 0,       // increased/decreased_stride: metres/round bonus to BMR
+    at: 0,           // natural_armor: AT bonus (all body parts)
+    carry: 0,        // beast_of_burden: extra carry capacity in % of body weight
+    bleed: 0,        // slow_bleeder (negative) / rapid_bleeder (positive): hits/round per wound
+    size: 0,         // increased/decreased_size: character size tier modifier
+    sizeHits: 0,     // light_boned: effective size for hit calculation only
+    sizeAttack: 0,   // enhanced/lesser_attack: natural attack size modifier
+    stat: {},        // superior/inferior_stat: { [statFullName]: flatBonus }
+    elemental: {},   // elemental_resistance/susceptibility: { [element]: bonus }
+  }
   for (const inst of (char.talents || [])) {
     const def = talentsData.find(t => t.id === inst.talent_id)
     if (!def?.effects) continue
@@ -15,10 +27,33 @@ export function getTalentBonuses(char) {
       if (!val) continue
       switch (eff.type) {
         case 'spellcasting_bonus': result.spellcasting += val; break
-        case 'db_bonus':          result.db          += val; break
-        case 'hits_bonus':        result.hits        += val; break
-        case 'initiative_bonus':  result.initiative  += val; break
-        case 'endurance_bonus':   result.endurance   += val; break
+        case 'db_bonus':          result.db           += val; break
+        case 'hits_bonus':        result.hits         += val; break
+        case 'initiative_bonus':  result.initiative   += val; break
+        case 'endurance_bonus':   result.endurance    += val; break
+        case 'stride_bonus':      result.stride       += val; break
+        case 'at_bonus':          result.at           += val; break
+        case 'carry_bonus':       result.carry        += val; break
+        case 'bleed_mod':         result.bleed        += val; break
+        case 'size_mod': {
+          const target = eff.target || 'size'
+          if      (target === 'size')   result.size       += val
+          else if (target === 'hits')   result.sizeHits   += val
+          else if (target === 'attack') result.sizeAttack += val
+          break
+        }
+        case 'stat_bonus': {
+          // eff.stat === 'param' means use inst.param as the stat name
+          const statName = eff.stat === 'param' ? (inst.param || '') : (eff.stat || '')
+          if (statName) result.stat[statName] = (result.stat[statName] ?? 0) + val
+          break
+        }
+        case 'elemental_bonus': {
+          // eff.element === 'param' means use inst.param as the element name
+          const elem = eff.element === 'param' ? (inst.param || '') : (eff.element || '')
+          if (elem) result.elemental[elem] = (result.elemental[elem] ?? 0) + val
+          break
+        }
         case 'rr_bonus': {
           const realm = eff.realm === 'param'
             ? (inst.param || '').toLowerCase()
@@ -290,9 +325,10 @@ export function getEndurance(char) {
 export function getWeightAllowance(char) {
   const st = char.stats?.Strength
   const stBonus = st ? getTotalStatBonus(st) : 0
-  const pct = 15 + (2 * stBonus)
+  const carryBonus = getTalentBonuses(char).carry ?? 0
+  const pct = 15 + (2 * stBonus) + carryBonus
   const lbs = char.weight ? Math.round(pct * Number(char.weight) / 100) : null
-  return { pct, lbs }
+  return { pct, lbs, carryBonus }
 }
 
 export function getPowerPoints(char) {
