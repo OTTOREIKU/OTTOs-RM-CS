@@ -471,6 +471,7 @@ export default function ReferenceView() {
                   {STAT_ABR.map(s => <Th key={s}>{s}</Th>)}
                   <Th>Hits</Th><Th>Rec</Th>
                   <Th>Ch</Th><Th>Es</Th><Th>Me</Th><Th>Ph</Th>
+                  <Th>Bonus DP</Th>
                 </tr>
               </thead>
               <tbody>
@@ -486,6 +487,11 @@ export default function ReferenceView() {
                     {[race.channeling_rr, race.essence_rr, race.mentalism_rr, race.physical_rr].map((v, j) => (
                       <td key={j} style={{ padding:'5px 6px', textAlign:'center', fontSize:12, color: v > 0 ? 'var(--success)' : v < 0 ? 'var(--danger)' : 'var(--text3)', fontWeight: v !== 0 ? 600 : 400 }}>{v !== 0 ? v : '—'}</td>
                     ))}
+                    <td style={{ padding:'5px 6px', textAlign:'center', fontSize:12,
+                      color: race.dp_bonus_pool > 0 ? 'var(--accent)' : 'var(--text3)',
+                      fontWeight: race.dp_bonus_pool > 0 ? 700 : 400 }}>
+                      {race.dp_bonus_pool > 0 ? race.dp_bonus_pool : '—'}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -498,6 +504,7 @@ export default function ReferenceView() {
             ['Hits','Base Hits'], ['Rec','Recovery Multiplier'],
             ['Ch','Channeling RR'], ['Es','Essence RR'], ['Me*','Mentalism RR'], ['Ph','Physical RR'],
             ['RR','Resistance Roll bonus'],
+            ['Bonus DP','One-time racial bonus DP pool (CoreLaw p.75) — up to 25 spendable per level until exhausted'],
           ]} />
         </>
       )}
