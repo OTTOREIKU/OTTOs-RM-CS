@@ -7,6 +7,7 @@ import skillsData from '../data/skills.json'
 import skillCosts from '../data/skill_costs.json'
 import spellLists from '../data/spell_lists.json'
 import professionDP from '../data/profession_dp.json'
+import racesData from '../data/races.json'
 import { ChevronDownIcon, ChevronRightIcon, ChevronLeftIcon, ArrowRightIcon, MinusIcon, SparkleIcon } from '../components/Icons.jsx'
 
 const STAT_MAP = {
@@ -52,19 +53,34 @@ function getSpellCostForChar(listName, list, profession) {
   return 6
 }
 
+// ── Racial bonus DP helpers ───────────────────────────────────────────────────
+// CoreLaw p.75: each race has a bonus DP pool; up to 25 may be spent per level
+// until the pool is exhausted. Human common pool = 50 → +25 at levels 1 and 2.
+function getRaceBonusDP(char) {
+  const raceEntry = racesData.find(r => r.name === char.race)
+  const poolTotal = raceEntry?.dp_bonus_pool ?? 0
+  // null means not yet initialised; treat as full pool (character hasn't levelled up yet)
+  const poolRemaining = char.race_dp_pool_remaining ?? poolTotal
+  const bonusAvailable = Math.min(25, Math.max(0, poolRemaining))
+  return { poolTotal, poolRemaining, bonusAvailable }
+}
+
 // ── Reducer for level-up state ────────────────────────────────────────────────
 function initLevelUp(char) {
-  const dp = 60  // CoreLaw p.85: all characters receive 60 DP per level regardless of profession
+  const { poolRemaining, bonusAvailable } = getRaceBonusDP(char)
+  const dp = 60 + bonusAvailable  // CoreLaw p.75+85: 60 base + racial bonus pool (≤25/level)
   return {
     step: 0,
-    statGains:   Object.fromEntries(STATS.map(s => [s, 0])),  // temp gains
-    potGains:    Object.fromEntries(STATS.map(s => [s, 0])),  // potential gains
-    statPoints:  10,  // RMU: 10 temp stat points per level
-    potPoints:   1,   // 1 potential point per level
-    dpTotal:     dp,
-    dpSpent:     0,
-    skillBuys:   {},  // { skillName: ranksAdded }
-    spellBuys:   {},  // { listName: ranksAdded }
+    statGains:        Object.fromEntries(STATS.map(s => [s, 0])),
+    potGains:         Object.fromEntries(STATS.map(s => [s, 0])),
+    statPoints:       10,  // RMU: 10 temp stat points per level
+    potPoints:        1,   // 1 potential point per level
+    dpTotal:          dp,
+    dpSpent:          0,
+    bonusDP:          bonusAvailable,   // racial bonus DP included this level
+    poolRemaining,                      // pool before this level (for applyLevelUp)
+    skillBuys:        {},  // { skillName: ranksAdded }
+    spellBuys:        {},  // { listName: ranksAdded }
   }
 }
 
@@ -127,8 +143,11 @@ export default function LevelUpView() {
   const step   = lu.step
 
   function applyLevelUp() {
-    // 1. Increment level
-    updateCharacter({ level: (c.level || 1) + 1 })
+    // 1. Increment level + decrement racial bonus DP pool
+    // Only deduct bonus DP that were actually spent (spent > 60 base means dipping into bonus)
+    const bonusUsed = Math.max(0, lu.dpSpent - 60)
+    const newPool   = Math.max(0, (lu.poolRemaining ?? 0) - bonusUsed)
+    updateCharacter({ level: (c.level || 1) + 1, race_dp_pool_remaining: newPool })
 
     // 2. Apply stat gains
     STATS.forEach(stat => {
@@ -171,7 +190,14 @@ export default function LevelUpView() {
             {c.name} · Level {c.level} → {(c.level || 1) + 1}
           </div>
         </div>
-        <DPBadge spent={lu.dpSpent} total={lu.dpTotal} />
+        <div style={{ textAlign: 'right' }}>
+          <DPBadge spent={lu.dpSpent} total={lu.dpTotal} />
+          {lu.bonusDP > 0 && (
+            <div style={{ fontSize: 10, color: 'var(--accent)', marginTop: 3 }}>
+              +{lu.bonusDP} racial bonus · {lu.poolRemaining - Math.max(0, lu.dpSpent - 60)} pool left after
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Step tabs */}
@@ -481,6 +507,9 @@ function ReviewStep({ c, lu, onConfirm }) {
         <Row label="Profession" value={c.profession} />
         <Row label="DP used"    value={`${lu.dpSpent} / ${lu.dpTotal}`} />
         <Row label="DP unspent" value={dpLeft} color={dpLeft > 0 ? 'var(--warning)' : 'var(--success)'} />
+        {lu.bonusDP > 0 && (
+          <Row label="Racial bonus DP" value={`+${lu.bonusDP} (${lu.poolRemaining} → ${Math.max(0, lu.poolRemaining - Math.max(0, lu.dpSpent - 60))} pool remaining)`} color="var(--accent)" />
+        )}
       </Section>
 
       {statChanges.length > 0 && (

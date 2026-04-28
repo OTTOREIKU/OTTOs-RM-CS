@@ -99,6 +99,10 @@ export function makeBlankCharacter(id) {
     // Traits: [{id,name,tier,effect}]
     traits: [],
 
+    // Racial bonus DP pool (CoreLaw p.75: races start with a pool, up to 25 spendable/level)
+    // null = not yet initialized (will be set to race's full pool at first level-up)
+    race_dp_pool_remaining: null,
+
     // Notes
     notes: '',
 

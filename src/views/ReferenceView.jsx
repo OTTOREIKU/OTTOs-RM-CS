@@ -105,6 +105,24 @@ const CHOICE_LABELS = {
   survival:              'biome',
 }
 
+// ── TableKey — small abbreviation legend shown below tables ──────────────────
+function TableKey({ entries }) {
+  return (
+    <div style={{
+      marginTop: 10, padding: '8px 12px',
+      background: 'var(--surface2)', border: '1px solid var(--border)',
+      borderRadius: 8, display: 'flex', flexWrap: 'wrap', gap: '4px 16px',
+    }}>
+      <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.07em', width: '100%', marginBottom: 2 }}>Key</span>
+      {entries.map(([abbr, full]) => (
+        <span key={abbr} style={{ fontSize: 10, color: 'var(--text2)', whiteSpace: 'nowrap' }}>
+          <strong style={{ color: 'var(--text)' }}>{abbr}</strong> = {full}
+        </span>
+      ))}
+    </div>
+  )
+}
+
 function CulturesTab() {
   const cultures = cultureSkillsData.filter(c => c.grants?.length > 0)
   const [selected, setSelected] = useState(cultures[0]?.name ?? '')
@@ -473,6 +491,14 @@ export default function ReferenceView() {
               </tbody>
             </table>
           </div>
+          <TableKey entries={[
+            ['Ag','Agility'], ['Co','Constitution'], ['Em','Empathy'], ['In','Intuition'],
+            ['Me','Memory'], ['Pr','Presence'], ['Qu','Quickness'], ['Re','Reasoning'],
+            ['SD','Self Discipline'], ['St','Strength'],
+            ['Hits','Base Hits'], ['Rec','Recovery Multiplier'],
+            ['Ch','Channeling RR'], ['Es','Essence RR'], ['Me*','Mentalism RR'], ['Ph','Physical RR'],
+            ['RR','Resistance Roll bonus'],
+          ]} />
         </>
       )}
 
@@ -521,6 +547,12 @@ export default function ReferenceView() {
               </div>
             )
           })}
+          <TableKey entries={[
+            ['AT','Armor Type (1–20)'], ['Wt%','Weight as % of wearer\'s body weight'],
+            ['Str','Strength requirement'], ['Man','Maneuver penalty'],
+            ['Rang','Ranged attack penalty'], ['Perc','Perception penalty'],
+            ['Difficulty','Crafting difficulty rating'], ['Time','Craft time'],
+          ]} />
         </div>
       )}
 
@@ -611,6 +643,11 @@ export default function ReferenceView() {
               </tbody>
             </table>
           </div>
+          <TableKey entries={[
+            ['x/y','Cost in DP: x = 1st rank, y = 2nd rank (max 2 ranks/level)'],
+            ['DP','Development Points — budget spent each level to buy skill ranks'],
+            ['?','Cost not defined for this profession / skill category'],
+          ]} />
         </div>
       )}
 
@@ -763,9 +800,14 @@ function WeaponsPanel() {
           </tbody>
         </table>
       </div>
-      <div style={{ fontSize:11, color:'var(--text3)' }}>
-        Fumble = base fumble number (reduced by 1 per 5 ranks in the skill, minimum 1). Size = weapon size modifier vs. Medium target. Str Req = stat needed for effective use.
-      </div>
+      <TableKey entries={[
+        ['Type','OB type: melee / ranged / thrown / unarmed'],
+        ['Fumble','Base fumble number (reduced by 1 per 5 ranks; min 1)'],
+        ['Str Req','Minimum Strength stat for effective use'],
+        ['Size','Weapon size modifier vs. Medium target (+1, 0, −1, etc.)'],
+        ['Length','Reach category (T=Touch, S=Short, M=Medium, L=Long, R=Reach)'],
+        ['Wt (lbs)','Weight in pounds'],
+      ]} />
     </div>
   )
 }
@@ -952,6 +994,13 @@ function CritTablesPanel({ critType, setCritType, critSev, setCritSev, critRoll,
         <SectionLabel>{critTables[critType]?.label} – Severity {critSev} – Full Table</SectionLabel>
         <CritTableGrid rows={rows} hit={hit} sevColor={sevColor} />
       </div>
+      <TableKey entries={[
+        ['A','Minor crit — bruises, minor cuts'], ['B','Light crit — small wounds'],
+        ['C','Moderate crit — notable injury'], ['D','Serious crit — significant wound'],
+        ['E','Severe crit — life-threatening'], ['F','Extreme crit (treated as E)'],
+        ['S','Slash'], ['K','Krush (blunt)'], ['P','Puncture'], ['U','Unbalancing'],
+        ['G','Grapple'], ['C*','Cold'], ['H','Heat'], ['E*','Electricity'], ['I','Impact'], ['T','Strike'],
+      ]} />
     </div>
   )
 }
@@ -1081,6 +1130,14 @@ function AttackTablesPanel({ atWeapon, setAtWeapon, atRoll, setAtRoll, atAT, set
             </tbody>
           </table>
         </div>
+        <TableKey entries={[
+          ['AT 1–10','Armor Type column (click to highlight)'],
+          ['Roll','Open-ended d100 result (pre-modifiers)'],
+          ['25BS','Example result: 25 hits + B-severity Slash crit'],
+          ['A–F','Crit severity: A=Minor, B=Light, C=Moderate, D=Serious, E=Severe, F=Extreme'],
+          ['S/K/P/U/G','Crit type: Slash / Krush / Puncture / Unbalancing / Grapple'],
+          ['C/H/E/I/T','Crit type: Cold / Heat / Electricity / Impact / Strike'],
+        ]} />
       </div>
     </div>
   )

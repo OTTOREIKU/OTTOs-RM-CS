@@ -19,7 +19,8 @@
     "physical_rr": -10,
     "endurance": 0,
     "base_hits": 20,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 35
   },
   {
     "name": "Dwarf",
@@ -41,7 +42,8 @@
     "physical_rr": 10,
     "endurance": 20,
     "base_hits": 30,
-    "recovery_mult": 0.5
+    "recovery_mult": 0.5,
+    "dp_bonus_pool": 6
   },
   {
     "name": "Elf, fair",
@@ -63,7 +65,8 @@
     "physical_rr": 20,
     "endurance": 10,
     "base_hits": 20,
-    "recovery_mult": 2.0
+    "recovery_mult": 2,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Elf, grey",
@@ -85,7 +88,8 @@
     "physical_rr": 10,
     "endurance": 10,
     "base_hits": 20,
-    "recovery_mult": 2.0
+    "recovery_mult": 2,
+    "dp_bonus_pool": 2
   },
   {
     "name": "Elf, high",
@@ -107,7 +111,8 @@
     "physical_rr": 10,
     "endurance": 10,
     "base_hits": 25,
-    "recovery_mult": 2.0
+    "recovery_mult": 2,
+    "dp_bonus_pool": 3
   },
   {
     "name": "Elf, wood",
@@ -129,7 +134,8 @@
     "physical_rr": 20,
     "endurance": 10,
     "base_hits": 20,
-    "recovery_mult": 2.0
+    "recovery_mult": 2,
+    "dp_bonus_pool": 3
   },
   {
     "name": "Gnoll",
@@ -151,7 +157,8 @@
     "physical_rr": 10,
     "endurance": 0,
     "base_hits": 20,
-    "recovery_mult": 0.5
+    "recovery_mult": 0.5,
+    "dp_bonus_pool": 17
   },
   {
     "name": "Gnome",
@@ -173,7 +180,8 @@
     "physical_rr": 5,
     "endurance": 0,
     "base_hits": 25,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 4
   },
   {
     "name": "Goblin",
@@ -195,7 +203,8 @@
     "physical_rr": 5,
     "endurance": 0,
     "base_hits": 25,
-    "recovery_mult": 0.5
+    "recovery_mult": 0.5,
+    "dp_bonus_pool": 46
   },
   {
     "name": "Gratar",
@@ -217,7 +226,8 @@
     "physical_rr": 0,
     "endurance": 0,
     "base_hits": 25,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 11
   },
   {
     "name": "Half-Elf",
@@ -239,7 +249,8 @@
     "physical_rr": 5,
     "endurance": 5,
     "base_hits": 25,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 18
   },
   {
     "name": "Halfling",
@@ -261,7 +272,8 @@
     "physical_rr": 10,
     "endurance": 0,
     "base_hits": 25,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 29
   },
   {
     "name": "Hobgoblin",
@@ -283,7 +295,8 @@
     "physical_rr": 0,
     "endurance": 0,
     "base_hits": 25,
-    "recovery_mult": 0.5
+    "recovery_mult": 0.5,
+    "dp_bonus_pool": 30
   },
   {
     "name": "Human, cave",
@@ -305,7 +318,8 @@
     "physical_rr": 0,
     "endurance": 25,
     "base_hits": 25,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 41
   },
   {
     "name": "Human, common",
@@ -327,7 +341,8 @@
     "physical_rr": 0,
     "endurance": 0,
     "base_hits": 25,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 50
   },
   {
     "name": "Human, high",
@@ -349,7 +364,8 @@
     "physical_rr": 0,
     "endurance": 0,
     "base_hits": 30,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 21
   },
   {
     "name": "Human, mixed",
@@ -371,7 +387,8 @@
     "physical_rr": 0,
     "endurance": 0,
     "base_hits": 30,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 34
   },
   {
     "name": "Hvasstonn",
@@ -393,7 +410,8 @@
     "physical_rr": 10,
     "endurance": 15,
     "base_hits": 35,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 27
   },
   {
     "name": "Idiyva",
@@ -415,7 +433,8 @@
     "physical_rr": 5,
     "endurance": 10,
     "base_hits": 25,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 10
   },
   {
     "name": "Kobold",
@@ -437,7 +456,8 @@
     "physical_rr": 0,
     "endurance": 10,
     "base_hits": 20,
-    "recovery_mult": 0.5
+    "recovery_mult": 0.5,
+    "dp_bonus_pool": 75
   },
   {
     "name": "Nycamerith",
@@ -459,7 +479,8 @@
     "physical_rr": 0,
     "endurance": 0,
     "base_hits": 20,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 26
   },
   {
     "name": "Orc, greater",
@@ -481,7 +502,8 @@
     "physical_rr": 10,
     "endurance": 10,
     "base_hits": 30,
-    "recovery_mult": 0.5
+    "recovery_mult": 0.5,
+    "dp_bonus_pool": 30
   },
   {
     "name": "Orc, grey",
@@ -503,7 +525,8 @@
     "physical_rr": 5,
     "endurance": 0,
     "base_hits": 20,
-    "recovery_mult": 0.5
+    "recovery_mult": 0.5,
+    "dp_bonus_pool": 60
   },
   {
     "name": "Orc, lesser",
@@ -525,7 +548,8 @@
     "physical_rr": 5,
     "endurance": 5,
     "base_hits": 25,
-    "recovery_mult": 0.5
+    "recovery_mult": 0.5,
+    "dp_bonus_pool": 75
   },
   {
     "name": "Orc, scrug",
@@ -547,7 +571,8 @@
     "physical_rr": 10,
     "endurance": 10,
     "base_hits": 35,
-    "recovery_mult": 0.5
+    "recovery_mult": 0.5,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Orc, vard",
@@ -569,7 +594,8 @@
     "physical_rr": 5,
     "endurance": 0,
     "base_hits": 30,
-    "recovery_mult": 0.5
+    "recovery_mult": 0.5,
+    "dp_bonus_pool": 18
   },
   {
     "name": "Plynos",
@@ -591,7 +617,8 @@
     "physical_rr": 10,
     "endurance": 25,
     "base_hits": 25,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 8
   },
   {
     "name": "Sea-kral",
@@ -613,7 +640,8 @@
     "physical_rr": 10,
     "endurance": 10,
     "base_hits": 25,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 3
   },
   {
     "name": "Sibbicai",
@@ -635,7 +663,8 @@
     "physical_rr": 0,
     "endurance": 10,
     "base_hits": 25,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Sohleugir",
@@ -657,7 +686,8 @@
     "physical_rr": 0,
     "endurance": 10,
     "base_hits": 25,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 2
   },
   {
     "name": "Sstoi'isslythi",
@@ -679,7 +709,8 @@
     "physical_rr": 0,
     "endurance": 0,
     "base_hits": 20,
-    "recovery_mult": 2.0
+    "recovery_mult": 2,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Troll",
@@ -701,7 +732,8 @@
     "physical_rr": 15,
     "endurance": 10,
     "base_hits": 25,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 29
   },
   {
     "name": "Vulfen",
@@ -723,7 +755,8 @@
     "physical_rr": 0,
     "endurance": 10,
     "base_hits": 30,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Argo (A)",
@@ -745,7 +778,8 @@
     "physical_rr": 20,
     "endurance": 10,
     "base_hits": 30,
-    "recovery_mult": 0.75
+    "recovery_mult": 0.75,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Hobbit (A)",
@@ -767,7 +801,8 @@
     "physical_rr": 20,
     "endurance": 20,
     "base_hits": 30,
-    "recovery_mult": 0.5
+    "recovery_mult": 0.5,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Half-Orc (A)",
@@ -789,7 +824,8 @@
     "physical_rr": 5,
     "endurance": 5,
     "base_hits": 25,
-    "recovery_mult": 0.75
+    "recovery_mult": 0.75,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Dyari (SW)",
@@ -811,7 +847,8 @@
     "physical_rr": 10,
     "endurance": 10,
     "base_hits": 20,
-    "recovery_mult": 2.0
+    "recovery_mult": 2,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Erlini (SW)",
@@ -833,7 +870,8 @@
     "physical_rr": 10,
     "endurance": 10,
     "base_hits": 20,
-    "recovery_mult": 2.0
+    "recovery_mult": 2,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Linæri (SW)",
@@ -855,7 +893,8 @@
     "physical_rr": 10,
     "endurance": 10,
     "base_hits": 20,
-    "recovery_mult": 2.0
+    "recovery_mult": 2,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Loari (SW)",
@@ -877,7 +916,8 @@
     "physical_rr": 10,
     "endurance": 10,
     "base_hits": 20,
-    "recovery_mult": 2.0
+    "recovery_mult": 2,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Eritari (SW)",
@@ -899,7 +939,8 @@
     "physical_rr": 20,
     "endurance": 5,
     "base_hits": 22,
-    "recovery_mult": 1.5
+    "recovery_mult": 1.5,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Kytaari (SW)",
@@ -921,7 +962,8 @@
     "physical_rr": 20,
     "endurance": 5,
     "base_hits": 22,
-    "recovery_mult": 1.5
+    "recovery_mult": 1.5,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Punkari (SW)",
@@ -943,7 +985,8 @@
     "physical_rr": 20,
     "endurance": 5,
     "base_hits": 22,
-    "recovery_mult": 1.5
+    "recovery_mult": 1.5,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Sulini (SW)",
@@ -965,7 +1008,8 @@
     "physical_rr": 20,
     "endurance": 5,
     "base_hits": 22,
-    "recovery_mult": 1.5
+    "recovery_mult": 1.5,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Vorloi (SW)",
@@ -987,7 +1031,8 @@
     "physical_rr": 20,
     "endurance": 5,
     "base_hits": 22,
-    "recovery_mult": 1.5
+    "recovery_mult": 1.5,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Nomari (SW)",
@@ -1009,7 +1054,8 @@
     "physical_rr": 10,
     "endurance": 20,
     "base_hits": 30,
-    "recovery_mult": 0.5
+    "recovery_mult": 0.5,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Hui (SW)",
@@ -1031,7 +1077,8 @@
     "physical_rr": 10,
     "endurance": 10,
     "base_hits": 25,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Anzeti (SW)",
@@ -1053,7 +1100,8 @@
     "physical_rr": 10,
     "endurance": 0,
     "base_hits": 25,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Haid (SW)",
@@ -1075,7 +1123,8 @@
     "physical_rr": 0,
     "endurance": 0,
     "base_hits": 25,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Jaaderi (SW)",
@@ -1097,7 +1146,8 @@
     "physical_rr": 10,
     "endurance": 0,
     "base_hits": 25,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Jineri (SW)",
@@ -1119,7 +1169,8 @@
     "physical_rr": 10,
     "endurance": 0,
     "base_hits": 25,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Laan (SW)",
@@ -1141,7 +1192,8 @@
     "physical_rr": 10,
     "endurance": 0,
     "base_hits": 25,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Lydians (SW)",
@@ -1163,7 +1215,8 @@
     "physical_rr": 10,
     "endurance": 0,
     "base_hits": 25,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Ochu (SW)",
@@ -1185,7 +1238,8 @@
     "physical_rr": 0,
     "endurance": 0,
     "base_hits": 25,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Shay (SW)",
@@ -1207,7 +1261,8 @@
     "physical_rr": 5,
     "endurance": 0,
     "base_hits": 25,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Talath (SW)",
@@ -1229,7 +1284,8 @@
     "physical_rr": 15,
     "endurance": 0,
     "base_hits": 25,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Thesians (SW)",
@@ -1251,7 +1307,8 @@
     "physical_rr": 10,
     "endurance": 0,
     "base_hits": 25,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Umli (SW)",
@@ -1273,7 +1330,8 @@
     "physical_rr": 10,
     "endurance": 0,
     "base_hits": 25,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Y'nari (SW)",
@@ -1295,7 +1353,8 @@
     "physical_rr": 5,
     "endurance": 0,
     "base_hits": 25,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Dúranaki (SW)",
@@ -1317,7 +1376,8 @@
     "physical_rr": 5,
     "endurance": 0,
     "base_hits": 25,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Kinsai (SW)",
@@ -1339,7 +1399,8 @@
     "physical_rr": 10,
     "endurance": 0,
     "base_hits": 25,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Ilourians (SW)",
@@ -1361,7 +1422,8 @@
     "physical_rr": 0,
     "endurance": 0,
     "base_hits": 25,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Jameri (SW)",
@@ -1383,7 +1445,8 @@
     "physical_rr": 5,
     "endurance": 0,
     "base_hits": 25,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Muadani (SW)",
@@ -1405,7 +1468,8 @@
     "physical_rr": 10,
     "endurance": 0,
     "base_hits": 25,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Rhiani (SW)",
@@ -1427,7 +1491,8 @@
     "physical_rr": 5,
     "endurance": 0,
     "base_hits": 25,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Syrkakar (SW)",
@@ -1449,7 +1514,8 @@
     "physical_rr": 0,
     "endurance": 0,
     "base_hits": 25,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 0
   },
   {
     "name": "Y'kin (SW)",
@@ -1471,6 +1537,7 @@
     "physical_rr": 0,
     "endurance": 0,
     "base_hits": 25,
-    "recovery_mult": 1.0
+    "recovery_mult": 1,
+    "dp_bonus_pool": 0
   }
 ]
