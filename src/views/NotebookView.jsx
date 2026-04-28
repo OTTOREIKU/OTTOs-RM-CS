@@ -1330,7 +1330,10 @@ function TGroup({ children }) {
 }
 function TBtn({ onClick, title, active, children }) {
   return (
-    <button onClick={onClick} title={title}
+    <button
+      onMouseDown={e => e.preventDefault()} // keep editor focus + selection intact
+      onClick={onClick}
+      title={title}
       style={{
         background: active ? 'var(--accent)' : 'transparent',
         border: 'none', borderRight: '1px solid var(--border)',
