@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react'
 import { usePersistentOpen, useScrollRestore } from '../hooks/persist.js'
-import { ChevronDownIcon, ChevronUpIcon, XIcon, CheckIcon, DiamondIcon } from '../components/Icons.jsx'
+import { ChevronDownIcon, ChevronUpIcon, XIcon, CheckIcon, DiamondIcon, EyeOpenIcon, EyeClosedIcon } from '../components/Icons.jsx'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { STATS } from '../store/characters.js'
 import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getBaseHits, getEndurance, getPowerPoints, getWeightAllowance, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus } from '../utils/calc.js'
@@ -126,11 +126,13 @@ function SInput({ value, onChange, options }) {
   )
 }
 
-function StatCard({ value, label, color, sub }) {
+function StatCard({ value, label, color, sub, showDetail = true }) {
   return (
-    <div style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 10, padding: '12px 8px', textAlign: 'center' }}>
-      <div style={{ fontSize: 22, fontWeight: 700, color: color || 'var(--text)', lineHeight: 1 }}>{value}</div>
-      {sub && <div style={{ fontSize: 11, color: 'var(--text2)', marginTop: 2 }}>{sub}</div>}
+    <div style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 10, padding: '12px 8px', textAlign: 'center', display: 'flex', flexDirection: 'column', minHeight: 72 }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ fontSize: 22, fontWeight: 700, color: color || 'var(--text)', lineHeight: 1 }}>{value}</div>
+        {showDetail && sub && <div style={{ fontSize: 11, color: 'var(--text2)', marginTop: 2 }}>{sub}</div>}
+      </div>
       <div style={{ fontSize: 10, color: 'var(--text3)', marginTop: 4, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{label}</div>
     </div>
   )
@@ -323,8 +325,9 @@ function WeaponBrowser({ onSelect, onCancel }) {
 // ── Main view ─────────────────────────────────────────────────────────────────
 export default function CharacterSheet() {
   const { activeChar, updateCharacter, updateStat, updateSkill, addWeapon, updateWeapon, removeWeapon, updateArmorPart } = useCharacter()
-  const [wBrowse,  setWBrowse]          = useState(false)
-  const [paceOpen, setPaceOpen]         = usePersistentOpen('rm_panel_pace', false)
+  const [wBrowse,    setWBrowse]        = useState(false)
+  const [paceOpen,   setPaceOpen]       = usePersistentOpen('rm_panel_pace', false)
+  const [showDetail, toggleDetail]      = usePersistentOpen('rm_derived_detail', false)
   useScrollRestore('rm_scroll_sheet')
   const c = activeChar
   if (!c) return null
@@ -450,23 +453,28 @@ export default function CharacterSheet() {
       </Card>
 
       {/* Derived stats row */}
-      <Card title="Derived Stats">
+      <Card title="Derived Stats" action={
+        <button onClick={toggleDetail}
+          style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text3)', display: 'flex', alignItems: 'center', padding: 4 }}>
+          {showDetail ? <EyeOpenIcon size={14} color="currentColor" /> : <EyeClosedIcon size={14} color="currentColor" />}
+        </button>
+      }>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(110px,1fr))', gap: 8 }}>
-          <StatCard label="Def Bonus" value={fmt(db)} color={db > 0 ? 'var(--success)' : 'var(--text)'} sub={talentB.db ? `Qu×3 + ${talentB.db} talent` : 'Qu×3'} />
-          <StatCard label="Initiative" value={fmt(ini)} color={ini > 0 ? 'var(--accent)' : 'var(--text)'} sub={talentB.initiative ? `Qu + ${talentB.initiative} talent` : 'Qu bonus'} />
-          <EditStat label="Endurance" field="endurance"   char={c} onUpdate={updateCharacter} autoValue={autoEndurance}
-            sub={talentB.endurance ? `BD + ${talentB.endurance > 0 ? '+' : ''}${talentB.endurance} talent + race` : 'BD + race'} />
+          <StatCard label="Def Bonus" value={fmt(db)} color={db > 0 ? 'var(--success)' : 'var(--text)'}
+            sub={talentB.db ? `Qu×3 + ${talentB.db} talent` : 'Qu×3'} showDetail={showDetail} />
+          <StatCard label="Initiative" value={fmt(ini)} color={ini > 0 ? 'var(--accent)' : 'var(--text)'}
+            sub={talentB.initiative ? `Qu + ${talentB.initiative} talent` : 'Qu bonus'} showDetail={showDetail} />
+          <EditStat label="Endurance" field="endurance" char={c} onUpdate={updateCharacter} autoValue={autoEndurance}
+            sub={talentB.endurance ? `BD + ${talentB.endurance > 0 ? '+' : ''}${talentB.endurance} talent + race` : 'BD + race'} showDetail={showDetail} />
           <StatCard
             label="Wt Allow"
             value={`${wa.pct}%`}
             color={wa.pct > 15 ? 'var(--success)' : wa.pct < 15 ? 'var(--danger)' : 'var(--text)'}
             sub={wa.lbs != null ? `${wa.lbs} lbs${wa.carryBonus ? ` (+${wa.carryBonus}% talent)` : ''}` : 'set weight'}
+            showDetail={showDetail}
           />
-          <EditStat label="Experience" field="experience" char={c} onUpdate={updateCharacter} />
+          <EditStat label="Experience" field="experience" char={c} onUpdate={updateCharacter} showDetail={showDetail} />
         </div>
-        <p style={{ fontSize: 10, color: 'var(--text3)', marginTop: 8, marginBottom: 0 }}>
-          Auto values shown in grey — type to override, clear to revert · Wt Allow = 15% + 2×St bonus
-        </p>
       </Card>
 
       {/* HP / PP combat panel */}
@@ -542,9 +550,6 @@ export default function CharacterSheet() {
             </div>
           )}
         </div>
-        <p style={{ fontSize: 10, color: 'var(--text3)', marginTop: 8, marginBottom: 0 }}>
-          Current values editable — clear to reset to max · Max auto-calculated or type to override
-        </p>
       </Card>
 
       {/* Statistics table */}
@@ -899,9 +904,6 @@ export default function CharacterSheet() {
       {/* Spell Lists */}
       <SpellListsPanel c={c} />
 
-      {/* Active Traits */}
-      <TraitsPanel c={c} />
-
       {/* Pace & Encumbrance */}
       <Card title="Pace & Encumbrance" action={
         <button onClick={setPaceOpen}
@@ -1091,129 +1093,20 @@ function SpellListsPanel({ c }) {
 }
 
 /* ─── ACTIVE TRAITS PANEL ───────────────────────────────── */
-const TRAIT_VARIANT = {
-  positive: { background:'var(--success)18', color:'var(--success)', border:'1px solid var(--success)44' },
-  flaw:     { background:'var(--danger)18',  color:'var(--danger)',  border:'1px solid var(--danger)44'  },
-  neutral:  { background:'var(--surface2)',  color:'var(--text2)',   border:'1px solid var(--border)'    },
-}
-
-function TraitsPanel({ c }) {
-  const [open, toggleOpen] = usePersistentOpen('rm_panel_traits', true)
-
-  const groups = useMemo(() => {
-    const find = id => c.talents?.find(t => t.talent_id === id)
-    // Build a chip entry: returns null when talent not taken, so we can filter easily
-    const chip = (id, makeLbl, variant = 'positive') => {
-      const inst = find(id)
-      if (!inst) return null
-      const t = inst.tier > 1 ? ` T${inst.tier}` : ''
-      const p = inst.param ? ` (${inst.param})` : ''
-      return { label: makeLbl(inst, t, p), variant }
-    }
-
-    return [
-      {
-        label: 'Vision & Perception',
-        items: [
-          chip('nightvision',           (i, t)    => `Nightvision${t}`,                              'positive'),
-          chip('darkvision',            (i, t)    => `Darkvision${t}: see ${i.tier * 10}′ in dark`,  'positive'),
-          chip('tetrachromatic_vision', ()        => 'Tetrachromatic Vision: UV + camouflage−30',    'positive'),
-          chip('third_eyelid',          ()        => 'Third Eyelid: eye protection',                 'neutral'),
-          chip('light_sensitivity',     (i, t)    => `Light Sensitivity${t}: −${i.tier * 25} bright light`, 'flaw'),
-          chip('one_eye',               ()        => 'One Eye: −25 ranged attacks',                  'flaw'),
-          chip('missing_sense',         (i, t, p) => `Missing Sense${p}`,                            'flaw'),
-        ].filter(Boolean),
-      },
-      {
-        label: 'Body & Movement',
-        items: [
-          chip('ambidextrous',      ()        => 'Ambidextrous: no off-hand penalty',           'positive'),
-          chip('additional_limb_pair', (i, t) => `Additional Limb Pair${t}`,                    'positive'),
-          chip('extra_joints',      ()        => 'Extra Joints: +20 all limb actions',          'positive'),
-          chip('breath_holding',    ()        => 'Breath Holding: 1 min/lvl underwater',        'positive'),
-          chip('fast_healer',       ()        => 'Fast Healer: ×½ recovery time',               'positive'),
-          chip('immune_to_disease', (i, t)   => `Immune to Disease${t}`,                        'positive'),
-          chip('efficient_sleeper', (i, t)   => `Efficient Sleeper${t}`,                        'positive'),
-          chip('uncoordinated',     (i, t)   => `Uncoordinated${t}: worse move penalties`,      'flaw'),
-          chip('slow_healer',       ()        => 'Slow Healer: ×2 recovery time',               'flaw'),
-          chip('restless_sleeper',  (i, t)   => `Restless Sleeper${t}: needs extra sleep`,      'flaw'),
-        ].filter(Boolean),
-      },
-      {
-        label: 'Magical',
-        items: [
-          chip('mute',               ()        => 'Mute: cannot speak or cast verbally',              'flaw'),
-          chip('visions',            (i, t)    => `Visions${t}: touch-object divination ${i.tier}×/day`, 'positive'),
-          chip('destiny_sense',      (i, t)    => `Destiny Sense${t}`,                                'positive'),
-          chip('extra_sense',        (i, t, p) => `Extra Sense${t}${p}`,                              'positive'),
-          chip('animal_empathy',     (i, t, p) => `Animal Empathy${t}${p}: +25 maneuvers`,            'positive'),
-          chip('power_recycling',    (i, t)    => `Power Recycling T${i.tier}: ${i.tier === 1 ? '½' : 'full'} PP on failure`, 'positive'),
-          chip('graceful_recovery',  (i, t)    => `Graceful Recovery${t}: failure roll −${i.tier * 5}`, 'positive'),
-          chip('inglorious_failure', (i, t)    => `Inglorious Failure${t}: failure roll +${i.tier * 5}`, 'flaw'),
-          chip('quick_caster',       (i, t)    => `Quick Caster T${i.tier}: ${i.tier === 1 ? '2–3 AP' : '2 AP'} cast`, 'positive'),
-        ].filter(Boolean),
-      },
-      {
-        label: 'Social & Other',
-        items: [
-          chip('multilingual',     ()        => 'Multilingual: +10 ranks in 1 language (or 5+5)', 'positive'),
-          chip('neutral_odor',     ()        => 'Neutral Odor: −50 smell-based tracking vs you',  'positive'),
-          chip('natural_weaponry', ()        => 'Natural Weaponry: bite/claw at −1 size free',    'positive'),
-          chip('poison_injection', ()        => 'Poison Injection: venom on any critical',        'positive'),
-          chip('distinct_odor',    ()        => 'Distinct Odor: +50 smell tracking against you',  'flaw'),
-          chip('math_illiterate',  ()        => 'Math Illiterate: cannot count above 20',         'flaw'),
-          chip('restricted_diet',  ()        => 'Restricted Diet: limited food sources',          'flaw'),
-          chip('revulsion',        ()        => 'Revulsion: Fear RR each round near blood',       'flaw'),
-        ].filter(Boolean),
-      },
-    ].filter(g => g.items.length > 0)
-  }, [c.talents])
-
-  if (!groups.length) return null
-
+function EditStat({ label, field, char, onUpdate, danger, autoValue, sub, showDetail = true }) {
+  const stored = char[field]
   return (
-    <Card title="Active Traits" action={
-      <button onClick={toggleOpen}
-        style={{ background:'none', border:'none', cursor:'pointer', color:'var(--text3)', display:'flex', alignItems:'center' }}>
-        {open ? <ChevronUpIcon size={12} color="currentColor" /> : <ChevronDownIcon size={12} color="currentColor" />}
-      </button>
-    }>
-      {open && (
-        <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
-          {groups.map(g => (
-            <div key={g.label}>
-              <div style={{ fontSize:9, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.09em', color:'var(--text3)', marginBottom:6 }}>{g.label}</div>
-              <div style={{ display:'flex', flexWrap:'wrap', gap:5 }}>
-                {g.items.map((item, i) => (
-                  <span key={i} style={{ fontSize:10, fontWeight:600, padding:'2px 9px', borderRadius:10, ...TRAIT_VARIANT[item.variant] }}>
-                    {item.label}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-    </Card>
-  )
-}
-
-function EditStat({ label, field, char, onUpdate, danger, autoValue, sub }) {
-  const stored  = char[field]
-  const isAuto  = stored == null && autoValue != null
-  return (
-    <div style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 10, padding: '12px 8px', textAlign: 'center' }}>
-      <input type="number" value={stored ?? ''}
-        placeholder={autoValue != null ? String(autoValue) : ''}
-        onChange={e => onUpdate({ [field]: e.target.value === '' ? null : Number(e.target.value) })}
-        style={{ width: 64, textAlign: 'center', fontSize: 22, fontWeight: 700, padding: '2px', lineHeight: 1,
-          background: 'transparent', border: 'none', boxShadow: 'none',
-          color: danger ? 'var(--danger)' : 'var(--text)' }}
-      />
-      {isAuto
-        ? <div style={{ fontSize: 8, color: 'var(--accent)', letterSpacing: '0.06em', marginTop: 2 }}>AUTO</div>
-        : sub && <div style={{ fontSize: 11, color: 'var(--text2)', marginTop: 2 }}>{sub}</div>
-      }
+    <div style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 10, padding: '12px 8px', textAlign: 'center', display: 'flex', flexDirection: 'column', minHeight: 72 }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <input type="number" value={stored ?? ''}
+          placeholder={autoValue != null ? String(autoValue) : ''}
+          onChange={e => onUpdate({ [field]: e.target.value === '' ? null : Number(e.target.value) })}
+          style={{ width: 64, textAlign: 'center', fontSize: 22, fontWeight: 700, padding: '2px', lineHeight: 1,
+            background: 'transparent', border: 'none', boxShadow: 'none',
+            color: danger ? 'var(--danger)' : 'var(--text)' }}
+        />
+        {showDetail && sub && <div style={{ fontSize: 11, color: 'var(--text2)', marginTop: 2 }}>{sub}</div>}
+      </div>
       <div style={{ fontSize: 10, color: 'var(--text3)', marginTop: 4, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{label}</div>
     </div>
   )
