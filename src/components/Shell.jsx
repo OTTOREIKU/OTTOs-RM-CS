@@ -8,10 +8,9 @@ import {
   pickAndLinkFile, writeToHandle, readFromHandle, clearLinkedHandle,
 } from '../store/fileSync.js'
 import {
-  SwordsIcon, ChevronDownIcon, XIcon, MenuIcon, SaveIcon,
+  SwordsIcon, ChevronDownIcon, XIcon, SaveIcon,
   UserIcon, BarChartIcon, ZapIcon, PackageIcon, BookOpenIcon, TrendingUpIcon, BookIcon,
 } from './Icons.jsx'
-import { getBaseHits, getPowerPoints } from '../utils/calc.js'
 
 const NAV = [
   { to: '/sheet',     label: 'Sheet',    Icon: UserIcon       },
@@ -27,19 +26,11 @@ export default function Shell({ children }) {
   const { characters, activeId, activeChar, switchCharacter, createCharacter, deleteCharacter, reloadCharacters } = useCharacter()
   const [menuOpen, setMenuOpen] = useState(false)
   const [importStatus, setImportStatus] = useState(null)
-  const [navMenuOpen, setNavMenuOpen] = useState(false)
-  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 700)
-  const [backupFile, setBackupFile] = useState(null)      // { name, hasPermission }
+  const [backupFile, setBackupFile] = useState(null)
   const [backupMenuOpen, setBackupMenuOpen] = useState(false)
   const importRef = useRef(null)
   const navigate = useNavigate()
   const location = useLocation()
-
-  useEffect(() => {
-    const handler = () => setIsMobile(window.innerWidth < 700)
-    window.addEventListener('resize', handler)
-    return () => window.removeEventListener('resize', handler)
-  }, [])
 
   // Check backup file state on mount
   useEffect(() => {
@@ -54,7 +45,6 @@ export default function Shell({ children }) {
   const handleLinkBackup = useCallback(async () => {
     const handle = await pickAndLinkFile()
     if (!handle) return
-    // Write current data immediately
     const chars = (() => { try { return JSON.parse(localStorage.getItem('rm_characters') || '{}') } catch { return {} } })()
     const nb    = (() => { try { return JSON.parse(localStorage.getItem('rm_notebook') || 'null') } catch { return null } })()
     await writeToHandle(handle, { _version: 1, _type: 'backup', characters: chars, notebook: nb, _saved_at: new Date().toISOString() })
@@ -75,8 +65,6 @@ export default function Shell({ children }) {
     setBackupFile(prev => prev ? { ...prev, hasPermission: ok } : null)
   }, [])
 
-  // Close nav menu on route change
-  useEffect(() => { setNavMenuOpen(false) }, [location.pathname])
   const charList = Object.values(characters)
 
   function handleCreate() {
@@ -112,14 +100,10 @@ export default function Shell({ children }) {
     }
   }
 
-  const hp    = activeChar?.hits_current
-  const hpMax = activeChar ? (activeChar.hits_max ?? getBaseHits(activeChar)) : null
-  const pp    = activeChar?.power_points_current
-  const ppMax = activeChar ? (activeChar.power_points_max ?? getPowerPoints(activeChar)) : null
-
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100dvh' }}>
-      {/* Header */}
+
+      {/* ── Header ───────────────────────────────────────────────── */}
       <header style={{
         background: 'var(--surface)',
         borderBottom: '1px solid var(--border)',
@@ -138,18 +122,17 @@ export default function Shell({ children }) {
           RMU Character+
         </span>
 
-        {/* Divider */}
         <div style={{ width: 1, height: 20, background: 'var(--border2)', margin: '0 4px' }} />
 
         {/* Character picker */}
-        <div style={{ position: 'relative', flex: 1 }}>
+        <div style={{ position: 'relative', flex: 1, minWidth: 0 }}>
           <button onClick={() => setMenuOpen(p => !p)} style={{
             display: 'flex', alignItems: 'center', gap: 8,
             background: menuOpen ? 'var(--surface2)' : 'transparent',
             border: '1px solid ' + (menuOpen ? 'var(--border2)' : 'transparent'),
             borderRadius: 8, padding: '5px 10px',
             color: 'var(--text)', cursor: 'pointer', fontSize: 13,
-            maxWidth: 220,
+            maxWidth: '100%',
           }}>
             <span style={{ flex: 1, textAlign: 'left', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
               {activeChar?.name ?? 'Select character'}
@@ -208,7 +191,6 @@ export default function Shell({ children }) {
                   }}>+ New Character</button>
 
                   <div style={{ display: 'flex', gap: 6 }}>
-                    {/* Import */}
                     <input ref={importRef} type="file" accept=".json" style={{ display: 'none' }} onChange={handleImport} />
                     <button onClick={() => importRef.current?.click()} style={{
                       flex: 1, background: 'var(--surface2)', color: 'var(--text2)',
@@ -302,114 +284,52 @@ export default function Shell({ children }) {
             )}
           </div>
         )}
-
-        {/* HP / PP */}
-        {activeChar && (
-          <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
-            <StatBadge label="HP" value={hp} max={hpMax} color="var(--danger)" />
-            <StatBadge label="PP" value={pp} max={ppMax} color="var(--purple)" />
-          </div>
-        )}
       </header>
 
-      {/* Content */}
-      <main style={{ flex: 1, overflowY: 'auto', paddingBottom: 64 }}>
+      {/* ── Tab bar ──────────────────────────────────────────────── */}
+      <nav style={{
+        position: 'sticky',
+        top: 52,
+        zIndex: 49,
+        background: 'var(--surface)',
+        borderBottom: '1px solid var(--border)',
+        display: 'flex',
+        alignItems: 'center',
+        gap: 4,
+        padding: '6px 12px',
+        overflowX: 'auto',
+        WebkitOverflowScrolling: 'touch',
+        scrollbarWidth: 'none',
+      }}>
+        {NAV.map(({ to, label, Icon: NavIcon }) => (
+          <NavLink
+            key={to}
+            to={to}
+            title={label}
+            style={({ isActive }) => ({
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 44,
+              height: 36,
+              borderRadius: 8,
+              flexShrink: 0,
+              textDecoration: 'none',
+              background: isActive ? 'var(--accent)' : 'var(--surface2)',
+              color: isActive ? '#fff' : 'var(--text2)',
+              border: '1px solid ' + (isActive ? 'transparent' : 'var(--border)'),
+            })}
+          >
+            <NavIcon size={17} color="currentColor" />
+          </NavLink>
+        ))}
+      </nav>
+
+      {/* ── Content ──────────────────────────────────────────────── */}
+      <main style={{ flex: 1, paddingBottom: 24, overflowX: 'hidden', minWidth: 0 }}>
         {children}
       </main>
 
-      {/* Bottom nav */}
-      {isMobile ? (
-        <>
-          {/* Mobile nav menu overlay (bottom sheet) */}
-          {navMenuOpen && (
-            <>
-              <div
-                onClick={() => setNavMenuOpen(false)}
-                style={{ position: 'fixed', inset: 0, zIndex: 51, background: 'rgba(0,0,0,0.5)' }}
-              />
-              <div style={{
-                position: 'fixed', bottom: 56, left: 0, right: 0,
-                background: 'var(--surface)', borderTop: '1px solid var(--border2)',
-                borderRadius: '16px 16px 0 0',
-                zIndex: 52, overflow: 'hidden',
-              }}>
-                {NAV.map(({ to, label, Icon: NavIcon }) => (
-                  <NavLink key={to} to={to} style={({ isActive }) => ({
-                    display: 'flex', alignItems: 'center', gap: 14,
-                    padding: '14px 24px',
-                    textDecoration: 'none',
-                    color: isActive ? 'var(--accent)' : 'var(--text)',
-                    background: isActive ? 'var(--surface2)' : 'transparent',
-                    borderLeft: '3px solid ' + (isActive ? 'var(--accent)' : 'transparent'),
-                    fontSize: 15, fontWeight: isActive ? 700 : 500,
-                  })}>
-                    <NavIcon size={18} color="currentColor" />
-                    <span>{label}</span>
-                  </NavLink>
-                ))}
-              </div>
-            </>
-          )}
-
-          {/* Mobile compact bar: active tab + Menu button */}
-          <nav style={{
-            position: 'fixed', bottom: 0, left: 0, right: 0, height: 56,
-            background: 'var(--surface)', borderTop: '1px solid var(--border)',
-            display: 'flex', zIndex: 50,
-          }}>
-            {/* Active tab indicator */}
-            {(() => {
-              const active = NAV.find(n => location.pathname.startsWith(n.to)) ?? NAV[0]
-              return (
-                <div style={{
-                  flex: 1, display: 'flex', alignItems: 'center', gap: 10,
-                  padding: '0 16px', color: 'var(--accent)',
-                  borderTop: '2px solid var(--accent)',
-                }}>
-                  <active.Icon size={16} color="var(--accent)" />
-                  <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: '0.04em' }}>{active.label}</span>
-                </div>
-              )
-            })()}
-            {/* Menu button */}
-            <button
-              onClick={() => setNavMenuOpen(p => !p)}
-              style={{
-                display: 'flex', flexDirection: 'column', alignItems: 'center',
-                justifyContent: 'center', gap: 3,
-                padding: '0 20px',
-                background: navMenuOpen ? 'var(--surface2)' : 'transparent',
-                border: 'none',
-                borderTop: '2px solid ' + (navMenuOpen ? 'var(--accent)' : 'transparent'),
-                color: navMenuOpen ? 'var(--accent)' : 'var(--text3)',
-                cursor: 'pointer',
-              }}
-            >
-              <MenuIcon size={16} color="currentColor" />
-              <span style={{ fontSize: 9, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Menu</span>
-            </button>
-          </nav>
-        </>
-      ) : (
-        <nav style={{
-          position: 'fixed', bottom: 0, left: 0, right: 0, height: 56,
-          background: 'var(--surface)', borderTop: '1px solid var(--border)',
-          display: 'flex', zIndex: 50,
-        }}>
-          {NAV.map(({ to, label, Icon: NavIcon }) => (
-            <NavLink key={to} to={to} style={({ isActive }) => ({
-              flex: 1, display: 'flex', flexDirection: 'column',
-              alignItems: 'center', justifyContent: 'center',
-              textDecoration: 'none', gap: 2, padding: '4px 2px',
-              color: isActive ? 'var(--accent)' : 'var(--text3)',
-              borderTop: '2px solid ' + (isActive ? 'var(--accent)' : 'transparent'),
-            })}>
-              <NavIcon size={15} color="currentColor" />
-              <span style={{ fontSize: 9, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' }}>{label}</span>
-            </NavLink>
-          ))}
-        </nav>
-      )}
     </div>
   )
 }
@@ -425,21 +345,5 @@ function BackupMenuItem({ onClick, children, danger, accent }) {
       onMouseLeave={e => e.currentTarget.style.background = 'none'}>
       {children}
     </button>
-  )
-}
-
-function StatBadge({ label, value, max, color }) {
-  const pct = (value != null && max != null && max > 0) ? value / max : null
-  return (
-    <div style={{
-      background: 'var(--surface2)', border: '1px solid var(--border2)',
-      borderRadius: 7, padding: '4px 10px', fontSize: 12,
-      display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 52,
-    }}>
-      <span style={{ color, fontWeight: 700, fontSize: 10, letterSpacing: '0.05em' }}>{label}</span>
-      <span style={{ fontWeight: 700, fontSize: 13, color: pct != null && pct < 0.3 ? color : 'var(--text)' }}>
-        {value ?? '—'}<span style={{ color: 'var(--text3)', fontWeight: 400, fontSize: 11 }}>/{max ?? '—'}</span>
-      </span>
-    </div>
   )
 }
