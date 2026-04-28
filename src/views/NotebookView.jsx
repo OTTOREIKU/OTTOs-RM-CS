@@ -1085,7 +1085,7 @@ export default function NotebookView() {
                 </div>
 
                 {/* Toolbar */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 2, paddingBottom: 8, flexWrap: 'wrap' }}>
+                <div className="notebook-toolbar" style={{ display: 'flex', alignItems: 'center', gap: 2, paddingBottom: 8, flexWrap: 'wrap' }}>
                   <TGroup>
                     <TBtn onClick={() => applyFormat('bold')}   title="Bold (Ctrl+B)"><strong>B</strong></TBtn>
                     <TBtn onClick={() => applyFormat('italic')} title="Italic (Ctrl+I)"><em>I</em></TBtn>
