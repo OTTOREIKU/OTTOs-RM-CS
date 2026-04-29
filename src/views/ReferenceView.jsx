@@ -548,7 +548,7 @@ export default function ReferenceView() {
                     {SECTION_LABELS[section] ?? section.replace('_',' ')}
                   </h3>
                   <div style={{ overflowX: 'auto' }}>
-                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 11, tableLayout: 'fixed' }}>
+                    <table style={{ width: '100%', minWidth: isShield ? 420 : 580, borderCollapse: 'collapse', fontSize: 11, tableLayout: 'fixed' }}>
                       <colgroup>
                         {colWidths.map((w, i) => <col key={i} style={{ width: w ? w : undefined }} />)}
                       </colgroup>
