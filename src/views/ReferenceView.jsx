@@ -1838,23 +1838,46 @@ function CombatGuidePanel() {
       </GuideSection>
 
       {/* ── MULTI-ATTACK PENALTIES ── */}
-      <GuideSection title="Multi-Attack Penalties" color="#a855f7" open={open.multiAtk} onToggle={() => toggle('multiAtk')}>
+      <GuideSection title="Multi-Attack Penalties (Katas)" color="#a855f7" open={open.multiAtk} onToggle={() => toggle('multiAtk')}>
         <div style={{ fontSize: 12, color: 'var(--text3)', marginBottom: 8 }}>
-          When making multiple attacks in a round, apply these penalties to additional attacks by weapon category.
+          Penalties applied to <em>all</em> attacks when a character makes multiple attacks in one round (CoreLaw Table 9-7b). The penalty is based on the total number of attacks declared, not the weapon type.
         </div>
+        {/* Attack-count table */}
+        <div style={{ overflowX: 'auto', marginBottom: 10 }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 11 }}>
+            <thead>
+              <tr style={{ background: 'var(--surface2)' }}>
+                {['# of Attacks', 'Penalty to All Attacks'].map(h => <th key={h} style={thStyle}>{h}</th>)}
+              </tr>
+            </thead>
+            <tbody>
+              {combatGuide.weapon_multi_attack_penalties?.by_attack_count?.map((row, i) => (
+                <tr key={i} style={{ borderBottom: '1px solid var(--border)', background: i % 2 === 0 ? 'transparent' : 'var(--surface2)' }}>
+                  <td style={{ padding: '4px 8px', fontWeight: 600, fontSize: 11 }}>{row.attacks} attacks</td>
+                  <td style={{ padding: '4px 8px', textAlign: 'center', fontSize: 12, color: 'var(--danger)', fontWeight: 700 }}>{row.penalty}</td>
+                </tr>
+              ))}
+              <tr style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface2)' }}>
+                <td style={{ padding: '4px 8px', fontWeight: 600, fontSize: 11 }}>Per additional foe</td>
+                <td style={{ padding: '4px 8px', textAlign: 'center', fontSize: 12, color: 'var(--danger)', fontWeight: 700 }}>{combatGuide.weapon_multi_attack_penalties?.per_additional_foe}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        {/* Modifiers */}
+        <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: 'var(--text3)', marginBottom: 4 }}>Modifiers (reduce penalty)</div>
         <div style={{ overflowX: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 11 }}>
             <thead>
               <tr style={{ background: 'var(--surface2)' }}>
-                {['Category','Skill Name','Penalty'].map(h => <th key={h} style={thStyle}>{h}</th>)}
+                {['Condition', 'Modifier'].map(h => <th key={h} style={thStyle}>{h}</th>)}
               </tr>
             </thead>
             <tbody>
-              {combatGuide.weapon_multi_attack_penalties?.map((row, i) => (
+              {combatGuide.weapon_multi_attack_penalties?.modifiers?.map((row, i) => (
                 <tr key={i} style={{ borderBottom: '1px solid var(--border)', background: i % 2 === 0 ? 'transparent' : 'var(--surface2)' }}>
-                  <td style={{ padding: '4px 8px', fontWeight: 600, fontSize: 11 }}>{row.group}</td>
-                  <td style={{ padding: '4px 8px', fontSize: 11, color: 'var(--text2)' }}>{row.skill}</td>
-                  <td style={{ padding: '4px 8px', textAlign: 'center', fontSize: 11, color: 'var(--danger)', fontWeight: 700 }}>{row.multi_attack_penalty}</td>
+                  <td style={{ padding: '4px 8px', fontSize: 11, color: 'var(--text2)' }}>{row.condition}</td>
+                  <td style={{ padding: '4px 8px', textAlign: 'center', fontSize: 12, color: 'var(--success)', fontWeight: 700 }}>+{row.modifier}</td>
                 </tr>
               ))}
             </tbody>

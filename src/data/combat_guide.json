@@ -760,153 +760,20 @@
       "bonus": 25
     }
   ],
-  "weapon_multi_attack_penalties": [
-    {
-      "group": "Melee",
-      "skill": "Blade",
-      "multi_attack_penalty": -30
-    },
-    {
-      "group": "Ranged",
-      "skill": "Bow",
-      "multi_attack_penalty": -35
-    },
-    {
-      "group": "Shield",
-      "skill": "Shield",
-      "multi_attack_penalty": -35
-    },
-    {
-      "group": "Unarmed",
-      "skill": "Strikes",
-      "multi_attack_penalty": -35
-    },
-    {
-      "group": "Melee",
-      "skill": "Chain",
-      "multi_attack_penalty": -30
-    },
-    {
-      "group": "Ranged",
-      "skill": "Crossbow",
-      "multi_attack_penalty": -30
-    },
-    {
-      "group": "Unarmed",
-      "skill": "Sweeps & Throws",
-      "multi_attack_penalty": -30
-    },
-    {
-      "group": "Melee",
-      "skill": "Hafted",
-      "multi_attack_penalty": -35
-    },
-    {
-      "group": "Ranged",
-      "skill": "Sling",
-      "multi_attack_penalty": -30
-    },
-    {
-      "group": "Unarmed",
-      "skill": "Grappling/Wrestling",
-      "multi_attack_penalty": -35
-    },
-    {
-      "group": "Melee",
-      "skill": "Greater Blade",
-      "multi_attack_penalty": -35
-    },
-    {
-      "group": "Ranged",
-      "skill": "Thrown",
-      "multi_attack_penalty": -30
-    },
-    {
-      "group": "Unarmed",
-      "skill": "Beak",
-      "multi_attack_penalty": -35
-    },
-    {
-      "group": "Melee",
-      "skill": "Greater Chain",
-      "multi_attack_penalty": -30
-    },
-    {
-      "group": "Ranged",
-      "skill": "Blowpipe",
-      "multi_attack_penalty": -35
-    },
-    {
-      "group": "Unarmed",
-      "skill": "Bite",
-      "multi_attack_penalty": -35
-    },
-    {
-      "group": "Melee",
-      "skill": "Greater Hafted",
-      "multi_attack_penalty": -30
-    },
-    {
-      "group": "Ranged",
-      "skill": "Exotic Ranged 1 (specified)",
-      "multi_attack_penalty": -30
-    },
-    {
-      "group": "Unarmed",
-      "skill": "Claw",
-      "multi_attack_penalty": -35
-    },
-    {
-      "group": "Melee",
-      "skill": "Pole Arm",
-      "multi_attack_penalty": -35
-    },
-    {
-      "group": "Ranged",
-      "skill": "Exotic Ranged 2 (specified)",
-      "multi_attack_penalty": -30
-    },
-    {
-      "group": "Unarmed",
-      "skill": "Horn",
-      "multi_attack_penalty": -35
-    },
-    {
-      "group": "Melee",
-      "skill": "Katana (example)",
-      "multi_attack_penalty": -30
-    },
-    {
-      "group": "Ranged",
-      "skill": "Exotic Ranged 3 (specified)",
-      "multi_attack_penalty": -30
-    },
-    {
-      "group": "Unarmed",
-      "skill": "Ram",
-      "multi_attack_penalty": -35
-    },
-    {
-      "group": "Melee",
-      "skill": "Exotic Melee 2 (specified)",
-      "multi_attack_penalty": -30
-    },
-    {
-      "group": "Unarmed",
-      "skill": "Stinger",
-      "multi_attack_penalty": -35
-    },
-    {
-      "group": "Melee",
-      "skill": "Exotic Melee 3 (specified)",
-      "multi_attack_penalty": -30
-    },
-    {
-      "group": "Unarmed",
-      "skill": "Trample",
-      "multi_attack_penalty": -35
-    }
-  ],
+  "weapon_multi_attack_penalties": {
+    "source": "CoreLaw Table 9-7b (Katas)",
+    "by_attack_count": [
+      { "attacks": 2, "penalty": -75 },
+      { "attacks": 3, "penalty": -100 },
+      { "attacks": 4, "penalty": -125 },
+      { "attacks": 5, "penalty": -150 }
+    ],
+    "per_additional_foe": -20,
+    "modifiers": [
+      { "condition": "Primary weapon is light", "modifier": 10 },
+      { "condition": "Off-hand is a dagger or any natural weapon", "modifier": 20 }
+    ]
+  },
   "mount_stats": [
     {
       "name": "Donkey",
