@@ -237,8 +237,8 @@
         "level": 4,
         "name": "Heal III",
         "aoe": "1 target",
-        "duration": "P touch U 9. Severe Exposure Relief",
-        "range": "—",
+        "duration": "P",
+        "range": "touch",
         "type": "U"
       },
       {
@@ -285,8 +285,8 @@
         "level": 10,
         "name": "Awakening *",
         "aoe": "1 target",
-        "duration": "P 100' Us 12. Regeneration II *",
-        "range": "—",
+        "duration": "P",
+        "range": "100'",
         "type": "Us"
       },
       {
@@ -2107,8 +2107,8 @@
         "level": 6,
         "name": "Staunch Wound III *",
         "aoe": "1 target",
-        "duration": "varies touch U 6. Staunch Wound III *",
-        "range": "—",
+        "duration": "varies",
+        "range": "touch",
         "type": "U"
       },
       {
@@ -2227,8 +2227,8 @@
         "level": 25,
         "name": "Joining True ‡ *",
         "aoe": "1 target",
-        "duration": "P touch U 9. Staunch Wound IV *",
-        "range": "—",
+        "duration": "P",
+        "range": "touch",
         "type": "U"
       },
       {
@@ -2322,7 +2322,7 @@
         "name": "Medium Bone Relief",
         "aoe": "1 target",
         "duration": "P",
-        "range": "—",
+        "range": "touch",
         "type": "U"
       },
       {
@@ -2361,8 +2361,8 @@
         "level": 12,
         "name": "Joining ‡ *",
         "aoe": "1 target",
-        "duration": "P touch U 11. Living Splint",
-        "range": "—",
+        "duration": "P",
+        "range": "touch",
         "type": "U"
       },
       {
@@ -3035,8 +3035,8 @@
         "level": 19,
         "name": "Tag III",
         "aoe": "1 target",
-        "duration": "1 week/lvl touch U level caster could remember the course of",
-        "range": "12",
+        "duration": "1 week/lvl",
+        "range": "touch",
         "type": "U"
       },
       {
@@ -3581,8 +3581,8 @@
         "level": 10,
         "name": "Spasm",
         "aoe": "1 target",
-        "duration": "-- 50' F 11. Mass Muscle Relief",
-        "range": "—",
+        "duration": "--",
+        "range": "50'",
         "type": "F"
       },
       {
@@ -3645,8 +3645,8 @@
         "level": 18,
         "name": "Regenerate Muscle",
         "aoe": "1 target",
-        "duration": "P touch U 13. Lock Joint",
-        "range": "—",
+        "duration": "P",
+        "range": "touch",
         "type": "U"
       },
       {
@@ -3787,8 +3787,8 @@
         "level": 10,
         "name": "Piercing Gaze",
         "aoe": "1 target",
-        "duration": "1rnd/lvl touch U 11. Severe Organ Relief",
-        "range": "—",
+        "duration": "1rnd/lvl",
+        "range": "touch",
         "type": "U"
       },
       {
@@ -5666,7 +5666,7 @@
         "name": "Far Herb Finding I",
         "aoe": "caster",
         "duration": "1 rnd/lvl",
-        "range": "1",
+        "range": "1 mi",
         "type": "I"
       },
       {
@@ -5706,7 +5706,7 @@
         "name": "Far Herb Finding V",
         "aoe": "caster",
         "duration": "1 rnd/lvl",
-        "range": "5",
+        "range": "5 mi",
         "type": "I"
       },
       {
@@ -7019,8 +7019,8 @@
         "level": 2,
         "name": "Heal I",
         "aoe": "1 target",
-        "duration": "P touch U 12. Severe Wound Relief",
-        "range": "—",
+        "duration": "P",
+        "range": "touch",
         "type": "U"
       },
       {
@@ -8946,7 +8946,7 @@
         "name": "Locate Natural Object",
         "aoe": "1 object",
         "duration": "1 min/lvl",
-        "range": "1",
+        "range": "1 mi",
         "type": "I"
       },
       {
@@ -10609,7 +10609,7 @@
         "level": 13,
         "name": "Detect Herb",
         "aoe": "5'R",
-        "duration": "(C)",
+        "duration": "1 min/lvl (C)",
         "range": "100'",
         "type": "I"
       },
@@ -10625,7 +10625,7 @@
         "level": 15,
         "name": "Discover Spell",
         "aoe": "5'R",
-        "duration": "(C)",
+        "duration": "1 min/lvl (C)",
         "range": "100'",
         "type": "I"
       },
@@ -10665,8 +10665,8 @@
         "level": 20,
         "name": "Greater Location",
         "aoe": "1 target",
-        "duration": "(C)",
-        "range": "1",
+        "duration": "1 min/lvl (C)",
+        "range": "1 mile",
         "type": "I"
       },
       {
@@ -10706,7 +10706,7 @@
         "name": "Location True",
         "aoe": "1 target",
         "duration": "1 min/lvl (C)",
-        "range": "1",
+        "range": "1 mi/lvl",
         "type": "I"
       }
     ]
@@ -10791,8 +10791,8 @@
         "level": 10,
         "name": "Coldarmor",
         "aoe": "1 target",
-        "duration": "1 min/lvl 10' U get by",
-        "range": "1",
+        "duration": "1 min/lvl",
+        "range": "10'",
         "type": "U"
       },
       {
@@ -11045,7 +11045,7 @@
         "level": 16,
         "name": "Hurling I",
         "aoe": "1 lb",
-        "duration": "-",
+        "duration": "—",
         "range": "10'(<60'>)",
         "type": "F"
       },
@@ -11284,7 +11284,7 @@
         "name": "Listen IV",
         "aoe": "caster",
         "duration": "1 rnd/lvl (C)",
-        "range": "1",
+        "range": "1 mi/lvl",
         "type": "U"
       },
       {
@@ -11292,7 +11292,7 @@
         "name": "Watch IV",
         "aoe": "caster",
         "duration": "1 rnd/lvl (C)",
-        "range": "1",
+        "range": "1 mi/lvl",
         "type": "U"
       },
       {
@@ -11308,7 +11308,7 @@
         "name": "Smell IV",
         "aoe": "caster",
         "duration": "1 rnd/lvl (C)",
-        "range": "1",
+        "range": "1 mi/lvl",
         "type": "U"
       },
       {
@@ -13049,7 +13049,7 @@
         "level": 9,
         "name": "See Invisible I",
         "aoe": "caster",
-        "duration": "10 min/ lvl",
+        "duration": "10 min/lvl",
         "range": "self",
         "type": "I"
       },
@@ -13105,7 +13105,7 @@
         "level": 16,
         "name": "See Invisible II",
         "aoe": "1 target",
-        "duration": "10 min/ lvl",
+        "duration": "10 min/lvl",
         "range": "50'",
         "type": "I"
       },
@@ -13169,7 +13169,7 @@
         "level": 40,
         "name": "Mass See Invisible",
         "aoe": "1 target/lvl",
-        "duration": "10 min/ lvl",
+        "duration": "10 min/lvl",
         "range": "50'",
         "type": "I"
       },
@@ -13383,8 +13383,8 @@
         "level": 50,
         "name": "Mass Passing",
         "aoe": "1 target/lvl",
-        "duration": "1 min/lvl 50' U 15. Changing",
-        "range": "Self",
+        "duration": "1 min/lvl",
+        "range": "50'",
         "type": "U"
       }
     ]
@@ -14413,7 +14413,7 @@
         "level": 50,
         "name": "Ice Bolt Barrage",
         "aoe": "1 target/rnd",
-        "duration": "1 rnd/5 lvl",
+        "duration": "1 rnd/5lvl",
         "range": "<125'>",
         "type": "ED"
       }
@@ -16204,7 +16204,7 @@
         "name": "Long Whisper True",
         "aoe": "1 point",
         "duration": "C",
-        "range": "100'/ lvl",
+        "range": "100'/lvl",
         "type": "E"
       },
       {
@@ -16281,8 +16281,8 @@
         "level": 1,
         "name": "Shadow",
         "aoe": "caster",
-        "duration": "10 min/lvl self U 9. Conceal V",
-        "range": "—",
+        "duration": "10 min/lvl",
+        "range": "self",
         "type": "U"
       },
       {
@@ -16297,16 +16297,16 @@
         "level": 3,
         "name": "Conceal I",
         "aoe": "1 object",
-        "duration": "4 hrs/lvl touch E 10. Unseen X",
-        "range": "—",
+        "duration": "4 hrs/lvl",
+        "range": "touch",
         "type": "E"
       },
       {
         "level": 4,
         "name": "Invisibility I",
         "aoe": "1 target",
-        "duration": "24 hrs 10' E 11. Displacement II",
-        "range": "—",
+        "duration": "24 hrs",
+        "range": "10'",
         "type": "E"
       },
       {
@@ -16441,8 +16441,8 @@
         "level": 25,
         "name": "Mass Unseen",
         "aoe": "1 target/lvl",
-        "duration": "24 hrs 100' E 15. Displacement III",
-        "range": "—",
+        "duration": "24 hrs",
+        "range": "100'",
         "type": "E"
       },
       {
@@ -16457,8 +16457,8 @@
         "level": 35,
         "name": "Displacement V",
         "aoe": "caster",
-        "duration": "1 min/lvl self E 16. Invisibility Sphere III",
-        "range": "—",
+        "duration": "1 min/lvl",
+        "range": "self",
         "type": "E"
       },
       {
@@ -17399,8 +17399,8 @@
         "level": 12,
         "name": "Operate II",
         "aoe": "1 object",
-        "duration": "1 min/lvl 50' F 11. Lesser Item Analysis",
-        "range": "—",
+        "duration": "1 min/lvl",
+        "range": "50'",
         "type": "F"
       },
       {
@@ -17447,8 +17447,8 @@
         "level": 18,
         "name": "Origins",
         "aoe": "1 object",
-        "duration": "– self I 12. Operate II",
-        "range": "—",
+        "duration": "–",
+        "range": "self",
         "type": "I"
       },
       {
@@ -18112,7 +18112,7 @@
       {
         "level": 40,
         "name": "Shocking Bolts",
-        "aoe": "1 target/ round",
+        "aoe": "1 target/round",
         "duration": "1 rnd/lvl",
         "range": "<125'>",
         "type": "ED"
@@ -18223,7 +18223,7 @@
         "level": 12,
         "name": "Detect Illusion True",
         "aoe": "varies",
-        "duration": "(C)",
+        "duration": "1 min/lvl (C)",
         "range": "100'",
         "type": "I"
       },
@@ -19736,7 +19736,7 @@
       {
         "level": 25,
         "name": "Part Water",
-        "aoe": "10'x100'x100'/ lvl",
+        "aoe": "10'x100'x100'/lvl",
         "duration": "C",
         "range": "100'/lvl",
         "type": "F"
@@ -20044,8 +20044,8 @@
       {
         "level": 8,
         "name": "Shadow Forms",
-        "aoe": "1 shadow/ lvl",
-        "duration": "10 min/ lvl(C)",
+        "aoe": "1 shadow/lvl",
+        "duration": "10 min/lvl(C)",
         "range": "100'",
         "type": "E"
       },
@@ -21027,7 +21027,7 @@
         "level": 2,
         "name": "Control Mindless Undead I *",
         "aoe": "1 undead",
-        "duration": "(C)",
+        "duration": "10 min/lvl (C)",
         "range": "100'",
         "type": "E"
       },
@@ -21059,7 +21059,7 @@
         "level": 6,
         "name": "Control Mindless Undead II *",
         "aoe": "1 undead",
-        "duration": "(C)",
+        "duration": "10 min/lvl (C)",
         "range": "100'",
         "type": "E"
       },
@@ -21083,7 +21083,7 @@
         "level": 9,
         "name": "Control Mindless Undead III *",
         "aoe": "1 undead",
-        "duration": "(C)",
+        "duration": "10 min/lvl (C)",
         "range": "100'",
         "type": "E"
       },
@@ -21116,7 +21116,7 @@
         "name": "Control Mindless Undead IV *",
         "aoe": "1 undead",
         "duration": "10 min/lvl (C)",
-        "range": "2",
+        "range": "100'",
         "type": "E"
       },
       {
@@ -21139,7 +21139,7 @@
         "level": 16,
         "name": "Control Mindless Undead V *",
         "aoe": "1 undead",
-        "duration": "(C)",
+        "duration": "10 min/lvl (C)",
         "range": "100'",
         "type": "E"
       },
@@ -21163,7 +21163,7 @@
         "level": 19,
         "name": "Control Mindless Undead VI *",
         "aoe": "1 undead",
-        "duration": "(C)",
+        "duration": "10 min/lvl (C)",
         "range": "100'",
         "type": "E"
       },
@@ -21179,7 +21179,7 @@
         "level": 25,
         "name": "Mass Mindless Undead Control *",
         "aoe": "1 undead",
-        "duration": "(C)",
+        "duration": "10 min/lvl (C)",
         "range": "100'",
         "type": "E"
       },
@@ -21417,7 +21417,7 @@
         "level": 50,
         "name": "Spell Anticipation True *",
         "aoe": "caster",
-        "duration": "-",
+        "duration": "—",
         "range": "self",
         "type": "I"
       }
@@ -21661,7 +21661,7 @@
         "level": 4,
         "name": "Cloaking I",
         "aoe": "1 target",
-        "duration": "C",
+        "duration": "1 min/lvl or C",
         "range": "10'/lvl",
         "type": "FM"
       },
@@ -21677,7 +21677,7 @@
         "level": 6,
         "name": "Cloaking III",
         "aoe": "3 targets",
-        "duration": "C",
+        "duration": "1 min/lvl or C",
         "range": "10'/lvl",
         "type": "FM"
       },
@@ -21693,7 +21693,7 @@
         "level": 8,
         "name": "Cloaking V",
         "aoe": "5 targets",
-        "duration": "C",
+        "duration": "1 min/lvl or C",
         "range": "10'/lvl",
         "type": "FM"
       },
@@ -21757,7 +21757,7 @@
         "level": 16,
         "name": "Cloaking XX",
         "aoe": "20 targets",
-        "duration": "C",
+        "duration": "1 min/lvl or C",
         "range": "10'/lvl",
         "type": "FM"
       },
@@ -24617,7 +24617,7 @@
         "level": 13,
         "name": "Detect Illusion True",
         "aoe": "varies",
-        "duration": "(C)",
+        "duration": "1 min/lvl (C)",
         "range": "100'",
         "type": "I"
       },
@@ -24690,7 +24690,7 @@
         "name": "Mentalist Eye True",
         "aoe": "caster",
         "duration": "1 min/lvl (C)",
-        "range": "1",
+        "range": "1 mi/lvl",
         "type": "I"
       },
       {
@@ -24957,7 +24957,7 @@
         "level": 4,
         "name": "Heat Stone",
         "aoe": "1 cu'/lvl",
-        "duration": "(C)",
+        "duration": "1 min/lvl (C)",
         "range": "touch",
         "type": "F"
       },
@@ -25385,8 +25385,8 @@
         "level": 6,
         "name": "Severe Flesh Relief",
         "aoe": "1 target",
-        "duration": "P touch U 8. Medium Flesh Healing",
-        "range": "—",
+        "duration": "P",
+        "range": "touch",
         "type": "U"
       },
       {
@@ -25538,7 +25538,7 @@
         "name": "Regrow Limb ‡ *",
         "aoe": "1 target",
         "duration": "1 min/lvl",
-        "range": "—",
+        "range": "touch",
         "type": "U"
       }
     ]
@@ -25600,7 +25600,7 @@
         "name": "Severe Bone Relief",
         "aoe": "1 target",
         "duration": "P",
-        "range": "—",
+        "range": "touch",
         "type": "U"
       },
       {
@@ -25639,8 +25639,8 @@
         "level": 12,
         "name": "Living Splint",
         "aoe": "1 target",
-        "duration": "1 rnd/lvl touch U 12. Living Splint",
-        "range": "—",
+        "duration": "1 rnd/lvl",
+        "range": "touch",
         "type": "U"
       },
       {
@@ -25671,8 +25671,8 @@
         "level": 16,
         "name": "Bone Regeneration",
         "aoe": "1 target",
-        "duration": "P touch U 13. Severe Cartilage Healing",
-        "range": "—",
+        "duration": "P",
+        "range": "touch",
         "type": "U"
       },
       {
@@ -25695,8 +25695,8 @@
         "level": 19,
         "name": "Iron Bones",
         "aoe": "1 target",
-        "duration": "1 rnd/lvl touch U 14. Severe Bone Healing",
-        "range": "—",
+        "duration": "1 rnd/lvl",
+        "range": "touch",
         "type": "U"
       },
       {
@@ -25789,8 +25789,8 @@
         "level": 5,
         "name": "Awakening *",
         "aoe": "1 target",
-        "duration": "P 100' Us 12. Severe Burn/Frostbite Healing",
-        "range": "—",
+        "duration": "P",
+        "range": "100'",
         "type": "Us"
       },
       {
@@ -25829,8 +25829,8 @@
         "level": 10,
         "name": "Regeneration II *",
         "aoe": "1 target",
-        "duration": "P touch Us 14. Long Stun Relief",
-        "range": "—",
+        "duration": "P",
+        "range": "touch",
         "type": "Us"
       },
       {
@@ -25853,8 +25853,8 @@
         "level": 13,
         "name": "Stun Relief V *",
         "aoe": "1 target",
-        "duration": "P touch Us 15. Regeneration III *",
-        "range": "—",
+        "duration": "P",
+        "range": "touch",
         "type": "Us"
       },
       {
@@ -25901,8 +25901,8 @@
         "level": 19,
         "name": "Stun Relief X *",
         "aoe": "1 target",
-        "duration": "P touch Us 18. Medium Burn/Frostbite Healing True",
-        "range": "—",
+        "duration": "P",
+        "range": "touch",
         "type": "Us"
       },
       {
@@ -25949,8 +25949,8 @@
         "level": 50,
         "name": "Concussion's Mastery",
         "aoe": "caster",
-        "duration": "1 rnd/lvl self U 20. Severe Burn/Frostbite Healing True",
-        "range": "—",
+        "duration": "1 rnd/lvl",
+        "range": "self",
         "type": "U"
       }
     ]
@@ -25971,8 +25971,8 @@
         "level": 2,
         "name": "Medium Muscle Relief",
         "aoe": "1 target",
-        "duration": "P touch U 10. Medium Muscle Healing",
-        "range": "—",
+        "duration": "P",
+        "range": "touch",
         "type": "U"
       },
       {
@@ -26051,8 +26051,8 @@
         "level": 12,
         "name": "Severe Muscle Healing",
         "aoe": "1 target",
-        "duration": "P touch U 13. Strength II",
-        "range": "—",
+        "duration": "P",
+        "range": "touch",
         "type": "U"
       },
       {
@@ -26075,8 +26075,8 @@
         "level": 15,
         "name": "Endurance True",
         "aoe": "1 target",
-        "duration": "1 min/lvl touch U 14. Light Muscle Healing True",
-        "range": "—",
+        "duration": "1 min/lvl",
+        "range": "touch",
         "type": "U"
       },
       {
@@ -26115,8 +26115,8 @@
         "level": 20,
         "name": "Joining True ‡ *",
         "aoe": "1 target",
-        "duration": "P touch U 16. Medium Muscle Healing True",
-        "range": "—",
+        "duration": "P",
+        "range": "touch",
         "type": "U"
       },
       {
@@ -26313,8 +26313,8 @@
         "level": 19,
         "name": "Severe Nerve Healing",
         "aoe": "1 target",
-        "duration": "P touch U 14. Severe Organ Healing",
-        "range": "—",
+        "duration": "P",
+        "range": "touch",
         "type": "U"
       },
       {
@@ -28697,7 +28697,7 @@
         "level": 8,
         "name": "Direction I",
         "aoe": "1 target",
-        "duration": "-",
+        "duration": "—",
         "range": "1,000'/lvl",
         "type": "IM"
       },
@@ -28809,7 +28809,7 @@
         "level": 30,
         "name": "Direction True",
         "aoe": "1 target",
-        "duration": "-",
+        "duration": "—",
         "range": "unlimited",
         "type": "IM"
       },
@@ -32024,7 +32024,7 @@
       {
         "level": 12,
         "name": "Alter Transference *",
-        "aoe": "1 transfer- ence",
+        "aoe": "1 transference",
         "duration": "P",
         "range": "self",
         "type": "U"
@@ -32081,7 +32081,7 @@
         "level": 19,
         "name": "Suspend Life True",
         "aoe": "caster",
-        "duration": "1 day/ lvl",
+        "duration": "1 day/lvl",
         "range": "self",
         "type": "US"
       },
@@ -32104,7 +32104,7 @@
       {
         "level": 30,
         "name": "Mass Transference *",
-        "aoe": "1 condition/ lvl",
+        "aoe": "1 condition/lvl",
         "duration": "P",
         "range": "2'/lvl",
         "type": "U"
