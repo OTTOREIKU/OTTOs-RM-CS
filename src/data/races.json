@@ -180,7 +180,7 @@
     "physical_rr": 5,
     "endurance": 0,
     "base_hits": 25,
-    "recovery_mult": 1,
+    "recovery_mult": 0.5,
     "dp_bonus_pool": 4
   },
   {

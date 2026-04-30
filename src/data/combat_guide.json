@@ -126,8 +126,14 @@
           "note": null
         },
         {
-          "action": "Load Crossbow",
+          "action": "Load Light or Hand Crossbow",
           "ap": 6,
+          "modifier": null,
+          "note": null
+        },
+        {
+          "action": "Load Heavy Crossbow",
+          "ap": 14,
           "modifier": null,
           "note": null
         }
@@ -940,7 +946,7 @@
     },
     {
       "name": "Mixed Breed, Medium Horse",
-      "weight": 1400,
+      "weight": 1500,
       "bmr": 31,
       "at": 1,
       "hits": 45,
@@ -1073,7 +1079,7 @@
       "result": "UM 66 Unusual Event\nWhile fighting off exhaustion you have a brief hallucination\nthat gives you insight into a problem you have been having.\nYou may, in the next 24 hours, reroll a previously failed Lore,\nScience, or Delving roll in order to achive your goal."
     },
     {
-      "tier": "67-100 Partial Success",
+      "tier": "76-100 Partial Success",
       "result": "76 - 100 Partial Success\nIt's hard work, and every bit saps your just strength. But surely\nyou are strong enough to push on ahead. Increase fatigue penalty\nby 5."
     },
     {
@@ -1081,7 +1087,7 @@
       "result": "101 - 175 Success\nBetween the excitement and your fortitude, you shrug off the\nexhaustion and are ready for whatever is coming next. You accumulate\nno additional fatigue."
     },
     {
-      "tier": "176+ Unusual Success",
+      "tier": "176+ Absolute Success",
       "result": "176 + Absolute Success\nIt's time for a marathon. You take solace in your task and feel\nmore energized than ever to tackle what lies before you. Reduce\nany current fatigue penalty by 10, and gain a +5 to whatever\naction you are about to perform."
     }
   ],
