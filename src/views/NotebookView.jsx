@@ -15,7 +15,8 @@ import {
 } from '../store/notebook.js'
 import { usePersistentOpen } from '../hooks/persist.js'
 import { importNotebookFromFile } from '../store/characters.js'
-import { RMRefExtension, RMRefPicker } from '../components/RMRef.jsx'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { RMRefExtension, RMRefPicker, registerNoteNav } from '../components/RMRef.jsx'
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -258,7 +259,32 @@ export default function NotebookView() {
   const titleRef     = useRef(null)
   const dragItemRef  = useRef(null)   // sync ref — avoids stale closure in drag events
   const nbImportRef  = useRef(null)
+  const dataRef      = useRef(null)   // always-current data ref for note nav callback
   const [nbImportStatus, setNbImportStatus] = useState(null)
+
+  const location = useLocation()
+  const navigate = useNavigate()
+  dataRef.current = data
+
+  // Register note-navigation callback so note ref chips can navigate within the notebook
+  useEffect(() => {
+    registerNoteNav(id => {
+      if (dataRef.current.notes[id]) {
+        setActiveId(id)
+        if (window.innerWidth < 700) setShowSidebar(false)
+      }
+    })
+    return () => registerNoteNav(null)
+  }, [])
+
+  // Handle navigation from a note chip clicked outside the notebook (e.g., from another tab)
+  useEffect(() => {
+    const noteId = location.state?.openNoteId
+    if (noteId && data.notes[noteId]) {
+      setActiveId(noteId)
+      navigate('/notebook', { replace: true, state: null })
+    }
+  }, [location.state?.openNoteId]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const h = () => setIsMobile(window.innerWidth < 700)
@@ -586,6 +612,17 @@ export default function NotebookView() {
   const allFoldersSorted = useMemo(() =>
     Object.values(data.folders).sort((a, b) => a.name.localeCompare(b.name)),
   [data.folders])
+
+  // Backlinks: notes that contain a note-ref chip pointing to the current note
+  const backlinks = useMemo(() => {
+    if (!activeId) return []
+    const marker = `data-ref-id="${activeId}"`
+    return Object.values(data.notes).filter(n =>
+      n.id !== activeId &&
+      n.content?.includes(marker) &&
+      n.content.includes('data-ref-type="note"')
+    )
+  }, [data.notes, activeId])
 
   // ── Context menu content ───────────────────────────────────────────────────
   function renderCtxItems() {
@@ -1153,6 +1190,32 @@ export default function NotebookView() {
                 style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}
               />
 
+              {/* Backlinks panel */}
+              {backlinks.length > 0 && (
+                <div style={{ borderTop: '1px solid var(--border)', flexShrink: 0,
+                  padding: '6px 16px 8px', background: 'var(--surface)' }}>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--text3)',
+                    textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 5 }}>
+                    Linked from {backlinks.length} note{backlinks.length !== 1 ? 's' : ''}
+                  </div>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px 6px' }}>
+                    {backlinks.map(n => (
+                      <button key={n.id} onClick={() => setActiveId(n.id)}
+                        style={{
+                          fontSize: 11, fontWeight: 600, cursor: 'pointer',
+                          background: 'var(--accent)15', color: 'var(--accent)',
+                          border: '1px solid var(--accent)40', borderRadius: 5,
+                          padding: '2px 9px',
+                        }}
+                        onMouseEnter={e => { e.currentTarget.style.background = 'var(--accent)30' }}
+                        onMouseLeave={e => { e.currentTarget.style.background = 'var(--accent)15' }}>
+                        {n.title || 'Untitled'}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Status bar */}
               <div style={{ padding: '4px 16px', borderTop: '1px solid var(--border)', flexShrink: 0,
                 display: 'flex', gap: 12, alignItems: 'center', fontSize: 10, color: 'var(--text3)' }}>
@@ -1215,7 +1278,8 @@ export default function NotebookView() {
       )}
 
       {/* ── RMREF PICKER ─────────────────────────────────────────── */}
-      <RMRefPicker open={pickerOpen} onClose={() => setPickerOpen(false)} editor={editor} />
+      <RMRefPicker open={pickerOpen} onClose={() => setPickerOpen(false)} editor={editor}
+        notes={Object.values(data.notes)} folders={data.folders} />
 
       {/* ── CONFIRM DIALOG ───────────────────────────────────────── */}
       {confirmDlg && (

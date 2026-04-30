@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import ReactDOM from 'react-dom'
+import { useNavigate } from 'react-router-dom'
 import { Node, mergeAttributes } from '@tiptap/core'
 import { ReactNodeViewRenderer, NodeViewWrapper } from '@tiptap/react'
 
@@ -10,11 +11,12 @@ import racesData      from '../data/races.json'
 import armorData      from '../data/armor.json'
 import spellListsData        from '../data/spell_lists.json'
 import spellDescriptionsData from '../data/spell_descriptions.json'
+import { loadNotebook } from '../store/notebook.js'
 
 // ── Type configuration ─────────────────────────────────────────────────────────
 // cssVar references --accent/--danger/etc so colorblind overrides apply automatically.
 
-const TYPES = ['skill', 'weapon', 'talent', 'race', 'armor', 'spell']
+const TYPES = ['skill', 'weapon', 'talent', 'race', 'armor', 'spell', 'note']
 
 const TYPE_CFG = {
   skill:  { label: 'Skill',  cssVar: '--accent'  },
@@ -23,7 +25,12 @@ const TYPE_CFG = {
   race:   { label: 'Race',   cssVar: '--success' },
   armor:  { label: 'Armor',  cssVar: '--warning' },
   spell:  { label: 'Spell',  cssVar: '--info'    },
+  note:   { label: 'Note',   cssVar: '--accent'  },
 }
+
+// ── Note navigation callback (registered by NotebookView while mounted) ─────────
+let _noteNavCb = null
+export function registerNoteNav(fn) { _noteNavCb = fn }
 
 // Helpers — keeps inline style strings clean
 const cv   = v => `var(${v})`
@@ -80,6 +87,7 @@ const DATA_MAPS = {
 function getItemId(type, item) {
   if (type === 'talent') return item.id
   if (type === 'spell')  return `${item.list}::${item.level}`
+  if (type === 'note')   return item.id
   return item.name
 }
 
@@ -95,8 +103,24 @@ function searchItems(type, query) {
   })
 }
 
+function findNoteItem(id) {
+  try {
+    const nb     = loadNotebook()
+    const note   = nb.notes[id]
+    if (!note) return null
+    const folder = note.folder_id ? nb.folders[note.folder_id] : null
+    return { ...note, folderName: folder?.name || null }
+  } catch { return null }
+}
+
 function findItem(type, id) {
+  if (type === 'note') return findNoteItem(id)
   return (DATA_MAPS[type] || []).find(item => getItemId(type, item) === id) || null
+}
+
+function stripHtml(html) {
+  if (!html) return ''
+  return html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()
 }
 
 // ── Tooltip content by type ────────────────────────────────────────────────────
@@ -246,8 +270,38 @@ function SpellTooltip({ item }) {
   )
 }
 
-function TooltipContent({ type, item }) {
-  if (!item) return <div style={{ fontSize: 12, color: 'var(--text3)', fontStyle: 'italic' }}>Item not found.</div>
+function NoteTooltip({ item, onNavigate }) {
+  if (!item) return <div style={{ fontSize: 12, color: 'var(--text3)', fontStyle: 'italic' }}>Note not found.</div>
+  const preview = stripHtml(item.content).slice(0, 160).trim()
+  return (
+    <>
+      {item.folderName && (
+        <div style={{ fontSize: 10, color: 'var(--text3)', marginBottom: 6,
+          textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+          {item.folderName}
+        </div>
+      )}
+      <div style={{ fontSize: 11, color: 'var(--text2)', lineHeight: 1.5, marginBottom: 8, minHeight: 16 }}>
+        {preview
+          ? <>{preview}{preview.length >= 160 ? '…' : ''}</>
+          : <em style={{ color: 'var(--text3)' }}>Empty note</em>}
+      </div>
+      <button onClick={onNavigate}
+        style={{
+          width: '100%', padding: '5px 10px', borderRadius: 6, fontSize: 11, fontWeight: 600,
+          cursor: 'pointer', border: '1px solid var(--accent)', background: 'var(--accent)18',
+          color: 'var(--accent)', textAlign: 'center',
+        }}
+        onMouseEnter={e => { e.currentTarget.style.background = 'var(--accent)'; e.currentTarget.style.color = 'var(--surface)' }}
+        onMouseLeave={e => { e.currentTarget.style.background = 'var(--accent)18'; e.currentTarget.style.color = 'var(--accent)' }}>
+        Open note →
+      </button>
+    </>
+  )
+}
+
+function TooltipContent({ type, item, onNavigate }) {
+  if (type !== 'note' && !item) return <div style={{ fontSize: 12, color: 'var(--text3)', fontStyle: 'italic' }}>Item not found.</div>
   switch (type) {
     case 'skill':  return <SkillTooltip  item={item} />
     case 'weapon': return <WeaponTooltip item={item} />
@@ -255,13 +309,14 @@ function TooltipContent({ type, item }) {
     case 'race':   return <RaceTooltip   item={item} />
     case 'armor':  return <ArmorTooltip  item={item} />
     case 'spell':  return <SpellTooltip  item={item} />
+    case 'note':   return <NoteTooltip   item={item} onNavigate={onNavigate} />
     default:       return null
   }
 }
 
 // ── Tooltip popup (portalled to body) ─────────────────────────────────────────
 
-function TooltipPopup({ type, id, label, anchorRef, onClose }) {
+function TooltipPopup({ type, id, label, anchorRef, onClose, onNavigate }) {
   const popupRef = useRef(null)
   const item     = useMemo(() => findItem(type, id), [type, id])
   const cfg      = TYPE_CFG[type] || { label: '?', cssVar: '--text2' }
@@ -315,7 +370,7 @@ function TooltipPopup({ type, id, label, anchorRef, onClose }) {
           {cfg.label}
         </span>
       </div>
-      <TooltipContent type={type} item={item} />
+      <TooltipContent type={type} item={item} onNavigate={onNavigate} />
     </div>,
     document.body
   )
@@ -325,9 +380,19 @@ function TooltipPopup({ type, id, label, anchorRef, onClose }) {
 
 function RMRefNodeView({ node }) {
   const { refType, refId, refLabel } = node.attrs
-  const cfg     = TYPE_CFG[refType] || { label: '?', cssVar: '--text2' }
-  const chipRef = useRef(null)
+  const cfg      = TYPE_CFG[refType] || { label: '?', cssVar: '--text2' }
+  const chipRef  = useRef(null)
   const [open, setOpen] = useState(false)
+  const navigate = useNavigate()
+
+  const handleNoteNavigate = useCallback(() => {
+    setOpen(false)
+    if (_noteNavCb) {
+      _noteNavCb(refId)
+    } else {
+      navigate('/notebook', { state: { openNoteId: refId } })
+    }
+  }, [refId, navigate])
 
   return (
     <NodeViewWrapper as="span" style={{ display: 'inline' }}>
@@ -356,6 +421,7 @@ function RMRefNodeView({ node }) {
           type={refType} id={refId} label={refLabel}
           anchorRef={chipRef}
           onClose={() => setOpen(false)}
+          onNavigate={refType === 'note' ? handleNoteNavigate : undefined}
         />
       )}
     </NodeViewWrapper>
@@ -425,12 +491,22 @@ const REALM_ORDER = ['Channeling', 'Essence', 'Mentalism', 'Hybrid']
 
 // ── RMRef Picker Modal ─────────────────────────────────────────────────────────
 
-export function RMRefPicker({ open, onClose, editor }) {
+export function RMRefPicker({ open, onClose, editor, notes = [], folders = {} }) {
   const [type,  setType]  = useState('skill')
   const [query, setQuery] = useState('')
   const inputRef = useRef(null)
 
-  const results = useMemo(() => searchItems(type, query), [type, query])
+  const noteResults = useMemo(() => {
+    if (type !== 'note') return []
+    const q = query.toLowerCase().trim()
+    return (q ? notes.filter(n => n.title.toLowerCase().includes(q)) : notes)
+      .slice().sort((a, b) => {
+        if (a.pinned !== b.pinned) return a.pinned ? -1 : 1
+        return new Date(b.updated_at) - new Date(a.updated_at)
+      })
+  }, [type, query, notes])
+
+  const results = useMemo(() => type === 'note' ? [] : searchItems(type, query), [type, query])
 
   useEffect(() => {
     if (open) {
@@ -449,7 +525,7 @@ export function RMRefPicker({ open, onClose, editor }) {
   const handleInsert = useCallback((item) => {
     if (!editor) return
     const id    = getItemId(type, item)
-    const label = item.name || item.id
+    const label = item.title || item.name || item.id
     editor.chain().focus().insertContent([
       { type: 'text', text: ' ' },
       { type: 'rmref', attrs: { refType: type, refId: id, refLabel: label } },
@@ -477,7 +553,9 @@ export function RMRefPicker({ open, onClose, editor }) {
 
   const totalResults = type === 'spell'
     ? (spellGroups?.reduce((s, g) => s + g.spells.length, 0) ?? 0)
-    : results.length
+    : type === 'note'
+      ? noteResults.length
+      : results.length
 
   return ReactDOM.createPortal(
     <>
@@ -540,6 +618,16 @@ export function RMRefPicker({ open, onClose, editor }) {
         <div style={{ flex: 1, overflowY: 'auto', padding: '4px 0' }}>
           {type === 'spell' ? (
             <SpellResultsList groups={spellGroups || []} query={query} onInsert={handleInsert} cfg={cfg} />
+          ) : type === 'note' ? (
+            noteResults.length === 0 ? (
+              <div style={{ padding: '14px 16px', fontSize: 12, color: 'var(--text3)', fontStyle: 'italic' }}>
+                {notes.length === 0 ? 'No notes yet — create some in the Notebook.' : 'No notes match your search.'}
+              </div>
+            ) : (
+              noteResults.slice(0, 80).map(note => (
+                <NoteResultRow key={note.id} note={note} folders={folders} onInsert={() => handleInsert(note)} cfg={cfg} />
+              ))
+            )
           ) : (
             results.length === 0 ? (
               <div style={{ padding: '14px 16px', fontSize: 12, color: 'var(--text3)', fontStyle: 'italic' }}>
@@ -698,4 +786,41 @@ function getSubLabel(type, item) {
     case 'armor':  return `${item._section} · AT ${item.at}`
     default:       return null
   }
+}
+
+function NoteResultRow({ note, folders, onInsert, cfg }) {
+  const folderName = note.folder_id ? folders[note.folder_id]?.name : null
+  const preview    = stripHtml(note.content).slice(0, 80).trim()
+  return (
+    <button onClick={onInsert}
+      style={{
+        display: 'flex', alignItems: 'flex-start', gap: 10,
+        width: '100%', textAlign: 'left',
+        background: 'none', border: 'none',
+        padding: '8px 16px', cursor: 'pointer',
+        borderBottom: '1px solid var(--border)',
+      }}
+      onMouseEnter={e => { e.currentTarget.style.background = 'var(--surface2)' }}
+      onMouseLeave={e => { e.currentTarget.style.background = 'none' }}>
+      {note.color && (
+        <span style={{ width: 8, height: 8, borderRadius: '50%', flexShrink: 0, marginTop: 5,
+          background: { red:'#ef4444',orange:'#f97316',yellow:'eab308',green:'#22c55e',blue:'var(--accent)',purple:'var(--purple)' }[note.color] || 'var(--text3)' }} />
+      )}
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ fontSize: 13, color: 'var(--text)', fontWeight: 600,
+          overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          {note.title || 'Untitled'}
+        </div>
+        {(folderName || preview) && (
+          <div style={{ fontSize: 10, color: 'var(--text3)', marginTop: 2,
+            overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {folderName ? `${folderName}${preview ? ' · ' : ''}` : ''}{preview}
+          </div>
+        )}
+      </div>
+      {note.pinned && (
+        <span style={{ fontSize: 9, color: cv(cfg.cssVar), flexShrink: 0, marginTop: 2 }}>📌</span>
+      )}
+    </button>
+  )
 }
