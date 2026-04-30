@@ -247,7 +247,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "touch",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 6,
@@ -263,7 +263,7 @@
         "aoe": "1 target",
         "duration": "P(C)",
         "range": "touch",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 8,
@@ -303,7 +303,7 @@
         "aoe": "1 target",
         "duration": "P(C)",
         "range": "touch",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 13,
@@ -375,7 +375,7 @@
         "aoe": "1 target",
         "duration": "P(C)",
         "range": "touch",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 30,
@@ -391,7 +391,7 @@
         "aoe": "1 target/lvl",
         "duration": "P",
         "range": "100'",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 40,
@@ -675,7 +675,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<25'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 8,
@@ -707,7 +707,7 @@
         "aoe": "varies",
         "duration": "1 rnd/lvl",
         "range": "<5'>/lvl",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 12,
@@ -787,7 +787,7 @@
         "aoe": "20'R",
         "duration": "—",
         "range": "100'",
-        "type": "EB"
+        "type": "Eb"
       },
       {
         "level": 30,
@@ -1103,7 +1103,7 @@
         "aoe": "1 animal",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 10,
@@ -1175,7 +1175,7 @@
         "aoe": "5 animals",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 19,
@@ -1207,7 +1207,7 @@
         "aoe": "1 species",
         "duration": "C",
         "range": "10'/lvl",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 35,
@@ -1215,7 +1215,7 @@
         "aoe": "5 fungi",
         "duration": "1 min/lvl",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 40,
@@ -1231,7 +1231,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       }
     ]
   },
@@ -2489,7 +2489,7 @@
         "aoe": "1 target",
         "duration": "1 min/lvl",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 3,
@@ -2505,7 +2505,7 @@
         "aoe": "2 targets",
         "duration": "1 min/lvl",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 5,
@@ -2513,7 +2513,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 6,
@@ -2521,7 +2521,7 @@
         "aoe": "3 targets",
         "duration": "1 min/lvl",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 7,
@@ -2537,7 +2537,7 @@
         "aoe": "4 targets",
         "duration": "1 min/lvl",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 9,
@@ -2545,7 +2545,7 @@
         "aoe": "5 targets",
         "duration": "1 min/lvl",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 10,
@@ -2553,7 +2553,7 @@
         "aoe": "1 target/lvl",
         "duration": "1 min/lvl",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 11,
@@ -2561,7 +2561,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 12,
@@ -2569,7 +2569,7 @@
         "aoe": "10 targets",
         "duration": "1 min/lvl",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 13,
@@ -2577,7 +2577,7 @@
         "aoe": "3 targets",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 14,
@@ -2593,7 +2593,7 @@
         "aoe": "50'R",
         "duration": "1 min/lvl",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 16,
@@ -2601,7 +2601,7 @@
         "aoe": "2 targets",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 17,
@@ -2617,7 +2617,7 @@
         "aoe": "1 target/lvl",
         "duration": "1 min/lvl",
         "range": "10'/lvl",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 19,
@@ -2625,7 +2625,7 @@
         "aoe": "5 targets",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 20,
@@ -2633,7 +2633,7 @@
         "aoe": "20 targets",
         "duration": "1 min/lvl",
         "range": "10'/lvl",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 25,
@@ -2641,7 +2641,7 @@
         "aoe": "1 target",
         "duration": "1 day/lvl",
         "range": "300'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 30,
@@ -2649,7 +2649,7 @@
         "aoe": "1 target/lvl",
         "duration": "1 min/lvl",
         "range": "10'/lvl",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 35,
@@ -2657,7 +2657,7 @@
         "aoe": "1 target/lvl",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 40,
@@ -2673,7 +2673,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       }
     ]
   },
@@ -3741,7 +3741,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 5,
@@ -4439,7 +4439,7 @@
         "aoe": "caster + 1 target",
         "duration": "1 min/lvl",
         "range": "1000'/lvl",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 15,
@@ -5397,7 +5397,7 @@
         "aoe": "1 animal",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 6,
@@ -5445,7 +5445,7 @@
         "aoe": "3 animals",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 12,
@@ -5485,7 +5485,7 @@
         "aoe": "5 animals",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 17,
@@ -5525,7 +5525,7 @@
         "aoe": "1 species",
         "duration": "C",
         "range": "10'/lvl",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 30,
@@ -6213,7 +6213,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<25'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 5,
@@ -6261,7 +6261,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<75'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 11,
@@ -6301,7 +6301,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<125'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 16,
@@ -6341,7 +6341,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<25'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 25,
@@ -6357,7 +6357,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<125'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 35,
@@ -7053,7 +7053,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "touch",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 7,
@@ -7085,7 +7085,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 11,
@@ -7117,7 +7117,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "touch",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 15,
@@ -7165,7 +7165,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "touch",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 25,
@@ -7251,7 +7251,7 @@
         "aoe": "caster",
         "duration": "1 min/lvl",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 6,
@@ -7291,7 +7291,7 @@
         "aoe": "caster",
         "duration": "1 min/lvl",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 11,
@@ -7331,7 +7331,7 @@
         "aoe": "caster",
         "duration": "1 min/lvl",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 16,
@@ -7371,7 +7371,7 @@
         "aoe": "caster",
         "duration": "1 min/lvl",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 25,
@@ -7647,7 +7647,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "50'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 4,
@@ -7663,7 +7663,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "50'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 6,
@@ -7679,7 +7679,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "50'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 8,
@@ -7687,7 +7687,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "10'/lvl",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 9,
@@ -7703,7 +7703,7 @@
         "aoe": "varies",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 11,
@@ -7727,7 +7727,7 @@
         "aoe": "2 targets",
         "duration": "C",
         "range": "10'/lvl",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 14,
@@ -7735,7 +7735,7 @@
         "aoe": "varies",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 15,
@@ -7767,7 +7767,7 @@
         "aoe": "varies",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 19,
@@ -7783,7 +7783,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "10'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 25,
@@ -7799,7 +7799,7 @@
         "aoe": "varies",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 35,
@@ -11141,7 +11141,7 @@
         "aoe": "20'R",
         "duration": "1 rnd/lvl (C)",
         "range": "self",
-        "type": "IM"
+        "type": "Im"
       },
       {
         "level": 3,
@@ -11205,7 +11205,7 @@
         "aoe": "1 target",
         "duration": "1 rnd/lvl (C)",
         "range": "10'",
-        "type": "IM"
+        "type": "Im"
       },
       {
         "level": 11,
@@ -11625,7 +11625,7 @@
         "aoe": "1 target",
         "duration": "1 hr/lvl",
         "range": "touch",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 12,
@@ -12631,7 +12631,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<25'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 9,
@@ -12687,7 +12687,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<75'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 16,
@@ -12719,7 +12719,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<125'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 20,
@@ -13645,7 +13645,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<25'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 7,
@@ -13685,7 +13685,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<75'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 12,
@@ -13693,7 +13693,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<25'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 13,
@@ -13717,7 +13717,7 @@
         "aoe": "10'R",
         "duration": "—",
         "range": "100'",
-        "type": "EB"
+        "type": "Eb"
       },
       {
         "level": 16,
@@ -13725,7 +13725,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<125'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 17,
@@ -13757,7 +13757,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<125'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 25,
@@ -13765,7 +13765,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<25'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 30,
@@ -13789,7 +13789,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<75'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 50,
@@ -14295,7 +14295,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<25'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 11,
@@ -14343,7 +14343,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<75'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 17,
@@ -14375,7 +14375,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<125'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 25,
@@ -14415,7 +14415,7 @@
         "aoe": "1 target/rnd",
         "duration": "1 rnd/5lvl",
         "range": "<125'>",
-        "type": "ED"
+        "type": "Ed"
       }
     ]
   },
@@ -14841,7 +14841,7 @@
         "aoe": "varies",
         "duration": "—",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 2,
@@ -14849,7 +14849,7 @@
         "aoe": "1 target",
         "duration": "1 hour/lvl",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 3,
@@ -14857,7 +14857,7 @@
         "aoe": "varies",
         "duration": "—",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 4,
@@ -14865,7 +14865,7 @@
         "aoe": "1 target",
         "duration": "1 rnd/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 5,
@@ -14873,7 +14873,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "10'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 6,
@@ -14881,7 +14881,7 @@
         "aoe": "varies",
         "duration": "—",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 7,
@@ -14889,7 +14889,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 8,
@@ -14897,7 +14897,7 @@
         "aoe": "1 target",
         "duration": "10 min/lvl",
         "range": "50'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 9,
@@ -14905,7 +14905,7 @@
         "aoe": "varies",
         "duration": "—",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 10,
@@ -14913,7 +14913,7 @@
         "aoe": "1 target",
         "duration": "1 hour/lvl",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 11,
@@ -14921,7 +14921,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "10'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 12,
@@ -14929,7 +14929,7 @@
         "aoe": "1 target",
         "duration": "1 rnd/10 fail",
         "range": "50'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 13,
@@ -14937,7 +14937,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "50'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 14,
@@ -14945,7 +14945,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 15,
@@ -14953,7 +14953,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "50'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 16,
@@ -14961,7 +14961,7 @@
         "aoe": "1 target",
         "duration": "1 day/10 fail",
         "range": "50'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 17,
@@ -14969,7 +14969,7 @@
         "aoe": "1 target",
         "duration": "1 rnd/10 fail",
         "range": "50'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 18,
@@ -14977,7 +14977,7 @@
         "aoe": "1 target",
         "duration": "1 day/lvl",
         "range": "50'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 19,
@@ -14985,7 +14985,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "50'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 20,
@@ -14993,7 +14993,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "10'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 25,
@@ -15001,7 +15001,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "50'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 30,
@@ -15009,7 +15009,7 @@
         "aoe": "varies",
         "duration": "—",
         "range": "50'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 35,
@@ -15017,7 +15017,7 @@
         "aoe": "1 target",
         "duration": "10 min/lvl",
         "range": "50'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 40,
@@ -15025,7 +15025,7 @@
         "aoe": "1 target",
         "duration": "1 day/lvl",
         "range": "50'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 50,
@@ -15047,7 +15047,7 @@
         "aoe": "20'R",
         "duration": "varies",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 2,
@@ -15055,7 +15055,7 @@
         "aoe": "20'R",
         "duration": "varies",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 3,
@@ -15063,7 +15063,7 @@
         "aoe": "20'R",
         "duration": "varies",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 4,
@@ -15071,7 +15071,7 @@
         "aoe": "20'R",
         "duration": "varies",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 5,
@@ -15079,7 +15079,7 @@
         "aoe": "40'R",
         "duration": "varies",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 6,
@@ -15087,7 +15087,7 @@
         "aoe": "20'R",
         "duration": "varies",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 7,
@@ -15095,7 +15095,7 @@
         "aoe": "20'R",
         "duration": "varies",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 8,
@@ -15103,7 +15103,7 @@
         "aoe": "20'R",
         "duration": "varies",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 9,
@@ -15111,7 +15111,7 @@
         "aoe": "20'R",
         "duration": "varies",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 10,
@@ -15119,7 +15119,7 @@
         "aoe": "50'R",
         "duration": "varies",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 11,
@@ -15127,7 +15127,7 @@
         "aoe": "50'R",
         "duration": "varies",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 12,
@@ -15135,7 +15135,7 @@
         "aoe": "20'R",
         "duration": "varies",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 13,
@@ -15151,7 +15151,7 @@
         "aoe": "50'R",
         "duration": "varies",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 15,
@@ -15159,7 +15159,7 @@
         "aoe": "100'R",
         "duration": "varies",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 16,
@@ -15167,7 +15167,7 @@
         "aoe": "20'R",
         "duration": "varies",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 17,
@@ -15175,7 +15175,7 @@
         "aoe": "50'R",
         "duration": "varies",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 18,
@@ -15183,7 +15183,7 @@
         "aoe": "50'R",
         "duration": "varies",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 19,
@@ -15191,7 +15191,7 @@
         "aoe": "50'R",
         "duration": "varies",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 20,
@@ -15199,7 +15199,7 @@
         "aoe": "20'R",
         "duration": "varies",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 25,
@@ -15223,7 +15223,7 @@
         "aoe": "50'R",
         "duration": "varies",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 40,
@@ -15231,7 +15231,7 @@
         "aoe": "50'R",
         "duration": "varies",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 50,
@@ -15239,7 +15239,7 @@
         "aoe": "50'R",
         "duration": "varies",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       }
     ]
   },
@@ -15293,7 +15293,7 @@
         "aoe": "1 target",
         "duration": "1 min/lvl",
         "range": "10'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 7,
@@ -15333,7 +15333,7 @@
         "aoe": "5 targets",
         "duration": "1 min/lvl",
         "range": "10'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 12,
@@ -15341,7 +15341,7 @@
         "aoe": "1 target",
         "duration": "1 min/lvl",
         "range": "10'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 13,
@@ -15365,7 +15365,7 @@
         "aoe": "10 targets",
         "duration": "1 min/lvl",
         "range": "10'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 16,
@@ -15405,7 +15405,7 @@
         "aoe": "1 target/lvl",
         "duration": "1 min/lvl",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 25,
@@ -16489,7 +16489,7 @@
         "aoe": "1 target",
         "duration": "1 hour",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 2,
@@ -16497,7 +16497,7 @@
         "aoe": "1 animal/lvl",
         "duration": "1 hour",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 3,
@@ -16513,7 +16513,7 @@
         "aoe": "varies",
         "duration": "10 min/lvl",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 5,
@@ -16529,7 +16529,7 @@
         "aoe": "1 target",
         "duration": "1 rnd/lvl (C)",
         "range": "2'/lvl",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 7,
@@ -16545,7 +16545,7 @@
         "aoe": "1 target/5 lvls",
         "duration": "1 hr/lvl",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 9,
@@ -16569,7 +16569,7 @@
         "aoe": "1 target/5 lvls",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 12,
@@ -16585,7 +16585,7 @@
         "aoe": "1 target/5 lvls",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 14,
@@ -16601,7 +16601,7 @@
         "aoe": "1 target",
         "duration": "1 rnd/lvl (C)",
         "range": "5'/lvl",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 16,
@@ -16625,7 +16625,7 @@
         "aoe": "1 target/5 lvls",
         "duration": "10 min/lvl",
         "range": "50'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 19,
@@ -16633,7 +16633,7 @@
         "aoe": "1 text",
         "duration": "varies",
         "range": "touch",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 20,
@@ -16649,7 +16649,7 @@
         "aoe": "1 target",
         "duration": "1 rnd/lvl (C)",
         "range": "10'/lvl",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 30,
@@ -16657,7 +16657,7 @@
         "aoe": "unlimited targets",
         "duration": "10 min/lvl",
         "range": "touch",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 35,
@@ -16673,7 +16673,7 @@
         "aoe": "1 target/lvl",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 50,
@@ -16681,7 +16681,7 @@
         "aoe": "1 target/5 lvls",
         "duration": "varies",
         "range": "50'",
-        "type": "FM"
+        "type": "Fm"
       }
     ]
   },
@@ -17543,7 +17543,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "20'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 5,
@@ -17963,7 +17963,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<25'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 6,
@@ -18083,7 +18083,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<25'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 25,
@@ -18099,7 +18099,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<75'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 35,
@@ -18107,7 +18107,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<125'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 40,
@@ -18115,7 +18115,7 @@
         "aoe": "1 target/round",
         "duration": "1 rnd/lvl",
         "range": "<125'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 50,
@@ -18351,7 +18351,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<25'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 3,
@@ -18391,7 +18391,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<75'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 8,
@@ -18423,7 +18423,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<125'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 12,
@@ -18471,7 +18471,7 @@
         "aoe": "1 target",
         "duration": "1 rnd/lvl (C)",
         "range": "<25'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 18,
@@ -19001,7 +19001,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<25'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 7,
@@ -19017,7 +19017,7 @@
         "aoe": "10'R",
         "duration": "—",
         "range": "100'",
-        "type": "EB"
+        "type": "Eb"
       },
       {
         "level": 9,
@@ -19041,7 +19041,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<75'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 12,
@@ -19081,7 +19081,7 @@
         "aoe": "1-3 targets",
         "duration": "—",
         "range": "<25'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 17,
@@ -19089,7 +19089,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<125'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 18,
@@ -19113,7 +19113,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<75'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 25,
@@ -19121,7 +19121,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<75'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 30,
@@ -19137,7 +19137,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<75'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 40,
@@ -19145,7 +19145,7 @@
         "aoe": "(1'-50')Dx100'",
         "duration": "—",
         "range": "self",
-        "type": "EB"
+        "type": "Eb"
       },
       {
         "level": 50,
@@ -19207,7 +19207,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<25'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 7,
@@ -19215,7 +19215,7 @@
         "aoe": "20'R",
         "duration": "—",
         "range": "100'",
-        "type": "EB"
+        "type": "Eb"
       },
       {
         "level": 8,
@@ -19247,7 +19247,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<75'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 12,
@@ -19279,7 +19279,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<125'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 16,
@@ -19287,7 +19287,7 @@
         "aoe": "1-3 targets",
         "duration": "—",
         "range": "<25'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 17,
@@ -19311,7 +19311,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<250'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 20,
@@ -19319,7 +19319,7 @@
         "aoe": "40'R",
         "duration": "—",
         "range": "300'",
-        "type": "EB"
+        "type": "Eb"
       },
       {
         "level": 25,
@@ -19351,7 +19351,7 @@
         "aoe": "60'R",
         "duration": "—",
         "range": "500'",
-        "type": "EB"
+        "type": "Eb"
       },
       {
         "level": 50,
@@ -19381,7 +19381,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<25'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 3,
@@ -19429,7 +19429,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<75'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 9,
@@ -19445,7 +19445,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<25'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 11,
@@ -19461,7 +19461,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<125'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 13,
@@ -19485,7 +19485,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<75'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 16,
@@ -19493,7 +19493,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<250'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 17,
@@ -19525,7 +19525,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<125'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 25,
@@ -19533,7 +19533,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<75'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 30,
@@ -19541,7 +19541,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<75'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 35,
@@ -19603,7 +19603,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<25'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 5,
@@ -19627,7 +19627,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<25'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 8,
@@ -19659,7 +19659,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<75'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 12,
@@ -19683,7 +19683,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<75'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 15,
@@ -19691,7 +19691,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<125'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 16,
@@ -19699,7 +19699,7 @@
         "aoe": "3 targets",
         "duration": "—",
         "range": "<25'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 17,
@@ -21473,7 +21473,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<25'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 7,
@@ -21521,7 +21521,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<75'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 13,
@@ -21561,7 +21561,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<125'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 18,
@@ -21601,7 +21601,7 @@
         "aoe": "1 point",
         "duration": "1 rnd/lvl",
         "range": "<125'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 35,
@@ -21625,7 +21625,7 @@
         "aoe": "1 point",
         "duration": "C",
         "range": "<125'>",
-        "type": "ED"
+        "type": "Ed"
       }
     ]
   },
@@ -21663,7 +21663,7 @@
         "aoe": "1 target",
         "duration": "1 min/lvl or C",
         "range": "10'/lvl",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 5,
@@ -21679,7 +21679,7 @@
         "aoe": "3 targets",
         "duration": "1 min/lvl or C",
         "range": "10'/lvl",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 7,
@@ -21687,7 +21687,7 @@
         "aoe": "10'R",
         "duration": "C",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 8,
@@ -21695,7 +21695,7 @@
         "aoe": "5 targets",
         "duration": "1 min/lvl or C",
         "range": "10'/lvl",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 9,
@@ -21703,7 +21703,7 @@
         "aoe": "20'R",
         "duration": "C",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 10,
@@ -21727,7 +21727,7 @@
         "aoe": "10 targets",
         "duration": "C",
         "range": "10'/lvl",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 13,
@@ -21735,7 +21735,7 @@
         "aoe": "30'R",
         "duration": "C",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 14,
@@ -21759,7 +21759,7 @@
         "aoe": "20 targets",
         "duration": "1 min/lvl or C",
         "range": "10'/lvl",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 17,
@@ -21767,7 +21767,7 @@
         "aoe": "3 targets",
         "duration": "10 min/lvl",
         "range": "10'/lvl",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 18,
@@ -21783,7 +21783,7 @@
         "aoe": "50'R",
         "duration": "C",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 20,
@@ -21815,7 +21815,7 @@
         "aoe": "8 targets",
         "duration": "10 min/lvl",
         "range": "10'/lvl",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 40,
@@ -21823,7 +21823,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "10'/lvl",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 50,
@@ -21877,7 +21877,7 @@
         "aoe": "caster",
         "duration": "1 min/lvl",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 6,
@@ -21885,7 +21885,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 7,
@@ -21893,7 +21893,7 @@
         "aoe": "caster",
         "duration": "1 hr/lvl",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 8,
@@ -21917,7 +21917,7 @@
         "aoe": "caster",
         "duration": "1 min/lvl",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 11,
@@ -21925,7 +21925,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 12,
@@ -21933,7 +21933,7 @@
         "aoe": "caster",
         "duration": "C",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 13,
@@ -21949,7 +21949,7 @@
         "aoe": "caster",
         "duration": "—",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 15,
@@ -21957,7 +21957,7 @@
         "aoe": "caster",
         "duration": "1 min/lvl",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 16,
@@ -21965,7 +21965,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 17,
@@ -21997,7 +21997,7 @@
         "aoe": "caster",
         "duration": "1 min/lvl",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 25,
@@ -22005,7 +22005,7 @@
         "aoe": "caster",
         "duration": "C",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 30,
@@ -22013,7 +22013,7 @@
         "aoe": "caster",
         "duration": "—",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 35,
@@ -22029,7 +22029,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 50,
@@ -22037,7 +22037,7 @@
         "aoe": "caster",
         "duration": "1 min/lvl",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       }
     ]
   },
@@ -22463,7 +22463,7 @@
         "aoe": "1 target",
         "duration": "1 min/lvl (C)",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 2,
@@ -22471,7 +22471,7 @@
         "aoe": "1 target",
         "duration": "1 min/lvl (C)",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 3,
@@ -22479,7 +22479,7 @@
         "aoe": "1 target",
         "duration": "1 min/lvl (C)",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 4,
@@ -22487,7 +22487,7 @@
         "aoe": "1 target",
         "duration": "1 min/lvl (C)",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 5,
@@ -22495,7 +22495,7 @@
         "aoe": "1 target",
         "duration": "1 min/lvl (C)",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 6,
@@ -22503,7 +22503,7 @@
         "aoe": "1 target",
         "duration": "1 min/lvl (C)",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 7,
@@ -22519,7 +22519,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 9,
@@ -22527,7 +22527,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 10,
@@ -22535,7 +22535,7 @@
         "aoe": "1 target",
         "duration": "1 min/lvl (C)",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 11,
@@ -22543,7 +22543,7 @@
         "aoe": "1 target",
         "duration": "1 min/lvl (C)",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 12,
@@ -22551,7 +22551,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 13,
@@ -22559,7 +22559,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 14,
@@ -22567,7 +22567,7 @@
         "aoe": "1 target",
         "duration": "1 min/lvl (C)",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 15,
@@ -22575,7 +22575,7 @@
         "aoe": "1 target",
         "duration": "1 min/lvl (C)",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 16,
@@ -22583,7 +22583,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 17,
@@ -22591,7 +22591,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 18,
@@ -22599,7 +22599,7 @@
         "aoe": "1 target",
         "duration": "1 min/lvl (C)",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 19,
@@ -22607,7 +22607,7 @@
         "aoe": "1 target",
         "duration": "1 min/lvl (C)",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 20,
@@ -22615,7 +22615,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 25,
@@ -22623,7 +22623,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 30,
@@ -22631,7 +22631,7 @@
         "aoe": "1 target",
         "duration": "1 min/lvl (C)",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 35,
@@ -22639,7 +22639,7 @@
         "aoe": "1 target",
         "duration": "1 min/lvl (C)",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 40,
@@ -22647,7 +22647,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 50,
@@ -22655,7 +22655,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       }
     ]
   },
@@ -22669,7 +22669,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 2,
@@ -22677,7 +22677,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 3,
@@ -22685,7 +22685,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 4,
@@ -22693,7 +22693,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 5,
@@ -22701,7 +22701,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 6,
@@ -22709,7 +22709,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 7,
@@ -22717,7 +22717,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 8,
@@ -22725,7 +22725,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 9,
@@ -22733,7 +22733,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 10,
@@ -22741,7 +22741,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 11,
@@ -22749,7 +22749,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 12,
@@ -22757,7 +22757,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 13,
@@ -22765,7 +22765,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 14,
@@ -22773,7 +22773,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 15,
@@ -22781,7 +22781,7 @@
         "aoe": "caster",
         "duration": "varies",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 16,
@@ -22789,7 +22789,7 @@
         "aoe": "caster",
         "duration": "10 min(C)",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 17,
@@ -22797,7 +22797,7 @@
         "aoe": "caster",
         "duration": "varies",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 18,
@@ -22805,7 +22805,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 19,
@@ -22813,7 +22813,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 20,
@@ -22821,7 +22821,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 25,
@@ -22829,7 +22829,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 30,
@@ -22837,7 +22837,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 35,
@@ -22845,7 +22845,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 40,
@@ -22853,7 +22853,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 50,
@@ -22861,7 +22861,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       }
     ]
   },
@@ -23153,7 +23153,7 @@
         "aoe": "1 lb",
         "duration": "— 10'",
         "range": "<60'>",
-        "type": "FD"
+        "type": "Fd"
       },
       {
         "level": 11,
@@ -23177,7 +23177,7 @@
         "aoe": "5 lbs",
         "duration": "— 10'",
         "range": "<60'>",
-        "type": "FD"
+        "type": "Fd"
       },
       {
         "level": 14,
@@ -23217,7 +23217,7 @@
         "aoe": "25 lbs",
         "duration": "— 10'",
         "range": "<60'>",
-        "type": "FD"
+        "type": "Fd"
       },
       {
         "level": 19,
@@ -23249,7 +23249,7 @@
         "aoe": "50 lbs",
         "duration": "— 10'",
         "range": "<60'>",
-        "type": "FD"
+        "type": "Fd"
       },
       {
         "level": 35,
@@ -23257,7 +23257,7 @@
         "aoe": "varies",
         "duration": "-",
         "range": "varies <60'>",
-        "type": "FD"
+        "type": "Fd"
       },
       {
         "level": 40,
@@ -23763,7 +23763,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<25'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 10,
@@ -23819,7 +23819,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<75'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 17,
@@ -23945,7 +23945,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 7,
@@ -24009,7 +24009,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "1,000'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 15,
@@ -24049,7 +24049,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "1 mile",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 20,
@@ -24119,7 +24119,7 @@
         "aoe": "20'R",
         "duration": "C",
         "range": "self",
-        "type": "IM"
+        "type": "Im"
       },
       {
         "level": 3,
@@ -24715,7 +24715,7 @@
         "aoe": "caster",
         "duration": "1 min/lvl (C)",
         "range": "Unlimited",
-        "type": "UM"
+        "type": "Um"
       }
     ]
   },
@@ -25205,7 +25205,7 @@
         "aoe": "caster",
         "duration": "—",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 10,
@@ -25775,7 +25775,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "touch",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 4,
@@ -25783,7 +25783,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "touch",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 5,
@@ -25815,7 +25815,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "touch",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 9,
@@ -25871,7 +25871,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "touch",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 16,
@@ -25943,7 +25943,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "touch",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 50,
@@ -26203,7 +26203,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "touch",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 6,
@@ -26243,7 +26243,7 @@
         "aoe": "1 target",
         "duration": "1rnd/10fail",
         "range": "50'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 11,
@@ -26283,7 +26283,7 @@
         "aoe": "1 target",
         "duration": "1rnd/10fail",
         "range": "50'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 16,
@@ -26877,7 +26877,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "20'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 13,
@@ -27423,7 +27423,7 @@
         "aoe": "3 targets",
         "duration": "1 min/lvl",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 4,
@@ -27431,7 +27431,7 @@
         "aoe": "3 targets",
         "duration": "C",
         "range": "10'/lvl",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 5,
@@ -27439,7 +27439,7 @@
         "aoe": "1 target",
         "duration": "1 min/10 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 6,
@@ -27455,7 +27455,7 @@
         "aoe": "5 targets",
         "duration": "C",
         "range": "10'/lvl",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 8,
@@ -27463,7 +27463,7 @@
         "aoe": "5 targets",
         "duration": "1 min/lvl",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 9,
@@ -27471,7 +27471,7 @@
         "aoe": "10'R",
         "duration": "C",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 10,
@@ -27487,7 +27487,7 @@
         "aoe": "10 targets",
         "duration": "C",
         "range": "10'/lvl",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 12,
@@ -27503,7 +27503,7 @@
         "aoe": "10 targets",
         "duration": "1 min/lvl",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 14,
@@ -27511,7 +27511,7 @@
         "aoe": "20'R",
         "duration": "C",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 15,
@@ -27519,7 +27519,7 @@
         "aoe": "1 target",
         "duration": "1 min/10 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 16,
@@ -27527,7 +27527,7 @@
         "aoe": "20 targets",
         "duration": "C",
         "range": "10'/lvl",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 17,
@@ -27543,7 +27543,7 @@
         "aoe": "1 target/lvl",
         "duration": "1 min/lvl",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 19,
@@ -27551,7 +27551,7 @@
         "aoe": "30'R",
         "duration": "C",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 20,
@@ -27559,7 +27559,7 @@
         "aoe": "1 target",
         "duration": "1 min/10 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 25,
@@ -27575,7 +27575,7 @@
         "aoe": "1 target/lvl",
         "duration": "C",
         "range": "varies",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 35,
@@ -27583,7 +27583,7 @@
         "aoe": "100'R",
         "duration": "C",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 40,
@@ -27599,7 +27599,7 @@
         "aoe": "varies",
         "duration": "1 min/lvl",
         "range": "special",
-        "type": "FM"
+        "type": "Fm"
       }
     ]
   },
@@ -27677,7 +27677,7 @@
         "aoe": "caster",
         "duration": "C",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 10,
@@ -27709,7 +27709,7 @@
         "aoe": "caster",
         "duration": "C",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 14,
@@ -27819,7 +27819,7 @@
         "aoe": "1 target",
         "duration": "1 rnd",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 2,
@@ -27835,7 +27835,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 4,
@@ -27843,7 +27843,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 5,
@@ -27851,7 +27851,7 @@
         "aoe": "1 target",
         "duration": "3 rnd",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 6,
@@ -27859,7 +27859,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 7,
@@ -27867,7 +27867,7 @@
         "aoe": "1 target",
         "duration": "1 rnd/10 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 8,
@@ -27875,7 +27875,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 9,
@@ -27883,7 +27883,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 10,
@@ -27891,7 +27891,7 @@
         "aoe": "10'R",
         "duration": "1 rnd/10 fail",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 11,
@@ -27899,7 +27899,7 @@
         "aoe": "1 target",
         "duration": "5 rnd",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 12,
@@ -27907,7 +27907,7 @@
         "aoe": "1 target",
         "duration": "3 rnd",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 13,
@@ -27915,7 +27915,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 14,
@@ -27923,7 +27923,7 @@
         "aoe": "1 target",
         "duration": "3 rnd/10 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 15,
@@ -27931,7 +27931,7 @@
         "aoe": "50'R",
         "duration": "1 rnd/10 fail",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 16,
@@ -27939,7 +27939,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 17,
@@ -27947,7 +27947,7 @@
         "aoe": "1 target",
         "duration": "5 rnd/10 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 18,
@@ -27955,7 +27955,7 @@
         "aoe": "1 target",
         "duration": "10 rnd",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 19,
@@ -27963,7 +27963,7 @@
         "aoe": "100'R",
         "duration": "1 rnd/10 fail",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 20,
@@ -27971,7 +27971,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 25,
@@ -27979,7 +27979,7 @@
         "aoe": "50'R",
         "duration": "1 rnd/10 fail",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 30,
@@ -27987,7 +27987,7 @@
         "aoe": "300'R",
         "duration": "1 rnd/10 fail",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 35,
@@ -27995,7 +27995,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 40,
@@ -28003,7 +28003,7 @@
         "aoe": "1 target/level",
         "duration": "1 rnd/10 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 50,
@@ -28011,7 +28011,7 @@
         "aoe": "50'R",
         "duration": "varies",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       }
     ]
   },
@@ -28025,7 +28025,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "10'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 2,
@@ -28033,7 +28033,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "50'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 3,
@@ -28041,7 +28041,7 @@
         "aoe": "1 target",
         "duration": "1 hr/lvl",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 4,
@@ -28049,7 +28049,7 @@
         "aoe": "1 target",
         "duration": "1 min/lvl",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 5,
@@ -28057,7 +28057,7 @@
         "aoe": "1 target",
         "duration": "1 rnd/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 6,
@@ -28065,7 +28065,7 @@
         "aoe": "1 target",
         "duration": "1 min/10 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 7,
@@ -28073,7 +28073,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "10'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 8,
@@ -28081,7 +28081,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "50'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 9,
@@ -28089,7 +28089,7 @@
         "aoe": "1 target",
         "duration": "1 min/lvl",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 10,
@@ -28097,7 +28097,7 @@
         "aoe": "1 target",
         "duration": "10 min/lvl",
         "range": "10'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 11,
@@ -28105,7 +28105,7 @@
         "aoe": "1 target",
         "duration": "1 day/10 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 12,
@@ -28113,7 +28113,7 @@
         "aoe": "1 target",
         "duration": "1 hr/lvl",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 13,
@@ -28121,7 +28121,7 @@
         "aoe": "1 target",
         "duration": "1 day/lvl",
         "range": "50'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 14,
@@ -28129,7 +28129,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "50'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 15,
@@ -28137,7 +28137,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "10'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 16,
@@ -28145,7 +28145,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "50'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 17,
@@ -28153,7 +28153,7 @@
         "aoe": "1 target",
         "duration": "10 min/lvl",
         "range": "10'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 18,
@@ -28161,7 +28161,7 @@
         "aoe": "1 target",
         "duration": "1 day/10 fail",
         "range": "50'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 19,
@@ -28169,7 +28169,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "50'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 20,
@@ -28177,7 +28177,7 @@
         "aoe": "1 target",
         "duration": "1 min/10 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 25,
@@ -28185,7 +28185,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "10'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 30,
@@ -28193,7 +28193,7 @@
         "aoe": "1 target",
         "duration": "1 min/lvl (C)",
         "range": "300'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 35,
@@ -28201,7 +28201,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 40,
@@ -28209,7 +28209,7 @@
         "aoe": "1 target",
         "duration": "1 day/lvl",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 50,
@@ -28217,7 +28217,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "300'",
-        "type": "FM"
+        "type": "Fm"
       }
     ]
   },
@@ -28231,7 +28231,7 @@
         "aoe": "1 target/rnd",
         "duration": "1 rnd/lvl (C)",
         "range": "10'",
-        "type": "IM"
+        "type": "Im"
       },
       {
         "level": 2,
@@ -28239,7 +28239,7 @@
         "aoe": "1 target/rnd",
         "duration": "1 rnd/lvl (C)",
         "range": "50'",
-        "type": "IM"
+        "type": "Im"
       },
       {
         "level": 3,
@@ -28263,7 +28263,7 @@
         "aoe": "1 target/rnd",
         "duration": "1 rnd/lvl (C)",
         "range": "100'",
-        "type": "IM"
+        "type": "Im"
       },
       {
         "level": 6,
@@ -28303,7 +28303,7 @@
         "aoe": "1 target/rnd",
         "duration": "1 rnd/lvl (C)",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 11,
@@ -28327,7 +28327,7 @@
         "aoe": "1 target + caster",
         "duration": "1 day",
         "range": "touch",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 14,
@@ -28343,7 +28343,7 @@
         "aoe": "1 target",
         "duration": "1 rnd/lvl (C)",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 16,
@@ -28351,7 +28351,7 @@
         "aoe": "1 target/rnd",
         "duration": "1 rnd/lvl (C)",
         "range": "500'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 17,
@@ -28375,7 +28375,7 @@
         "aoe": "1 target",
         "duration": "1 rnd/lvl (C)",
         "range": "500'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 20,
@@ -28383,7 +28383,7 @@
         "aoe": "1 target",
         "duration": "1 rnd/lvl (C)",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 25,
@@ -28391,7 +28391,7 @@
         "aoe": "1 target + caster",
         "duration": "varies",
         "range": "touch",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 30,
@@ -28399,7 +28399,7 @@
         "aoe": "1 target",
         "duration": "1 rnd/lvl (C)",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 35,
@@ -28437,7 +28437,7 @@
         "aoe": "1 target + caster",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 2,
@@ -28453,7 +28453,7 @@
         "aoe": "1 target + caster",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 4,
@@ -28477,7 +28477,7 @@
         "aoe": "1 target + caster",
         "duration": "C",
         "range": "500'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 7,
@@ -28485,7 +28485,7 @@
         "aoe": "1 target + caster",
         "duration": "C",
         "range": "sight",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 8,
@@ -28501,7 +28501,7 @@
         "aoe": "10'R",
         "duration": "C",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 10,
@@ -28509,7 +28509,7 @@
         "aoe": "1 target + caster",
         "duration": "C",
         "range": "1,000'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 11,
@@ -28525,7 +28525,7 @@
         "aoe": "100'R",
         "duration": "C",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 13,
@@ -28533,7 +28533,7 @@
         "aoe": "10'R",
         "duration": "C",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 14,
@@ -28549,7 +28549,7 @@
         "aoe": "300'R",
         "duration": "C",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 16,
@@ -28557,7 +28557,7 @@
         "aoe": "10'R",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 17,
@@ -28573,7 +28573,7 @@
         "aoe": "1 target + caster",
         "duration": "C",
         "range": "1 mile",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 19,
@@ -28581,7 +28581,7 @@
         "aoe": "100'R",
         "duration": "C",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 20,
@@ -28589,7 +28589,7 @@
         "aoe": "2,000'R",
         "duration": "C",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 25,
@@ -28597,7 +28597,7 @@
         "aoe": "1 target + caster",
         "duration": "C",
         "range": "1 mile/lvl",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 30,
@@ -28605,7 +28605,7 @@
         "aoe": "300'R",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 35,
@@ -28613,7 +28613,7 @@
         "aoe": "2,000'R",
         "duration": "C",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 40,
@@ -28621,7 +28621,7 @@
         "aoe": "varies",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 50,
@@ -28629,7 +28629,7 @@
         "aoe": "10'R",
         "duration": "C",
         "range": "1 mile/lvl",
-        "type": "FM"
+        "type": "Fm"
       }
     ]
   },
@@ -28643,7 +28643,7 @@
         "aoe": "10'R/lvl",
         "duration": "C",
         "range": "self",
-        "type": "IM"
+        "type": "Im"
       },
       {
         "level": 2,
@@ -28651,7 +28651,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "10'/lvl",
-        "type": "IM"
+        "type": "Im"
       },
       {
         "level": 3,
@@ -28659,7 +28659,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "10'/lvl",
-        "type": "IM"
+        "type": "Im"
       },
       {
         "level": 4,
@@ -28675,7 +28675,7 @@
         "aoe": "3 targets",
         "duration": "—",
         "range": "10'/lvl",
-        "type": "IM"
+        "type": "Im"
       },
       {
         "level": 6,
@@ -28683,7 +28683,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "10'/lvl",
-        "type": "IM"
+        "type": "Im"
       },
       {
         "level": 7,
@@ -28691,7 +28691,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "100'/lvl",
-        "type": "IM"
+        "type": "Im"
       },
       {
         "level": 8,
@@ -28699,7 +28699,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "1,000'/lvl",
-        "type": "IM"
+        "type": "Im"
       },
       {
         "level": 9,
@@ -28707,7 +28707,7 @@
         "aoe": "50'R",
         "duration": "C",
         "range": "100'/lvl",
-        "type": "IM"
+        "type": "Im"
       },
       {
         "level": 10,
@@ -28715,7 +28715,7 @@
         "aoe": "10'R/lvl",
         "duration": "C",
         "range": "self",
-        "type": "IM"
+        "type": "Im"
       },
       {
         "level": 11,
@@ -28723,7 +28723,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "1 mile/lvl",
-        "type": "IM"
+        "type": "Im"
       },
       {
         "level": 12,
@@ -28731,7 +28731,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "100'/lvl",
-        "type": "IM"
+        "type": "Im"
       },
       {
         "level": 13,
@@ -28739,7 +28739,7 @@
         "aoe": "5 targets",
         "duration": "—",
         "range": "10'/lvl",
-        "type": "IM"
+        "type": "Im"
       },
       {
         "level": 14,
@@ -28747,7 +28747,7 @@
         "aoe": "1 target/rnd",
         "duration": "C",
         "range": "10'/lvl",
-        "type": "IM"
+        "type": "Im"
       },
       {
         "level": 15,
@@ -28755,7 +28755,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "100'/lvl",
-        "type": "IM"
+        "type": "Im"
       },
       {
         "level": 16,
@@ -28763,7 +28763,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "10'/lvl",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 17,
@@ -28779,7 +28779,7 @@
         "aoe": "caster",
         "duration": "C",
         "range": "1 mile/lvl",
-        "type": "IM"
+        "type": "Im"
       },
       {
         "level": 19,
@@ -28787,7 +28787,7 @@
         "aoe": "10 targets",
         "duration": "—",
         "range": "10'/lvl",
-        "type": "IM"
+        "type": "Im"
       },
       {
         "level": 20,
@@ -28795,7 +28795,7 @@
         "aoe": "10'/lvl",
         "duration": "C",
         "range": "self",
-        "type": "IM"
+        "type": "Im"
       },
       {
         "level": 25,
@@ -28803,7 +28803,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "5 miles/lvl",
-        "type": "IM"
+        "type": "Im"
       },
       {
         "level": 30,
@@ -28811,7 +28811,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "unlimited",
-        "type": "IM"
+        "type": "Im"
       },
       {
         "level": 35,
@@ -28819,7 +28819,7 @@
         "aoe": "1 target/lvl",
         "duration": "—",
         "range": "10'/lvl",
-        "type": "IM"
+        "type": "Im"
       },
       {
         "level": 40,
@@ -28835,7 +28835,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "unlimited",
-        "type": "IM"
+        "type": "Im"
       }
     ]
   },
@@ -28849,7 +28849,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 2,
@@ -28857,7 +28857,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 3,
@@ -28865,7 +28865,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 4,
@@ -28873,7 +28873,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 5,
@@ -28881,7 +28881,7 @@
         "aoe": "1 target",
         "duration": "1 rnd/10 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 6,
@@ -28889,7 +28889,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 7,
@@ -28897,7 +28897,7 @@
         "aoe": "1 target",
         "duration": "1 rnd/10 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 8,
@@ -28905,7 +28905,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 9,
@@ -28913,7 +28913,7 @@
         "aoe": "1 target",
         "duration": "1 rnd/10 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 10,
@@ -28921,7 +28921,7 @@
         "aoe": "1 target",
         "duration": "1 rnd/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 11,
@@ -28929,7 +28929,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 12,
@@ -28937,7 +28937,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 13,
@@ -28945,7 +28945,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 14,
@@ -28953,7 +28953,7 @@
         "aoe": "1 target",
         "duration": "1 min/10 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 15,
@@ -28961,7 +28961,7 @@
         "aoe": "1 target",
         "duration": "1 rnd/10 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 16,
@@ -28969,7 +28969,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 17,
@@ -28977,7 +28977,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 18,
@@ -28985,7 +28985,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 19,
@@ -28993,7 +28993,7 @@
         "aoe": "1 target",
         "duration": "1 day/10 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 20,
@@ -29001,7 +29001,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 25,
@@ -29009,7 +29009,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "300'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 30,
@@ -29017,7 +29017,7 @@
         "aoe": "1 target",
         "duration": "10 min/lvl",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 35,
@@ -29025,7 +29025,7 @@
         "aoe": "1 target",
         "duration": "30 min/lvl (C)",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 40,
@@ -29033,7 +29033,7 @@
         "aoe": "1 target",
         "duration": "30 min/lvl (C)",
         "range": "300'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 50,
@@ -29041,7 +29041,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       }
     ]
   },
@@ -29079,7 +29079,7 @@
         "aoe": "caster",
         "duration": "1 min/lvl",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 5,
@@ -29119,7 +29119,7 @@
         "aoe": "caster",
         "duration": "1 min/lvl",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 10,
@@ -29151,7 +29151,7 @@
         "aoe": "caster",
         "duration": "—",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 14,
@@ -29167,7 +29167,7 @@
         "aoe": "caster",
         "duration": "1 min/lvl",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 16,
@@ -29191,7 +29191,7 @@
         "aoe": "caster",
         "duration": "1 min/lvl",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 19,
@@ -29207,7 +29207,7 @@
         "aoe": "caster",
         "duration": "varies",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 25,
@@ -29247,7 +29247,7 @@
         "aoe": "caster",
         "duration": "1 min/lvl",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       }
     ]
   },
@@ -30291,7 +30291,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 2,
@@ -30299,7 +30299,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 3,
@@ -30307,7 +30307,7 @@
         "aoe": "1 target",
         "duration": "1 round",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 4,
@@ -30315,7 +30315,7 @@
         "aoe": "1 target",
         "duration": "1 day/10 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 5,
@@ -30323,7 +30323,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 6,
@@ -30331,7 +30331,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 7,
@@ -30339,7 +30339,7 @@
         "aoe": "1 target",
         "duration": "3 rounds",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 8,
@@ -30347,7 +30347,7 @@
         "aoe": "1 target",
         "duration": "1 week/10 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 9,
@@ -30355,7 +30355,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 10,
@@ -30363,7 +30363,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 11,
@@ -30371,7 +30371,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 12,
@@ -30379,7 +30379,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 13,
@@ -30387,7 +30387,7 @@
         "aoe": "1 target",
         "duration": "5 rounds",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 14,
@@ -30395,7 +30395,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 15,
@@ -30403,7 +30403,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 16,
@@ -30411,7 +30411,7 @@
         "aoe": "1 target",
         "duration": "1 month/10 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 17,
@@ -30419,7 +30419,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 18,
@@ -30427,7 +30427,7 @@
         "aoe": "1 target",
         "duration": "10 rounds",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 19,
@@ -30435,7 +30435,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 20,
@@ -30443,7 +30443,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 25,
@@ -30451,7 +30451,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 30,
@@ -30459,7 +30459,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 35,
@@ -30467,7 +30467,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 40,
@@ -30475,7 +30475,7 @@
         "aoe": "1 target",
         "duration": "20 rounds",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 50,
@@ -30483,7 +30483,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       }
     ]
   },
@@ -30497,7 +30497,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 2,
@@ -30505,7 +30505,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 3,
@@ -30513,7 +30513,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 4,
@@ -30521,7 +30521,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 5,
@@ -30529,7 +30529,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 6,
@@ -30537,7 +30537,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 7,
@@ -30545,7 +30545,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 8,
@@ -30553,7 +30553,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 9,
@@ -30561,7 +30561,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 10,
@@ -30569,7 +30569,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 11,
@@ -30577,7 +30577,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 12,
@@ -30585,7 +30585,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 13,
@@ -30593,7 +30593,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 14,
@@ -30601,7 +30601,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 15,
@@ -30609,7 +30609,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 16,
@@ -30617,7 +30617,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 17,
@@ -30625,7 +30625,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 18,
@@ -30633,7 +30633,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 19,
@@ -30641,7 +30641,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 20,
@@ -30649,7 +30649,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 25,
@@ -30657,7 +30657,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 30,
@@ -30665,7 +30665,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 35,
@@ -30673,7 +30673,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 40,
@@ -30681,7 +30681,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 50,
@@ -30689,7 +30689,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       }
     ]
   },
@@ -30703,7 +30703,7 @@
         "aoe": "1 target",
         "duration": "1 rnd/10 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 2,
@@ -30711,7 +30711,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 3,
@@ -30719,7 +30719,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 4,
@@ -30743,7 +30743,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 7,
@@ -30751,7 +30751,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "1000'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 8,
@@ -30759,7 +30759,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 9,
@@ -30767,7 +30767,7 @@
         "aoe": "1 target",
         "duration": "1 day/5 fail",
         "range": "touch",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 10,
@@ -30775,7 +30775,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 11,
@@ -30783,7 +30783,7 @@
         "aoe": "1 target",
         "duration": "varies(C)",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 12,
@@ -30799,7 +30799,7 @@
         "aoe": "1 target",
         "duration": "varies(C)",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 14,
@@ -30807,7 +30807,7 @@
         "aoe": "1 target",
         "duration": "1 week/5 fail",
         "range": "touch",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 15,
@@ -30815,7 +30815,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 16,
@@ -30823,7 +30823,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 17,
@@ -30831,7 +30831,7 @@
         "aoe": "1 target",
         "duration": "1 mon/5 fail",
         "range": "touch",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 18,
@@ -30839,7 +30839,7 @@
         "aoe": "1 target",
         "duration": "varies(C)",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 19,
@@ -30847,7 +30847,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 20,
@@ -30855,7 +30855,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 25,
@@ -30863,7 +30863,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 30,
@@ -30871,7 +30871,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 35,
@@ -30887,7 +30887,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 50,
@@ -30895,7 +30895,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       }
     ]
   },
@@ -30909,7 +30909,7 @@
         "aoe": "1 target",
         "duration": "1 mon/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 2,
@@ -30917,7 +30917,7 @@
         "aoe": "1 target",
         "duration": "1 day/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 3,
@@ -30925,7 +30925,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 4,
@@ -30933,7 +30933,7 @@
         "aoe": "1 target",
         "duration": "1 mon/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 5,
@@ -30941,7 +30941,7 @@
         "aoe": "1 target",
         "duration": "1 mon/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 6,
@@ -30949,7 +30949,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 7,
@@ -30957,7 +30957,7 @@
         "aoe": "1 target",
         "duration": "1 mon/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 8,
@@ -30965,7 +30965,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 9,
@@ -30973,7 +30973,7 @@
         "aoe": "1 target",
         "duration": "1 mon/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 10,
@@ -30981,7 +30981,7 @@
         "aoe": "1 target",
         "duration": "1 mon/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 11,
@@ -30989,7 +30989,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 12,
@@ -30997,7 +30997,7 @@
         "aoe": "1 target",
         "duration": "1 mon/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 13,
@@ -31005,7 +31005,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 14,
@@ -31013,7 +31013,7 @@
         "aoe": "1 target",
         "duration": "1 mon/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 15,
@@ -31021,7 +31021,7 @@
         "aoe": "1 target",
         "duration": "1 mon/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 16,
@@ -31029,7 +31029,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 17,
@@ -31037,7 +31037,7 @@
         "aoe": "1 target",
         "duration": "1 mon/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 18,
@@ -31045,7 +31045,7 @@
         "aoe": "1 target",
         "duration": "1 mon/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 19,
@@ -31053,7 +31053,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 20,
@@ -31061,7 +31061,7 @@
         "aoe": "1 target",
         "duration": "1 mon/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 25,
@@ -31069,7 +31069,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 30,
@@ -31077,7 +31077,7 @@
         "aoe": "1 target",
         "duration": "1 mon/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 35,
@@ -31085,7 +31085,7 @@
         "aoe": "1 target",
         "duration": "1 mon/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 40,
@@ -31093,7 +31093,7 @@
         "aoe": "1 target",
         "duration": "1 mon/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 50,
@@ -31101,7 +31101,7 @@
         "aoe": "1 target",
         "duration": "1 mon/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       }
     ]
   },
@@ -31115,7 +31115,7 @@
         "aoe": "1 target",
         "duration": "1 hour/10 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 2,
@@ -31123,7 +31123,7 @@
         "aoe": "1 target",
         "duration": "1 day/lvl",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 3,
@@ -31131,7 +31131,7 @@
         "aoe": "1 target",
         "duration": "1 round",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 4,
@@ -31139,7 +31139,7 @@
         "aoe": "1 target",
         "duration": "1 min/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 5,
@@ -31147,7 +31147,7 @@
         "aoe": "1 target",
         "duration": "1 min/10 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 6,
@@ -31155,7 +31155,7 @@
         "aoe": "1 target",
         "duration": "1 min/lvl",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 7,
@@ -31163,7 +31163,7 @@
         "aoe": "1 target",
         "duration": "1 min/lvl",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 8,
@@ -31171,7 +31171,7 @@
         "aoe": "1 target",
         "duration": "1 min/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 9,
@@ -31179,7 +31179,7 @@
         "aoe": "1 target",
         "duration": "2 rounds",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 10,
@@ -31187,7 +31187,7 @@
         "aoe": "1 target",
         "duration": "1 min/10 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 11,
@@ -31195,7 +31195,7 @@
         "aoe": "1 target",
         "duration": "1 min/lvl",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 12,
@@ -31203,7 +31203,7 @@
         "aoe": "1 target",
         "duration": "1 min/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 13,
@@ -31211,7 +31211,7 @@
         "aoe": "1 target",
         "duration": "3 rounds",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 14,
@@ -31219,7 +31219,7 @@
         "aoe": "1 target",
         "duration": "1 min/lvl",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 15,
@@ -31227,7 +31227,7 @@
         "aoe": "1 target",
         "duration": "1 min/10 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 16,
@@ -31235,7 +31235,7 @@
         "aoe": "1 target",
         "duration": "4 rounds",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 17,
@@ -31251,7 +31251,7 @@
         "aoe": "1 target",
         "duration": "1 min/lvl",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 19,
@@ -31259,7 +31259,7 @@
         "aoe": "1 target",
         "duration": "5 rounds",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 20,
@@ -31267,7 +31267,7 @@
         "aoe": "1 target",
         "duration": "1 min/10 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 25,
@@ -31275,7 +31275,7 @@
         "aoe": "1 target",
         "duration": "1 min/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 30,
@@ -31283,7 +31283,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 35,
@@ -31291,7 +31291,7 @@
         "aoe": "1 target",
         "duration": "20 rounds",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 40,
@@ -31299,7 +31299,7 @@
         "aoe": "1 target",
         "duration": "1 min/10 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 50,
@@ -31307,7 +31307,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       }
     ]
   },
@@ -31321,7 +31321,7 @@
         "aoe": "1 target",
         "duration": "1 day/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 2,
@@ -31329,7 +31329,7 @@
         "aoe": "1 target",
         "duration": "1 day/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 3,
@@ -31337,7 +31337,7 @@
         "aoe": "1 target",
         "duration": "1 day/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 4,
@@ -31345,7 +31345,7 @@
         "aoe": "1 target",
         "duration": "1 day/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 5,
@@ -31353,7 +31353,7 @@
         "aoe": "1 target",
         "duration": "1 day/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 6,
@@ -31361,7 +31361,7 @@
         "aoe": "1 target",
         "duration": "1 day/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 7,
@@ -31369,7 +31369,7 @@
         "aoe": "1 target",
         "duration": "1 day/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 8,
@@ -31377,7 +31377,7 @@
         "aoe": "1 target",
         "duration": "1 day/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 9,
@@ -31385,7 +31385,7 @@
         "aoe": "1 target",
         "duration": "1 day/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 10,
@@ -31393,7 +31393,7 @@
         "aoe": "1 target",
         "duration": "1 day/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 11,
@@ -31401,7 +31401,7 @@
         "aoe": "1 target",
         "duration": "1 day/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 12,
@@ -31409,7 +31409,7 @@
         "aoe": "1 target",
         "duration": "1 day/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 13,
@@ -31417,7 +31417,7 @@
         "aoe": "1 target",
         "duration": "1 day/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 14,
@@ -31425,7 +31425,7 @@
         "aoe": "1 target",
         "duration": "1 day/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 15,
@@ -31433,7 +31433,7 @@
         "aoe": "1 target",
         "duration": "1 day/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 16,
@@ -31441,7 +31441,7 @@
         "aoe": "1 target",
         "duration": "1 day/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 17,
@@ -31449,7 +31449,7 @@
         "aoe": "1 target",
         "duration": "1 day/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 18,
@@ -31457,7 +31457,7 @@
         "aoe": "1 target",
         "duration": "1 day/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 19,
@@ -31465,7 +31465,7 @@
         "aoe": "1 target",
         "duration": "1 day/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 20,
@@ -31473,7 +31473,7 @@
         "aoe": "1 target",
         "duration": "1 day/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 25,
@@ -31481,7 +31481,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 30,
@@ -31489,7 +31489,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 35,
@@ -31497,7 +31497,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 40,
@@ -31505,7 +31505,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 50,
@@ -31513,7 +31513,7 @@
         "aoe": "1 target",
         "duration": "1 day/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       }
     ]
   },
@@ -31527,7 +31527,7 @@
         "aoe": "caster",
         "duration": "—",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 2,
@@ -31535,7 +31535,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 3,
@@ -31543,7 +31543,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 4,
@@ -31551,7 +31551,7 @@
         "aoe": "caster",
         "duration": "—",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 5,
@@ -31559,7 +31559,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 6,
@@ -31567,7 +31567,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 7,
@@ -31575,7 +31575,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 8,
@@ -31583,7 +31583,7 @@
         "aoe": "caster",
         "duration": "—",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 9,
@@ -31591,7 +31591,7 @@
         "aoe": "caster",
         "duration": "—",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 10,
@@ -31599,7 +31599,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 11,
@@ -31607,7 +31607,7 @@
         "aoe": "caster",
         "duration": "1 min/lvl",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 12,
@@ -31615,7 +31615,7 @@
         "aoe": "caster",
         "duration": "—",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 13,
@@ -31623,7 +31623,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 14,
@@ -31631,7 +31631,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 15,
@@ -31639,7 +31639,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 16,
@@ -31647,7 +31647,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 17,
@@ -31655,7 +31655,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 18,
@@ -31663,7 +31663,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 19,
@@ -31671,7 +31671,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 20,
@@ -31679,7 +31679,7 @@
         "aoe": "caster",
         "duration": "varies",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 25,
@@ -31687,7 +31687,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 30,
@@ -31695,7 +31695,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 35,
@@ -31703,7 +31703,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 40,
@@ -31711,7 +31711,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 50,
@@ -31719,7 +31719,7 @@
         "aoe": "caster",
         "duration": "1 rnd/lvl",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       }
     ]
   },
@@ -31733,7 +31733,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 2,
@@ -31741,7 +31741,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 3,
@@ -31749,7 +31749,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 4,
@@ -31757,7 +31757,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 5,
@@ -31765,7 +31765,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 6,
@@ -31773,7 +31773,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 7,
@@ -31781,7 +31781,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 8,
@@ -31789,7 +31789,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 9,
@@ -31797,7 +31797,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 10,
@@ -31805,7 +31805,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 11,
@@ -31813,7 +31813,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 12,
@@ -31821,7 +31821,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 13,
@@ -31829,7 +31829,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 14,
@@ -31837,7 +31837,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 15,
@@ -31845,7 +31845,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 16,
@@ -31853,7 +31853,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 17,
@@ -31861,7 +31861,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 18,
@@ -31869,7 +31869,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 19,
@@ -31877,7 +31877,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 20,
@@ -31885,7 +31885,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 25,
@@ -31893,7 +31893,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 30,
@@ -31901,7 +31901,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 35,
@@ -31909,7 +31909,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 40,
@@ -31917,7 +31917,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 50,
@@ -31925,7 +31925,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       }
     ]
   },
@@ -31939,7 +31939,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "touch",
-        "type": "IM"
+        "type": "Im"
       },
       {
         "level": 2,
@@ -31963,7 +31963,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 5,
@@ -31971,7 +31971,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "2'/lvl",
-        "type": "IM"
+        "type": "Im"
       },
       {
         "level": 6,
@@ -32003,7 +32003,7 @@
         "aoe": "1 curse",
         "duration": "P",
         "range": "self",
-        "type": "FS"
+        "type": "Fs"
       },
       {
         "level": 10,
@@ -32011,7 +32011,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 11,
@@ -32035,7 +32035,7 @@
         "aoe": "caster",
         "duration": "1 hr/lvl",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 14,
@@ -32043,7 +32043,7 @@
         "aoe": "1 target /lvl",
         "duration": "—",
         "range": "2'/lvl",
-        "type": "IM"
+        "type": "Im"
       },
       {
         "level": 15,
@@ -32059,7 +32059,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 17,
@@ -32067,7 +32067,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 18,
@@ -32075,7 +32075,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 19,
@@ -32083,7 +32083,7 @@
         "aoe": "caster",
         "duration": "1 day/lvl",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 20,
@@ -32091,7 +32091,7 @@
         "aoe": "1 curse",
         "duration": "P",
         "range": "self",
-        "type": "FS"
+        "type": "Fs"
       },
       {
         "level": 25,
@@ -32099,7 +32099,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 30,
@@ -32145,7 +32145,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 2,
@@ -32153,7 +32153,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 3,
@@ -32161,7 +32161,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 4,
@@ -32169,7 +32169,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 5,
@@ -32177,7 +32177,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 6,
@@ -32185,7 +32185,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 7,
@@ -32193,7 +32193,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 8,
@@ -32201,7 +32201,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 9,
@@ -32209,7 +32209,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 10,
@@ -32217,7 +32217,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 11,
@@ -32225,7 +32225,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 12,
@@ -32233,7 +32233,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 13,
@@ -32241,7 +32241,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 14,
@@ -32249,7 +32249,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 15,
@@ -32257,7 +32257,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 16,
@@ -32265,7 +32265,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 17,
@@ -32273,7 +32273,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 18,
@@ -32281,7 +32281,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 19,
@@ -32289,7 +32289,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 20,
@@ -32297,7 +32297,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 25,
@@ -32305,7 +32305,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 30,
@@ -32313,7 +32313,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 35,
@@ -32321,7 +32321,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 40,
@@ -32329,7 +32329,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 50,
@@ -32337,7 +32337,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       }
     ]
   },
@@ -32351,7 +32351,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 2,
@@ -32359,7 +32359,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 3,
@@ -32367,7 +32367,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 4,
@@ -32375,7 +32375,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 5,
@@ -32383,7 +32383,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 6,
@@ -32391,7 +32391,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 7,
@@ -32399,7 +32399,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 8,
@@ -32407,7 +32407,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 9,
@@ -32415,7 +32415,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 10,
@@ -32423,7 +32423,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 11,
@@ -32431,7 +32431,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 12,
@@ -32439,7 +32439,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 13,
@@ -32447,7 +32447,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 14,
@@ -32455,7 +32455,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 15,
@@ -32463,7 +32463,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 16,
@@ -32471,7 +32471,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 17,
@@ -32479,7 +32479,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 18,
@@ -32487,7 +32487,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 19,
@@ -32495,7 +32495,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 20,
@@ -32503,7 +32503,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 25,
@@ -32511,7 +32511,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 30,
@@ -32519,7 +32519,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 35,
@@ -32527,7 +32527,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 40,
@@ -32535,7 +32535,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 50,
@@ -32543,7 +32543,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       }
     ]
   },
@@ -32557,7 +32557,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 2,
@@ -32565,7 +32565,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 3,
@@ -32573,7 +32573,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 4,
@@ -32581,7 +32581,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 5,
@@ -32589,7 +32589,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 6,
@@ -32597,7 +32597,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 7,
@@ -32605,7 +32605,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 8,
@@ -32613,7 +32613,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 9,
@@ -32621,7 +32621,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 10,
@@ -32629,7 +32629,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 11,
@@ -32637,7 +32637,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 12,
@@ -32645,7 +32645,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 13,
@@ -32653,7 +32653,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 14,
@@ -32661,7 +32661,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 15,
@@ -32669,7 +32669,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 16,
@@ -32677,7 +32677,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 17,
@@ -32685,7 +32685,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 18,
@@ -32693,7 +32693,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 19,
@@ -32701,7 +32701,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 20,
@@ -32709,7 +32709,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 25,
@@ -32717,7 +32717,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 30,
@@ -32725,7 +32725,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 35,
@@ -32733,7 +32733,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 40,
@@ -32741,7 +32741,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       },
       {
         "level": 50,
@@ -32749,7 +32749,7 @@
         "aoe": "caster",
         "duration": "P",
         "range": "self",
-        "type": "US"
+        "type": "Us"
       }
     ]
   },
@@ -32763,7 +32763,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 2,
@@ -32771,7 +32771,7 @@
         "aoe": "1 target",
         "duration": "1 rnd/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 3,
@@ -32779,7 +32779,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 4,
@@ -32787,7 +32787,7 @@
         "aoe": "1 target",
         "duration": "1 min/10 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 5,
@@ -32795,7 +32795,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 6,
@@ -32803,7 +32803,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 7,
@@ -32811,7 +32811,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 8,
@@ -32819,7 +32819,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "50'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 9,
@@ -32827,7 +32827,7 @@
         "aoe": "1 target",
         "duration": "1 rnd/lvl",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 10,
@@ -32835,7 +32835,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 11,
@@ -32843,7 +32843,7 @@
         "aoe": "1 target",
         "duration": "1 rnd/10 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 12,
@@ -32851,7 +32851,7 @@
         "aoe": "1 target",
         "duration": "1 rnd/10 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 13,
@@ -32859,7 +32859,7 @@
         "aoe": "1 target/lvl",
         "duration": "C",
         "range": "300'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 14,
@@ -32867,7 +32867,7 @@
         "aoe": "1 target",
         "duration": "1 min/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 15,
@@ -32875,7 +32875,7 @@
         "aoe": "1 target",
         "duration": "1 day/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 16,
@@ -32883,7 +32883,7 @@
         "aoe": "50'R",
         "duration": "1 rnd/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 17,
@@ -32891,7 +32891,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "300'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 18,
@@ -32899,7 +32899,7 @@
         "aoe": "50'R",
         "duration": "1 rnd/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 19,
@@ -32907,7 +32907,7 @@
         "aoe": "1 target",
         "duration": "1 rnd/lvl",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 20,
@@ -32915,7 +32915,7 @@
         "aoe": "20 targets",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 25,
@@ -32923,7 +32923,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 30,
@@ -32931,7 +32931,7 @@
         "aoe": "1 target",
         "duration": "1 day/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 35,
@@ -32939,7 +32939,7 @@
         "aoe": "50'R",
         "duration": "1 day/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 40,
@@ -32947,7 +32947,7 @@
         "aoe": "1 target/lvl",
         "duration": "varies",
         "range": "300'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 50,
@@ -32955,7 +32955,7 @@
         "aoe": "1 target/lvl",
         "duration": "varies",
         "range": "300'",
-        "type": "FM"
+        "type": "Fm"
       }
     ]
   },
@@ -33025,7 +33025,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<25'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 9,
@@ -33089,7 +33089,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<75'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 17,
@@ -33413,7 +33413,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<25'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 6,
@@ -33517,7 +33517,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<125'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 19,
@@ -33659,7 +33659,7 @@
         "aoe": "1 target",
         "duration": "C",
         "range": "20'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 11,
@@ -34245,7 +34245,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<25'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 7,
@@ -34325,7 +34325,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<25'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 17,
@@ -34381,7 +34381,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "<125'>",
-        "type": "ED"
+        "type": "Ed"
       },
       {
         "level": 40,
@@ -34617,7 +34617,7 @@
         "aoe": "1 target",
         "duration": "10 min/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 2,
@@ -34625,7 +34625,7 @@
         "aoe": "1 target",
         "duration": "3 rnd",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 3,
@@ -34633,7 +34633,7 @@
         "aoe": "1 target",
         "duration": "1 day/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 4,
@@ -34641,7 +34641,7 @@
         "aoe": "1 target",
         "duration": "1 day/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 5,
@@ -34649,7 +34649,7 @@
         "aoe": "1 target",
         "duration": "1 day/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 6,
@@ -34657,7 +34657,7 @@
         "aoe": "1 target",
         "duration": "6 rnd",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 7,
@@ -34665,7 +34665,7 @@
         "aoe": "1 target",
         "duration": "10 min/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 8,
@@ -34673,7 +34673,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "10'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 9,
@@ -34681,7 +34681,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 10,
@@ -34689,7 +34689,7 @@
         "aoe": "1 target",
         "duration": "1 day/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 11,
@@ -34697,7 +34697,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "50'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 12,
@@ -34705,7 +34705,7 @@
         "aoe": "1 target",
         "duration": "10 rnd",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 13,
@@ -34713,7 +34713,7 @@
         "aoe": "1 target",
         "duration": "1 rnd/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 14,
@@ -34721,7 +34721,7 @@
         "aoe": "1 target/lvl",
         "duration": "1 hr/5 fail",
         "range": "300'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 15,
@@ -34729,7 +34729,7 @@
         "aoe": "1 target",
         "duration": "1 day/10 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 16,
@@ -34737,7 +34737,7 @@
         "aoe": "1 target/lvl",
         "duration": "1 day/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 17,
@@ -34745,7 +34745,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "300'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 18,
@@ -34753,7 +34753,7 @@
         "aoe": "1 target/lvl",
         "duration": "1 day/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 19,
@@ -34769,7 +34769,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 25,
@@ -34777,7 +34777,7 @@
         "aoe": "1 target/lvl",
         "duration": "P",
         "range": "300'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 30,
@@ -34785,7 +34785,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 35,
@@ -34793,7 +34793,7 @@
         "aoe": "1 target/lvl",
         "duration": "1 day/5 fail",
         "range": "300'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 40,
@@ -34801,7 +34801,7 @@
         "aoe": "1 target/lvl",
         "duration": "P",
         "range": "300'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 50,
@@ -34809,7 +34809,7 @@
         "aoe": "1 target/lvl",
         "duration": "1 rnd/5 fail",
         "range": "300'",
-        "type": "FM"
+        "type": "Fm"
       }
     ]
   },
@@ -35029,7 +35029,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 2,
@@ -35037,7 +35037,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 3,
@@ -35045,7 +35045,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 4,
@@ -35053,7 +35053,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 5,
@@ -35061,7 +35061,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 6,
@@ -35069,7 +35069,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 7,
@@ -35077,7 +35077,7 @@
         "aoe": "1 target",
         "duration": "1 rnd/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 8,
@@ -35085,7 +35085,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 9,
@@ -35093,7 +35093,7 @@
         "aoe": "1 target",
         "duration": "1 min/5 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 10,
@@ -35101,7 +35101,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 11,
@@ -35109,7 +35109,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 12,
@@ -35117,7 +35117,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 13,
@@ -35125,7 +35125,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 14,
@@ -35133,7 +35133,7 @@
         "aoe": "20'R",
         "duration": "1 rnd/5 fail",
         "range": "self",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 15,
@@ -35141,7 +35141,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 16,
@@ -35149,7 +35149,7 @@
         "aoe": "1 target",
         "duration": "—",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 17,
@@ -35157,7 +35157,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "300'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 18,
@@ -35165,7 +35165,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 19,
@@ -35173,7 +35173,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 20,
@@ -35181,7 +35181,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 25,
@@ -35189,7 +35189,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 30,
@@ -35197,7 +35197,7 @@
         "aoe": "1 target",
         "duration": "30 days/10 fail",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 35,
@@ -35205,7 +35205,7 @@
         "aoe": "1 target",
         "duration": "varies",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 40,
@@ -35213,7 +35213,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       },
       {
         "level": 50,
@@ -35221,7 +35221,7 @@
         "aoe": "1 target",
         "duration": "P",
         "range": "100'",
-        "type": "FM"
+        "type": "Fm"
       }
     ]
   }
