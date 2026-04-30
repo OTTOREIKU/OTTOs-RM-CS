@@ -342,7 +342,7 @@ function WeaponBrowser({ onSelect, onCancel }) {
 
 // ── Main view ─────────────────────────────────────────────────────────────────
 export default function CharacterSheet() {
-  const { activeChar, updateCharacter, updateStat, updateSkill, addWeapon, updateWeapon, removeWeapon, updateArmorPart } = useCharacter()
+  const { activeChar, updateCharacter, updateStat, updateSkill, addWeapon, updateWeapon, removeWeapon } = useCharacter()
   const [wBrowse,    setWBrowse]        = useState(false)
   const [identityOpen,    setIdentityOpen]    = usePersistentOpen('rm_panel_identity',    true)
   const [paceOpen,        setPaceOpen]        = usePersistentOpen('rm_panel_pace',         false)
@@ -841,13 +841,15 @@ export default function CharacterSheet() {
                   </tr>
                 )
               })}
-              {/* Shield row */}
+              {/* Shield row — read-only, set in Gear tab */}
               <tr style={{ borderBottom:'1px solid var(--border)', background:'var(--surface2)' }}>
                 <td style={{ padding:'4px 8px', fontWeight:600, fontSize:12 }}>Shield</td>
-                <td style={{ padding:'3px 6px' }} colSpan={5}>
-                  <select value={shield.type || 'None'} onChange={e => updateArmorPart('shield', { type: e.target.value === 'None' ? null : e.target.value })} style={{ width:'100%', padding:'2px 3px', fontSize:11 }}>
-                    {SHIELD_OPTIONS.map(s => <option key={s} value={s}>{s}</option>)}
-                  </select>
+                <td style={{ padding:'4px 8px' }} colSpan={5}>
+                  {shield.type ? (
+                    <div style={{ fontSize:11, color:'var(--text)' }}>{shield.type}</div>
+                  ) : (
+                    <div style={{ fontSize:11, color:'var(--text3)', fontStyle:'italic' }}>None — set in Gear tab</div>
+                  )}
                 </td>
                 <td style={{ padding:'4px 8px', textAlign:'center', fontSize:11, color:'var(--success)', fontWeight:700 }}>
                   {shield.type ? `+${SHIELD_DB[shield.type]} DB` : '—'}

@@ -8,7 +8,8 @@ import weaponsData    from '../data/weapons.json'
 import talentsData    from '../data/talents.json'
 import racesData      from '../data/races.json'
 import armorData      from '../data/armor.json'
-import spellListsData from '../data/spell_lists.json'
+import spellListsData        from '../data/spell_lists.json'
+import spellDescriptionsData from '../data/spell_descriptions.json'
 
 // ── Type configuration ─────────────────────────────────────────────────────────
 // cssVar references --accent/--danger/etc so colorblind overrides apply automatically.
@@ -51,15 +52,16 @@ function getAllSpellItems() {
   for (const [listName, listData] of Object.entries(spellListsData)) {
     for (const spell of (listData.spells || [])) {
       items.push({
-        name:     spell.name,
-        list:     listName,
-        realm:    listData.realm    || '',
-        section:  listData.section  || '',
-        level:    spell.level,
-        aoe:      spell.aoe,
-        duration: spell.duration,
-        range:    spell.range,
-        type:     spell.type,
+        name:        spell.name,
+        list:        listName,
+        realm:       listData.realm    || '',
+        section:     listData.section  || '',
+        level:       spell.level,
+        aoe:         spell.aoe,
+        duration:    spell.duration,
+        range:       spell.range,
+        type:        spell.type,
+        description: spellDescriptionsData[listName]?.[String(spell.level)] || '',
       })
     }
   }
@@ -234,6 +236,12 @@ function SpellTooltip({ item }) {
       <Row label="Duration" value={item.duration} />
       <Row label="Range"    value={item.range} />
       <Row label="Type"     value={item.type} />
+      {item.description && (
+        <div style={{ marginTop: 6, fontSize: 11, color: 'var(--text2)', lineHeight: 1.5,
+          borderTop: '1px solid var(--border)', paddingTop: 5 }}>
+          {item.description}
+        </div>
+      )}
     </>
   )
 }
