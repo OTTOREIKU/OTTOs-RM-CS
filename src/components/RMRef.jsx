@@ -59,6 +59,12 @@ function _chipStatBonus(c, statKeys) {
     return full && c.stats?.[full] ? sum + getTotalStatBonus(c.stats[full]) : sum
   }, 0)
 }
+function _resolveSkillName(templateName, label) {
+  if (!label) return templateName
+  if (/<[^>]+>/.test(templateName)) return templateName.replace(/<[^>]+>/, label)
+  return `${templateName}: ${label}`
+}
+
 function computeChipSkillBonus(c, template, skillData) {
   if (!c || !template || !skillData) return null
   const ranks     = (skillData.ranks ?? 0) + (skillData.culture_ranks ?? 0)
@@ -67,7 +73,13 @@ function computeChipSkillBonus(c, template, skillData) {
                   + _chipStatBonus(c, template.stat_keys)
   const item      = skillData.item_bonus   ?? 0
   const misc      = skillData.talent_bonus ?? 0
-  const autoBonus = getNamedTalentBonus(c, template.name)
+  // Mirror SkillsView: look up by resolved name (e.g. "Perception: Hearing") first,
+  // fall back to template name — this matches how talents store inst.param
+  const resolvedName = _resolveSkillName(
+    skillData.template_name || template.name,
+    skillData.label || ''
+  )
+  const autoBonus = getNamedTalentBonus(c, resolvedName) || getNamedTalentBonus(c, template.name)
   const isProf    = skillData.proficient !== undefined ? !!skillData.proficient
     : (template.prof_type === 'Professional' || template.prof_type === 'Knack')
   const profBonus = isProf ? Math.min(ranks, 30) : 0
