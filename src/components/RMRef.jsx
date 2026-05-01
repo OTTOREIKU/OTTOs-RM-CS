@@ -12,7 +12,7 @@ import armorData      from '../data/armor.json'
 import spellListsData        from '../data/spell_lists.json'
 import spellDescriptionsData from '../data/spell_descriptions.json'
 import { loadNotebook } from '../store/notebook.js'
-import { rankBonus, getTotalStatBonus, getNamedTalentBonus, getSpellCastingBonus, getSpellMasteryBonus } from '../utils/calc.js'
+import { rankBonus, getTotalStatBonus, getSpellCastingBonus, getSpellMasteryBonus } from '../utils/calc.js'
 import { useCharacter } from '../store/CharacterContext.jsx'
 
 // ── Type configuration ─────────────────────────────────────────────────────────
@@ -73,13 +73,38 @@ function computeChipSkillBonus(c, template, skillData) {
                   + _chipStatBonus(c, template.stat_keys)
   const item      = skillData.item_bonus   ?? 0
   const misc      = skillData.talent_bonus ?? 0
-  // Mirror SkillsView: look up by resolved name (e.g. "Perception: Hearing") first,
-  // fall back to template name — this matches how talents store inst.param
-  const resolvedName = _resolveSkillName(
-    skillData.template_name || template.name,
-    skillData.label || ''
-  )
-  const autoBonus = getNamedTalentBonus(c, resolvedName) || getNamedTalentBonus(c, template.name)
+
+  // Mirror SkillsView exactly:
+  //   1. resolved name uses the raw template name (template_name), not item.name
+  //      (item.name on custom skills is already the display label like "Perception: Hearing")
+  //   2. fall back to the raw template name (not item.name) so "Perception" is tried
+  //   3. apply talent_excluded filtering just like SkillsView does
+  const templateName   = template._isCustom ? template.template_name : template.name
+  const resolvedName   = _resolveSkillName(templateName, skillData.label || '')
+  const excludedIds    = skillData.talent_excluded || []
+
+  // Build talent entry map (mirrors SkillsView talentBonuses useMemo)
+  const talentMap = {}
+  for (const inst of (c.talents || [])) {
+    const def = talentsData.find(t => t.id === inst.talent_id)
+    if (!def?.effects) continue
+    for (const eff of def.effects) {
+      if (eff.type !== 'skill_talent_bonus') continue
+      const skillNames = eff.skill === 'param'
+        ? [inst.param, ...(inst.extra_params || [])].filter(Boolean)
+        : (eff.skill ? [eff.skill] : [])
+      const bonus = eff.per_tier != null ? eff.per_tier * inst.tier : (eff.flat ?? 0)
+      for (const sn of skillNames) {
+        if (!talentMap[sn]) talentMap[sn] = []
+        talentMap[sn].push({ instId: inst.id, bonus })
+      }
+    }
+  }
+  const talentEntries = talentMap[resolvedName] || talentMap[templateName] || []
+  const autoBonus     = talentEntries
+    .filter(e => !excludedIds.includes(e.instId))
+    .reduce((sum, e) => sum + e.bonus, 0)
+
   const isProf    = skillData.proficient !== undefined ? !!skillData.proficient
     : (template.prof_type === 'Professional' || template.prof_type === 'Knack')
   const profBonus = isProf ? Math.min(ranks, 30) : 0
