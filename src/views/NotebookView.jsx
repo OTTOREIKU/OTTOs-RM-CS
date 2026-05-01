@@ -17,6 +17,7 @@ import { usePersistentOpen } from '../hooks/persist.js'
 import { importNotebookFromFile } from '../store/characters.js'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { RMRefExtension, RMRefPicker, registerNoteNav } from '../components/RMRef.jsx'
+import { useCharacter } from '../store/CharacterContext.jsx'
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -264,6 +265,7 @@ export default function NotebookView() {
 
   const location = useLocation()
   const navigate = useNavigate()
+  const { activeChar } = useCharacter()
   dataRef.current = data
 
   // Register note-navigation callback so note ref chips can navigate within the notebook
@@ -1279,7 +1281,8 @@ export default function NotebookView() {
 
       {/* ── RMREF PICKER ─────────────────────────────────────────── */}
       <RMRefPicker open={pickerOpen} onClose={() => setPickerOpen(false)} editor={editor}
-        notes={Object.values(data.notes)} folders={data.folders} />
+        notes={Object.values(data.notes)} folders={data.folders}
+        customSkills={activeChar?.custom_skills || []} />
 
       {/* ── CONFIRM DIALOG ───────────────────────────────────────── */}
       {confirmDlg && (

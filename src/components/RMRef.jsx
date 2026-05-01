@@ -12,6 +12,8 @@ import armorData      from '../data/armor.json'
 import spellListsData        from '../data/spell_lists.json'
 import spellDescriptionsData from '../data/spell_descriptions.json'
 import { loadNotebook } from '../store/notebook.js'
+import { rankBonus, getTotalStatBonus, getNamedTalentBonus } from '../utils/calc.js'
+import { useCharacter } from '../store/CharacterContext.jsx'
 
 // ── Type configuration ─────────────────────────────────────────────────────────
 // cssVar references --accent/--danger/etc so colorblind overrides apply automatically.
@@ -31,6 +33,52 @@ const TYPE_CFG = {
 // ── Note navigation callback (registered by NotebookView while mounted) ─────────
 let _noteNavCb = null
 export function registerNoteNav(fn) { _noteNavCb = fn }
+
+// ── Skill bonus helpers (mirrors CharacterSheet.jsx computeSkillTotal) ────────
+const _SKILL_CAT_STATS = {
+  'Animal':'Ag/Em','Awareness':'In/Re','Battle Expertise':'-','Body Discipline':'Co/SD',
+  'Brawn':'Co/SD','Combat Expertise':'-','Combat Training':'Ag/St','Composition':'Em/In','Crafting':'Ag/Me',
+  'Delving':'Em/In','Environmental':'In/Me','Gymnastic':'Ag/Qu','Lore':'Me/Me',
+  'Lore: Languages':'Me/Me','Magical Expertise':'-','Medical':'In/Me','Mental Discipline':'Pr/SD',
+  'Movement':'Ag/St','Performance Art':'Em/Pr','Power Manipulation':'RS/RS','Science':'Me/Re',
+  'Social':'Em/In','Subterfuge':'Ag/SD','Technical':'In/Re','Vocation':'Em/Me',
+}
+const _SKILL_STAT_MAP = {
+  Ag:'Agility',Co:'Constitution',Em:'Empathy',In:'Intuition',
+  Me:'Memory',Pr:'Presence',Qu:'Quickness',Re:'Reasoning',
+  SD:'Self Discipline',St:'Strength',
+}
+function _chipStatBonus(c, statKeys) {
+  if (!statKeys || statKeys === '-') return 0
+  const realm  = (c.realm || '').toLowerCase()
+  const rsKey  = realm.includes('channel') ? 'Intuition'
+    : realm.includes('essence') ? 'Empathy'
+    : realm.includes('mental')  ? 'Presence' : null
+  return statKeys.split('/').reduce((sum, k) => {
+    const t = k.trim(), full = t === 'RS' ? rsKey : _SKILL_STAT_MAP[t]
+    return full && c.stats?.[full] ? sum + getTotalStatBonus(c.stats[full]) : sum
+  }, 0)
+}
+function computeChipSkillBonus(c, template, skillData) {
+  if (!c || !template || !skillData) return null
+  const ranks     = (skillData.ranks ?? 0) + (skillData.culture_ranks ?? 0)
+  const rb        = rankBonus(ranks)
+  const statB     = _chipStatBonus(c, _SKILL_CAT_STATS[template.category] || '-')
+                  + _chipStatBonus(c, template.stat_keys)
+  const item      = skillData.item_bonus   ?? 0
+  const misc      = skillData.talent_bonus ?? 0
+  const autoBonus = getNamedTalentBonus(c, template.name)
+  const isProf    = skillData.proficient !== undefined ? !!skillData.proficient
+    : (template.prof_type === 'Professional' || template.prof_type === 'Knack')
+  const profBonus = isProf ? Math.min(ranks, 30) : 0
+  return { total: rb + statB + item + misc + autoBonus + profBonus, ranks, rb, statB, item, misc, autoBonus, profBonus }
+}
+// displayName for a custom skill (mirrors displaySkillName in CharacterSheet)
+function _customDisplayName(templateName, label) {
+  if (!label) return templateName
+  if (/<[^>]+>/.test(templateName)) return templateName.replace(/<[^>]+>/, label)
+  return `${templateName}: ${label}`
+}
 
 // Helpers — keeps inline style strings clean
 const cv   = v => `var(${v})`
@@ -88,6 +136,7 @@ function getItemId(type, item) {
   if (type === 'talent') return item.id
   if (type === 'spell')  return `${item.list}::${item.level}`
   if (type === 'note')   return item.id
+  if (type === 'skill' && item._isCustom) return `custom::${item.template_name}::${item.label}`
   return item.name
 }
 
@@ -115,6 +164,15 @@ function findNoteItem(id) {
 
 function findItem(type, id) {
   if (type === 'note') return findNoteItem(id)
+  if (type === 'skill' && id.startsWith('custom::')) {
+    const rest  = id.slice('custom::'.length)
+    const sep   = rest.indexOf('::')
+    const tName = sep === -1 ? rest : rest.slice(0, sep)
+    const label = sep === -1 ? ''   : rest.slice(sep + 2)
+    const tmpl  = skillsData.find(s => s.name === tName)
+    if (!tmpl) return null
+    return { ...tmpl, label, template_name: tName, _isCustom: true, name: _customDisplayName(tName, label) }
+  }
   return (DATA_MAPS[type] || []).find(item => getItemId(type, item) === id) || null
 }
 
@@ -135,15 +193,90 @@ function Row({ label, value, color }) {
   )
 }
 
+function BonusRow({ label, value }) {
+  if (value == null || value === 0) return null
+  const fmt = v => v >= 0 ? `+${v}` : `${v}`
+  return (
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
+      fontSize: 10, color: 'var(--text3)', padding: '1px 0' }}>
+      <span>{label}</span>
+      <span style={{ fontWeight: 700, color: value >= 0 ? 'var(--success)' : 'var(--danger)' }}>{fmt(value)}</span>
+    </div>
+  )
+}
+
 function SkillTooltip({ item }) {
+  const [tab, setTab] = useState('info')
+  const { activeChar: c } = useCharacter()
+
+  const skillData = useMemo(() => {
+    if (!c) return null
+    if (item._isCustom) {
+      return (c.custom_skills || []).find(cs =>
+        cs.template_name === item.template_name && cs.label === item.label
+      ) || null
+    }
+    return c.skills?.[item.name] || null
+  }, [c, item])
+
+  const bonusData = useMemo(() =>
+    computeChipSkillBonus(c, item, skillData),
+  [c, item, skillData])
+
   return (
     <>
-      <div style={{ fontSize: 10, color: 'var(--text2)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-        {item.category}
+      {/* Segmented toggle */}
+      <div style={{ display: 'flex', gap: 2, marginBottom: 8, padding: 3,
+        background: 'var(--surface2)', borderRadius: 8, border: '1px solid var(--border)' }}>
+        {[['info', 'Info'], ['bonus', 'My Bonus']].map(([key, lbl]) => (
+          <button key={key} onClick={() => setTab(key)} style={{
+            flex: 1, padding: '3px 0', borderRadius: 5, fontSize: 10, fontWeight: 700,
+            cursor: 'pointer', border: 'none', transition: 'all .12s',
+            background: tab === key ? cv('--accent') : 'transparent',
+            color:      tab === key ? 'var(--surface)' : 'var(--text3)',
+          }}>
+            {lbl}
+          </button>
+        ))}
       </div>
-      <Row label="Dev Cost"  value={item.dev_cost} />
-      <Row label="Prof Type" value={item.prof_type} />
-      <Row label="Stat"      value={item.stat_keys} />
+
+      {tab === 'info' ? (
+        <>
+          <div style={{ fontSize: 10, color: 'var(--text2)', marginBottom: 6,
+            textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+            {item.category}
+          </div>
+          <Row label="Dev Cost"  value={item.dev_cost} />
+          <Row label="Prof Type" value={item.prof_type} />
+          <Row label="Stat"      value={item.stat_keys} />
+        </>
+      ) : !c ? (
+        <div style={{ fontSize: 11, color: 'var(--text3)', fontStyle: 'italic' }}>No character loaded.</div>
+      ) : !skillData ? (
+        <div style={{ fontSize: 11, color: 'var(--text3)', fontStyle: 'italic' }}>
+          Not trained — add ranks in the Skills tab.
+        </div>
+      ) : bonusData ? (
+        <>
+          <div style={{ textAlign: 'center', marginBottom: 10 }}>
+            <div style={{ fontSize: 30, fontWeight: 800, lineHeight: 1,
+              color: bonusData.total >= 0 ? 'var(--success)' : 'var(--danger)' }}>
+              {bonusData.total >= 0 ? `+${bonusData.total}` : bonusData.total}
+            </div>
+            <div style={{ fontSize: 10, color: 'var(--text3)', marginTop: 3 }}>
+              {bonusData.ranks} rank{bonusData.ranks !== 1 ? 's' : ''}
+            </div>
+          </div>
+          <div style={{ borderTop: '1px solid var(--border)', paddingTop: 6 }}>
+            <BonusRow label="Rank bonus"  value={bonusData.rb} />
+            <BonusRow label="Stat bonus"  value={bonusData.statB} />
+            <BonusRow label="Item"        value={bonusData.item} />
+            <BonusRow label="Misc bonus"  value={bonusData.misc} />
+            <BonusRow label="Talents"     value={bonusData.autoBonus} />
+            <BonusRow label="Proficiency" value={bonusData.profBonus} />
+          </div>
+        </>
+      ) : null}
     </>
   )
 }
@@ -491,7 +624,7 @@ const REALM_ORDER = ['Channeling', 'Essence', 'Mentalism', 'Hybrid']
 
 // ── RMRef Picker Modal ─────────────────────────────────────────────────────────
 
-export function RMRefPicker({ open, onClose, editor, notes = [], folders = {} }) {
+export function RMRefPicker({ open, onClose, editor, notes = [], folders = {}, customSkills = [] }) {
   const [type,  setType]  = useState('skill')
   const [query, setQuery] = useState('')
   const inputRef = useRef(null)
@@ -505,6 +638,21 @@ export function RMRefPicker({ open, onClose, editor, notes = [], folders = {} })
         return new Date(b.updated_at) - new Date(a.updated_at)
       })
   }, [type, query, notes])
+
+  // Custom skill items derived from the active character — shown at top of skill list
+  const customSkillItems = useMemo(() => {
+    if (type !== 'skill') return []
+    const q = query.toLowerCase().trim()
+    return customSkills
+      .map(cs => {
+        const tmpl = skillsData.find(s => s.name === cs.template_name)
+        if (!tmpl) return null
+        const displayName = _customDisplayName(cs.template_name, cs.label)
+        return { ...tmpl, label: cs.label, template_name: cs.template_name, _isCustom: true, name: displayName }
+      })
+      .filter(Boolean)
+      .filter(item => !q || item.name.toLowerCase().includes(q) || item.template_name.toLowerCase().includes(q))
+  }, [type, query, customSkills])
 
   const results = useMemo(() => type === 'note' ? [] : searchItems(type, query), [type, query])
 
@@ -555,7 +703,9 @@ export function RMRefPicker({ open, onClose, editor, notes = [], folders = {} })
     ? (spellGroups?.reduce((s, g) => s + g.spells.length, 0) ?? 0)
     : type === 'note'
       ? noteResults.length
-      : results.length
+      : type === 'skill'
+        ? customSkillItems.length + results.length
+        : results.length
 
   return ReactDOM.createPortal(
     <>
@@ -628,6 +778,40 @@ export function RMRefPicker({ open, onClose, editor, notes = [], folders = {} })
                 <NoteResultRow key={note.id} note={note} folders={folders} onInsert={() => handleInsert(note)} cfg={cfg} />
               ))
             )
+          ) : type === 'skill' ? (
+            <>
+              {/* Character's custom skill instances */}
+              {customSkillItems.length > 0 && (
+                <>
+                  <div style={{ padding: '6px 16px 3px', fontSize: 10, fontWeight: 800,
+                    color: cv(cfg.cssVar), textTransform: 'uppercase', letterSpacing: '0.1em',
+                    borderBottom: '1px solid var(--border)' }}>
+                    This Character
+                  </div>
+                  {customSkillItems.map((item, i) => (
+                    <ResultRow key={`csk-${i}`} item={item} type={type} cfg={cfg}
+                      onInsert={() => handleInsert(item)}
+                      sublabel={`${item.category} · Custom`} />
+                  ))}
+                  {results.length > 0 && (
+                    <div style={{ padding: '6px 16px 3px', fontSize: 10, fontWeight: 800,
+                      color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.1em',
+                      borderBottom: '1px solid var(--border)', marginTop: 2 }}>
+                      Reference
+                    </div>
+                  )}
+                </>
+              )}
+              {results.length === 0 && customSkillItems.length === 0 ? (
+                <div style={{ padding: '14px 16px', fontSize: 12, color: 'var(--text3)', fontStyle: 'italic' }}>
+                  No skills found.
+                </div>
+              ) : (
+                results.slice(0, 60).map((item, i) => (
+                  <ResultRow key={i} item={item} type={type} cfg={cfg} onInsert={() => handleInsert(item)} />
+                ))
+              )}
+            </>
           ) : (
             results.length === 0 ? (
               <div style={{ padding: '14px 16px', fontSize: 12, color: 'var(--text3)', fontStyle: 'italic' }}>
@@ -749,9 +933,9 @@ function SpellResultsList({ groups, query, onInsert, cfg }) {
 
 // ── General result row ─────────────────────────────────────────────────────────
 
-function ResultRow({ item, type, cfg, onInsert }) {
+function ResultRow({ item, type, cfg, onInsert, sublabel: sublabelOverride }) {
   const label    = item.name || item.id || ''
-  const sublabel = getSubLabel(type, item)
+  const sublabel = sublabelOverride ?? getSubLabel(type, item)
 
   return (
     <button onClick={onInsert}
