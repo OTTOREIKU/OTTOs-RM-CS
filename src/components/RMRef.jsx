@@ -9,6 +9,7 @@ import weaponsData    from '../data/weapons.json'
 import talentsData    from '../data/talents.json'
 import racesData      from '../data/races.json'
 import armorData      from '../data/armor.json'
+import equipmentData  from '../data/equipment.json'
 import spellListsData        from '../data/spell_lists.json'
 import spellDescriptionsData from '../data/spell_descriptions.json'
 import { loadNotebook } from '../store/notebook.js'
@@ -18,16 +19,17 @@ import { useCharacter } from '../store/CharacterContext.jsx'
 // ── Type configuration ─────────────────────────────────────────────────────────
 // cssVar references --accent/--danger/etc so colorblind overrides apply automatically.
 
-const TYPES = ['skill', 'weapon', 'talent', 'race', 'armor', 'spell', 'note']
+const TYPES = ['skill', 'weapon', 'talent', 'race', 'armor', 'spell', 'note', 'equipment']
 
 const TYPE_CFG = {
-  skill:  { label: 'Skill',  cssVar: '--accent'  },
-  weapon: { label: 'Weapon', cssVar: '--danger'  },
-  talent: { label: 'Talent', cssVar: '--purple'  },
-  race:   { label: 'Race',   cssVar: '--success' },
-  armor:  { label: 'Armor',  cssVar: '--warning' },
-  spell:  { label: 'Spell',  cssVar: '--info'    },
-  note:   { label: 'Note',   cssVar: '--accent'  },
+  skill:     { label: 'Skill',     cssVar: '--accent'  },
+  weapon:    { label: 'Weapon',    cssVar: '--danger'  },
+  talent:    { label: 'Talent',    cssVar: '--purple'  },
+  race:      { label: 'Race',      cssVar: '--success' },
+  armor:     { label: 'Armor',     cssVar: '--warning' },
+  spell:     { label: 'Spell',     cssVar: '--info'    },
+  note:      { label: 'Note',      cssVar: '--accent'  },
+  equipment: { label: 'Equipment', cssVar: '--brown'   },
 }
 
 // ── Note navigation callback (registered by NotebookView while mounted) ─────────
@@ -161,12 +163,13 @@ function getAllSpellItems() {
 }
 
 const DATA_MAPS = {
-  skill:  skillsData,
-  weapon: weaponsData,
-  talent: talentsData,
-  race:   racesData,
-  armor:  getAllArmorItems(),
-  spell:  getAllSpellItems(),
+  skill:     skillsData,
+  weapon:    weaponsData,
+  talent:    talentsData,
+  race:      racesData,
+  armor:     getAllArmorItems(),
+  spell:     getAllSpellItems(),
+  equipment: equipmentData,
 }
 
 function getItemId(type, item) {
@@ -613,17 +616,35 @@ function NoteTooltip({ item, onNavigate }) {
   )
 }
 
+function EquipmentTooltip({ item }) {
+  if (!item) return <div style={{ fontSize: 12, color: 'var(--text3)', fontStyle: 'italic' }}>Item not found.</div>
+  return (
+    <>
+      <Row label="Cost"    value={item.cost} />
+      <Row label="Weight"  value={item.weight != null ? `${item.weight} lb` : null} />
+      <Row label="Str req" value={item.str_req != null ? item.str_req : null} />
+      {item.notes && (
+        <div style={{ fontSize: 11, color: 'var(--text2)', lineHeight: 1.5, marginTop: 6,
+          borderTop: '1px solid var(--border)', paddingTop: 6 }}>
+          {item.notes}
+        </div>
+      )}
+    </>
+  )
+}
+
 function TooltipContent({ type, item, onNavigate }) {
   if (type !== 'note' && !item) return <div style={{ fontSize: 12, color: 'var(--text3)', fontStyle: 'italic' }}>Item not found.</div>
   switch (type) {
-    case 'skill':  return <SkillTooltip  item={item} />
-    case 'weapon': return <WeaponTooltip item={item} />
-    case 'talent': return <TalentTooltip item={item} />
-    case 'race':   return <RaceTooltip   item={item} />
-    case 'armor':  return <ArmorTooltip  item={item} />
-    case 'spell':  return <SpellTooltip  item={item} />
-    case 'note':   return <NoteTooltip   item={item} onNavigate={onNavigate} />
-    default:       return null
+    case 'skill':     return <SkillTooltip     item={item} />
+    case 'weapon':    return <WeaponTooltip    item={item} />
+    case 'talent':    return <TalentTooltip    item={item} />
+    case 'race':      return <RaceTooltip      item={item} />
+    case 'armor':     return <ArmorTooltip     item={item} />
+    case 'spell':     return <SpellTooltip     item={item} />
+    case 'note':      return <NoteTooltip      item={item} onNavigate={onNavigate} />
+    case 'equipment': return <EquipmentTooltip item={item} />
+    default:          return null
   }
 }
 
@@ -1143,12 +1164,18 @@ function ResultRow({ item, type, cfg, onInsert, sublabel: sublabelOverride }) {
 
 function getSubLabel(type, item) {
   switch (type) {
-    case 'skill':  return `${item.category} · ${item.dev_cost}`
-    case 'weapon': return `${item.skill_name} · ${item.ob_type}`
-    case 'talent': return `${item.category}${item.is_flaw ? ' · Flaw' : ''} · ${item.cost_per_tier} DP/tier`
-    case 'race':   return item.dp_bonus_pool ? `Bonus DP Pool: ${item.dp_bonus_pool}` : null
-    case 'armor':  return `${item._section} · AT ${item.at}`
-    default:       return null
+    case 'skill':     return `${item.category} · ${item.dev_cost}`
+    case 'weapon':    return `${item.skill_name} · ${item.ob_type}`
+    case 'talent':    return `${item.category}${item.is_flaw ? ' · Flaw' : ''} · ${item.cost_per_tier} DP/tier`
+    case 'race':      return item.dp_bonus_pool ? `Bonus DP Pool: ${item.dp_bonus_pool}` : null
+    case 'armor':     return `${item._section} · AT ${item.at}`
+    case 'equipment': {
+      const parts = []
+      if (item.cost)   parts.push(item.cost)
+      if (item.weight != null) parts.push(`${item.weight} lb`)
+      return parts.join(' · ') || null
+    }
+    default:          return null
   }
 }
 
