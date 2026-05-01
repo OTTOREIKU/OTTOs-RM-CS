@@ -12,7 +12,7 @@ import armorData      from '../data/armor.json'
 import spellListsData        from '../data/spell_lists.json'
 import spellDescriptionsData from '../data/spell_descriptions.json'
 import { loadNotebook } from '../store/notebook.js'
-import { rankBonus, getTotalStatBonus, getNamedTalentBonus } from '../utils/calc.js'
+import { rankBonus, getTotalStatBonus, getNamedTalentBonus, getSpellCastingBonus, getSpellMasteryBonus } from '../utils/calc.js'
 import { useCharacter } from '../store/CharacterContext.jsx'
 
 // ── Type configuration ─────────────────────────────────────────────────────────
@@ -381,23 +381,94 @@ function ArmorTooltip({ item }) {
 }
 
 function SpellTooltip({ item }) {
+  const [tab, setTab] = useState('info')
+  const { activeChar: c } = useCharacter()
+
+  const spellListData = useMemo(() => {
+    if (!c) return null
+    return c.spell_lists?.[item.list] || null
+  }, [c, item.list])
+
+  const ranks       = spellListData?.ranks ?? 0
+  const castBonus   = useMemo(() => c ? getSpellCastingBonus(c, item.list)   : null, [c, item.list])
+  const mastBonus   = useMemo(() => c ? getSpellMasteryBonus(c, item.list)   : null, [c, item.list])
+  const accessible  = ranks >= item.level
+
   return (
     <>
-      <div style={{ fontSize: 10, color: 'var(--text2)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-        {item.list} · Lv {item.level}
+      {/* Segmented toggle */}
+      <div style={{ display: 'flex', gap: 2, marginBottom: 8, padding: 3,
+        background: 'var(--surface2)', borderRadius: 8, border: '1px solid var(--border)' }}>
+        {[['info', 'Info'], ['bonus', 'My Bonus']].map(([key, lbl]) => (
+          <button key={key} onClick={() => setTab(key)} style={{
+            flex: 1, padding: '3px 0', borderRadius: 5, fontSize: 10, fontWeight: 700,
+            cursor: 'pointer', border: 'none', transition: 'all .12s',
+            background: tab === key ? cv('--info') : 'transparent',
+            color:      tab === key ? 'var(--surface)' : 'var(--text3)',
+          }}>
+            {lbl}
+          </button>
+        ))}
       </div>
-      <div style={{ fontSize: 10, color: 'var(--text2)', marginBottom: 6 }}>
-        {item.realm} — {item.section}
-      </div>
-      <Row label="AoE"      value={item.aoe} />
-      <Row label="Duration" value={item.duration} />
-      <Row label="Range"    value={item.range} />
-      <Row label="Type"     value={item.type} />
-      {item.description && (
-        <div style={{ marginTop: 6, fontSize: 11, color: 'var(--text2)', lineHeight: 1.5,
-          borderTop: '1px solid var(--border)', paddingTop: 5 }}>
-          {item.description}
+
+      {tab === 'info' ? (
+        <>
+          <div style={{ fontSize: 10, color: 'var(--text2)', marginBottom: 6,
+            textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+            {item.list} · Lv {item.level}
+          </div>
+          <div style={{ fontSize: 10, color: 'var(--text2)', marginBottom: 6 }}>
+            {item.realm} — {item.section}
+          </div>
+          <Row label="AoE"      value={item.aoe} />
+          <Row label="Duration" value={item.duration} />
+          <Row label="Range"    value={item.range} />
+          <Row label="Type"     value={item.type} />
+          {item.description && (
+            <div style={{ marginTop: 6, fontSize: 11, color: 'var(--text2)', lineHeight: 1.5,
+              borderTop: '1px solid var(--border)', paddingTop: 5 }}>
+              {item.description}
+            </div>
+          )}
+        </>
+      ) : !c ? (
+        <div style={{ fontSize: 11, color: 'var(--text3)', fontStyle: 'italic' }}>No character loaded.</div>
+      ) : !spellListData || ranks === 0 ? (
+        <div style={{ fontSize: 11, color: 'var(--text3)', fontStyle: 'italic' }}>
+          No ranks in {item.list} — add them in the Spells tab.
         </div>
+      ) : (
+        <>
+          {/* Casting modifier — primary number */}
+          <div style={{ textAlign: 'center', marginBottom: 8 }}>
+            <div style={{ fontSize: 10, color: 'var(--text3)', marginBottom: 2,
+              textTransform: 'uppercase', letterSpacing: '0.06em' }}>Casting modifier</div>
+            <div style={{ fontSize: 30, fontWeight: 800, lineHeight: 1,
+              color: castBonus >= 0 ? 'var(--success)' : 'var(--danger)' }}>
+              {castBonus >= 0 ? `+${castBonus}` : castBonus}
+            </div>
+            <div style={{ fontSize: 10, color: 'var(--text3)', marginTop: 3 }}>
+              {ranks} rank{ranks !== 1 ? 's' : ''} in list
+            </div>
+          </div>
+
+          {/* Spell accessibility badge */}
+          <div style={{
+            textAlign: 'center', marginBottom: 8, padding: '3px 8px', borderRadius: 5, fontSize: 10, fontWeight: 700,
+            background: accessible ? 'var(--success)20' : 'var(--danger)20',
+            color: accessible ? 'var(--success)' : 'var(--danger)',
+            border: `1px solid ${accessible ? 'var(--success)' : 'var(--danger)'}40`,
+          }}>
+            {accessible
+              ? `Lv ${item.level} accessible`
+              : `Need ${item.level - ranks} more rank${item.level - ranks !== 1 ? 's' : ''} for Lv ${item.level}`}
+          </div>
+
+          {/* Mastery bonus */}
+          <div style={{ borderTop: '1px solid var(--border)', paddingTop: 6 }}>
+            <BonusRow label="Mastery bonus" value={mastBonus} />
+          </div>
+        </>
       )}
     </>
   )
