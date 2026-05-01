@@ -281,23 +281,95 @@ function SkillTooltip({ item }) {
   )
 }
 
+const _OB_STATS = {
+  melee:   ['Agility', 'Strength'],
+  ranged:  ['Agility', 'Quickness'],
+  unarmed: ['Agility', 'Strength'],
+}
+
 function WeaponTooltip({ item }) {
+  const [tab, setTab] = useState('info')
+  const { activeChar: c } = useCharacter()
+
+  const bonusData = useMemo(() => {
+    if (!c) return null
+    const statNames = _OB_STATS[item.ob_type || 'melee'] || _OB_STATS.melee
+    const statBonus = Math.round(
+      statNames.reduce((sum, s) => sum + (c.stats?.[s] ? getTotalStatBonus(c.stats[s]) : 0), 0)
+      / statNames.length
+    )
+    const skillName = item.skill_name || ''
+    // Mirror getWeaponOB: exact match first, then label match for template slots
+    let charSkill = c.skills?.[skillName] || null
+    if (!charSkill || (!(charSkill.ranks ?? 0) && !(charSkill.culture_ranks ?? 0))) {
+      const found = Object.entries(c.skills || {}).find(
+        ([key, data]) => data.label === skillName && key !== skillName
+      )
+      if (found) charSkill = found[1]
+    }
+    charSkill = charSkill || {}
+    const ranks  = (charSkill.ranks ?? 0) + (charSkill.culture_ranks ?? 0)
+    const rb     = ranks > 0 ? rankBonus(ranks) : 0
+    const total  = statBonus + rb
+    return { total, statBonus, rb, ranks, statNames }
+  }, [c, item])
+
   return (
     <>
-      <div style={{ fontSize: 10, color: 'var(--text2)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-        {item.skill_name} · {item.ob_type}
+      {/* Segmented toggle */}
+      <div style={{ display: 'flex', gap: 2, marginBottom: 8, padding: 3,
+        background: 'var(--surface2)', borderRadius: 8, border: '1px solid var(--border)' }}>
+        {[['info', 'Info'], ['bonus', 'My OB']].map(([key, lbl]) => (
+          <button key={key} onClick={() => setTab(key)} style={{
+            flex: 1, padding: '3px 0', borderRadius: 5, fontSize: 10, fontWeight: 700,
+            cursor: 'pointer', border: 'none', transition: 'all .12s',
+            background: tab === key ? cv('--danger') : 'transparent',
+            color:      tab === key ? '#fff' : 'var(--text3)',
+          }}>
+            {lbl}
+          </button>
+        ))}
       </div>
-      <Row label="Fumble"  value={item.fumble} />
-      <Row label="Str Req" value={item.str_req} />
-      <Row label="Size"    value={item.size} />
-      <Row label="Length"  value={item.length} />
-      <Row label="Weight"  value={item.weight != null ? `${item.weight} lbs` : null} />
-      {item.notes && (
-        <div style={{ marginTop: 6, fontSize: 11, color: 'var(--text2)', fontStyle: 'italic',
-          borderTop: '1px solid var(--border)', paddingTop: 5 }}>
-          {item.notes}
-        </div>
-      )}
+
+      {tab === 'info' ? (
+        <>
+          <div style={{ fontSize: 10, color: 'var(--text2)', marginBottom: 6,
+            textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+            {item.skill_name} · {item.ob_type}
+          </div>
+          <Row label="Fumble"  value={item.fumble} />
+          <Row label="Str Req" value={item.str_req} />
+          <Row label="Size"    value={item.size} />
+          <Row label="Length"  value={item.length} />
+          <Row label="Weight"  value={item.weight != null ? `${item.weight} lbs` : null} />
+          {item.notes && (
+            <div style={{ marginTop: 6, fontSize: 11, color: 'var(--text2)', fontStyle: 'italic',
+              borderTop: '1px solid var(--border)', paddingTop: 5 }}>
+              {item.notes}
+            </div>
+          )}
+        </>
+      ) : !c ? (
+        <div style={{ fontSize: 11, color: 'var(--text3)', fontStyle: 'italic' }}>No character loaded.</div>
+      ) : bonusData ? (
+        <>
+          <div style={{ textAlign: 'center', marginBottom: 10 }}>
+            <div style={{ fontSize: 10, color: 'var(--text3)', marginBottom: 2,
+              textTransform: 'uppercase', letterSpacing: '0.06em' }}>Offensive Bonus</div>
+            <div style={{ fontSize: 30, fontWeight: 800, lineHeight: 1,
+              color: bonusData.total >= 0 ? 'var(--success)' : 'var(--danger)' }}>
+              {bonusData.total >= 0 ? `+${bonusData.total}` : bonusData.total}
+            </div>
+            <div style={{ fontSize: 10, color: 'var(--text3)', marginTop: 3 }}>
+              {bonusData.ranks} rank{bonusData.ranks !== 1 ? 's' : ''} in {item.skill_name}
+            </div>
+          </div>
+          <div style={{ borderTop: '1px solid var(--border)', paddingTop: 6 }}>
+            <BonusRow label={`Stat (${bonusData.statNames.map(s => s.slice(0,2)).join('+')})`} value={bonusData.statBonus} />
+            <BonusRow label="Rank bonus" value={bonusData.rb} />
+          </div>
+        </>
+      ) : null}
     </>
   )
 }
