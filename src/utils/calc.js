@@ -323,6 +323,31 @@ export function getEndurance(char) {
   return bdBonus + racialEndurance + talentEndurance
 }
 
+// ── Fatigue helpers (CoreLaw §5.5) ────────────────────────────────────────────
+
+/** Total active penalty from fatigue (penalty + overflow injury). Always ≤ 0. */
+export function getFatiguePenalty(char) {
+  return (char.fatigue?.penalty ?? 0) + (char.fatigue?.injury ?? 0)
+}
+
+/**
+ * Sum of Table 5-5 situational modifiers for an Endurance roll (conditions only —
+ * does NOT include base endurance, armor, or accumulated fatigue; those are added
+ * separately so each component can be shown in the UI).
+ */
+export function getEnduranceConditionModifier(char) {
+  const fc = char.fatigue_conditions || {}
+  let mod = 0
+  mod += (fc.days_no_sleep   || 0) * -20
+  mod += (fc.days_half_sleep || 0) * -10
+  mod += (fc.hours_no_water  || 0) * -5
+  mod += (fc.days_no_food    || 0) * -10
+  mod += Math.floor((fc.days_half_food || 0) / 3) * -10
+  mod += Math.floor((fc.altitude_ft    || 0) / 2500) * -10
+  mod += Math.floor((fc.temp_offset_f  || 0) / 5) * -5
+  return mod
+}
+
 export function getWeightAllowance(char) {
   const st = char.stats?.Strength
   const stBonus = st ? getTotalStatBonus(st) : 0

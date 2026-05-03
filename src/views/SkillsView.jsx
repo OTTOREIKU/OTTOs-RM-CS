@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { useScrollRestore } from '../hooks/persist.js'
-import { rankBonus, getTotalStatBonus, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getNamedTalentBonus } from '../utils/calc.js'
+import { rankBonus, getTotalStatBonus, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getNamedTalentBonus, getFatiguePenalty } from '../utils/calc.js'
 import skillsData from '../data/skills.json'
 import skillCosts from '../data/skill_costs.json'
 import talentsData from '../data/talents.json'
@@ -632,8 +632,21 @@ export default function SkillsView() {
     addOpen, setAddOpen, addCustomSkill, updateSkill, updateCustomSkill, removeCustomSkill,
   }
 
+  const fatiguePen = getFatiguePenalty(c)
+
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '16px 12px' }}>
+      {fatiguePen < 0 && (
+        <div style={{
+          background: 'color-mix(in srgb, var(--warning) 12%, transparent)',
+          border: '1px solid color-mix(in srgb, var(--warning) 40%, transparent)',
+          borderRadius: 8, padding: '7px 12px', marginBottom: 10,
+          display: 'flex', gap: 10, alignItems: 'center', fontSize: 11,
+        }}>
+          <span style={{ fontWeight: 700, color: 'var(--warning)', flexShrink: 0 }}>Fatigue: {fatiguePen}</span>
+          <span style={{ color: 'var(--text3)' }}>All skill bonuses are reduced. Manage in Sheet tab.</span>
+        </div>
+      )}
       <div style={{ display: 'flex', gap: 8, marginBottom: 12, flexWrap: 'wrap', alignItems: 'center' }}>
         <input type="text" placeholder="Search skills…" value={search} onChange={e => setSearch(e.target.value)}
           style={{ flex: 1, minWidth: 160 }} />

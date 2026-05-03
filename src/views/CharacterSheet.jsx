@@ -3,7 +3,7 @@ import { usePersistentOpen, useScrollRestore } from '../hooks/persist.js'
 import { ChevronDownIcon, ChevronUpIcon, XIcon, CheckIcon, DiamondIcon, EyeOpenIcon, EyeClosedIcon } from '../components/Icons.jsx'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { STATS } from '../store/characters.js'
-import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getBaseHits, getEndurance, getPowerPoints, getWeightAllowance, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus } from '../utils/calc.js'
+import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getBaseHits, getEndurance, getPowerPoints, getWeightAllowance, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getFatiguePenalty, getEnduranceConditionModifier } from '../utils/calc.js'
 import { REALM_COLORS, SPELL_SECTION_COLORS, RR_COLORS } from '../store/theme.js'
 import races from '../data/races.json'
 import professions from '../data/professions.json'
@@ -340,6 +340,249 @@ function WeaponBrowser({ onSelect, onCancel }) {
   )
 }
 
+// ── Fatigue Card (CoreLaw §5.5) ───────────────────────────────────────────────
+const FATIGUE_COND_ROWS = [
+  { key: 'days_no_sleep',   label: 'Days no sleep',      rate: -20, unit: '/day'    },
+  { key: 'days_half_sleep', label: 'Days half sleep',    rate: -10, unit: '/day'    },
+  { key: 'hours_no_water',  label: 'Hours no water',     rate: -5,  unit: '/hr'     },
+  { key: 'days_no_food',    label: 'Days no food',       rate: -10, unit: '/day'    },
+  { key: 'days_half_food',  label: 'Days half rations',  rate: -10, unit: '/3 days', div: 3 },
+  { key: 'altitude_ft',     label: 'Altitude (ft)',      rate: -10, unit: '/2500 ft', div: 2500 },
+  { key: 'temp_offset_f',   label: 'Temp offset (°F)',   rate: -5,  unit: '/5°F',   div: 5 },
+]
+const FATIGUE_INTERVALS = [
+  ['Walk',                   '2 hours' ],
+  ['Jog',                    '5 min'   ],
+  ['Run',                    '1 min'   ],
+  ['Sprint',                 '2 rounds'],
+  ['Dash',                   '1 round' ],
+  ['Melee / Climbing / Swim','6 rounds'],
+]
+
+function FatigueCard({ c, updateCharacter, autoEndurance, armorManPenalty }) {
+  const [rollInput, setRollInput] = useState('')
+  const [restMin,   setRestMin  ] = useState('')
+  const [condOpen,  setCondOpen ] = useState(false)
+
+  const fat    = c.fatigue            || { penalty: 0, injury: 0 }
+  const conds  = c.fatigue_conditions || {}
+  const pen    = fat.penalty ?? 0   // 0 to -50
+  const inj    = fat.injury  ?? 0   // overflow injury ≤ 0
+  const total  = pen + inj
+
+  const condMod = getEnduranceConditionModifier(c)
+  const rollMod = autoEndurance + armorManPenalty + pen + condMod
+
+  const penColor = pen === 0 ? 'var(--text3)' : pen >= -20 ? 'var(--warning)' : 'var(--danger)'
+  const fmt = n  => n > 0 ? `+${n}` : String(n)
+  const fmtOpt = n => n === 0 ? '—' : fmt(n)
+
+  function patchFatigue(patch) {
+    updateCharacter({ fatigue: { ...fat, ...patch } })
+  }
+
+  function addFatigue(amount) {
+    const raw = pen - amount
+    if (raw >= -50) { patchFatigue({ penalty: raw }) }
+    else            { patchFatigue({ penalty: -50, injury: inj + (raw + 50) }) }
+  }
+  function reduceFatigue(amount) {
+    patchFatigue({ penalty: Math.min(0, pen + amount) })
+  }
+
+  // Roll simulator
+  const rollVal   = rollInput !== '' ? parseInt(rollInput, 10) : null
+  const rollTotal = rollVal != null && !isNaN(rollVal) ? rollVal + rollMod : null
+  function getResultBand(t) {
+    if (t === null) return null
+    if (t >= 176) return { label: 'Absolute Success', color: 'var(--success)', delta: -10 }
+    if (t >= 101) return { label: 'Success',          color: 'var(--accent)',  delta:   0 }
+    if (t >= 76)  return { label: 'Partial Success',  color: 'var(--warning)', delta:  5 }
+    if (t >= 1)   return { label: 'Failure',          color: 'var(--danger)',  delta:  10 }
+    return               { label: 'Absolute Failure', color: 'var(--danger)',  delta:  20, hits: true }
+  }
+  const band = getResultBand(rollTotal)
+  function applyRoll() {
+    if (!band) return
+    if (band.delta < 0) reduceFatigue(-band.delta)
+    else if (band.delta > 0) addFatigue(band.delta)
+    setRollInput('')
+  }
+
+  // Recovery
+  const restMinsNum = parseInt(restMin, 10) || 0
+  const foodWaterDep = (conds.hours_no_water || 0) * 5
+                     + (conds.days_no_food   || 0) * 10
+                     + Math.floor((conds.days_half_food || 0) / 3) * 10
+  const recoveryCap = foodWaterDep > 0 ? -(foodWaterDep / 2) : null
+  function applyRest() {
+    if (restMinsNum <= 0) return
+    const proposed   = Math.min(0, pen + restMinsNum)
+    const newPenalty = recoveryCap !== null ? Math.min(proposed, recoveryCap) : proposed
+    patchFatigue({ penalty: newPenalty })
+    setRestMin('')
+  }
+  const restPreview = restMinsNum > 0 ? (() => {
+    const proposed = Math.min(0, pen + restMinsNum)
+    return recoveryCap !== null ? Math.min(proposed, recoveryCap) : proposed
+  })() : null
+
+  const sb = (color) => ({
+    padding: '3px 9px', borderRadius: 5, fontSize: 11, fontWeight: 700,
+    cursor: 'pointer', border: `1px solid ${color}`,
+    background: 'transparent', color,
+  })
+
+  return (
+    <>
+      {/* Status tiles */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: 14 }}>
+        {[
+          { label: 'Fatigue Penalty', value: pen,   color: penColor },
+          { label: 'Fatigue Injury',  value: inj,   color: inj < 0 ? 'var(--danger)' : 'var(--text3)' },
+          { label: 'Total Penalty',   value: total, color: total < 0 ? 'var(--danger)' : 'var(--text3)', sub: total < 0 ? 'all actions' : null },
+        ].map(({ label, value, color, sub }) => (
+          <div key={label} style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 10, padding: '10px 8px', textAlign: 'center' }}>
+            <div style={{ fontSize: 22, fontWeight: 800, color, lineHeight: 1 }}>{value || '0'}</div>
+            {sub && <div style={{ fontSize: 11, color: 'var(--text2)', marginTop: 2 }}>{sub}</div>}
+            <div style={{ fontSize: 10, color: 'var(--text3)', marginTop: 4, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{label}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Adjust buttons */}
+      <div style={{ marginBottom: 12 }}>
+        <div style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 6 }}>Adjust</div>
+        <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap', alignItems: 'center' }}>
+          <span style={{ fontSize: 10, color: 'var(--text3)' }}>Worsen:</span>
+          {[5, 10, 20].map(n => <button key={`w${n}`} onClick={() => addFatigue(n)} style={sb('var(--danger)')}>+{n}</button>)}
+          <span style={{ marginLeft: 8, fontSize: 10, color: 'var(--text3)' }}>Reduce:</span>
+          {[5, 10, 20].map(n => <button key={`r${n}`} onClick={() => reduceFatigue(n)} style={sb('var(--success)')}>−{n}</button>)}
+          {total < 0 && (
+            <button onClick={() => updateCharacter({ fatigue: { penalty: 0, injury: 0 } })} style={{ ...sb('var(--text3)'), marginLeft: 8 }}>Clear</button>
+          )}
+        </div>
+      </div>
+
+      {/* Rest recovery */}
+      <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap', marginBottom: 14 }}>
+        <span style={{ fontSize: 11, color: 'var(--text3)' }}>Rest</span>
+        <input type="number" value={restMin} min={1} onChange={e => setRestMin(e.target.value)}
+          placeholder="min" style={{ width: 58, textAlign: 'center', padding: '4px 6px' }} />
+        <span style={{ fontSize: 11, color: 'var(--text3)' }}>min →</span>
+        {restPreview !== null && (
+          <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--accent)' }}>penalty {restPreview}</span>
+        )}
+        <button onClick={applyRest} disabled={restMinsNum <= 0} style={sb('var(--accent)')}>Apply Rest</button>
+        {recoveryCap !== null && (
+          <span style={{ fontSize: 10, color: 'var(--warning)', flex: '1 0 100%', marginTop: 2 }}>
+            Recovery capped at {recoveryCap} until fed/watered
+          </span>
+        )}
+      </div>
+
+      <div style={{ borderTop: '1px solid var(--border)', marginBottom: 14 }} />
+
+      {/* Endurance roll modifier breakdown */}
+      <div style={{ marginBottom: 12 }}>
+        <div style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>Endurance Roll Modifier</div>
+        <div style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden', marginBottom: 10 }}>
+          {[
+            { label: 'Base Endurance (BD + race)', value: autoEndurance, always: true },
+            { label: 'Armor Man. Penalty',         value: armorManPenalty },
+            { label: 'Accumulated Fatigue',        value: pen },
+            { label: 'Conditions',                 value: condMod, showEdit: true },
+          ].map(({ label, value, always, showEdit }) => {
+            if (!always && value === 0 && !showEdit) return null
+            return (
+              <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '6px 12px', borderBottom: '1px solid var(--border)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <span style={{ fontSize: 12, color: 'var(--text2)' }}>{label}</span>
+                  {showEdit && (
+                    <button onClick={() => setCondOpen(p => !p)}
+                      style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent)', fontSize: 10, padding: '0 3px' }}>
+                      {condOpen ? 'hide' : 'edit'}
+                    </button>
+                  )}
+                </div>
+                <span style={{ fontSize: 13, fontWeight: 700, color: value < 0 ? 'var(--danger)' : value > 0 ? 'var(--success)' : 'var(--text3)' }}>
+                  {fmtOpt(value)}
+                </span>
+              </div>
+            )
+          })}
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 12px' }}>
+            <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text)' }}>Total Modifier</span>
+            <span style={{ fontSize: 16, fontWeight: 800, color: rollMod < 0 ? 'var(--danger)' : rollMod > 0 ? 'var(--success)' : 'var(--text3)' }}>{fmt(rollMod)}</span>
+          </div>
+        </div>
+
+        {/* Conditions panel */}
+        {condOpen && (
+          <div style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 8, padding: '10px 12px', marginBottom: 10 }}>
+            <div style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>Conditions (Table 5-5)</div>
+            <div style={{ display: 'grid', gap: 5 }}>
+              {FATIGUE_COND_ROWS.map(({ key, label, rate, unit, div }) => {
+                const val = conds[key] || 0
+                const mult = div ? Math.floor(val / div) : val
+                const pen_ = mult * rate
+                return (
+                  <div key={key} style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                    <span style={{ flex: 1, fontSize: 11, color: 'var(--text2)', minWidth: 0 }}>{label}</span>
+                    <input type="number" value={val || ''} min={0}
+                      onChange={e => updateCharacter({ fatigue_conditions: { ...conds, [key]: Number(e.target.value) || 0 } })}
+                      style={{ width: 50, textAlign: 'center', padding: '3px 4px', flexShrink: 0 }} />
+                    <span style={{ fontSize: 10, color: 'var(--text3)', width: 58, flexShrink: 0 }}>{unit}</span>
+                    <span style={{ fontSize: 11, fontWeight: 700, width: 34, textAlign: 'right', flexShrink: 0, color: pen_ < 0 ? 'var(--danger)' : 'var(--text3)' }}>
+                      {pen_ !== 0 ? fmt(pen_) : '—'}
+                    </span>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Roll simulator */}
+        <div style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>Endurance Roll</div>
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap', marginBottom: 8 }}>
+          <span style={{ fontSize: 11, color: 'var(--text3)' }}>d100OE</span>
+          <input type="number" value={rollInput} onChange={e => setRollInput(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && band && applyRoll()}
+            placeholder="—" style={{ width: 72, textAlign: 'center', padding: '5px 6px', fontSize: 16 }} />
+          <span style={{ fontSize: 11, color: 'var(--text3)' }}>{rollMod >= 0 ? '+' : ''}{rollMod} =</span>
+          <span style={{ fontSize: 18, fontWeight: 800, color: rollTotal != null ? (band?.color || 'var(--text3)') : 'var(--text3)' }}>
+            {rollTotal ?? '—'}
+          </span>
+        </div>
+        {band && (
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+            <span style={{ fontSize: 12, fontWeight: 700, color: band.color, padding: '2px 8px', borderRadius: 4, border: `1px solid ${band.color}` }}>{band.label}</span>
+            <span style={{ fontSize: 11, color: 'var(--text2)' }}>
+              {band.delta < 0 ? `Reduce fatigue ${band.delta}` : band.delta > 0 ? `Fatigue +${band.delta}` : 'No change'}
+              {band.hits ? ', suffer 10 hits' : ''}
+            </span>
+            <button onClick={applyRoll} style={sb(band.color)}>Apply</button>
+          </div>
+        )}
+      </div>
+
+      {/* Check intervals reference */}
+      <div style={{ borderTop: '1px solid var(--border)', paddingTop: 12 }}>
+        <div style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 6 }}>Check Intervals</div>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3px 20px' }}>
+          {FATIGUE_INTERVALS.map(([pace, interval]) => (
+            <div key={pace} style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, padding: '2px 0', borderBottom: '1px solid var(--border)' }}>
+              <span style={{ color: 'var(--text2)' }}>{pace}</span>
+              <span style={{ color: 'var(--text3)' }}>{interval}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
+  )
+}
+
 // ── Main view ─────────────────────────────────────────────────────────────────
 export default function CharacterSheet() {
   const { activeChar, updateCharacter, updateStat, updateSkill, addWeapon, updateWeapon, removeWeapon } = useCharacter()
@@ -348,14 +591,18 @@ export default function CharacterSheet() {
   const [paceOpen,        setPaceOpen]        = usePersistentOpen('rm_panel_pace',         false)
   const [weaponsOpen,     setWeaponsOpen]     = usePersistentOpen('rm_panel_weapons',      true)
   const [armorOpen,       setArmorOpen]       = usePersistentOpen('rm_panel_armor',        true)
+  const [fatigueOpen,     setFatigueOpen]     = usePersistentOpen('rm_panel_fatigue',      true)
   const [showDetail,      toggleDetail]       = usePersistentOpen('rm_derived_detail',     false)
   const [showArmorDetail, toggleArmorDetail]  = usePersistentOpen('rm_armor_detail',       false)
   useScrollRestore('rm_scroll_sheet')
   const c = activeChar
   if (!c) return null
 
-  const db  = getDefensiveBonus(c)
-  const ini = getInitiativeBonus(c)
+  const db           = getDefensiveBonus(c)
+  const baseIni      = getInitiativeBonus(c)
+  const fatiguePen   = getFatiguePenalty(c)            // 0 or negative
+  const iniPenalty   = Math.trunc(fatiguePen / 10)     // -1 per -10 total penalty
+  const ini          = baseIni + iniPenalty
   const realmStat = REALM_STAT[c.realm]
   const rrBonuses = getResistanceBonuses(c)
   const talentB   = getTalentBonuses(c)
@@ -484,8 +731,11 @@ export default function CharacterSheet() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(110px,1fr))', gap: 8 }}>
           <StatCard label="Def Bonus" value={fmt(db)} color={db > 0 ? 'var(--success)' : 'var(--text)'}
             sub={talentB.db ? `Qu×3 + ${talentB.db} talent` : 'Qu×3'} showDetail={showDetail} />
-          <StatCard label="Initiative" value={fmt(ini)} color={ini > 0 ? 'var(--accent)' : 'var(--text)'}
-            sub={talentB.initiative ? `Qu + ${talentB.initiative} talent` : 'Qu bonus'} showDetail={showDetail} />
+          <StatCard label="Initiative" value={fmt(ini)} color={ini > 0 ? 'var(--accent)' : ini < 0 ? 'var(--danger)' : 'var(--text)'}
+            sub={iniPenalty < 0
+              ? `Qu${talentB.initiative ? ` + ${talentB.initiative}T` : ''} ${iniPenalty} fatigue`
+              : talentB.initiative ? `Qu + ${talentB.initiative} talent` : 'Qu bonus'}
+            showDetail={showDetail} />
           <EditStat label="Endurance" field="endurance" char={c} onUpdate={updateCharacter} autoValue={autoEndurance}
             sub={talentB.endurance ? `BD + ${talentB.endurance > 0 ? '+' : ''}${talentB.endurance} talent + race` : 'BD + race'} showDetail={showDetail} />
           <StatCard
@@ -631,6 +881,16 @@ export default function CharacterSheet() {
           </table>
         </div>
         <p style={{ fontSize: 10, color: 'var(--text3)', marginTop: 8, display: 'flex', alignItems: 'center', gap: 4 }}><DiamondIcon size={7} color="var(--accent)" /> Realm stat · Bonus = stat bonus + racial + special</p>
+      </Card>
+
+      {/* Fatigue & Endurance */}
+      <Card title="Fatigue & Endurance" onToggle={setFatigueOpen} isOpen={fatigueOpen}>
+        <FatigueCard
+          c={c}
+          updateCharacter={updateCharacter}
+          autoEndurance={autoEndurance}
+          armorManPenalty={armorTotals.man}
+        />
       </Card>
 
       {/* Weapons */}

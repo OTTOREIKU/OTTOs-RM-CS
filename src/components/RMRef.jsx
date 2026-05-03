@@ -13,7 +13,7 @@ import equipmentData  from '../data/equipment.json'
 import spellListsData        from '../data/spell_lists.json'
 import spellDescriptionsData from '../data/spell_descriptions.json'
 import { loadNotebook } from '../store/notebook.js'
-import { rankBonus, getTotalStatBonus, getSpellCastingBonus, getSpellMasteryBonus } from '../utils/calc.js'
+import { rankBonus, getTotalStatBonus, getSpellCastingBonus, getSpellMasteryBonus, getFatiguePenalty } from '../utils/calc.js'
 import { useCharacter } from '../store/CharacterContext.jsx'
 
 // ── Type configuration ─────────────────────────────────────────────────────────
@@ -296,27 +296,32 @@ function SkillTooltip({ item }) {
         <div style={{ fontSize: 11, color: 'var(--text3)', fontStyle: 'italic' }}>
           Not trained — add ranks in the Skills tab.
         </div>
-      ) : bonusData ? (
-        <>
-          <div style={{ textAlign: 'center', marginBottom: 10 }}>
-            <div style={{ fontSize: 30, fontWeight: 800, lineHeight: 1,
-              color: bonusData.total >= 0 ? 'var(--success)' : 'var(--danger)' }}>
-              {bonusData.total >= 0 ? `+${bonusData.total}` : bonusData.total}
+      ) : bonusData ? (() => {
+        const fatiguePen  = c ? getFatiguePenalty(c) : 0
+        const displayTotal = bonusData.total + fatiguePen
+        return (
+          <>
+            <div style={{ textAlign: 'center', marginBottom: 10 }}>
+              <div style={{ fontSize: 30, fontWeight: 800, lineHeight: 1,
+                color: displayTotal >= 0 ? 'var(--success)' : 'var(--danger)' }}>
+                {displayTotal >= 0 ? `+${displayTotal}` : displayTotal}
+              </div>
+              <div style={{ fontSize: 10, color: 'var(--text3)', marginTop: 3 }}>
+                {bonusData.ranks} rank{bonusData.ranks !== 1 ? 's' : ''}
+              </div>
             </div>
-            <div style={{ fontSize: 10, color: 'var(--text3)', marginTop: 3 }}>
-              {bonusData.ranks} rank{bonusData.ranks !== 1 ? 's' : ''}
+            <div style={{ borderTop: '1px solid var(--border)', paddingTop: 6 }}>
+              <BonusRow label="Rank bonus"  value={bonusData.rb} />
+              <BonusRow label="Stat bonus"  value={bonusData.statB} />
+              <BonusRow label="Item"        value={bonusData.item} />
+              <BonusRow label="Misc bonus"  value={bonusData.misc} />
+              <BonusRow label="Talents"     value={bonusData.autoBonus} />
+              <BonusRow label="Proficiency" value={bonusData.profBonus} />
+              <BonusRow label="Fatigue"     value={fatiguePen} />
             </div>
-          </div>
-          <div style={{ borderTop: '1px solid var(--border)', paddingTop: 6 }}>
-            <BonusRow label="Rank bonus"  value={bonusData.rb} />
-            <BonusRow label="Stat bonus"  value={bonusData.statB} />
-            <BonusRow label="Item"        value={bonusData.item} />
-            <BonusRow label="Misc bonus"  value={bonusData.misc} />
-            <BonusRow label="Talents"     value={bonusData.autoBonus} />
-            <BonusRow label="Proficiency" value={bonusData.profBonus} />
-          </div>
-        </>
-      ) : null}
+          </>
+        )
+      })() : null}
     </>
   )
 }
@@ -391,25 +396,30 @@ function WeaponTooltip({ item }) {
         </>
       ) : !c ? (
         <div style={{ fontSize: 11, color: 'var(--text3)', fontStyle: 'italic' }}>No character loaded.</div>
-      ) : bonusData ? (
-        <>
-          <div style={{ textAlign: 'center', marginBottom: 10 }}>
-            <div style={{ fontSize: 10, color: 'var(--text3)', marginBottom: 2,
-              textTransform: 'uppercase', letterSpacing: '0.06em' }}>Offensive Bonus</div>
-            <div style={{ fontSize: 30, fontWeight: 800, lineHeight: 1,
-              color: bonusData.total >= 0 ? 'var(--success)' : 'var(--danger)' }}>
-              {bonusData.total >= 0 ? `+${bonusData.total}` : bonusData.total}
+      ) : bonusData ? (() => {
+        const fatiguePen   = c ? getFatiguePenalty(c) : 0
+        const displayTotal = bonusData.total + fatiguePen
+        return (
+          <>
+            <div style={{ textAlign: 'center', marginBottom: 10 }}>
+              <div style={{ fontSize: 10, color: 'var(--text3)', marginBottom: 2,
+                textTransform: 'uppercase', letterSpacing: '0.06em' }}>Offensive Bonus</div>
+              <div style={{ fontSize: 30, fontWeight: 800, lineHeight: 1,
+                color: displayTotal >= 0 ? 'var(--success)' : 'var(--danger)' }}>
+                {displayTotal >= 0 ? `+${displayTotal}` : displayTotal}
+              </div>
+              <div style={{ fontSize: 10, color: 'var(--text3)', marginTop: 3 }}>
+                {bonusData.ranks} rank{bonusData.ranks !== 1 ? 's' : ''} in {item.skill_name}
+              </div>
             </div>
-            <div style={{ fontSize: 10, color: 'var(--text3)', marginTop: 3 }}>
-              {bonusData.ranks} rank{bonusData.ranks !== 1 ? 's' : ''} in {item.skill_name}
+            <div style={{ borderTop: '1px solid var(--border)', paddingTop: 6 }}>
+              <BonusRow label={`Stat (${bonusData.statNames.map(s => s.slice(0,2)).join('+')})`} value={bonusData.statBonus} />
+              <BonusRow label="Rank bonus" value={bonusData.rb} />
+              <BonusRow label="Fatigue"    value={fatiguePen} />
             </div>
-          </div>
-          <div style={{ borderTop: '1px solid var(--border)', paddingTop: 6 }}>
-            <BonusRow label={`Stat (${bonusData.statNames.map(s => s.slice(0,2)).join('+')})`} value={bonusData.statBonus} />
-            <BonusRow label="Rank bonus" value={bonusData.rb} />
-          </div>
-        </>
-      ) : null}
+          </>
+        )
+      })() : null}
     </>
   )
 }
@@ -549,39 +559,44 @@ function SpellTooltip({ item }) {
         <div style={{ fontSize: 11, color: 'var(--text3)', fontStyle: 'italic' }}>
           No ranks in {item.list} — add them in the Spells tab.
         </div>
-      ) : (
-        <>
-          {/* Casting modifier — primary number */}
-          <div style={{ textAlign: 'center', marginBottom: 8 }}>
-            <div style={{ fontSize: 10, color: 'var(--text3)', marginBottom: 2,
-              textTransform: 'uppercase', letterSpacing: '0.06em' }}>Casting modifier</div>
-            <div style={{ fontSize: 30, fontWeight: 800, lineHeight: 1,
-              color: castBonus >= 0 ? 'var(--success)' : 'var(--danger)' }}>
-              {castBonus >= 0 ? `+${castBonus}` : castBonus}
+      ) : (() => {
+        const fatiguePen   = c ? getFatiguePenalty(c) : 0
+        const displayCast  = castBonus + fatiguePen
+        return (
+          <>
+            {/* Casting modifier — primary number */}
+            <div style={{ textAlign: 'center', marginBottom: 8 }}>
+              <div style={{ fontSize: 10, color: 'var(--text3)', marginBottom: 2,
+                textTransform: 'uppercase', letterSpacing: '0.06em' }}>Casting modifier</div>
+              <div style={{ fontSize: 30, fontWeight: 800, lineHeight: 1,
+                color: displayCast >= 0 ? 'var(--success)' : 'var(--danger)' }}>
+                {displayCast >= 0 ? `+${displayCast}` : displayCast}
+              </div>
+              <div style={{ fontSize: 10, color: 'var(--text3)', marginTop: 3 }}>
+                {ranks} rank{ranks !== 1 ? 's' : ''} in list
+              </div>
             </div>
-            <div style={{ fontSize: 10, color: 'var(--text3)', marginTop: 3 }}>
-              {ranks} rank{ranks !== 1 ? 's' : ''} in list
+
+            {/* Spell accessibility badge */}
+            <div style={{
+              textAlign: 'center', marginBottom: 8, padding: '3px 8px', borderRadius: 5, fontSize: 10, fontWeight: 700,
+              background: accessible ? 'var(--success)20' : 'var(--danger)20',
+              color: accessible ? 'var(--success)' : 'var(--danger)',
+              border: `1px solid ${accessible ? 'var(--success)' : 'var(--danger)'}40`,
+            }}>
+              {accessible
+                ? `Lv ${item.level} accessible`
+                : `Need ${item.level - ranks} more rank${item.level - ranks !== 1 ? 's' : ''} for Lv ${item.level}`}
             </div>
-          </div>
 
-          {/* Spell accessibility badge */}
-          <div style={{
-            textAlign: 'center', marginBottom: 8, padding: '3px 8px', borderRadius: 5, fontSize: 10, fontWeight: 700,
-            background: accessible ? 'var(--success)20' : 'var(--danger)20',
-            color: accessible ? 'var(--success)' : 'var(--danger)',
-            border: `1px solid ${accessible ? 'var(--success)' : 'var(--danger)'}40`,
-          }}>
-            {accessible
-              ? `Lv ${item.level} accessible`
-              : `Need ${item.level - ranks} more rank${item.level - ranks !== 1 ? 's' : ''} for Lv ${item.level}`}
-          </div>
-
-          {/* Mastery bonus */}
-          <div style={{ borderTop: '1px solid var(--border)', paddingTop: 6 }}>
-            <BonusRow label="Mastery bonus" value={mastBonus} />
-          </div>
-        </>
-      )}
+            {/* Breakdown */}
+            <div style={{ borderTop: '1px solid var(--border)', paddingTop: 6 }}>
+              <BonusRow label="Mastery bonus" value={mastBonus} />
+              <BonusRow label="Fatigue"       value={fatiguePen} />
+            </div>
+          </>
+        )
+      })()}
     </>
   )
 }

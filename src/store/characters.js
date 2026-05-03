@@ -109,6 +109,22 @@ export function makeBlankCharacter(id) {
     // Injuries / conditions
     injuries: [],
 
+    // Fatigue tracking (CoreLaw §5.5)
+    fatigue: {
+      penalty: 0,   // accumulated from Endurance rolls (0 to -50)
+      injury:  0,   // overflow past -50, treated as a true injury penalty
+    },
+    // Conditions feeding Table 5-5 Endurance roll modifier
+    fatigue_conditions: {
+      days_no_sleep:   0,   // -20 per day
+      days_half_sleep: 0,   // -10 per day (4 hr)
+      hours_no_water:  0,   // -5 per hour (after first day of none)
+      days_no_food:    0,   // -10 per day
+      days_half_food:  0,   // -10 per 3 days
+      altitude_ft:     0,   // -10 per 2500 ft
+      temp_offset_f:   0,   // -5 per 5°F outside acclimatized range
+    },
+
     // XP
     experience: 0,
     experience_to_next: 10000,
