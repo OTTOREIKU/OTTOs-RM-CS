@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { useScrollRestore } from '../hooks/persist.js'
 import { ChevronDownIcon, ChevronUpIcon, ChevronRightIcon, InfoIcon } from '../components/Icons.jsx'
-import { rankBonus, getTotalStatBonus, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus } from '../utils/calc.js'
+import { rankBonus, getTotalStatBonus, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getFatiguePenalty } from '../utils/calc.js'
 import spellLists from '../data/spell_lists.json'
 import spellDescs from '../data/spell_descriptions.json'
 import { REALM_COLORS } from '../store/theme.js'
@@ -98,9 +98,10 @@ export default function SpellsView() {
     c ? Object.entries(spellLists).filter(([name]) => (c.spell_lists?.[name]?.ranks ?? 0) > 0) : [],
   [c])
 
+  const fatiguePen = c ? getFatiguePenalty(c) : 0
   function ranks(name)  { return c?.spell_lists?.[name]?.ranks ?? 0 }
-  function scr(name)    { return c ? getSpellCastingBonus(c, name) : null }
-  function mastery(name){ return c ? getSpellMasteryBonus(c, name) : null }
+  function scr(name)    { return c ? getSpellCastingBonus(c, name) + fatiguePen : null }
+  function mastery(name){ return c ? getSpellMasteryBonus(c, name) + fatiguePen : null }
 
   const display = tab === 'myspells' ? myLists : filteredLists
 
