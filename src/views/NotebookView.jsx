@@ -6,6 +6,7 @@ import { TaskItem } from '@tiptap/extension-task-item'
 import Placeholder from '@tiptap/extension-placeholder'
 import Underline from '@tiptap/extension-underline'
 import Highlight from '@tiptap/extension-highlight'
+import { Color, TextStyle } from '@tiptap/extension-text-style'
 import {
   ChevronDownIcon, ChevronRightIcon, PlusIcon, TrashIcon,
   PencilIcon, PinIcon, FolderIcon, FolderOpenIcon, DotsHIcon, FileIcon, CalendarIcon,
@@ -535,6 +536,8 @@ export default function NotebookView() {
       RMRefExtension,
       Underline,
       Highlight.configure({ multicolor: true }),
+      TextStyle,
+      Color,
     ],
     content: activeNote ? noteToHtml(activeNote.content) : '',
     onUpdate: ({ editor: e }) => {
@@ -565,8 +568,9 @@ export default function NotebookView() {
       bold:      e?.isActive('bold')                    ?? false,
       italic:    e?.isActive('italic')                  ?? false,
       strike:    e?.isActive('strike')                  ?? false,
-      underline: e?.isActive('underline')               ?? false,
-      highlight: e?.isActive('highlight')               ?? false,
+      underline:  e?.isActive('underline')               ?? false,
+      highlight:  e?.isActive('highlight')               ?? false,
+      textColor:  !!(e?.getAttributes('textStyle')?.color),
       h1:        e?.isActive('heading', { level: 1 })   ?? false,
       h2:        e?.isActive('heading', { level: 2 })   ?? false,
       h3:        e?.isActive('heading', { level: 3 })   ?? false,
@@ -1160,6 +1164,7 @@ export default function NotebookView() {
                       active={fmt.strike}    title="Strikethrough"><del>S</del></TBtn>
                   </TGroup>
                   <HighlightPicker editor={editor} active={fmt.highlight} />
+                  <TextColorPicker editor={editor} active={fmt.textColor} />
                   <TGroup>
                     <TBtn onClick={() => editor?.chain().focus().toggleHeading({ level: 1 }).run()}
                       active={fmt.h1}        title="Heading 1">H1</TBtn>
@@ -1414,23 +1419,34 @@ function NoteRow({ note, active, dragging, selected, inSelectionMode, indent = 1
 
 // ── Shared primitives ─────────────────────────────────────────────────────────
 
-// ── Highlight colour picker ───────────────────────────────────────────────────
+// ── Highlight / text-colour pickers ──────────────────────────────────────────
 
+// Dark enough to show white text clearly
 const HIGHLIGHT_PRESETS = [
-  { label: 'Yellow',  color: '#fde047' },
-  { label: 'Green',   color: '#86efac' },
-  { label: 'Cyan',    color: '#67e8f9' },
-  { label: 'Pink',    color: '#f9a8d4' },
-  { label: 'Orange',  color: '#fdba74' },
-  { label: 'Purple',  color: '#c4b5fd' },
+  { label: 'Gold',    color: '#b45309' },
+  { label: 'Green',   color: '#15803d' },
+  { label: 'Teal',    color: '#0e7490' },
+  { label: 'Rose',    color: '#be185d' },
+  { label: 'Orange',  color: '#c2410c' },
+  { label: 'Purple',  color: '#7e22ce' },
 ]
 
-function HighlightPicker({ editor, active }) {
+const TEXT_COLOR_PRESETS = [
+  { label: 'Red',     color: '#ef4444' },
+  { label: 'Orange',  color: '#f97316' },
+  { label: 'Yellow',  color: '#eab308' },
+  { label: 'Green',   color: '#22c55e' },
+  { label: 'Cyan',    color: '#06b6d4' },
+  { label: 'Blue',    color: '#6366f1' },
+  { label: 'Purple',  color: '#a855f7' },
+  { label: 'Pink',    color: '#ec4899' },
+]
+
+// Shared swatch dropdown used by both pickers
+function ColorSwatchPopover({ presets, defaultCustom, onApply, onRemove, hasActive, label }) {
   const [open, setOpen] = useState(false)
   const ref = useRef(null)
-  const inputRef = useRef(null)
 
-  // Close on outside click
   useEffect(() => {
     if (!open) return
     function handle(e) { if (ref.current && !ref.current.contains(e.target)) setOpen(false) }
@@ -1438,35 +1454,27 @@ function HighlightPicker({ editor, active }) {
     return () => document.removeEventListener('mousedown', handle)
   }, [open])
 
-  function applyColor(color) {
-    editor?.chain().focus().setHighlight({ color }).run()
-    setOpen(false)
-  }
-  function removeHighlight() {
-    editor?.chain().focus().unsetHighlight().run()
-    setOpen(false)
-  }
+  function apply(color) { onApply(color); setOpen(false) }
 
   return (
     <div ref={ref} style={{ position: 'relative', marginRight: 2 }}>
       <div style={{ display: 'flex', border: '1px solid var(--border)', borderRadius: 5, overflow: 'hidden' }}>
-        {/* Active colour swatch / toggle button */}
         <button
           onMouseDown={e => e.preventDefault()}
           onClick={() => setOpen(o => !o)}
-          title="Highlight colour"
+          title={label}
           style={{
-            background: active ? 'var(--accent)' : 'transparent',
-            border: 'none', color: active ? '#fff' : 'var(--text2)',
+            background: hasActive ? 'var(--accent)' : 'transparent',
+            border: 'none', color: hasActive ? '#fff' : 'var(--text2)',
             padding: '3px 8px', fontSize: 12, cursor: 'pointer',
             fontFamily: 'inherit', lineHeight: 1.4,
             display: 'flex', alignItems: 'center', gap: 4,
             transition: 'background 0.1s, color 0.1s',
           }}
-          onMouseEnter={e => { if (!active) { e.currentTarget.style.background = 'var(--surface2)'; e.currentTarget.style.color = 'var(--text)' } }}
-          onMouseLeave={e => { if (!active) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text2)' } }}
+          onMouseEnter={e => { if (!hasActive) { e.currentTarget.style.background = 'var(--surface2)'; e.currentTarget.style.color = 'var(--text)' } }}
+          onMouseLeave={e => { if (!hasActive) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text2)' } }}
         >
-          <span style={{ fontSize: 11 }}>▌</span> HL
+          {label}
         </button>
       </div>
 
@@ -1475,16 +1483,15 @@ function HighlightPicker({ editor, active }) {
           position: 'absolute', top: 'calc(100% + 4px)', left: 0, zIndex: 200,
           background: 'var(--surface)', border: '1px solid var(--border2)',
           borderRadius: 8, padding: 8, boxShadow: '0 6px 20px rgba(0,0,0,0.4)',
-          display: 'flex', flexDirection: 'column', gap: 6, minWidth: 140,
+          display: 'flex', flexDirection: 'column', gap: 6, minWidth: 148,
         }}>
-          {/* Preset swatches */}
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-            {HIGHLIGHT_PRESETS.map(({ label, color }) => (
+            {presets.map(({ label: l, color }) => (
               <button
                 key={color}
                 onMouseDown={e => e.preventDefault()}
-                onClick={() => applyColor(color)}
-                title={label}
+                onClick={() => apply(color)}
+                title={l}
                 style={{
                   width: 22, height: 22, borderRadius: 4,
                   background: color, border: '2px solid var(--border)',
@@ -1495,33 +1502,56 @@ function HighlightPicker({ editor, active }) {
               />
             ))}
           </div>
-          {/* Custom colour */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             <label style={{ fontSize: 11, color: 'var(--text2)', flexShrink: 0 }}>Custom:</label>
             <input
-              ref={inputRef}
               type="color"
-              defaultValue="#fde047"
+              defaultValue={defaultCustom}
               onMouseDown={e => e.stopPropagation()}
-              onChange={e => applyColor(e.target.value)}
+              onChange={e => apply(e.target.value)}
               style={{ width: 30, height: 22, padding: 1, border: '1px solid var(--border)', borderRadius: 4, cursor: 'pointer', background: 'none' }}
             />
           </div>
-          {/* Remove */}
-          {active && (
+          {hasActive && onRemove && (
             <button
               onMouseDown={e => e.preventDefault()}
-              onClick={removeHighlight}
+              onClick={() => { onRemove(); setOpen(false) }}
               style={{
                 fontSize: 11, padding: '3px 6px', borderRadius: 4, cursor: 'pointer',
                 background: 'var(--surface2)', border: '1px solid var(--border)',
                 color: 'var(--text2)', fontFamily: 'inherit',
               }}
-            >✕ Remove highlight</button>
+            >✕ Remove</button>
           )}
         </div>
       )}
     </div>
+  )
+}
+
+function HighlightPicker({ editor, active }) {
+  return (
+    <ColorSwatchPopover
+      presets={HIGHLIGHT_PRESETS}
+      defaultCustom="#b45309"
+      hasActive={active}
+      label="HL"
+      onApply={color => editor?.chain().focus().setHighlight({ color }).run()}
+      onRemove={() => editor?.chain().focus().unsetHighlight().run()}
+    />
+  )
+}
+
+function TextColorPicker({ editor, active }) {
+  return (
+    <ColorSwatchPopover
+      presets={TEXT_COLOR_PRESETS}
+      defaultCustom="#ef4444"
+      hasActive={active}
+      label="A"
+      onApply={color => editor?.chain().focus().setColor(color).run()}
+      onRemove={() => editor?.chain().focus().unsetColor().run()}
+    />
   )
 }
 
