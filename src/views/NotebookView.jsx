@@ -436,7 +436,7 @@ export default function NotebookView() {
     if (!file) return
     e.target.value = ''
     try {
-      const { imported, skipped } = await importNotebookFromFile(file, 'merge')
+      const { imported, skipped } = await importNotebookFromFile(file, 'replace')
       setData(loadNotebook())
       setNbImportStatus(`Imported ${imported} note${imported !== 1 ? 's' : ''}${skipped ? `, skipped ${skipped} (already exist)` : ''}.`)
       setTimeout(() => setNbImportStatus(null), 4000)
