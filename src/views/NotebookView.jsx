@@ -4,6 +4,8 @@ import StarterKit from '@tiptap/starter-kit'
 import { TaskList } from '@tiptap/extension-task-list'
 import { TaskItem } from '@tiptap/extension-task-item'
 import Placeholder from '@tiptap/extension-placeholder'
+import Underline from '@tiptap/extension-underline'
+import Highlight from '@tiptap/extension-highlight'
 import {
   ChevronDownIcon, ChevronRightIcon, PlusIcon, TrashIcon,
   PencilIcon, PinIcon, FolderIcon, FolderOpenIcon, DotsHIcon, FileIcon, CalendarIcon,
@@ -531,6 +533,8 @@ export default function NotebookView() {
       TaskItem.configure({ nested: true }),
       Placeholder.configure({ placeholder: 'Start writing…' }),
       RMRefExtension,
+      Underline,
+      Highlight.configure({ multicolor: true }),
     ],
     content: activeNote ? noteToHtml(activeNote.content) : '',
     onUpdate: ({ editor: e }) => {
@@ -561,6 +565,8 @@ export default function NotebookView() {
       bold:      e?.isActive('bold')                    ?? false,
       italic:    e?.isActive('italic')                  ?? false,
       strike:    e?.isActive('strike')                  ?? false,
+      underline: e?.isActive('underline')               ?? false,
+      highlight: e?.isActive('highlight')               ?? false,
       h1:        e?.isActive('heading', { level: 1 })   ?? false,
       h2:        e?.isActive('heading', { level: 2 })   ?? false,
       h3:        e?.isActive('heading', { level: 3 })   ?? false,
@@ -1148,9 +1154,12 @@ export default function NotebookView() {
                       active={fmt.bold}      title="Bold (Ctrl+B)"><strong>B</strong></TBtn>
                     <TBtn onClick={() => editor?.chain().focus().toggleItalic().run()}
                       active={fmt.italic}    title="Italic (Ctrl+I)"><em>I</em></TBtn>
+                    <TBtn onClick={() => editor?.chain().focus().toggleUnderline().run()}
+                      active={fmt.underline} title="Underline (Ctrl+U)"><span style={{ textDecoration: 'underline' }}>U</span></TBtn>
                     <TBtn onClick={() => editor?.chain().focus().toggleStrike().run()}
                       active={fmt.strike}    title="Strikethrough"><del>S</del></TBtn>
                   </TGroup>
+                  <HighlightPicker editor={editor} active={fmt.highlight} />
                   <TGroup>
                     <TBtn onClick={() => editor?.chain().focus().toggleHeading({ level: 1 }).run()}
                       active={fmt.h1}        title="Heading 1">H1</TBtn>
@@ -1404,6 +1413,117 @@ function NoteRow({ note, active, dragging, selected, inSelectionMode, indent = 1
 }
 
 // ── Shared primitives ─────────────────────────────────────────────────────────
+
+// ── Highlight colour picker ───────────────────────────────────────────────────
+
+const HIGHLIGHT_PRESETS = [
+  { label: 'Yellow',  color: '#fde047' },
+  { label: 'Green',   color: '#86efac' },
+  { label: 'Cyan',    color: '#67e8f9' },
+  { label: 'Pink',    color: '#f9a8d4' },
+  { label: 'Orange',  color: '#fdba74' },
+  { label: 'Purple',  color: '#c4b5fd' },
+]
+
+function HighlightPicker({ editor, active }) {
+  const [open, setOpen] = useState(false)
+  const ref = useRef(null)
+  const inputRef = useRef(null)
+
+  // Close on outside click
+  useEffect(() => {
+    if (!open) return
+    function handle(e) { if (ref.current && !ref.current.contains(e.target)) setOpen(false) }
+    document.addEventListener('mousedown', handle)
+    return () => document.removeEventListener('mousedown', handle)
+  }, [open])
+
+  function applyColor(color) {
+    editor?.chain().focus().setHighlight({ color }).run()
+    setOpen(false)
+  }
+  function removeHighlight() {
+    editor?.chain().focus().unsetHighlight().run()
+    setOpen(false)
+  }
+
+  return (
+    <div ref={ref} style={{ position: 'relative', marginRight: 2 }}>
+      <div style={{ display: 'flex', border: '1px solid var(--border)', borderRadius: 5, overflow: 'hidden' }}>
+        {/* Active colour swatch / toggle button */}
+        <button
+          onMouseDown={e => e.preventDefault()}
+          onClick={() => setOpen(o => !o)}
+          title="Highlight colour"
+          style={{
+            background: active ? 'var(--accent)' : 'transparent',
+            border: 'none', color: active ? '#fff' : 'var(--text2)',
+            padding: '3px 8px', fontSize: 12, cursor: 'pointer',
+            fontFamily: 'inherit', lineHeight: 1.4,
+            display: 'flex', alignItems: 'center', gap: 4,
+            transition: 'background 0.1s, color 0.1s',
+          }}
+          onMouseEnter={e => { if (!active) { e.currentTarget.style.background = 'var(--surface2)'; e.currentTarget.style.color = 'var(--text)' } }}
+          onMouseLeave={e => { if (!active) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text2)' } }}
+        >
+          <span style={{ fontSize: 11 }}>▌</span> HL
+        </button>
+      </div>
+
+      {open && (
+        <div style={{
+          position: 'absolute', top: 'calc(100% + 4px)', left: 0, zIndex: 200,
+          background: 'var(--surface)', border: '1px solid var(--border2)',
+          borderRadius: 8, padding: 8, boxShadow: '0 6px 20px rgba(0,0,0,0.4)',
+          display: 'flex', flexDirection: 'column', gap: 6, minWidth: 140,
+        }}>
+          {/* Preset swatches */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+            {HIGHLIGHT_PRESETS.map(({ label, color }) => (
+              <button
+                key={color}
+                onMouseDown={e => e.preventDefault()}
+                onClick={() => applyColor(color)}
+                title={label}
+                style={{
+                  width: 22, height: 22, borderRadius: 4,
+                  background: color, border: '2px solid var(--border)',
+                  cursor: 'pointer', padding: 0,
+                }}
+                onMouseEnter={e => e.currentTarget.style.border = '2px solid var(--text)'}
+                onMouseLeave={e => e.currentTarget.style.border = '2px solid var(--border)'}
+              />
+            ))}
+          </div>
+          {/* Custom colour */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <label style={{ fontSize: 11, color: 'var(--text2)', flexShrink: 0 }}>Custom:</label>
+            <input
+              ref={inputRef}
+              type="color"
+              defaultValue="#fde047"
+              onMouseDown={e => e.stopPropagation()}
+              onChange={e => applyColor(e.target.value)}
+              style={{ width: 30, height: 22, padding: 1, border: '1px solid var(--border)', borderRadius: 4, cursor: 'pointer', background: 'none' }}
+            />
+          </div>
+          {/* Remove */}
+          {active && (
+            <button
+              onMouseDown={e => e.preventDefault()}
+              onClick={removeHighlight}
+              style={{
+                fontSize: 11, padding: '3px 6px', borderRadius: 4, cursor: 'pointer',
+                background: 'var(--surface2)', border: '1px solid var(--border)',
+                color: 'var(--text2)', fontFamily: 'inherit',
+              }}
+            >✕ Remove highlight</button>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
 
 function TGroup({ children }) {
   return (
