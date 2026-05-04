@@ -14,6 +14,7 @@ import weaponsDb from '../data/weapons.json'
 import spellListsDb from '../data/spell_lists.json'
 import skillsData from '../data/skills.json'
 import talentsData from '../data/talents.json'
+import skillCostsData from '../data/skill_costs.json'
 
 const REALMS   = ['Channeling', 'Essence', 'Mentalism']
 const SIZES    = ['Small', 'Medium', 'Large', 'Huge']
@@ -277,6 +278,125 @@ function CultureGrantsPanel({ culture, char, updateCharacter, updateSkill }) {
               </div>
             </>
           )}
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ── Knacks Sub-Panel (inside Identity card) ───────────────────────────────────
+function KnacksSubPanel({ char, updateCharacter, allSkillNames }) {
+  const [open, setOpen] = useState(false)
+  const knacks = char.knacks || []
+  const summary = knacks.length ? knacks.join(', ') : 'none set'
+  return (
+    <div style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--border)' }}>
+      <button onClick={() => setOpen(p => !p)} style={{
+        width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        background: 'none', border: 'none', cursor: 'pointer', padding: '2px 0',
+        color: 'var(--text2)', fontSize: 11, fontWeight: 600,
+        textTransform: 'uppercase', letterSpacing: '0.08em',
+      }}>
+        <span>Knacks</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          {!open && <span style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 400, textTransform: 'none', letterSpacing: 0 }}>{summary}</span>}
+          {open ? <ChevronUpIcon size={12} color="var(--text3)" /> : <ChevronDownIcon size={12} color="var(--text3)" />}
+        </div>
+      </button>
+      {open && (
+        <div style={{ marginTop: 8 }}>
+          <div style={{ fontSize: 11, color: 'var(--text3)', marginBottom: 8 }}>
+            2 knacks per character — each grants a permanent <strong style={{ color: 'var(--purple)' }}>+5</strong> to the chosen professional skill.
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+            {[0, 1].map(i => {
+              const val = knacks[i] || ''
+              return (
+                <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                  <div style={{ fontSize: 10, fontWeight: 600, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                    Knack {i + 1}
+                    {val && <span style={{ marginLeft: 6, color: 'var(--purple)', fontWeight: 700 }}>★ +5</span>}
+                  </div>
+                  <select
+                    value={val}
+                    onChange={e => {
+                      const next = [knacks[0] || '', knacks[1] || '']
+                      next[i] = e.target.value
+                      updateCharacter({ knacks: next.filter(Boolean) })
+                    }}
+                    style={{ width: '100%', fontSize: 13, padding: '5px 8px', borderRadius: 6,
+                      background: 'var(--surface2)', border: '1px solid var(--border)', color: 'var(--text)' }}
+                  >
+                    <option value="">— none —</option>
+                    {allSkillNames.map(name => (
+                      <option key={name} value={name}>{name}</option>
+                    ))}
+                  </select>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ── Combat Training Groups Sub-Panel (inside Identity card) ───────────────────
+const CT_GROUPS = ['Melee Weapons', 'Unarmed', 'Shield', 'Ranged Weapons']
+function CTGroupsSubPanel({ char, updateCharacter }) {
+  const [open, setOpen] = useState(false)
+  const groups = char.combat_training_groups || {}
+  const profession = char.profession || ''
+  const summary = CT_GROUPS.map(g => {
+    const t = groups[g] ?? 1
+    const cost = skillCostsData[`Combat Training ${t}`]?.[profession] || `Tier ${t}`
+    return `${g.replace(' Weapons', '')}: ${cost}`
+  }).join(' · ')
+  return (
+    <div style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--border)' }}>
+      <button onClick={() => setOpen(p => !p)} style={{
+        width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        background: 'none', border: 'none', cursor: 'pointer', padding: '2px 0',
+        color: 'var(--text2)', fontSize: 11, fontWeight: 600,
+        textTransform: 'uppercase', letterSpacing: '0.08em',
+      }}>
+        <span>Combat Training Groups</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          {!open && <span style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 400, textTransform: 'none', letterSpacing: 0 }}>{summary}</span>}
+          {open ? <ChevronUpIcon size={12} color="var(--text3)" /> : <ChevronDownIcon size={12} color="var(--text3)" />}
+        </div>
+      </button>
+      {open && (
+        <div style={{ marginTop: 8 }}>
+          <div style={{ fontSize: 11, color: 'var(--text3)', marginBottom: 8 }}>
+            Assign your profession's DP cost tier (Tier 1 = cheapest) to each weapon training group.
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 10 }}>
+            {CT_GROUPS.map(group => {
+              const tier = groups[group] ?? 1
+              return (
+                <div key={group} style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                  <div style={{ fontSize: 10, fontWeight: 600, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                    {group}
+                  </div>
+                  <select
+                    value={tier}
+                    onChange={e => updateCharacter({
+                      combat_training_groups: { ...groups, [group]: Number(e.target.value) }
+                    })}
+                    style={{ width: '100%', fontSize: 13, padding: '5px 8px', borderRadius: 6,
+                      background: 'var(--surface2)', border: '1px solid var(--border)', color: 'var(--text)' }}
+                  >
+                    {[1, 2, 3, 4].map(t => {
+                      const cost = skillCostsData[`Combat Training ${t}`]?.[profession]
+                      return <option key={t} value={t}>{cost ? `Tier ${t} — ${cost} DP` : `Tier ${t}`}</option>
+                    })}
+                  </select>
+                </div>
+              )
+            })}
+          </div>
         </div>
       )}
     </div>
@@ -596,8 +716,6 @@ export default function CharacterSheet() {
   const [fatigueOpen,     setFatigueOpen]     = usePersistentOpen('rm_panel_fatigue',      true)
   const [showDetail,      toggleDetail]       = usePersistentOpen('rm_derived_detail',     false)
   const [showArmorDetail, toggleArmorDetail]  = usePersistentOpen('rm_armor_detail',       false)
-  const [knacksOpen,      setKnacksOpen]      = usePersistentOpen('rm_panel_knacks',        true)
-  const [ctGroupsOpen,    setCtGroupsOpen]    = usePersistentOpen('rm_panel_ct_groups',     true)
   useScrollRestore('rm_scroll_sheet')
   const c = activeChar
   if (!c) return null
@@ -735,6 +853,8 @@ export default function CharacterSheet() {
             updateSkill={updateSkill}
           />
         )}
+        <KnacksSubPanel char={c} updateCharacter={updateCharacter} allSkillNames={allSkillNames} />
+        <CTGroupsSubPanel char={c} updateCharacter={updateCharacter} />
       </Card>
 
       {/* Derived stats row */}
@@ -1203,70 +1323,6 @@ export default function CharacterSheet() {
               </div>
             ))}
           </div>
-        </div>
-      </Card>
-
-      {/* Knacks */}
-      <Card title="Knacks" onToggle={setKnacksOpen} isOpen={knacksOpen}>
-        <div style={{ fontSize: 11, color: 'var(--text3)', marginBottom: 10 }}>
-          2 knacks per character — each grants a permanent <strong>+5</strong> bonus to the chosen professional skill.
-        </div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-          {[0, 1].map(i => {
-            const val = (c.knacks || [])[i] || ''
-            return (
-              <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                <div style={{ fontSize: 10, fontWeight: 600, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                  Knack {i + 1}
-                  {val && <span style={{ marginLeft: 6, color: 'var(--purple)', fontWeight: 700 }}>★ +5</span>}
-                </div>
-                <select
-                  value={val}
-                  onChange={e => {
-                    const next = [...Array(2)].map((_, j) => (c.knacks || [])[j] || '')
-                    next[i] = e.target.value
-                    updateCharacter({ knacks: next.filter(Boolean) })
-                  }}
-                  style={{ width: '100%', fontSize: 13, padding: '5px 8px', borderRadius: 6,
-                    background: 'var(--surface2)', border: '1px solid var(--border)', color: 'var(--text)' }}
-                >
-                  <option value="">— none —</option>
-                  {allSkillNames.map(name => (
-                    <option key={name} value={name}>{name}</option>
-                  ))}
-                </select>
-              </div>
-            )
-          })}
-        </div>
-      </Card>
-
-      {/* Combat Training Groups */}
-      <Card title="Combat Training Groups" onToggle={setCtGroupsOpen} isOpen={ctGroupsOpen}>
-        <div style={{ fontSize: 11, color: 'var(--text3)', marginBottom: 10 }}>
-          Assign your profession's DP cost tiers (1 = cheapest) to each weapon training group.
-        </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 10 }}>
-          {['Melee Weapons', 'Unarmed', 'Shield', 'Ranged Weapons'].map(group => {
-            const tier = c.combat_training_groups?.[group] ?? 1
-            return (
-              <div key={group} style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                <div style={{ fontSize: 10, fontWeight: 600, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                  {group}
-                </div>
-                <select
-                  value={tier}
-                  onChange={e => updateCharacter({
-                    combat_training_groups: { ...(c.combat_training_groups || {}), [group]: Number(e.target.value) }
-                  })}
-                  style={{ width: '100%', fontSize: 13, padding: '5px 8px', borderRadius: 6,
-                    background: 'var(--surface2)', border: '1px solid var(--border)', color: 'var(--text)' }}
-                >
-                  {[1, 2, 3, 4].map(t => <option key={t} value={t}>Tier {t}</option>)}
-                </select>
-              </div>
-            )
-          })}
         </div>
       </Card>
 
