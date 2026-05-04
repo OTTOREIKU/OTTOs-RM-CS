@@ -408,22 +408,15 @@ function triggerDownload(filename, jsonStr) {
   URL.revokeObjectURL(url)
 }
 
-export function exportCharacter(id, { includeNotebook = false } = {}) {
+export function exportCharacter(id) {
   const chars = loadCharacters()
   const char  = chars[id]
   if (!char) return
-  let notebook = null
-  if (includeNotebook) {
-    try { const raw = localStorage.getItem(NB_KEY); notebook = raw ? JSON.parse(raw) : null } catch {}
-  }
-  const _settings  = { theme: loadTheme(), display: loadDisplaySettings(), navPos: loadNavPos() }
-  const payload    = { _version: EXPORT_VERSION, _type: 'single', character: char, notebook, _settings }
-  const safe       = s => (s || '').replace(/[^a-z0-9]/gi, '_').replace(/_+/g, '_').replace(/^_|_$/g, '')
-  const name       = safe(char.name) || 'Character'
-  const race       = safe(char.race) || 'Unknown'
-  const profession = safe(char.profession) || 'Unknown'
-  const level      = char.level ?? 1
-  triggerDownload(`${name}_${race}_${profession}_${level}.json`, JSON.stringify(payload, null, 2))
+  const _settings = { theme: loadTheme(), display: loadDisplaySettings(), navPos: loadNavPos() }
+  const payload   = { _version: EXPORT_VERSION, _type: 'single', character: char, _settings }
+  const safe      = s => (s || '').replace(/[^a-z0-9]/gi, '_').replace(/_+/g, '_').replace(/^_|_$/g, '')
+  const name      = safe(char.name) || 'Character'
+  triggerDownload(`${name}.json`, JSON.stringify(payload, null, 2))
 }
 
 export function exportAllCharacters() {

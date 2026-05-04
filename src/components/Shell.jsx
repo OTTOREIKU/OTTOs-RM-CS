@@ -101,12 +101,7 @@ export default function Shell({ children }) {
 
   function handleExport(e) {
     e.stopPropagation()
-    if (activeId) exportCharacter(activeId, { includeNotebook: false })
-  }
-
-  function handleExportWithNotebook(e) {
-    e.stopPropagation()
-    if (activeId) exportCharacter(activeId, { includeNotebook: true })
+    if (activeId) exportCharacter(activeId)
   }
 
   async function handleImport(e) {
@@ -247,6 +242,23 @@ export default function Shell({ children }) {
 
                   <input ref={importRef} type="file" accept=".json" style={{ display: 'none' }} onChange={handleImport} />
                   <input ref={foundryImportRef} type="file" accept=".json" style={{ display: 'none' }} onChange={handleFoundryImport} />
+                  {activeId && (
+                    <div style={{ display: 'flex', gap: 6 }}>
+                      <button onClick={handleExport} style={{
+                        flex: 1, background: 'var(--surface2)', color: 'var(--text2)',
+                        border: '1px solid var(--border)', borderRadius: 7, padding: '7px 10px',
+                        fontSize: 12, cursor: 'pointer', fontWeight: 500,
+                      }}>Export</button>
+                      <button
+                        onClick={e => { e.stopPropagation(); setMenuOpen(false); setFoundryModalOpen(true) }}
+                        style={{
+                          flex: 1, background: 'var(--surface2)', color: 'var(--text2)',
+                          border: '1px solid var(--border)', borderRadius: 7, padding: '7px 10px',
+                          fontSize: 12, cursor: 'pointer', fontWeight: 500,
+                        }}
+                      >Export Foundry</button>
+                    </div>
+                  )}
                   <div style={{ display: 'flex', gap: 6 }}>
                     <button onClick={() => importRef.current?.click()} style={{
                       flex: 1, background: 'var(--surface2)', color: 'var(--text2)',
@@ -259,33 +271,6 @@ export default function Shell({ children }) {
                       fontSize: 12, cursor: 'pointer', fontWeight: 500,
                     }}>Import Foundry</button>
                   </div>
-                  {activeId && (
-                    <>
-                      <div style={{ display: 'flex', gap: 6 }}>
-                        <button onClick={handleExport} style={{
-                          flex: 1, background: 'var(--surface2)', color: 'var(--text2)',
-                          border: '1px solid var(--border)', borderRadius: 7, padding: '7px 10px',
-                          fontSize: 12, cursor: 'pointer', fontWeight: 500,
-                        }}>Export</button>
-                        <button onClick={handleExportWithNotebook} style={{
-                          flex: 1, background: 'var(--surface2)', color: 'var(--text2)',
-                          border: '1px solid var(--border)', borderRadius: 7, padding: '7px 10px',
-                          fontSize: 12, cursor: 'pointer', fontWeight: 500,
-                        }}>Export + Notebook</button>
-                      </div>
-                      <button
-                        onClick={e => { e.stopPropagation(); setMenuOpen(false); setFoundryModalOpen(true) }}
-                        style={{
-                          width: '100%', background: 'var(--surface2)', color: 'var(--text2)',
-                          border: '1px solid var(--border)', borderRadius: 7, padding: '7px 10px',
-                          fontSize: 12, cursor: 'pointer', fontWeight: 500,
-                          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-                        }}
-                      >
-                        <span>⚙</span> Export to Foundry VTT
-                      </button>
-                    </>
-                  )}
 
                   {importStatus && (
                     <div style={{
