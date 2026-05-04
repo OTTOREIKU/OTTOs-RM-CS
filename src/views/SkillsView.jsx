@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { useScrollRestore } from '../hooks/persist.js'
-import { rankBonus, getTotalStatBonus, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getNamedTalentBonus, getFatiguePenalty } from '../utils/calc.js'
+import { rankBonus, getTotalStatBonus, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getNamedTalentBonus, getFatiguePenalty, getKnackBonus } from '../utils/calc.js'
 import skillsData from '../data/skills.json'
 import skillCosts from '../data/skill_costs.json'
 import talentsData from '../data/talents.json'
@@ -226,7 +226,8 @@ function SkillRow({
   const defaultProf = skill.prof_type === 'Professional' || skill.prof_type === 'Knack'
   const isProf  = cs.proficient !== undefined ? cs.proficient : defaultProf
   const profBonus = isProf ? Math.min(totalRanks, 30) : 0
-  const total        = rb + combinedStatB + item + talent + autoBonus + profBonus
+  const knackBonus   = getKnackBonus(c, resolvedSkillName)
+  const total        = rb + combinedStatB + item + talent + autoBonus + profBonus + knackBonus
   const fatiguePen   = getFatiguePenalty(c)
   const displayTotal = total + fatiguePen
   const isSpec  = hasPlaceholder(skill.name)
@@ -314,6 +315,12 @@ function SkillRow({
         <span style={{ display: 'block', fontSize: 9, color: 'var(--accent)', lineHeight: 1 }}
           title={`Proficiency bonus +${profBonus} (= ranks, max 30)`}>
           P+{profBonus}
+        </span>
+      )}
+      {knackBonus > 0 && (
+        <span style={{ display: 'block', fontSize: 9, color: 'var(--purple)', lineHeight: 1 }}
+          title="Knack: +5 bonus">
+          ★+5
         </span>
       )}
     </div>

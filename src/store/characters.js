@@ -125,6 +125,20 @@ export function makeBlankCharacter(id) {
       temp_offset_f:   0,   // -5 per 5°F outside acclimatized range
     },
 
+    // Knacks (CoreLaw §2.X): 2 per character, each grants +5 to the chosen professional skill.
+    // Stored as resolved display names (e.g. "Melee: Dagger", "Perception").
+    knacks: [],
+
+    // Combat Training DP cost group assignment (CoreLaw §3.X):
+    // Player assigns which tier cost (1–4) applies to each training group.
+    // Each tier should be unique; defaults spread 1–4 evenly across groups.
+    combat_training_groups: {
+      'Melee Weapons':   1,
+      'Unarmed':         2,
+      'Shield':          3,
+      'Ranged Weapons':  4,
+    },
+
     // XP
     experience: 0,
     experience_to_next: 10000,

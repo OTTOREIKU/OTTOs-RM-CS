@@ -32,7 +32,25 @@ function parseSkillCosts(costStr) {
   return { first, second }
 }
 
-function getSkillCostsForChar(skill, profession) {
+// Map a Combat Training skill name to its weapon group.
+function getCTGroup(skillName) {
+  const n = (skillName || '').toLowerCase()
+  if (n.startsWith('melee'))   return 'Melee Weapons'
+  if (n.startsWith('unarmed')) return 'Unarmed'
+  if (n.startsWith('ranged'))  return 'Ranged Weapons'
+  if (n === 'shield')          return 'Shield'
+  return null
+}
+
+function getSkillCostsForChar(skill, profession, char) {
+  if (skill.category === 'Combat Training') {
+    const group = getCTGroup(skill.name)
+    if (group) {
+      const tier    = char?.combat_training_groups?.[group] ?? 1
+      const costStr = skillCosts[`Combat Training ${tier}`]?.[profession]
+      if (costStr) return parseSkillCosts(costStr)
+    }
+  }
   const costStr = skillCosts[skill.category]?.[profession] || skill.dev_cost
   return parseSkillCosts(costStr)
 }
@@ -469,7 +487,7 @@ function SkillStep({ c, lu, dispatch, skillSearch, setSkillSearch, dpLeft,
               <div style={{ border: '1px solid var(--border)', borderTop: 'none', borderRadius: '0 0 7px 7px', overflow: 'hidden' }}>
                 {filtered.map((skill, idx) => {
                   const displayName = skill.displayName || skill.name
-                  const costs    = getSkillCostsForChar(skill, c.profession)
+                  const costs    = getSkillCostsForChar(skill, c.profession, c)
                   const curRanks = skill._isCustom ? (skill._curRanks || 0) : (c.skills?.[skill.name]?.ranks || 0)
                   const buying   = lu.skillBuys[skill.name] || 0
                   const newRanks = curRanks + buying
@@ -639,7 +657,7 @@ function ReviewStep({ c, lu, onConfirm }) {
             const cs          = c.custom_skills?.find(cs => cs.id === name)
             const displayName = cs ? (cs.label || cs.template_name) : name
             const skillDef    = cs ? { category: cs.category, dev_cost: cs.dev_cost } : (skillsData.find(s => s.name === name) || {})
-            const costs       = getSkillCostsForChar(skillDef, c.profession)
+            const costs       = getSkillCostsForChar(skillDef, c.profession, c)
             const cur         = cs ? (cs.ranks || 0) : (c.skills?.[name]?.ranks || 0)
             return <Row key={name} label={displayName} value={`+${ranks} rank${ranks > 1 ? 's' : ''} (${cur} → ${cur + ranks}) · −${rankCostDelta(0, ranks, costs)} DP`} color="var(--accent)" />
           })}

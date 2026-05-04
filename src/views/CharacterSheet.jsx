@@ -3,7 +3,7 @@ import { usePersistentOpen, useScrollRestore } from '../hooks/persist.js'
 import { ChevronDownIcon, ChevronUpIcon, XIcon, CheckIcon, DiamondIcon, EyeOpenIcon, EyeClosedIcon } from '../components/Icons.jsx'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { STATS } from '../store/characters.js'
-import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getBaseHits, getEndurance, getPowerPoints, getWeightAllowance, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getFatiguePenalty, getEnduranceConditionModifier } from '../utils/calc.js'
+import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getBaseHits, getEndurance, getPowerPoints, getWeightAllowance, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getFatiguePenalty, getEnduranceConditionModifier, getKnackBonus } from '../utils/calc.js'
 import { REALM_COLORS, SPELL_SECTION_COLORS, RR_COLORS } from '../store/theme.js'
 import races from '../data/races.json'
 import professions from '../data/professions.json'
@@ -67,7 +67,9 @@ function computeSkillTotal(c, template, skillData, talentBonusMap) {
   const entries = (talentBonusMap[template?.name || ''] || [])
   const excluded = skillData.talent_excluded || []
   const autoBonus = entries.filter(e => !excluded.includes(e.instId)).reduce((s, e) => s + e.bonus, 0)
-  return rb + catStatB + skillStatB + item + talent + autoBonus + profBonus
+  const dispName = displaySkillName(template?.name || '', skillData?.label || '')
+  const knackBonus = getKnackBonus(c, dispName)
+  return rb + catStatB + skillStatB + item + talent + autoBonus + profBonus + knackBonus
 }
 
 const BMR_BASE = 10  // meters per round for Medium size
@@ -594,6 +596,8 @@ export default function CharacterSheet() {
   const [fatigueOpen,     setFatigueOpen]     = usePersistentOpen('rm_panel_fatigue',      true)
   const [showDetail,      toggleDetail]       = usePersistentOpen('rm_derived_detail',     false)
   const [showArmorDetail, toggleArmorDetail]  = usePersistentOpen('rm_armor_detail',       false)
+  const [knacksOpen,      setKnacksOpen]      = usePersistentOpen('rm_panel_knacks',        true)
+  const [ctGroupsOpen,    setCtGroupsOpen]    = usePersistentOpen('rm_panel_ct_groups',     true)
   useScrollRestore('rm_scroll_sheet')
   const c = activeChar
   if (!c) return null
@@ -606,6 +610,18 @@ export default function CharacterSheet() {
   const realmStat = REALM_STAT[c.realm]
   const rrBonuses = getResistanceBonuses(c)
   const talentB   = getTalentBonuses(c)
+
+  // All resolved skill display names for knack pickers
+  const allSkillNames = useMemo(() => {
+    const names = []
+    for (const [name, data] of Object.entries(c.skills || {})) {
+      names.push(displaySkillName(name, data.label || ''))
+    }
+    for (const cs of (c.custom_skills || [])) {
+      names.push(displaySkillName(cs.template_name, cs.label || ''))
+    }
+    return names.sort()
+  }, [c.skills, c.custom_skills])
 
   // Combat talent chips — display-only reminders in the weapons area
   const ct = useMemo(() => {
@@ -1187,6 +1203,70 @@ export default function CharacterSheet() {
               </div>
             ))}
           </div>
+        </div>
+      </Card>
+
+      {/* Knacks */}
+      <Card title="Knacks" onToggle={setKnacksOpen} isOpen={knacksOpen}>
+        <div style={{ fontSize: 11, color: 'var(--text3)', marginBottom: 10 }}>
+          2 knacks per character — each grants a permanent <strong>+5</strong> bonus to the chosen professional skill.
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+          {[0, 1].map(i => {
+            const val = (c.knacks || [])[i] || ''
+            return (
+              <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                <div style={{ fontSize: 10, fontWeight: 600, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                  Knack {i + 1}
+                  {val && <span style={{ marginLeft: 6, color: 'var(--purple)', fontWeight: 700 }}>★ +5</span>}
+                </div>
+                <select
+                  value={val}
+                  onChange={e => {
+                    const next = [...Array(2)].map((_, j) => (c.knacks || [])[j] || '')
+                    next[i] = e.target.value
+                    updateCharacter({ knacks: next.filter(Boolean) })
+                  }}
+                  style={{ width: '100%', fontSize: 13, padding: '5px 8px', borderRadius: 6,
+                    background: 'var(--surface2)', border: '1px solid var(--border)', color: 'var(--text)' }}
+                >
+                  <option value="">— none —</option>
+                  {allSkillNames.map(name => (
+                    <option key={name} value={name}>{name}</option>
+                  ))}
+                </select>
+              </div>
+            )
+          })}
+        </div>
+      </Card>
+
+      {/* Combat Training Groups */}
+      <Card title="Combat Training Groups" onToggle={setCtGroupsOpen} isOpen={ctGroupsOpen}>
+        <div style={{ fontSize: 11, color: 'var(--text3)', marginBottom: 10 }}>
+          Assign your profession's DP cost tiers (1 = cheapest) to each weapon training group.
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 10 }}>
+          {['Melee Weapons', 'Unarmed', 'Shield', 'Ranged Weapons'].map(group => {
+            const tier = c.combat_training_groups?.[group] ?? 1
+            return (
+              <div key={group} style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                <div style={{ fontSize: 10, fontWeight: 600, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                  {group}
+                </div>
+                <select
+                  value={tier}
+                  onChange={e => updateCharacter({
+                    combat_training_groups: { ...(c.combat_training_groups || {}), [group]: Number(e.target.value) }
+                  })}
+                  style={{ width: '100%', fontSize: 13, padding: '5px 8px', borderRadius: 6,
+                    background: 'var(--surface2)', border: '1px solid var(--border)', color: 'var(--text)' }}
+                >
+                  {[1, 2, 3, 4].map(t => <option key={t} value={t}>Tier {t}</option>)}
+                </select>
+              </div>
+            )
+          })}
         </div>
       </Card>
 

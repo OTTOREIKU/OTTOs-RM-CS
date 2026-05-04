@@ -182,6 +182,12 @@ export function getWeaponOB(char, weapon) {
   return statBonus + rb + (weapon.item_bonus ?? 0)
 }
 
+// Returns +5 if skillDisplayName is in the character's knack list, else 0.
+// Pass the *resolved* display name (e.g. "Melee: Dagger"), same as stored in char.knacks.
+export function getKnackBonus(char, skillDisplayName) {
+  return (char.knacks || []).includes(skillDisplayName) ? 5 : 0
+}
+
 export function getResistanceBonuses(char) {
   const level = char.level ?? 1
   const lvlBonus = level * 2
