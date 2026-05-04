@@ -226,7 +226,9 @@ function SkillRow({
   const defaultProf = skill.prof_type === 'Professional' || skill.prof_type === 'Knack'
   const isProf  = cs.proficient !== undefined ? cs.proficient : defaultProf
   const profBonus = isProf ? Math.min(totalRanks, 30) : 0
-  const total   = rb + combinedStatB + item + talent + autoBonus + profBonus
+  const total        = rb + combinedStatB + item + talent + autoBonus + profBonus
+  const fatiguePen   = getFatiguePenalty(c)
+  const displayTotal = total + fatiguePen
   const isSpec  = hasPlaceholder(skill.name)
   const editing     = !!editMode[rowKey]
   const noteOpen    = !!notesOpen[rowKey]
@@ -295,8 +297,8 @@ function SkillRow({
   const totalCell = (
     <div style={{ textAlign: 'center' }}>
       <span style={{ fontWeight: 700, fontSize: 13,
-        color: total > 0 ? 'var(--success)' : total < -10 ? 'var(--danger)' : 'var(--text2)' }}>
-        {total >= 0 ? `+${total}` : total}
+        color: displayTotal > 0 ? 'var(--success)' : displayTotal < -10 ? 'var(--danger)' : 'var(--text2)' }}>
+        {displayTotal >= 0 ? `+${displayTotal}` : displayTotal}
       </span>
       {(() => {
         const active = talentEntries.filter(e => !excludedTalents.includes(e.instId))
@@ -1032,8 +1034,9 @@ function SpellListRow({ list, char, updateSpellList, removeSpellList, sub, unloc
   const isProf = !!list.proficient
   const comp   = list.complementary || null   // { skill, type }
 
-  const scrVal     = char ? getSpellCastingBonus(char, list.name) : null
-  const masteryVal = char ? getSpellMasteryBonus(char, list.name) : null
+  const fatiguePen = char ? getFatiguePenalty(char) : 0
+  const scrVal     = char ? getSpellCastingBonus(char, list.name) + fatiguePen : null
+  const masteryVal = char ? getSpellMasteryBonus(char, list.name) + fatiguePen : null
 
   function upd(patch) { updateSpellList(list.name, { ...patch, category: sub }) }
 
