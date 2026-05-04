@@ -247,14 +247,14 @@ export default function Shell({ children }) {
                       <button onClick={handleExport} style={{
                         flex: 1, background: 'var(--surface2)', color: 'var(--text2)',
                         border: '1px solid var(--border)', borderRadius: 7, padding: '7px 10px',
-                        fontSize: 12, cursor: 'pointer', fontWeight: 500,
+                        fontSize: 11, cursor: 'pointer', fontWeight: 500,
                       }}>Export</button>
                       <button
                         onClick={e => { e.stopPropagation(); setMenuOpen(false); setFoundryModalOpen(true) }}
                         style={{
                           flex: 1, background: 'var(--surface2)', color: 'var(--text2)',
                           border: '1px solid var(--border)', borderRadius: 7, padding: '7px 10px',
-                          fontSize: 12, cursor: 'pointer', fontWeight: 500,
+                          fontSize: 11, cursor: 'pointer', fontWeight: 500,
                         }}
                       >Export Foundry</button>
                     </div>
@@ -263,12 +263,12 @@ export default function Shell({ children }) {
                     <button onClick={() => importRef.current?.click()} style={{
                       flex: 1, background: 'var(--surface2)', color: 'var(--text2)',
                       border: '1px solid var(--border)', borderRadius: 7, padding: '7px 10px',
-                      fontSize: 12, cursor: 'pointer', fontWeight: 500,
+                      fontSize: 11, cursor: 'pointer', fontWeight: 500,
                     }}>Import</button>
                     <button onClick={() => foundryImportRef.current?.click()} style={{
                       flex: 1, background: 'var(--surface2)', color: 'var(--text2)',
                       border: '1px solid var(--border)', borderRadius: 7, padding: '7px 10px',
-                      fontSize: 12, cursor: 'pointer', fontWeight: 500,
+                      fontSize: 11, cursor: 'pointer', fontWeight: 500,
                     }}>Import Foundry</button>
                   </div>
 
