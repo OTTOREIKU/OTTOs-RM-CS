@@ -185,7 +185,17 @@ export function getWeaponOB(char, weapon) {
 // Returns +5 if skillDisplayName is in the character's knack list, else 0.
 // Pass the *resolved* display name (e.g. "Melee: Dagger"), same as stored in char.knacks.
 export function getKnackBonus(char, skillDisplayName) {
-  return (char.knacks || []).includes(skillDisplayName) ? 5 : 0
+  const knacks = char.knacks || []
+  // Direct match (e.g. "Perception", "Melee: Blade")
+  if (knacks.includes(skillDisplayName)) return 5
+  // Category match for spell lists:
+  // A knack of "Spellcasting: Closed" applies to all Closed spell lists the character knows.
+  const listData = (char.spell_lists || {})[skillDisplayName]
+  if (listData) {
+    const category = listData.category || 'Base'
+    if (knacks.includes(`Spellcasting: ${category}`)) return 5
+  }
+  return 0
 }
 
 // Per CoreLaw: a character trained in a Realm receives +10 to RRs vs. that realm's magic.

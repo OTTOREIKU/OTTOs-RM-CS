@@ -739,10 +739,18 @@ export default function CharacterSheet() {
     for (const cs of (c.custom_skills || [])) {
       names.push(displaySkillName(cs.template_name, cs.label || ''))
     }
-    // Spell lists are also eligible knack targets
+    // Individual known spell lists
     for (const listName of Object.keys(c.spell_lists || {})) {
       names.push(listName)
     }
+    // Generic spellcasting category knacks (always available regardless of known lists)
+    names.push(
+      'Spellcasting: Base',
+      'Spellcasting: Open',
+      'Spellcasting: Closed',
+      'Spellcasting: Restricted',
+      'Spellcasting: Magical Ritual',
+    )
     return names.sort()
   }, [c.skills, c.custom_skills, c.spell_lists])
 

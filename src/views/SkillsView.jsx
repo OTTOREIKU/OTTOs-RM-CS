@@ -889,7 +889,7 @@ function SpellListsSection({ c, query, updateSpellList, removeSpellList, updateC
             : <ChevronRightIcon size={10} color="var(--text3)" />
           }
         </span>
-        <span onClick={() => setSectionOpen(o => !o)} style={{ fontWeight: 600, flex: 1, fontSize: 13, cursor: 'pointer' }}>Spell Lists</span>
+        <span onClick={() => setSectionOpen(o => !o)} style={{ fontWeight: 600, flex: 1, fontSize: 13, cursor: 'pointer' }}>Spellcasting</span>
 
         {/* Stat selector — editable when unlocked */}
         {unlocked ? (
