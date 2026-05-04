@@ -842,8 +842,12 @@ export default function CharacterSheet() {
     for (const cs of (c.custom_skills || [])) {
       names.push(displaySkillName(cs.template_name, cs.label || ''))
     }
+    // Spell lists are also eligible knack targets
+    for (const listName of Object.keys(c.spell_lists || {})) {
+      names.push(listName)
+    }
     return names.sort()
-  }, [c.skills, c.custom_skills])
+  }, [c.skills, c.custom_skills, c.spell_lists])
 
   // Combat talent chips — display-only reminders in the weapons area
   const ct = useMemo(() => {
