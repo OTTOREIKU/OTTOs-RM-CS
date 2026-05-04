@@ -1432,6 +1432,8 @@ const HIGHLIGHT_PRESETS = [
 ]
 
 const TEXT_COLOR_PRESETS = [
+  { label: 'White',   color: '#ffffff' },
+  { label: 'Black',   color: '#000000' },
   { label: 'Red',     color: '#ef4444' },
   { label: 'Orange',  color: '#f97316' },
   { label: 'Yellow',  color: '#eab308' },
@@ -1442,19 +1444,33 @@ const TEXT_COLOR_PRESETS = [
   { label: 'Pink',    color: '#ec4899' },
 ]
 
-// Shared swatch dropdown used by both pickers
+// Shared swatch dropdown used by both pickers.
+// Fix for native OS color-picker closing the popover:
+//   - Outside-click detection uses 'click' not 'mousedown'; the OS color dialog
+//     does not fire document click events, so dragging the picker handle is safe.
+//   - The custom <input type="color"> applies color via onChange without closing,
+//     so the user can drag the picker and see live updates. Clicking a preset still
+//     closes normally.
 function ColorSwatchPopover({ presets, defaultCustom, onApply, onRemove, hasActive, label }) {
   const [open, setOpen] = useState(false)
   const ref = useRef(null)
 
   useEffect(() => {
     if (!open) return
-    function handle(e) { if (ref.current && !ref.current.contains(e.target)) setOpen(false) }
-    document.addEventListener('mousedown', handle)
-    return () => document.removeEventListener('mousedown', handle)
+    // Delay one tick so the click that opened the popover doesn't instantly close it.
+    // Use 'click' not 'mousedown': the OS color-picker dialog doesn't fire document
+    // click events, so dragging the native picker won't accidentally close us.
+    let removeListener = () => {}
+    const tid = setTimeout(() => {
+      function handle(e) { if (ref.current && !ref.current.contains(e.target)) setOpen(false) }
+      document.addEventListener('click', handle)
+      removeListener = () => document.removeEventListener('click', handle)
+    }, 0)
+    return () => { clearTimeout(tid); removeListener() }
   }, [open])
 
-  function apply(color) { onApply(color); setOpen(false) }
+  // Preset swatch click: apply and close
+  function applyAndClose(color) { onApply(color); setOpen(false) }
 
   return (
     <div ref={ref} style={{ position: 'relative', marginRight: 2 }}>
@@ -1490,25 +1506,27 @@ function ColorSwatchPopover({ presets, defaultCustom, onApply, onRemove, hasActi
               <button
                 key={color}
                 onMouseDown={e => e.preventDefault()}
-                onClick={() => apply(color)}
+                onClick={() => applyAndClose(color)}
                 title={l}
                 style={{
                   width: 22, height: 22, borderRadius: 4,
-                  background: color, border: '2px solid var(--border)',
+                  background: color,
+                  border: color === '#ffffff' ? '2px solid var(--border2)' : '2px solid var(--border)',
                   cursor: 'pointer', padding: 0,
                 }}
                 onMouseEnter={e => e.currentTarget.style.border = '2px solid var(--text)'}
-                onMouseLeave={e => e.currentTarget.style.border = '2px solid var(--border)'}
+                onMouseLeave={e => e.currentTarget.style.border = color === '#ffffff' ? '2px solid var(--border2)' : '2px solid var(--border)'}
               />
             ))}
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             <label style={{ fontSize: 11, color: 'var(--text2)', flexShrink: 0 }}>Custom:</label>
+            {/* onChange applies live without closing; click on swatch closes instead */}
             <input
               type="color"
               defaultValue={defaultCustom}
-              onMouseDown={e => e.stopPropagation()}
-              onChange={e => apply(e.target.value)}
+              onClick={e => e.stopPropagation()}
+              onChange={e => onApply(e.target.value)}
               style={{ width: 30, height: 22, padding: 1, border: '1px solid var(--border)', borderRadius: 4, cursor: 'pointer', background: 'none' }}
             />
           </div>
