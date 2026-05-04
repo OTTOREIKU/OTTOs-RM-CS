@@ -1,8 +1,9 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react'
 import { NavLink, useNavigate, useLocation } from 'react-router-dom'
 import { useCharacter } from '../store/CharacterContext.jsx'
-import { exportCharacter, importCharactersFromFile } from '../store/characters.js'
+import { exportCharacter, importCharactersFromFile, loadCharacters, saveCharacters, saveActiveId } from '../store/characters.js'
 import FoundryExportModal from './FoundryExportModal.jsx'
+import { parseFoundryActor } from '../utils/foundryImport.js'
 import {
   FILE_SYNC_SUPPORTED, getLinkedHandle, getLinkedFileName,
   hasWritePermission, requestWritePermission,
@@ -33,7 +34,8 @@ export default function Shell({ children }) {
   const [backupMenuOpen, setBackupMenuOpen] = useState(false)
   const [isWide, setIsWide] = useState(() => window.innerWidth >= 640)
   const [navPos, setNavPos] = useState(() => loadNavPos())
-  const importRef = useRef(null)
+  const importRef        = useRef(null)
+  const foundryImportRef = useRef(null)
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -119,6 +121,33 @@ export default function Shell({ children }) {
     } catch (err) {
       setImportStatus('Error: ' + err.message)
       setTimeout(() => setImportStatus(null), 5000)
+    }
+  }
+
+  async function handleFoundryImport(e) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    e.target.value = ''
+    setMenuOpen(false)
+    try {
+      const text = await file.text()
+      const json = JSON.parse(text)
+      // Foundry actor exports have a "type" field of "Character"
+      if (!json.items || !json.system?.stats) {
+        throw new Error('File does not look like a Foundry actor export (missing items / system.stats)')
+      }
+      const newChar = parseFoundryActor(json)
+      const chars = loadCharacters()
+      chars[newChar.id] = newChar
+      saveCharacters(chars)
+      saveActiveId(newChar.id)
+      reloadCharacters()
+      navigate('/sheet')
+      setImportStatus(`Imported "${newChar.name}" from Foundry.`)
+      setTimeout(() => setImportStatus(null), 4000)
+    } catch (err) {
+      setImportStatus('Foundry import error: ' + err.message)
+      setTimeout(() => setImportStatus(null), 6000)
     }
   }
 
@@ -217,11 +246,19 @@ export default function Shell({ children }) {
                   }}>+ New Character</button>
 
                   <input ref={importRef} type="file" accept=".json" style={{ display: 'none' }} onChange={handleImport} />
-                  <button onClick={() => importRef.current?.click()} style={{
-                    width: '100%', background: 'var(--surface2)', color: 'var(--text2)',
-                    border: '1px solid var(--border)', borderRadius: 7, padding: '7px 10px',
-                    fontSize: 12, cursor: 'pointer', fontWeight: 500,
-                  }}>Import</button>
+                  <input ref={foundryImportRef} type="file" accept=".json" style={{ display: 'none' }} onChange={handleFoundryImport} />
+                  <div style={{ display: 'flex', gap: 6 }}>
+                    <button onClick={() => importRef.current?.click()} style={{
+                      flex: 1, background: 'var(--surface2)', color: 'var(--text2)',
+                      border: '1px solid var(--border)', borderRadius: 7, padding: '7px 10px',
+                      fontSize: 12, cursor: 'pointer', fontWeight: 500,
+                    }}>Import</button>
+                    <button onClick={() => foundryImportRef.current?.click()} style={{
+                      flex: 1, background: 'var(--surface2)', color: 'var(--text2)',
+                      border: '1px solid var(--border)', borderRadius: 7, padding: '7px 10px',
+                      fontSize: 12, cursor: 'pointer', fontWeight: 500,
+                    }}>Import Foundry</button>
+                  </div>
                   {activeId && (
                     <>
                       <div style={{ display: 'flex', gap: 6 }}>

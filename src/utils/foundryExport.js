@@ -21,6 +21,18 @@ function hasPlaceholder(name) {
   return /<[^>]+>/.test(name)
 }
 
+// Our template base name → Foundry system.name for special cases where they differ
+const OUR_BASE_TO_FOUNDRY = {
+  'Melee':             'Melee Weapons',
+  'Ranged':            'Ranged Weapons',
+  'Religion/Philosophy': 'Religion/Philosophy Lore',
+  'Directed Spells':   'Directed Spell',
+}
+
+function ourBaseToFoundryName(baseName) {
+  return OUR_BASE_TO_FOUNDRY[baseName] || baseName
+}
+
 function indent(jsonStr, spaces) {
   const pad = ' '.repeat(spaces)
   return jsonStr.split('\n').map((l, i) => i === 0 ? l : pad + l).join('\n')
@@ -55,16 +67,17 @@ export function generateFoundryScript(char) {
 
     if (hasPlaceholder(templateName)) {
       // e.g. "Melee: <weapon 1>" with label "Dagger"
-      // In Foundry these skills typically have system.name = category-level name
+      // In Foundry these skills have system.name = the group-level name
       // and system.specialization = the specific weapon/item.
-      // We match by specialization = label; system.name is set to the part before ":".
+      // We translate our base name to the Foundry name (e.g. "Melee" → "Melee Weapons").
       if (label) {
-        const baseName = templateName.split(':')[0].trim()   // "Melee"
+        const ourBase     = templateName.split(':')[0].trim()
+        const foundryName = ourBaseToFoundryName(ourBase)
         skillUpdates.push({
-          name:          baseName,
+          name:           foundryName,
           specialization: label,
           ranks,
-          _display:      `${baseName}: ${label}`,
+          _display:       `${ourBase}: ${label}`,
         })
       }
       // No label → nothing matchable, skip silently
@@ -82,18 +95,25 @@ export function generateFoundryScript(char) {
   for (const cs of (char.custom_skills || [])) {
     const ranks = cs.ranks ?? 0
     if (!ranks) continue
-    const baseName = hasPlaceholder(cs.template_name)
-      ? cs.template_name.split(':')[0].trim()
-      : (cs.label || cs.template_name)
-    const spec = hasPlaceholder(cs.template_name) ? (cs.label || null) : null
-    skillUpdates.push({
-      name:          baseName,
-      specialization: spec,
-      ranks,
-      _display:      cs.label
-        ? (hasPlaceholder(cs.template_name) ? `${cs.template_name.split(':')[0].trim()}: ${cs.label}` : cs.label)
-        : cs.template_name,
-    })
+    if (hasPlaceholder(cs.template_name)) {
+      if (!cs.label) continue  // no label → nothing matchable in Foundry
+      const ourBase     = cs.template_name.split(':')[0].trim()
+      const foundryName = ourBaseToFoundryName(ourBase)
+      skillUpdates.push({
+        name:           foundryName,
+        specialization: cs.label,
+        ranks,
+        _display:       `${ourBase}: ${cs.label}`,
+      })
+    } else {
+      // Non-placeholder custom skill (rare): match by name directly
+      skillUpdates.push({
+        name:           cs.label || cs.template_name,
+        specialization: null,
+        ranks,
+        _display:       cs.label || cs.template_name,
+      })
+    }
   }
 
   // ── Spell list updates ───────────────────────────────────────────────────────
