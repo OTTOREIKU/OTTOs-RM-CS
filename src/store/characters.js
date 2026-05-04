@@ -414,9 +414,12 @@ export function exportCharacter(id) {
   if (!char) return
   const _settings = { theme: loadTheme(), display: loadDisplaySettings(), navPos: loadNavPos() }
   const payload   = { _version: EXPORT_VERSION, _type: 'single', character: char, _settings }
-  const safe      = s => (s || '').replace(/[^a-z0-9]/gi, '_').replace(/_+/g, '_').replace(/^_|_$/g, '')
-  const name      = safe(char.name) || 'Character'
-  triggerDownload(`${name}.json`, JSON.stringify(payload, null, 2))
+  const safe       = s => (s || '').replace(/[^a-z0-9]/gi, '_').replace(/_+/g, '_').replace(/^_|_$/g, '')
+  const name       = safe(char.name)       || 'Character'
+  const race       = safe(char.race)       || 'Unknown'
+  const profession = safe(char.profession) || 'Unknown'
+  const level      = char.level ?? 1
+  triggerDownload(`${name}_${race}_${profession}_${level}.json`, JSON.stringify(payload, null, 2))
 }
 
 export function exportAllCharacters() {
