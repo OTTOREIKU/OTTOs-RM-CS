@@ -188,6 +188,9 @@ export function getKnackBonus(char, skillDisplayName) {
   return (char.knacks || []).includes(skillDisplayName) ? 5 : 0
 }
 
+// Per CoreLaw: a character trained in a Realm receives +10 to RRs vs. that realm's magic.
+const REALM_RR_TYPE = { Channeling: 'channeling', Essence: 'essence', Mentalism: 'mentalism' }
+
 export function getResistanceBonuses(char) {
   const level = char.level ?? 1
   const lvlBonus = level * 2
@@ -198,15 +201,31 @@ export function getResistanceBonuses(char) {
     physical:   'Constitution',
     fear:       'Self Discipline',
   }
+  // Realm bonus: +10 to the RR type matching the character's realm
+  const realmType = char.realm ? (REALM_RR_TYPE[char.realm] || null) : null
   const talentRR = getTalentBonuses(char).rr
   const result = {}
   for (const [type, statName] of Object.entries(RR_STATS)) {
     const stat = char.stats?.[statName]
-    const statB = stat ? getTotalStatBonus(stat) : 0
-    const special = char.rr_bonuses?.[type] ?? 0
-    result[type] = statB + lvlBonus + special + (talentRR[type] ?? 0)
+    const statB     = stat ? getTotalStatBonus(stat) : 0
+    const special   = char.rr_bonuses?.[type] ?? 0
+    const realmBonus = realmType === type ? 10 : 0
+    result[type] = statB + lvlBonus + realmBonus + special + (talentRR[type] ?? 0)
   }
   return result
+}
+
+// Returns just the breakdown for a single RR type (used in UI tooltips).
+export function getRRBreakdown(char, type) {
+  const RR_STATS = { channeling:'Intuition', essence:'Empathy', mentalism:'Presence', physical:'Constitution', fear:'Self Discipline' }
+  const statName  = RR_STATS[type] || ''
+  const stat      = char.stats?.[statName]
+  const statB     = stat ? getTotalStatBonus(stat) : 0
+  const lvlBonus  = (char.level ?? 1) * 2
+  const realmType = char.realm ? (REALM_RR_TYPE[char.realm] || null) : null
+  const realmBonus = realmType === type ? 10 : 0
+  const special   = char.rr_bonuses?.[type] ?? 0
+  return { statB, lvlBonus, realmBonus, special }
 }
 
 // Per CoreLaw p.109: SCR uses raw rank count, NOT the scaled rank bonus.

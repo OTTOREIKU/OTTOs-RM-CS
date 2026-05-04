@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect, useCallback } from 'react'
 import { NavLink, useNavigate, useLocation } from 'react-router-dom'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { exportCharacter, importCharactersFromFile } from '../store/characters.js'
+import FoundryExportModal from './FoundryExportModal.jsx'
 import {
   FILE_SYNC_SUPPORTED, getLinkedHandle, getLinkedFileName,
   hasWritePermission, requestWritePermission,
@@ -26,6 +27,7 @@ const NAV = [
 export default function Shell({ children }) {
   const { characters, activeId, activeChar, switchCharacter, createCharacter, deleteCharacter, reloadCharacters } = useCharacter()
   const [menuOpen, setMenuOpen] = useState(false)
+  const [foundryModalOpen, setFoundryModalOpen] = useState(false)
   const [importStatus, setImportStatus] = useState(null)
   const [backupFile, setBackupFile] = useState(null)
   const [backupMenuOpen, setBackupMenuOpen] = useState(false)
@@ -121,6 +123,10 @@ export default function Shell({ children }) {
   }
 
   return (
+    <>
+    {foundryModalOpen && activeChar && (
+      <FoundryExportModal char={activeChar} onClose={() => setFoundryModalOpen(false)} />
+    )}
     <div style={{ display: 'flex', flexDirection: 'column', height: '100dvh', overflow: 'hidden' }}>
 
       {/* ── Header ───────────────────────────────────────────────── */}
@@ -217,18 +223,31 @@ export default function Shell({ children }) {
                     fontSize: 12, cursor: 'pointer', fontWeight: 500,
                   }}>Import</button>
                   {activeId && (
-                    <div style={{ display: 'flex', gap: 6 }}>
-                      <button onClick={handleExport} style={{
-                        flex: 1, background: 'var(--surface2)', color: 'var(--text2)',
-                        border: '1px solid var(--border)', borderRadius: 7, padding: '7px 10px',
-                        fontSize: 12, cursor: 'pointer', fontWeight: 500,
-                      }}>Export</button>
-                      <button onClick={handleExportWithNotebook} style={{
-                        flex: 1, background: 'var(--surface2)', color: 'var(--text2)',
-                        border: '1px solid var(--border)', borderRadius: 7, padding: '7px 10px',
-                        fontSize: 12, cursor: 'pointer', fontWeight: 500,
-                      }}>Export + Notebook</button>
-                    </div>
+                    <>
+                      <div style={{ display: 'flex', gap: 6 }}>
+                        <button onClick={handleExport} style={{
+                          flex: 1, background: 'var(--surface2)', color: 'var(--text2)',
+                          border: '1px solid var(--border)', borderRadius: 7, padding: '7px 10px',
+                          fontSize: 12, cursor: 'pointer', fontWeight: 500,
+                        }}>Export</button>
+                        <button onClick={handleExportWithNotebook} style={{
+                          flex: 1, background: 'var(--surface2)', color: 'var(--text2)',
+                          border: '1px solid var(--border)', borderRadius: 7, padding: '7px 10px',
+                          fontSize: 12, cursor: 'pointer', fontWeight: 500,
+                        }}>Export + Notebook</button>
+                      </div>
+                      <button
+                        onClick={e => { e.stopPropagation(); setMenuOpen(false); setFoundryModalOpen(true) }}
+                        style={{
+                          width: '100%', background: 'var(--surface2)', color: 'var(--text2)',
+                          border: '1px solid var(--border)', borderRadius: 7, padding: '7px 10px',
+                          fontSize: 12, cursor: 'pointer', fontWeight: 500,
+                          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                        }}
+                      >
+                        <span>⚙</span> Export to Foundry VTT
+                      </button>
+                    </>
                   )}
 
                   {importStatus && (
@@ -382,6 +401,7 @@ export default function Shell({ children }) {
       </main>
 
     </div>
+    </>
   )
 }
 

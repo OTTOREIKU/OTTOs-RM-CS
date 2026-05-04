@@ -1,10 +1,10 @@
-import React, { useState, useMemo, useRef } from 'react'
+import React, { useState, useMemo } from 'react'
 import { usePersistentOpen, useScrollRestore } from '../hooks/persist.js'
 import { ChevronDownIcon, ChevronUpIcon, XIcon, CheckIcon, DiamondIcon, EyeOpenIcon, EyeClosedIcon } from '../components/Icons.jsx'
-import { generateFoundryScript } from '../utils/foundryExport.js'
+import FoundryExportModal from '../components/FoundryExportModal.jsx'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { STATS } from '../store/characters.js'
-import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getBaseHits, getEndurance, getPowerPoints, getWeightAllowance, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getFatiguePenalty, getEnduranceConditionModifier, getKnackBonus } from '../utils/calc.js'
+import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getRRBreakdown, getBaseHits, getEndurance, getPowerPoints, getWeightAllowance, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getFatiguePenalty, getEnduranceConditionModifier, getKnackBonus } from '../utils/calc.js'
 import { REALM_COLORS, SPELL_SECTION_COLORS, RR_COLORS } from '../store/theme.js'
 import races from '../data/races.json'
 import professions from '../data/professions.json'
@@ -706,113 +706,10 @@ function FatigueCard({ c, updateCharacter, autoEndurance, armorManPenalty }) {
   )
 }
 
-// ── Foundry Export Modal ──────────────────────────────────────────────────────
-function FoundryExportModal({ char, onClose }) {
-  const script = useMemo(() => generateFoundryScript(char), [char])
-  const textRef = useRef(null)
-  const [copied, setCopied] = useState(false)
-
-  function handleCopy() {
-    navigator.clipboard.writeText(script).then(() => {
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    }).catch(() => {
-      // Fallback: select text so user can Ctrl+C
-      textRef.current?.select()
-    })
-  }
-
-  return (
-    <div
-      onClick={onClose}
-      style={{
-        position: 'fixed', inset: 0, zIndex: 1000,
-        background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(2px)',
-        display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
-        padding: '24px 12px', overflowY: 'auto',
-      }}
-    >
-      <div
-        onClick={e => e.stopPropagation()}
-        style={{
-          width: '100%', maxWidth: 680,
-          background: 'var(--surface)', border: '1px solid var(--border)',
-          borderRadius: 14, overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
-        }}
-      >
-        {/* Header */}
-        <div style={{
-          padding: '14px 16px', borderBottom: '1px solid var(--border)',
-          display: 'flex', alignItems: 'center', gap: 10,
-        }}>
-          <div style={{ flex: 1 }}>
-            <div style={{ fontWeight: 700, fontSize: 14, color: 'var(--text)' }}>
-              Export to Foundry VTT
-            </div>
-            <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 2 }}>
-              Paste this script into the Foundry console (F12 → Console tab) and press Enter.
-            </div>
-          </div>
-          <button
-            onClick={handleCopy}
-            style={{
-              padding: '7px 16px', borderRadius: 8, fontWeight: 700, fontSize: 13, cursor: 'pointer',
-              background: copied ? 'var(--success)' : 'var(--accent)', color: '#fff', border: 'none',
-              transition: 'background 0.2s', minWidth: 80,
-            }}
-          >
-            {copied ? '✓ Copied!' : 'Copy'}
-          </button>
-          <button
-            onClick={onClose}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, color: 'var(--text3)' }}
-          >
-            <XIcon size={18} color="currentColor" />
-          </button>
-        </div>
-
-        {/* Instructions */}
-        <div style={{ padding: '10px 16px', borderBottom: '1px solid var(--border)', background: 'var(--surface2)' }}>
-          <ol style={{ margin: 0, paddingLeft: 18, fontSize: 12, color: 'var(--text2)', lineHeight: 1.7 }}>
-            <li>Open Foundry in your browser and press <strong>F12</strong> to open Developer Tools.</li>
-            <li>Click the <strong>Console</strong> tab.</li>
-            <li>Click <strong>Copy</strong> above, then paste (<strong>Ctrl+V</strong>) into the console and press <strong>Enter</strong>.</li>
-            <li>A notification will confirm how many fields were synced. Any missing skills appear in the console as warnings.</li>
-          </ol>
-          <div style={{ marginTop: 8, fontSize: 11, color: 'var(--text3)', fontStyle: 'italic' }}>
-            Skills and spell lists must already exist as items on the Foundry actor (added during character setup). The script only updates ranks/values — it will not create new items.
-          </div>
-        </div>
-
-        {/* Script textarea */}
-        <div style={{ padding: 16 }}>
-          <textarea
-            ref={textRef}
-            readOnly
-            value={script}
-            onClick={e => e.target.select()}
-            style={{
-              width: '100%', height: 340, resize: 'vertical',
-              fontFamily: 'monospace', fontSize: 11, lineHeight: 1.5,
-              padding: '10px 12px', borderRadius: 8,
-              background: 'var(--surface2)', border: '1px solid var(--border)',
-              color: 'var(--text)', boxSizing: 'border-box',
-            }}
-          />
-          <div style={{ fontSize: 10, color: 'var(--text3)', marginTop: 6 }}>
-            Click inside the box to select all · or use the Copy button above
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
 // ── Main view ─────────────────────────────────────────────────────────────────
 export default function CharacterSheet() {
   const { activeChar, updateCharacter, updateStat, updateSkill, addWeapon, updateWeapon, removeWeapon } = useCharacter()
-  const [wBrowse,         setWBrowse]        = useState(false)
-  const [foundryOpen,     setFoundryOpen]    = useState(false)
+  const [wBrowse,    setWBrowse]   = useState(false)
   const [identityOpen,    setIdentityOpen]    = usePersistentOpen('rm_panel_identity',    true)
   const [paceOpen,        setPaceOpen]        = usePersistentOpen('rm_panel_pace',         false)
   const [weaponsOpen,     setWeaponsOpen]     = usePersistentOpen('rm_panel_weapons',      true)
@@ -904,25 +801,7 @@ export default function CharacterSheet() {
   function fmt(n) { return n >= 0 ? `+${n}` : String(n) }
 
   return (
-    <>
-    {foundryOpen && <FoundryExportModal char={c} onClose={() => setFoundryOpen(false)} />}
     <div style={{ maxWidth: 680, margin: '0 auto', padding: '16px 12px', display: 'flex', flexDirection: 'column', gap: 12 }}>
-
-      {/* Foundry export button */}
-      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <button
-          onClick={() => setFoundryOpen(true)}
-          style={{
-            display: 'flex', alignItems: 'center', gap: 6,
-            padding: '6px 14px', borderRadius: 8, border: '1px solid var(--border)',
-            background: 'var(--surface2)', color: 'var(--text2)',
-            fontSize: 12, fontWeight: 600, cursor: 'pointer',
-          }}
-          title="Generate a console script to sync this character to Foundry VTT"
-        >
-          <span style={{ fontSize: 14 }}>⚙</span> Export to Foundry
-        </button>
-      </div>
 
       {/* Identity card */}
       <Card title="Identity" onToggle={setIdentityOpen} isOpen={identityOpen}>
@@ -1418,14 +1297,26 @@ export default function CharacterSheet() {
             ].map(({ key, label, stat }) => {
               const color = RR_COLORS[key] || 'var(--accent)'
               const total = rrBonuses[key] ?? 0
+              const bd    = getRRBreakdown(c, key)
+              const tooltipLines = [
+                `Stat (${stat}): ${bd.statB >= 0 ? '+' : ''}${bd.statB}`,
+                `Level×2: +${bd.lvlBonus}`,
+                bd.realmBonus ? `Realm bonus: +${bd.realmBonus}` : null,
+                `Special: ${bd.special >= 0 ? '+' : ''}${bd.special}`,
+                `Total: ${total >= 0 ? '+' : ''}${total}`,
+              ].filter(Boolean).join('\n')
               return (
                 <div key={key} style={{ background:'var(--surface2)', border:'1px solid var(--border)', borderRadius:8, padding:'8px 10px' }}>
                   <div style={{ display:'flex', justifyContent:'space-between', alignItems:'baseline', marginBottom:4 }}>
                     <div style={{ fontSize:9, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.07em', color }}>{label}</div>
-                    {showArmorDetail && <div style={{ fontSize:8, color:'var(--text3)' }}>{stat}</div>}
+                    <div style={{ display:'flex', alignItems:'center', gap:4 }}>
+                      {bd.realmBonus > 0 && <span style={{ fontSize:8, color:'var(--accent)', fontWeight:700 }} title="Realm bonus +10">RM</span>}
+                      {showArmorDetail && <div style={{ fontSize:8, color:'var(--text3)' }}>{stat}</div>}
+                    </div>
                   </div>
                   <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:6 }}>
-                    <div style={{ fontSize:20, fontWeight:800, color: total > 0 ? 'var(--success)' : 'var(--text)' }}>{fmt(total)}</div>
+                    <div style={{ fontSize:20, fontWeight:800, color: total > 0 ? 'var(--success)' : 'var(--text)' }}
+                      title={tooltipLines}>{fmt(total)}</div>
                     <div style={{ display:'flex', flexDirection:'column', alignItems:'flex-end', gap:2 }}>
                       <div style={{ fontSize:9, color:'var(--text3)' }}>Special</div>
                       <input type="number" value={c.rr_bonuses?.[key] ?? 0}
@@ -1496,7 +1387,6 @@ export default function CharacterSheet() {
       </Card>
 
     </div>
-    </>
   )
 }
 
