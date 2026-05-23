@@ -20,7 +20,76 @@
     "endurance": 0,
     "base_hits": 20,
     "recovery_mult": 1,
-    "dp_bonus_pool": 35
+    "dp_bonus_pool": 35,
+    "description": "A hood pulled off a dark-cloaked stranger in the back corner of a tavern\nmay reveal an Avinarc, with its hawk-like head and its feather-covered skin.\nThe Avinarc’s once-powerful wings have become arms with dexterous hands.\nOnly their heads and their feathers give them away as a non-human.\nWith a cloak covering them, their form is that of a lightly-built human.",
+    "creature_category": "Races",
+    "creature_type": "Anthropomorphs",
+    "creature_variety": "Avinarc",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 0,
+      "gender": {
+        "female": {
+          "height": "5'5\"",
+          "weight": 98
+        },
+        "male": {
+          "height": "5'10\"",
+          "weight": 120
+        }
+      },
+      "variance": 4
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Acute Smell",
+        "tier": 2,
+        "description": "Avinarcs gain a +10 bonus on Perception rolls involving smell."
+      },
+      {
+        "name": "Light-boned",
+        "tier": 1,
+        "description": "Avinarcs are treated as Small creatures for purposes of their hits (determine\nnormally, then multiply by 0.75) and attacks against them, but not for other purposes."
+      },
+      {
+        "name": "Natural Weaponry",
+        "tier": 1,
+        "description": "Avinarcs may attack using their beaks, using the Beak specialization of Combat\nTraining: Unarmed skill",
+        "overrides": [
+          {
+            "key": "unarmed",
+            "value": "Beak"
+          }
+        ]
+      },
+      {
+        "name": "Restricted Diet",
+        "tier": 1,
+        "description": "Avinarcs are carnivores and gain no sustenance from foods other than meat."
+      },
+      {
+        "name": "Sight, Eagle",
+        "tier": 1,
+        "description": "Avinarc’s keen eyesight permits both good peripheral vision as well as the ability to\nfocus on distant objects, such as a hare two miles away. They gain a +20 bonus to all\nvision based Perception maneuvers."
+      },
+      {
+        "name": "Wings, Vestigial",
+        "tier": 1,
+        "description": "Avinarc wings (now reduced to heavily feathered arms) are too small for flight,\nbut provide a +10 bonus to Jumping and when using Acrobatics to reduce the impact\nof a fall."
+      },
+      {
+        "name": "Fragile",
+        "tier": 1,
+        "description": "Avinarc are more fragile than other humanoids. Their base hits are reduced by 5."
+      }
+    ],
+    "rmu_canonical_name": "Avinarc"
   },
   {
     "name": "Dwarf",
@@ -43,7 +112,67 @@
     "endurance": 20,
     "base_hits": 30,
     "recovery_mult": 0.5,
-    "dp_bonus_pool": 6
+    "dp_bonus_pool": 6,
+    "description": "Probably the “toughest” physically of the races, Dwarves are short, stocky,\nand ruddy of complexion, with deep-set eyes and dark wiry hair and beards\n(the latter they are quite proud of, growing long elaborate braids).\nDwarves are superior craftsmen and well adapted to life underground; they\nlove to mine the earth for metals and precious gems, crafting them into\npowerful weapons and artifacts. Not as fertile as humans, they have few\nchildren, and less than a third of their people are women, who are guarded\njealously within their cavernous halls.",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Dwarf",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": -3,
+      "gender": {
+        "female": {
+          "height": "4'2\"",
+          "weight": 112
+        },
+        "male": {
+          "height": "4'6\"",
+          "weight": 135
+        }
+      },
+      "variance": 5
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Darkvision",
+        "tier": 1,
+        "description": "Dwarves can see 10' with no penalties even in complete darkness."
+      },
+      {
+        "name": "Nightvision",
+        "tier": 1,
+        "description": "Dwarves can see in dim light, equivalent to nighttime conditions, as well as a human\ncan see in daylight. All penalties for darkness are reduced by 40, except in pitch\ndark conditions."
+      },
+      {
+        "name": "Inept",
+        "tier": 5,
+        "description": "Due to their density, dwarves must work especially hard\nto keep from drowning. They suffer a -25 penalty\non Endurance rolls while swimming.",
+        "overrides": [
+          {
+            "key": "skill",
+            "skillCategory": "Movement",
+            "skillName": "Swimming"
+          }
+        ]
+      },
+      {
+        "name": "Fast Healer",
+        "tier": 1,
+        "description": "Dwarves recover faster than normal. Recovery times are halved."
+      },
+      {
+        "name": "Tough",
+        "tier": 1,
+        "description": "Dwarves are exceptionally tough and pain resistant. Their base hits are increased by 5."
+      }
+    ],
+    "rmu_canonical_name": "Dwarf"
   },
   {
     "name": "Elf, fair",
@@ -66,7 +195,70 @@
     "endurance": 10,
     "base_hits": 20,
     "recovery_mult": 2,
-    "dp_bonus_pool": 0
+    "dp_bonus_pool": 0,
+    "description": "The most lordly of all Elves, Fair Elves have golden hair, blue eyes,\npale skin, and prefer garments of white, silver, and gold. Whether it\nis derived from divine favor or fey heritage, they have a visible aura\nwhich awes allies and intimidates foes. They are seldom seen beyond the\nborders of the elven lands, where they inspire their kin with their music,\nmagic, and wisdom. Melody and song frequent their gatherings, because\neven the least of them can play the harp or sing, while the more talented\ncompose music or delight the ear with expertise on several instruments.",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Elf",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 1,
+      "gender": {
+        "female": {
+          "height": "6'3\"",
+          "weight": 160
+        },
+        "male": {
+          "height": "6'7\"",
+          "weight": 180
+        }
+      },
+      "variance": 4
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Efficient Sleeper",
+        "tier": 2,
+        "description": "Elves meditate rather than sleeping. Two hours of meditation replaces four\nhours of sleep."
+      },
+      {
+        "name": "Immune to Disease",
+        "tier": 1,
+        "description": "Fair Elves are immune to all non-magical disease."
+      },
+      {
+        "name": "Nightvision",
+        "tier": 1,
+        "description": "Fair Elves can see in dim light, equivalent to nighttime conditions, as well as a human\ncan see in daylight. All penalties for darkness are reduced by 40, except in pitch\ndark conditions."
+      },
+      {
+        "name": "Defensive Aura",
+        "tier": 2,
+        "description": "The aura of Fair Elves dulls or confuses the senses of their foes, granting them\n+10 DB, which is not cumulative with any Aura or Blur spell."
+      },
+      {
+        "name": "Golden Throat",
+        "tier": 1,
+        "description": "Fair Elves have beautiful voices which soothe and calm. They receive +10 to any\nmaneuver to verbally calm or persuade (Charm, Singing, Leadership, etc.)."
+      },
+      {
+        "name": "Slow Healer",
+        "tier": 1,
+        "description": "Fair Elves recover slower than normal. Recovery times are doubled."
+      },
+      {
+        "name": "Fragile",
+        "tier": 1,
+        "description": "Fair Elves are more fragile than other humanoids. Their base hits are reduced by 5."
+      }
+    ],
+    "rmu_canonical_name": "Elf, Fair"
   },
   {
     "name": "Elf, grey",
@@ -89,7 +281,60 @@
     "endurance": 10,
     "base_hits": 20,
     "recovery_mult": 2,
-    "dp_bonus_pool": 2
+    "dp_bonus_pool": 2,
+    "description": "Grey elves are almost always intermediate between their more extreme\nbrethren. Most have fair hair and blue or grey eyes. They are neither\nas artistic as the fair elves, as cunning and warlike as the high elves,\nor as sedate and rustic as the wood elves. They form the middle ground\nwith their pleasant company and their love of art and craft. When war\ncalls, they will take up arms, but mostly they will settle down, raise\na family and do as they please. They build no marble cities, but love\nopen cities amongst a lovely landscape which connects them closer to\nnature. Some live under the rule of High Elves, while others take to\nthe seas as merchants and travelers. They are not the most magical elves,\nbut they are no strangers to magic either.",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Elf",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 2,
+      "gender": {
+        "female": {
+          "height": "6'1\"",
+          "weight": 155
+        },
+        "male": {
+          "height": "6'5\"",
+          "weight": 190
+        }
+      },
+      "variance": 4
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Efficient Sleeper",
+        "tier": 2,
+        "description": "Grey Elves meditate rather than sleeping. Two hours of meditation replaces four\nhours of sleep."
+      },
+      {
+        "name": "Immune to Disease",
+        "tier": 1,
+        "description": "Grey Elves are immune to all non-magical disease."
+      },
+      {
+        "name": "Nightvision",
+        "tier": 1,
+        "description": "Grey Elves can see in dim light, equivalent to nighttime conditions, as well as a human\ncan see in daylight. All penalties for darkness are reduced by 40, except in pitch\ndark conditions."
+      },
+      {
+        "name": "Slow Healer",
+        "tier": 1,
+        "description": "Grey Elves recover slower than normal. Recovery times are doubled."
+      },
+      {
+        "name": "Fragile",
+        "tier": 1,
+        "description": "Grey Elves are more fragile than other humanoids. Their base hits are reduced by 5."
+      }
+    ],
+    "rmu_canonical_name": "Elf, Grey"
   },
   {
     "name": "Elf, high",
@@ -112,7 +357,61 @@
     "endurance": 10,
     "base_hits": 25,
     "recovery_mult": 2,
-    "dp_bonus_pool": 3
+    "dp_bonus_pool": 3,
+    "description": "Raven-black hair distinguishes the High Elves from their fairer kindred,\nand brown and hazel are their usual eye colors. A love of beautiful\nthings, expressed by skill in building and crafting, unites with a\ncuriosity about the nature of all creation to lure the most ambitious\nfrom the path of nature. Yet, the superb armor, the bright weapons, and\nthe lovely jewelry cherished within their graceful, marble-walled cities\nseem almost worth the price. Some of the most powerful artifacts known\nto exist come from the forges of these elven craftsmen. When they live\namong other elves, they take inspiration from the Fair Elves but willingly\naccept the day-to-day burden of ruling their kin.",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Elf",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 2,
+      "gender": {
+        "female": {
+          "height": "6'3\"",
+          "weight": 175
+        },
+        "male": {
+          "height": "6'7\"",
+          "weight": 215
+        }
+      },
+      "variance": 4
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Efficient Sleeper",
+        "tier": 2,
+        "description": "High Elves meditate rather than sleeping. Two hours of meditation replaces four\nhours of sleep."
+      },
+      {
+        "name": "Immune to Disease",
+        "tier": 1,
+        "description": "High Elves are immune to all non-magical disease.",
+        "overrides": [
+          {
+            "key": "immune",
+            "value": "non-magical-disease"
+          }
+        ]
+      },
+      {
+        "name": "Nightvision",
+        "tier": 1,
+        "description": "High Elves can see in dim light, equivalent to nighttime conditions, as well as a human\ncan see in daylight. All penalties for darkness are reduced by 40, except in pitch\ndark conditions."
+      },
+      {
+        "name": "Slow Healer",
+        "tier": 1,
+        "description": "High Elves recover slower than normal. Recovery times are doubled."
+      }
+    ],
+    "rmu_canonical_name": "Elf, High"
   },
   {
     "name": "Elf, wood",
@@ -135,7 +434,71 @@
     "endurance": 10,
     "base_hits": 20,
     "recovery_mult": 2,
-    "dp_bonus_pool": 3
+    "dp_bonus_pool": 3,
+    "description": "Wood Elves wear greens and greys to blend with their surroundings.\nSandy hair and light blue, green, or grey eyes complement their\nrustic demeanor. They are slightly shorter than other elves, though\ntaller than humans. These Elves are the most common of all elvenkind\nand can be found in almost any forest across the world. Wood Elves\nare often quite distant from other elves and have been known to disagree\nopenly with the policies of the High Elves and Fair Elves. Most attuned\nto the subtle tides of forests, streams, and the creatures who roam\nthe sylvan realm, Wood Elves are adept at moving silently, their presence\nin the wood frequently going unnoticed among the shadows of swaying branches.",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Elf",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 0,
+      "gender": {
+        "female": {
+          "height": "5'9\"",
+          "weight": 125
+        },
+        "male": {
+          "height": "6'",
+          "weight": 150
+        }
+      },
+      "variance": 4
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Efficient Sleeper",
+        "tier": 2,
+        "description": "Wood Elves meditate rather than sleeping. Two hours of meditation replaces four\nhours of sleep."
+      },
+      {
+        "name": "Immune to Disease",
+        "tier": 1,
+        "description": "Wood Elves are immune to all non-magical disease.",
+        "overrides": [
+          {
+            "key": "immune",
+            "value": "disease"
+          }
+        ]
+      },
+      {
+        "name": "Nightvision",
+        "tier": 1,
+        "description": "Wood Elves can see in dim light, equivalent to nighttime conditions, as well as a human\ncan see in daylight. All penalties for darkness are reduced by 40, except in pitch\ndark conditions."
+      },
+      {
+        "name": "Hearing, Cat",
+        "tier": 1,
+        "description": "Wood Elves have hearing as keen as a cat, allowing them to hear some high-pitched\nsounds and more accurately determine the location of a sound’s source (gaining\n+10 on Perception maneuvers to locate a sound)."
+      },
+      {
+        "name": "Slow Healer",
+        "tier": 1,
+        "description": "Wood Elves recover slower than normal. Recovery times are doubled."
+      },
+      {
+        "name": "Fragile",
+        "tier": 1,
+        "description": "Wood Elves are more fragile than other humanoids. Their base hits are reduced by 5."
+      }
+    ],
+    "rmu_canonical_name": "Elf, Wood"
   },
   {
     "name": "Gnoll",
@@ -158,7 +521,77 @@
     "endurance": 0,
     "base_hits": 20,
     "recovery_mult": 0.5,
-    "dp_bonus_pool": 17
+    "dp_bonus_pool": 17,
+    "description": "Small wrinkled figures with grey skin and little hair, Gnolls inhabit\nthe natural caverns that abound in mountainous regions, while making\nuse of aboveground resources. When sheltered by secrecy and stone, their\ntimid dispositions relax and permit the enjoyment of gleeful festivals.\nOn these occasions, Gnolls put aside their sober, earth-toned clothing\nfor more colorful garb. Sunlight does not harm them, but the brightness\nscares them and makes their eyes water (-25 to all activities), leading\nGnolls to favor the underground realm. It is reputed that they travel\nextensively to the elemental realm of earth using secret portals, and\nthat their animal familiars have more than a touch of elemental nature.\nSkill as illusionists, dabblers and magicians (but almost never any realm\nbut Essence) enables them to avoid encounters with other races, few\ngaining knowledge of their presence until after the Gnolls have passed\nfrom the area. They travel in clans and settle only in deserted grottos\nwhere access is limited and concealed, and do not remain in any one\nlocation for longer than a few years, in order to minimize the\naccumulating signs of their presence.",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Gnoll",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Small",
+      "stride": -5,
+      "gender": {
+        "female": {
+          "height": "3'6\"",
+          "weight": 44
+        },
+        "male": {
+          "height": "3'6\"",
+          "weight": 44
+        }
+      },
+      "variance": 1
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Decreased Size",
+        "tier": 1,
+        "description": "Gnolls are Small creatures. In addition to other effects of size,\nmultiply their concussion hits by 0.75."
+      },
+      {
+        "name": "Nightvision",
+        "tier": 1,
+        "description": "Gnolls can see in dim light, equivalent to nighttime conditions, as well as a human\ncan see in daylight. All penalties for darkness are reduced by 40, except in pitch\ndark conditions."
+      },
+      {
+        "name": "Light Sensitivity",
+        "tier": 1,
+        "description": "Gnolls suffer a -25 penalty when in bright light equal to direct sunlight, but no\npenalty on cloudy days or in shaded areas."
+      },
+      {
+        "name": "Hearing, Hare",
+        "tier": 1,
+        "description": "Gnolls have keen hearing in the high and low frequency range. They can localize\nsounds with great accuracy and hear danger coming from 10 times farther than a\nhuman. They gain +20 on hearing Perception maneuvers."
+      },
+      {
+        "name": "Prodigy",
+        "tier": 2,
+        "description": "Gnolls are closely attuned to their environment, and especially alert to shifts in\nweather, which they use to conceal their movements. They receive +10 on Survival maneuvers,\ndoubled when using the skill for weather watching.",
+        "overrides": [
+          {
+            "key": "skill",
+            "skillCategory": "Environmental",
+            "skillName": "Survival"
+          }
+        ]
+      },
+      {
+        "name": "Fast Healer",
+        "tier": 1,
+        "description": "Gnolls recover faster than normal. Recovery times are halved."
+      },
+      {
+        "name": "Fragile",
+        "tier": 1,
+        "description": "Gnolls are more fragile than other humanoids. Their base hits are reduced by 5."
+      }
+    ],
+    "rmu_canonical_name": "Gnoll"
   },
   {
     "name": "Gnome",
@@ -180,8 +613,41 @@
     "physical_rr": 5,
     "endurance": 0,
     "base_hits": 25,
-    "recovery_mult": 0.5,
-    "dp_bonus_pool": 4
+    "recovery_mult": 1,
+    "dp_bonus_pool": 4,
+    "description": "Smaller than dwarves, and appearing more frail and withered in build,\nlong-lived Gnomes prefer to live in shallow caves where they obsessively\ngather knowledge and lore. Ancient tomes and rare scrolls litter their\ncrowded libraries, precious chambers that usually fall to ruin with a\nGnome’s death. A love of solitude ensures that most Gnomes remain\nheirless, rarely marrying or raising a family despite typical life\nspans of 600 years. Gnomes keep to themselves, but if forced into\ncombat their foes had better be prepared for a surprise, for there is\nno telling what magical spells and/or artifacts any given Gnome will\nhave. Although loners, Gnomes are neither shy nor joyless; generous\nhospitality accompanied by ingenious entertainments draws many friends\nto visit as houseguests. Gnomes do not often return these visits, for\nthey dislike abandoning their abodes and the treasures guarded within\nfor even a few days. Those who do often create elaborate systems of\ntraps (many of them magical in nature). Those who do marry may combine\ntheir resources, if they can agree as to how the collections should be\nsorted. Gnomish children are raised on a steady diet of lore, both\nentertaining and educational.",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Gnome",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": -3,
+      "gender": {
+        "female": {
+          "height": "4'5\"",
+          "weight": 84
+        },
+        "male": {
+          "height": "4'5\"",
+          "weight": 84
+        }
+      },
+      "variance": 2
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Nightvision",
+        "tier": 1,
+        "description": "Gnomes can see in dim light, equivalent to nighttime conditions, as well as a human\ncan see in daylight. All penalties for darkness are reduced by 40, except in pitch\ndark conditions."
+      }
+    ],
+    "rmu_canonical_name": "Gnome"
   },
   {
     "name": "Goblin",
@@ -204,7 +670,72 @@
     "endurance": 0,
     "base_hits": 25,
     "recovery_mult": 0.5,
-    "dp_bonus_pool": 46
+    "dp_bonus_pool": 46,
+    "description": "Goblins are small, about 3’ tall, with thin, wiry builds. They tend\ntoward long, narrow heads with pointy chins, pointed ears without lobes,\nnarrow noses, and thin lips. Their front teeth are pointed rather than\nchisel-shaped like humans, and when agitated, their thin lips often pull\nback to expose these sharp points. Common underground goblins have pale\nyellowish skin, while those who make their homes on the surface darken to\na deep greenish color. The smaller and ruddier Kobolds and the larger\nmuddier-colored Hobgoblins are closely related, and the three races are\ncollectively considered goblinoids.",
+    "creature_category": "Races",
+    "creature_type": "Goblinoids",
+    "creature_variety": "Goblin",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Small",
+      "stride": -6,
+      "gender": {
+        "female": {
+          "height": "3'10\"",
+          "weight": 31
+        },
+        "male": {
+          "height": "3'",
+          "weight": 35
+        }
+      },
+      "variance": 1
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Darkvision",
+        "tier": 1,
+        "description": "Goblins can see 10' with no penalties even in complete darkness."
+      },
+      {
+        "name": "Decreased Size",
+        "tier": 1,
+        "description": "Goblins are Small creatures. In addition to other effects of size,\nmultiply their concussion hits by 0.75."
+      },
+      {
+        "name": "Nightvision",
+        "tier": 1,
+        "description": "Goblins can see in dim light, equivalent to nighttime conditions, as well as a human\ncan see in daylight. All penalties for darkness are reduced by 40, except in pitch\ndark conditions."
+      },
+      {
+        "name": "Prodigy",
+        "tier": 5,
+        "description": "Small, strong, agile hands, and an easy ability to visualize three\ndimensional solids (from their history as dwellers\nin caves and mines of complex layout) makes\nthem very adept with mechanical devices (+25 to Mechanics).",
+        "overrides": [
+          {
+            "key": "skill",
+            "skillCategory": "Technical",
+            "skillName": "Mechanics"
+          }
+        ]
+      },
+      {
+        "name": "Light Sensitivity",
+        "tier": 3,
+        "description": "Goblins suffer a -75 penalty when in bright light equal to direct sunlight,\n-50 on cloudy days, -25 in shaded conditions or very cloudy days, or -0 in\nfull shadows such as under storm clouds or heavy tree cover."
+      },
+      {
+        "name": "Fast Healer",
+        "tier": 1,
+        "description": "Goblins recover faster than normal. Recovery times are halved."
+      }
+    ],
+    "rmu_canonical_name": "Goblin"
   },
   {
     "name": "Gratar",
@@ -227,7 +758,45 @@
     "endurance": 0,
     "base_hits": 25,
     "recovery_mult": 1,
-    "dp_bonus_pool": 11
+    "dp_bonus_pool": 11,
+    "description": "Gratar are frog-like humanoids, about man sized in height, and\npredominantly evil. Possessing wide drooling mouths and large bulbous\neyes, these creatures are amphibians, but spend most of their time out\nof the water, and even dwell underground occasionally. Female Gratar\nare slightly shorter but heavier of build and are physically the equal\nof the males.",
+    "creature_category": "Races",
+    "creature_type": "Reptilians",
+    "creature_variety": "Gratar",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": -2,
+      "gender": {
+        "female": {
+          "height": "5'2\"",
+          "weight": 250
+        },
+        "male": {
+          "height": "5'4\"",
+          "weight": 230
+        }
+      },
+      "variance": 5
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Sight, Gecko",
+        "tier": 1,
+        "description": "Gratar eyes perform like those of a gecko, permitting additional detail\nclose-up as well as good depth vision, and they do not lose color\nvision in dark conditions (normal penalties for darkness still apply).\nThey gain a +10 bonus to all vision-based Perception maneuvers."
+      },
+      {
+        "name": "Recurved Musculature",
+        "tier": 1,
+        "description": "Gratar are incredible jumpers with powerful legs. Their running long\nbase jump is 12 feet and their running high base jump is 29 inches\n(standing base jumps are half these values). See Jumping skill in\nChapter 3 for more details about jumping. In addition, they receive\na +20 bonus to Acrobatics, Climbing, Jumping, and Running maneuvers."
+      }
+    ],
+    "rmu_canonical_name": "Gratar"
   },
   {
     "name": "Half-Elf",
@@ -250,7 +819,45 @@
     "endurance": 5,
     "base_hits": 25,
     "recovery_mult": 1,
-    "dp_bonus_pool": 18
+    "dp_bonus_pool": 18,
+    "description": "The relationship between Elven and Human communities may be complicated\nor even tense. When there is a shared threat, they may become close\nallies, but without a unifying cause, many Elves feel the instability\nand rapid turnover of Human societies is something that should be kept\nat arm's length. Nonetheless, there are those among the Elves who admire\nHumans' drive and passion, as well as those among the Humans who are\ndrawn toward Elven beauty and wisdom. The dramatic difference in their\nlifespans makes lasting relationships difficult, but Half-Elven children\nmay be the result. Half-Elves typically live in Elven or Human societies,\nrather than forming societies of their own. However, in regions where\ncontact between the two races has been steady over long periods of time,\nmixed populations can arise and develop their own distinct cultural\nidentities. Such populations may consist of individuals with varying\ndegrees of each ancestry, some with more Human traits and some more Elven.",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Half-Elf",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 1,
+      "gender": {
+        "female": {
+          "height": "5'11\"",
+          "weight": 135
+        },
+        "male": {
+          "height": "6'3\"",
+          "weight": 190
+        }
+      },
+      "variance": 4
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Efficient Sleeper",
+        "tier": 1,
+        "description": "Half Elves meditate rather than sleeping. Three hours of meditation replaces four\nhours of sleep."
+      },
+      {
+        "name": "Nightvision",
+        "tier": 1,
+        "description": "Half Elves can see in dim light, equivalent to nighttime conditions, as well as a human\ncan see in daylight. All penalties for darkness are reduced by 40, except in pitch\ndark conditions."
+      }
+    ],
+    "rmu_canonical_name": "Half-Elf"
   },
   {
     "name": "Halfling",
@@ -273,7 +880,52 @@
     "endurance": 0,
     "base_hits": 25,
     "recovery_mult": 1,
-    "dp_bonus_pool": 29
+    "dp_bonus_pool": 29,
+    "description": "Halflings are very short, rarely more than 4’ in height, and tend to be\nstout (trending toward fat with age). They have large, hairy feet — to\nthe point of being “furry” — that are almost immune to cold, and so they\noften go around barefoot. They are an inoffensive people, preferring the\nquiet of their own villages. Lovers of good food and drink, they spend\nmuch of their time at inns and friends’ houses, eating and drinking.\nTheir settlements are usually focused around agriculture, but halfling\nartisans are not uncommon and they have a knack for fine detail that\neven the larger races may appreciate. Halflings are happy to trade\nwith other peoples and welcome guests, but do not encourage others to\nsettle in their villages. The small scale of their homes is enough\ndiscouragement for most Humans. Nonetheless, they enjoy good relations\nwith nearby settlements that are willing to reciprocate. Most commonly\nthese are Human, though Halflings are usually pleased to see Gnomes\nsettle nearby.",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Halfling",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Small",
+      "stride": -5,
+      "gender": {
+        "female": {
+          "height": "3'3\"",
+          "weight": 46
+        },
+        "male": {
+          "height": "3'6\"",
+          "weight": 50
+        }
+      },
+      "variance": 2
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Decreased Size",
+        "tier": 1,
+        "description": "Halflings are Small creatures. In addition to other effects of size,\nmultiply their concussion hits by 0.75."
+      },
+      {
+        "name": "Prodigy",
+        "tier": 2,
+        "description": "Halflings gain a +10 bonus on Stalking maneuvers.",
+        "overrides": [
+          {
+            "key": "skill",
+            "skillCategory": "Subterfuge",
+            "skillName": "Stalking"
+          }
+        ]
+      }
+    ],
+    "rmu_canonical_name": "Halfling"
   },
   {
     "name": "Hobgoblin",
@@ -296,7 +948,55 @@
     "endurance": 0,
     "base_hits": 25,
     "recovery_mult": 0.5,
-    "dp_bonus_pool": 30
+    "dp_bonus_pool": 30,
+    "description": "From time to time, Goblins birth unusual large offspring, who will grow\ninto much larger adults whose skin has a muddy tinge and whose feet\nfeel no pain. Only lack of numbers prevents the Hobgoblins from\nterrorizing all lands lit by the sky. Goblins avert this dread fate by\nkilling most of them at birth. Those children who survive are prone to\nviolent, bullying behavior and a significant challenge for their parents.\nBy adulthood, superior size and strength offer them dominance over those\nwho revere the rule of brute force, and the Goblins frequently submit to\na Hobgoblin king. The brilliance of the sun, although unpleasant, holds\nno horror for Hobgoblins who fearlessly follow enemies through daylight.\nThese clever fighters are quite formidable on the battlefield, limited\nonly by a lack of loyalty to each other and the cowardice of the Goblins\ntypically under their command. Some, however, are forced out of Goblin\ncommunities, mainly due to failed attempts to defeat stronger kin, and\nmust make their way on their own or with small groups of compatriots.\nThey may become bandits or poorly-disciplined mercenaries, or join up with\nother Goblinoids. In any situation, they are prone to seeking dominance\nwhenever existing leaders show apparent weakness.",
+    "creature_category": "Races",
+    "creature_type": "Goblinoids",
+    "creature_variety": "Hobgoblin",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": -3,
+      "gender": {
+        "female": {
+          "height": "4'",
+          "weight": 80
+        },
+        "male": {
+          "height": "4'6\"",
+          "weight": 93
+        }
+      },
+      "variance": 3
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Darkvision",
+        "tier": 2,
+        "description": "Hobgoblins can see 20' with no penalties even in complete darkness."
+      },
+      {
+        "name": "Nightvision",
+        "tier": 1,
+        "description": "Hobgoblins can see in dim light, equivalent to nighttime conditions, as well as a human\ncan see in daylight. All penalties for darkness are reduced by 40, except in pitch\ndark conditions."
+      },
+      {
+        "name": "Light Sensitivity",
+        "tier": 1,
+        "description": "Hobgoblins suffer a -25 penalty when in bright light equal to direct sunlight,\nbut no penalty on cloudy days or in shady areas."
+      },
+      {
+        "name": "Fast Healer",
+        "tier": 1,
+        "description": "Hobgoblins recover faster than normal. Recovery times are halved."
+      }
+    ],
+    "rmu_canonical_name": "Hobgoblin"
   },
   {
     "name": "Human, cave",
@@ -319,7 +1019,40 @@
     "endurance": 25,
     "base_hits": 25,
     "recovery_mult": 1,
-    "dp_bonus_pool": 41
+    "dp_bonus_pool": 41,
+    "description": "Cave men are the isolated remnants of the ancestors of common men.\nMuscular with sloping foreheads and oversized jaws, cave men have brown\nhair or ginger hair and eyes, and tan skin, but are shorter than their\ncommon kin. Simple garments made of animal skins are the normal garb.\nTheir intellect is not powerful, but a cooperative, good-tempered\ndisposition makes their company a pleasant experience. Cave men band\ntogether to form tribes, each with its own complex set of social rituals\nand religious beliefs. Their average life span is 50 years. Rough spears\nor clubs are their usual weaponry. Those who came into conflict with\ncommon men were conquered, killed, or absorbed, so those who remain\nare the tribes who live in isolation.",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Human",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": -2,
+      "gender": {
+        "female": {
+          "height": "4'9\"",
+          "weight": 135
+        },
+        "male": {
+          "height": "5'3\"",
+          "weight": 159
+        }
+      },
+      "variance": 4
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "None",
+        "tier": null,
+        "description": "Humans are the standard against which all other races are compared.\nHowever, humans do benefit from a high number of bonus DP (as shown\non Table 2-2a). Even the more powerful High men, despite their stature,\nare essentially human."
+      }
+    ],
+    "rmu_canonical_name": "Human, Cave"
   },
   {
     "name": "Human, common",
@@ -342,7 +1075,40 @@
     "endurance": 0,
     "base_hits": 25,
     "recovery_mult": 1,
-    "dp_bonus_pool": 50
+    "dp_bonus_pool": 50,
+    "description": "Common mortal men are the same race we are familiar with in the real\nworld and come in the same variations of size, build, skin/hair colors\nand facial features as the humans we know. Highly adaptable, they can\nbe found in just about any climate or environment and develop widely-varied\ncultures. Skin color tends to be darker in sunny climates and lighter as\nnone moves towards the poles, but these shifts take millennia and\nlarge-scale migrations and individual travel may result in notable\nexceptions and mixed populations. In any case, common men have the same\nstat bonuses and other traits regardless of their place of origin or\nparticular ancestry.",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Human",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 0,
+      "gender": {
+        "female": {
+          "height": "5'5\"",
+          "weight": 154
+        },
+        "male": {
+          "height": "5'10\"",
+          "weight": 185
+        }
+      },
+      "variance": 5
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "None",
+        "tier": null,
+        "description": "Humans are the standard against which all other races are compared.\nHowever, humans do benefit from a high number of bonus DP (as shown\non Table 2-2a). Even the more powerful High men, despite their stature,\nare essentially human."
+      }
+    ],
+    "rmu_canonical_name": "Human, Common"
   },
   {
     "name": "Human, high",
@@ -365,7 +1131,45 @@
     "endurance": 0,
     "base_hits": 30,
     "recovery_mult": 1,
-    "dp_bonus_pool": 21
+    "dp_bonus_pool": 21,
+    "description": "High men are taller and stronger than common men, more lordly in\nappearance, longer lived, and tend to be more daring and ambitious.\nThey are also notoriously stiff and rigid, not as flexible or adaptable\nas their common brethren, and more easily swayed by their own pride\nor the lure of magic and power. They build great empires, but those\nempires often collapse spectacularly due to their own hubris. High men\nare more feared than loved, and often considered domineering. They may\nhave the blood of gods or giants explaining both their strength and\ntheir pride. As with common men, they vary in coloration and other\nphysical traits, depending on their places of origin and other\nhistorical factors. High men tend to build societies apart from\ncommon men, except when they conquer them, but individual High men\nmay make their name among their Common kin, for example as mercenaries.",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Human",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 2,
+      "gender": {
+        "female": {
+          "height": "5'10\"",
+          "weight": 190
+        },
+        "male": {
+          "height": "6'5\"",
+          "weight": 250
+        }
+      },
+      "variance": 5
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "None",
+        "tier": null,
+        "description": "Humans are the standard against which all other races are compared.\nHowever, humans do benefit from a high number of bonus DP (as shown\non Table 2-2a). Even the more powerful High men, despite their stature,\nare essentially human."
+      },
+      {
+        "name": "Tough",
+        "tier": 1,
+        "description": "High Humans are exceptionally tough and pain resistant. Their base hits are increased by 5."
+      }
+    ],
+    "rmu_canonical_name": "Human, High"
   },
   {
     "name": "Human, mixed",
@@ -388,7 +1192,45 @@
     "endurance": 0,
     "base_hits": 30,
     "recovery_mult": 1,
-    "dp_bonus_pool": 34
+    "dp_bonus_pool": 34,
+    "description": "Mixed men are the offspring of High and Common parents. They are\nintermediate in features and can be difficult to distinguish from\neither kin. Societies where High and Common humans have frequent contact\nmay have significant populations of mixed men.",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Human",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 1,
+      "gender": {
+        "female": {
+          "height": "5'9\"",
+          "weight": 180
+        },
+        "male": {
+          "height": "6'4\"",
+          "weight": 230
+        }
+      },
+      "variance": 5
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "None",
+        "tier": null,
+        "description": "Humans are the standard against which all other races are compared.\nHowever, humans do benefit from a high number of bonus DP (as shown\non Table 2-2a). Even the more powerful High men, despite their stature,\nare essentially human."
+      },
+      {
+        "name": "Tough",
+        "tier": 1,
+        "description": "Mixed Humans are exceptionally tough and pain resistant. Their base hits are increased by 5."
+      }
+    ],
+    "rmu_canonical_name": "Human, Mixed"
   },
   {
     "name": "Hvasstonn",
@@ -411,7 +1253,61 @@
     "endurance": 15,
     "base_hits": 35,
     "recovery_mult": 1,
-    "dp_bonus_pool": 27
+    "dp_bonus_pool": 27,
+    "description": "Also known as giantlings or great men, Hvasstonn are similar in many\nrespects to extremely large humans, differing in their height\n(men average 7'6\"), deeply set eyes so dark a pupil can barely\nbe distinguished, profuse short coarse grey body hair almost thick\nenough to be considered fur, and the sharp teeth of carnivores. Brown\nto olive skin is not completely hidden by their body hair, while on\ntheir heads their hair grows dark. Their features appear feral and in\na scowl of anger they bare carnivorous teeth. Although nearly as\nintelligent as humans, their efforts at building are focused on survival\nand warfare, for which they are well suited. To fuel their physique,\nHvasstonn rely almost exclusively on meat. They live in wooden huts or\nfind comfortable caves which they embellish and close off to make\ncomfortable if simple homes.",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Hvasstonn",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Big",
+      "stride": 3,
+      "gender": {
+        "female": {
+          "height": "6'8\"",
+          "weight": 330
+        },
+        "male": {
+          "height": "7'6\"",
+          "weight": 400
+        }
+      },
+      "variance": 6
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Increased Size",
+        "tier": 1,
+        "description": "Hvasstonn are Big creatures. In addition to other effects of size,\nmultiply their concussion hits by 1.5."
+      },
+      {
+        "name": "Natural Weaponry",
+        "tier": 1,
+        "description": "Hvasstonn may attack using their sharp teeth, using the Bite specialization of\nCombat Training: Unarmed skill.",
+        "overrides": [
+          {
+            "key": "unarmed",
+            "value": "Bite"
+          }
+        ]
+      },
+      {
+        "name": "Restricted Diet",
+        "tier": 1,
+        "description": "Hvasstonn are carnivores and gain no sustenance from foods other than meat."
+      },
+      {
+        "name": "Tough",
+        "tier": 2,
+        "description": "Hvasstonn are exceptionally tough and pain resistant. Their base hits are increased by 10."
+      }
+    ],
+    "rmu_canonical_name": "Hvasstonn"
   },
   {
     "name": "Idiyva",
@@ -434,7 +1330,61 @@
     "endurance": 10,
     "base_hits": 25,
     "recovery_mult": 1,
-    "dp_bonus_pool": 10
+    "dp_bonus_pool": 10,
+    "description": "Short, gold-tipped coffee-colored fur covers the lithe, well-muscled\nform of the Idiyva except at the face, the palms, and the soles of\nthe feet. Smooth, brown suedelike skin emerges at these features,\nand the fur on the head lengthens and lightens to form a golden mane\naround the face. Green feline eyes give the Idiyva excellent Nightvision;\nfanged teeth reveal their carnivorous nature. The toes of their feet\nanchor short, sharp talons, but their hands sport vicious 3\" claws\nthat retract at the knuckle into the backs of the hands, leaving\nthe fingers free at all times. In addition to their natural claws,\nthese felines are adept in normal melee weapons and missile weapons.\nDespite their animalistic appearance, their manual dexterity is as\ngood or better than Humans and their artisans may be just as skilled.\nThey also enjoy music and dance, and their retractable claws offer no\nimpediment to the playing of most musical instruments.",
+    "creature_category": "Races",
+    "creature_type": "Anthropomorphs",
+    "creature_variety": "Idiyva",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 0,
+      "gender": {
+        "female": {
+          "height": "5'5\"",
+          "weight": 145
+        },
+        "male": {
+          "height": "6'",
+          "weight": 180
+        }
+      },
+      "variance": 4
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Nightvision",
+        "tier": 1,
+        "description": "Idiyva can see in dim light, equivalent to nighttime conditions, as well as a human\ncan see in daylight. All penalties for darkness are reduced by 40, except in pitch\ndark conditions."
+      },
+      {
+        "name": "Natural Weaponry",
+        "tier": 1,
+        "description": "Idiyva may attack using their claws, using the Claw specialization of\nCombat Training: Unarmed skill.",
+        "overrides": [
+          {
+            "key": "unarmed",
+            "value": "Claw"
+          }
+        ]
+      },
+      {
+        "name": "Restricted Diet",
+        "tier": 1,
+        "description": "Idiyva are carnivores and gain no sustenance from foods other than meat."
+      },
+      {
+        "name": "Hearing, Cat",
+        "tier": 1,
+        "description": "Idiyva hearing is equivalent to that of a\ncat, allowing them to hear some high-pitched sounds\nand more accurately determine the location of a\nsound’s source (gaining +10 on Perception maneuvers to locate a sound)."
+      }
+    ],
+    "rmu_canonical_name": "Idiyva"
   },
   {
     "name": "Kobold",
@@ -457,7 +1407,89 @@
     "endurance": 10,
     "base_hits": 20,
     "recovery_mult": 0.5,
-    "dp_bonus_pool": 75
+    "dp_bonus_pool": 75,
+    "description": "Smallest of the goblinoid races, with ruddy skin and a pair of\nhorns growing from their heads, Kobolds knuckle under to the fiercer\nbullying practiced by their larger kin. The compassionate wayfarer who\nfeels sympathy for their piteous plight discovers his mistake when\nKobold treachery rewards his generosity with capture by Goblins. The\narts of lying, cheating, stealing, and flattery enable the cowardly\nKobold to survive within bloodthirsty Goblin society; they exercise\nthese skills with much whimpering in all situations. In principle they\nare capable of reaching a life span of 75 years, but few do. Kobolds will\nrarely stand and fight in a straight up battle. They will wait for an\nambush opportunity (or at least a surprise attack), or possibly wait\nfor help to arrive if they cannot run away. If none of the above is\npossible, surrender is always an option, as they usually have little\nto lose. An oath of surrender, of course, will be quickly broken if\nthe tides turn.",
+    "creature_category": "Races",
+    "creature_type": "Goblinoids",
+    "creature_variety": "Kobold",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Small",
+      "stride": -5,
+      "gender": {
+        "female": {
+          "height": "3'3\"",
+          "weight": 40
+        },
+        "male": {
+          "height": "3'6\"",
+          "weight": 44
+        }
+      },
+      "variance": 1
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Decreased Size",
+        "tier": 1,
+        "description": "Kobolds are Small creatures. In addition to other effects of size,\nmultiply their concussion hits by 0.75."
+      },
+      {
+        "name": "Darkvision",
+        "tier": 1,
+        "description": "Kobolds can see 10' with no penalties even in complete darkness."
+      },
+      {
+        "name": "Nightvision",
+        "tier": 1,
+        "description": "Kobolds can see in dim light, equivalent to nighttime conditions, as well as a human\ncan see in daylight. All penalties for darkness are reduced by 40, except in pitch\ndark conditions."
+      },
+      {
+        "name": "Natural Weaponry",
+        "tier": 1,
+        "description": "Kobolds may attack using their claws, using the Claw specialization of\nCombat Training: Unarmed skill, but such attacks are considered Tiny.",
+        "overrides": [
+          {
+            "key": "unarmed",
+            "value": "Claw"
+          }
+        ]
+      },
+      {
+        "name": "Lesser Attack",
+        "tier": 1,
+        "description": "Your Claw attack is weak relative to your size and is decreased by size -1.",
+        "overrides": [
+          {
+            "key": "natural-attack-size",
+            "skillCategory": "Combat Training",
+            "skillName": "Unarmed",
+            "skillSpecialization": "Claw"
+          }
+        ]
+      },
+      {
+        "name": "Fast Healer",
+        "tier": 1,
+        "description": "Kobolds recover faster than normal. Recovery times are halved."
+      },
+      {
+        "name": "Fragile",
+        "tier": 1,
+        "description": "Kobolds are more fragile than other humanoids. Their base hits are reduced by 5."
+      },
+      {
+        "name": "Light Sensitivity",
+        "tier": 2,
+        "description": "Kobolds suffer a -50 penalty when in bright light equal to direct sunlight,\n-25 on cloudy days, and no penalty in shaded conditions."
+      }
+    ],
+    "rmu_canonical_name": "Kobold"
   },
   {
     "name": "Nycamerith",
@@ -480,7 +1512,60 @@
     "endurance": 0,
     "base_hits": 20,
     "recovery_mult": 1,
-    "dp_bonus_pool": 26
+    "dp_bonus_pool": 26,
+    "description": "Although many wonder if they are akin to Gnomes or even Halflings,\nthese short, fat, blue-skinned beings are most likely an entire race\nunto themselves. Their ears are large and pointed and their eyes dance\nto the music that they continually play. Making their way through their\nlong lives (up to 600 years) following The Great Song, they are a\ncheerful and pleasing people, rarely getting involved in anything\nviolent, dangerous or risky. Nycamerith are among the greatest musicians\nand musical instrument crafters in the world. They are sometimes skilled\nas great craftsmen of other delicate constructions as well. Most are\ncontent to entertain in taverns and work their craft. They dwell in\nsecluded villages located in deep valleys or on high mountains, but will\ntravel for an appreciative audience. Rarely armed, they simply do not\ngo into hostile or dangerous areas. When their villages are threatened\ndespite their remote, hidden locations, they are more likely to abandon\nthem than do battle.",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Nycamerith",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": -3,
+      "gender": {
+        "female": {
+          "height": "4'4\"",
+          "weight": 85
+        },
+        "male": {
+          "height": "4'4\"",
+          "weight": 85
+        }
+      },
+      "variance": 2
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Golden Throat",
+        "tier": 1,
+        "description": "Nycamerith have beautiful voices which soothe and calm. They receive\n+10 to any maneuver to verbally calm or persuade (Charm, Singing,\nLeadership, etc.)."
+      },
+      {
+        "name": "Hearing, Cat",
+        "tier": 1,
+        "description": "Nycamerith hearing is equivalent to that of a\ncat, allowing them to hear some high-pitched sounds\nand more accurately determine the location of a\nsound’s source (gaining +10 on Perception maneuvers to locate a sound)."
+      },
+      {
+        "name": "Perfect Pitch",
+        "tier": 1,
+        "description": "Nycamerith have perfect pitch and are able to reproduce any pitch with\ntheir voice or an appropriate instrument. This allows them to play most\npieces of music after hearing them. They receive +10 to any\nPerformance Art: Singing or Play Instrument skill. This is not cumulative\nwith Golden Throat."
+      },
+      {
+        "name": "Non-violent",
+        "tier": 2,
+        "description": "Nycamerith do not want to hurt others, and flinch with remorse when doing so.\nAfter inflicting a critical by any means, any action they take in the following\nround suffers a penalty of -40."
+      },
+      {
+        "name": "Fragile",
+        "tier": 1,
+        "description": "Nycamerith are more fragile than other humanoids. Their base hits are reduced by 5."
+      }
+    ],
+    "rmu_canonical_name": "Nycamerith"
   },
   {
     "name": "Orc, greater",
@@ -503,7 +1588,55 @@
     "endurance": 10,
     "base_hits": 30,
     "recovery_mult": 0.5,
-    "dp_bonus_pool": 30
+    "dp_bonus_pool": 30,
+    "description": "Greater Orcs are tough and cunning, able to operate in daylight\nwithout penalty, and often the leaders of orcish tribes.",
+    "creature_category": "Races",
+    "creature_type": "Goblinoids",
+    "creature_variety": "Orc",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 0,
+      "gender": {
+        "female": {
+          "height": "5'7\"",
+          "weight": 166
+        },
+        "male": {
+          "height": "6'",
+          "weight": 220
+        }
+      },
+      "variance": 6
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Darkvision",
+        "tier": 1,
+        "description": "Greater Orcs can see 15' with no penalties even in complete darkness."
+      },
+      {
+        "name": "Nightvision",
+        "tier": 1,
+        "description": "Greater Orcs can see in dim light, equivalent to nighttime conditions, as well as a human\ncan see in daylight. All penalties for darkness are reduced by 40, except in pitch\ndark conditions."
+      },
+      {
+        "name": "Fast Healer",
+        "tier": 1,
+        "description": "Greater Orcs recover faster than normal. Recovery times are halved."
+      },
+      {
+        "name": "Tough",
+        "tier": 1,
+        "description": "Greater Orcs are exceptionally tough and pain resistant. Their base hits are increased by 5."
+      }
+    ],
+    "rmu_canonical_name": "Orc, Greater"
   },
   {
     "name": "Orc, grey",
@@ -526,7 +1659,60 @@
     "endurance": 0,
     "base_hits": 20,
     "recovery_mult": 0.5,
-    "dp_bonus_pool": 60
+    "dp_bonus_pool": 60,
+    "description": "Grey Orcs are highly intelligent, although they use that genius\nfor evil and dark things. Many are spellcasters, especially Sorcerers,\nClerics, and Magicians. They often work in small numbers with other\ntypes of orcs. Although they are smarter than Greater Orcs, orc\nsociety is ruled by the physically strong, and Grey Orcs are more\nlikely to advise than rule.",
+    "creature_category": "Races",
+    "creature_type": "Goblinoids",
+    "creature_variety": "Orc",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 0,
+      "gender": {
+        "female": {
+          "height": "5'2\"",
+          "weight": 140
+        },
+        "male": {
+          "height": "5'6\"",
+          "weight": 160
+        }
+      },
+      "variance": 5
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Darkvision",
+        "tier": 1,
+        "description": "Grey Orcs can see 15' with no penalties even in complete darkness."
+      },
+      {
+        "name": "Nightvision",
+        "tier": 1,
+        "description": "Grey Orcs can see in dim light, equivalent to nighttime conditions, as well as a human\ncan see in daylight. All penalties for darkness are reduced by 40, except in pitch\ndark conditions."
+      },
+      {
+        "name": "Light Sensitivity",
+        "tier": 2,
+        "description": "Grey Orcs suffer a -50 penalty when in bright light equal to direct sunlight,\n-25 on cloudy days, and no penalty in shaded conditions."
+      },
+      {
+        "name": "Fast Healer",
+        "tier": 1,
+        "description": "Grey Orcs recover faster than normal. Recovery times are halved."
+      },
+      {
+        "name": "Fragile",
+        "tier": 1,
+        "description": "Grey Orcs are exceptionally fragile their base hits are reduced by 5."
+      }
+    ],
+    "rmu_canonical_name": "Orc, Grey"
   },
   {
     "name": "Orc, lesser",
@@ -549,7 +1735,55 @@
     "endurance": 5,
     "base_hits": 25,
     "recovery_mult": 0.5,
-    "dp_bonus_pool": 75
+    "dp_bonus_pool": 75,
+    "description": "Lesser Orcs are born to live, fight, and die in darkness; they hate\nthe stars and moon, but panic under the brighter sun. They make up\nthe bulk of the orc population.",
+    "creature_category": "Races",
+    "creature_type": "Goblinoids",
+    "creature_variety": "Orc",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": -2,
+      "gender": {
+        "female": {
+          "height": "4'8\"",
+          "weight": 125
+        },
+        "male": {
+          "height": "5'",
+          "weight": 150
+        }
+      },
+      "variance": 4
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Darkvision",
+        "tier": 2,
+        "description": "Lesser Orcs can see 15' with no penalties even in complete darkness."
+      },
+      {
+        "name": "Nightvision",
+        "tier": 1,
+        "description": "Lesser Orcs can see in dim light, equivalent to nighttime conditions, as well as a human\ncan see in daylight. All penalties for darkness are reduced by 40, except in pitch\ndark conditions."
+      },
+      {
+        "name": "Light Sensitivity",
+        "tier": 2,
+        "description": "Lesser Orcs suffer a -50 penalty when in bright light equal to direct sunlight,\n-25 on cloudy days, and no penalty in shaded conditions."
+      },
+      {
+        "name": "Fast Healer",
+        "tier": 1,
+        "description": "Lesser Orcs recover faster than normal. Recovery times are halved."
+      }
+    ],
+    "rmu_canonical_name": "Orc, Lesser"
   },
   {
     "name": "Orc, scrug",
@@ -572,7 +1806,65 @@
     "endurance": 10,
     "base_hits": 35,
     "recovery_mult": 0.5,
-    "dp_bonus_pool": 0
+    "dp_bonus_pool": 0,
+    "description": "-| Scrugs are as dimwitted as Lesser Orcs, but distinguished by their great size. They are often mistaken for ogres or trolls at a distance. While most are not disposed to being chieftains, Scrugs can often be found as the bodyguards of orc chieftains, although they have no regard for any other living being, even other orcs.",
+    "creature_category": "Races",
+    "creature_type": "Goblinoids",
+    "creature_variety": "Orc",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Big",
+      "stride": 5,
+      "gender": {
+        "female": {
+          "height": "7'6\"",
+          "weight": 480
+        },
+        "male": {
+          "height": "8'3\"",
+          "weight": 575
+        }
+      },
+      "variance": 6
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Darkvision",
+        "tier": 2,
+        "description": "Scrug Orcs can see 15' with no penalties even in complete darkness."
+      },
+      {
+        "name": "Nightvision",
+        "tier": 1,
+        "description": "Scrug Orcs can see in dim light, equivalent to nighttime conditions, as well as a human\ncan see in daylight. All penalties for darkness are reduced by 40, except in pitch\ndark conditions."
+      },
+      {
+        "name": "Light Sensitivity",
+        "tier": 2,
+        "description": "Scrug Orcs suffer a -50 penalty when in bright light equal to direct sunlight,\n-25 on cloudy days, and no penalty in shaded conditions."
+      },
+      {
+        "name": "Increased Size",
+        "tier": 1,
+        "description": "Scrug Orcs are Big creatures. In addition to other effects of size,\nmultiply their concussion hits by 1.5."
+      },
+      {
+        "name": "Fast Healer",
+        "tier": 1,
+        "description": "Scrug Orcs recover faster than normal. Recovery times are halved."
+      },
+      {
+        "name": "Tough",
+        "tier": 2,
+        "description": "Greater Orcs are exceptionally tough and pain resistant. Their base hits are increased by 10."
+      }
+    ],
+    "rmu_canonical_name": "Orc, Scrug"
   },
   {
     "name": "Orc, vard",
@@ -595,7 +1887,70 @@
     "endurance": 0,
     "base_hits": 30,
     "recovery_mult": 0.5,
-    "dp_bonus_pool": 18
+    "dp_bonus_pool": 18,
+    "description": "Vards are a four-armed mutation of Greater Orcs but keep to their\nown kind. They are rarely encountered with other breeds of orcs.\nVards are more sensitive to sunlight than Greater Orcs but less so\nthan the other breeds. Vards can effectively wield a shield and\nthree weapons, four different weapons, or a pair of two-handed weapons.",
+    "creature_category": "Races",
+    "creature_type": "Goblinoids",
+    "creature_variety": "Orc",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 0,
+      "gender": {
+        "female": {
+          "height": "5'7\"",
+          "weight": 190
+        },
+        "male": {
+          "height": "6'",
+          "weight": 250
+        }
+      },
+      "variance": 6
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Darkvision",
+        "tier": 1,
+        "description": "Vard Orcs can see 15' with no penalties even in complete darkness."
+      },
+      {
+        "name": "Nightvision",
+        "tier": 1,
+        "description": "Vard Orcs can see in dim light, equivalent to nighttime conditions, as well as a human\ncan see in daylight. All penalties for darkness are reduced by 40, except in pitch\ndark conditions."
+      },
+      {
+        "name": "Light Sensitivity",
+        "tier": 1,
+        "description": "Vard Orcs suffer a -25 penalty when in bright light equal to direct sunlight,\nand no penalty on cloudy days or in shaded conditions."
+      },
+      {
+        "name": "Ambidextrous",
+        "tier": 1,
+        "description": "Vard Orcs are able to use any of their four hands equally well for all maneuvers\nand activities. The normal -20 penalty for off-hand usage does not apply."
+      },
+      {
+        "name": "Additional Limb Pair",
+        "tier": 1,
+        "description": "Vard Orcs possess four arms. The additional arms may be used to manipulate\nand to make attacks with the usual penalties for multiple attacks (see\nKatas in Section 9.7). One arm may carry a shield (Vard Orcs cannot\neffectively wield multiple shields)."
+      },
+      {
+        "name": "Fast Healer",
+        "tier": 1,
+        "description": "Vard Orcs recover faster than normal. Recovery times are halved."
+      },
+      {
+        "name": "Tough",
+        "tier": 1,
+        "description": "Greater Orcs are exceptionally tough and pain resistant. Their base hits are increased by 5."
+      }
+    ],
+    "rmu_canonical_name": "Orc, Vard"
   },
   {
     "name": "Plynos",
@@ -618,7 +1973,61 @@
     "endurance": 25,
     "base_hits": 25,
     "recovery_mult": 1,
-    "dp_bonus_pool": 8
+    "dp_bonus_pool": 8,
+    "description": "A regal buck’s or lithe doe’s head graces a Human’s body making this\nbeing easily identifiable as a Plynos. The deermen are herbivorous,\nbut bucks in particular enjoy combat and battle if it is noble and\nhonorable— they do not abide cruelty or senseless violence. They\ndwell in wooden cabins of their own construction and most commonly\nlive in family clans of six to eight individuals. They can be good\nneighbors if their lands are respected, but have been known to become\nhostile or xenophobic if they feel they are being encroached upon.\nIn regions where they are threatened, they gather in larger settlements,\nbut the combination of external tensions and internal rivalry for\nstatus can make such arrangements short-lived.",
+    "creature_category": "Races",
+    "creature_type": "Anthropomorphs",
+    "creature_variety": "Plynos",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 0,
+      "gender": {
+        "female": {
+          "height": "5'7\"",
+          "weight": 160
+        },
+        "male": {
+          "height": "5'11\"",
+          "weight": 200
+        }
+      },
+      "variance": 5
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Acute Smell",
+        "tier": 2,
+        "description": "Plynos gain a +10 bonus on Perception rolls involving smell."
+      },
+      {
+        "name": "Natural Weaponry",
+        "tier": 0,
+        "description": "Many male Plynos have antlers powerful enough to attack with, using\nthe horn specialization of Combat Training: Unarmed skill. This is not\nincluded in the racial total, but may be purchased for 5 DP.",
+        "overrides": [
+          {
+            "key": "unarmed",
+            "value": "Horn"
+          }
+        ]
+      },
+      {
+        "name": "Restricted Diet",
+        "tier": 1,
+        "description": "Plynos are herbivores and cannot digest meat."
+      },
+      {
+        "name": "Hearing, Cat",
+        "tier": 1,
+        "description": "Plynos hearing is equivalent to that of a\ncat, allowing them to hear some high-pitched sounds\nand more accurately determine the location of a\nsound’s source (gaining +10 on Perception maneuvers to locate a sound)."
+      }
+    ],
+    "rmu_canonical_name": "Plynos"
   },
   {
     "name": "Sea-kral",
@@ -641,7 +2050,57 @@
     "endurance": 10,
     "base_hits": 25,
     "recovery_mult": 1,
-    "dp_bonus_pool": 3
+    "dp_bonus_pool": 3,
+    "description": "Sea-krals are ape-like creatures with dark grey or blue skin and a\npelt of thick, white hair growing on their head, neck, and shoulders.\nFemales possess an additional thicket that grows down the bony spine\nof their backs. Both genders have long arms and an extra bone connecting\nthe wrist to the hand. Long, dexterous fingers capped by a claw-like\nnail aid them in becoming accomplished craftsmen and bowmen.\nAlthough somewhat smaller than humans, they are strong for their size.\nSea-krals fear the hungry waves, but derive too much pleasure from\ntheir violent way of life to abandon the ocean. They build longships in\nwhich to ply the seas, raiding and plundering other vessels as pirates.\nTheir boats serve as their only home in spite of the fact that most\ncannot swim. They sleep during the day and are active during the night.\nLeather scale armor and curved swords are their usual battle garb.",
+    "creature_category": "Races",
+    "creature_type": "Anthropomorphs",
+    "creature_variety": "Sea-kral",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": -3,
+      "gender": {
+        "female": {
+          "height": "4'3\"",
+          "weight": 85
+        },
+        "male": {
+          "height": "4'6\"",
+          "weight": 95
+        }
+      },
+      "variance": 3
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Nightvision",
+        "tier": 1,
+        "description": "Sea-krals can see in dim light, equivalent to nighttime conditions, as well as a human\ncan see in daylight. All penalties for darkness are reduced by 40, except in pitch\ndark conditions."
+      },
+      {
+        "name": "Extra Joints",
+        "tier": 1,
+        "description": "Sea-kral arms are multiply-jointed and agile. All physical maneuvers that depend\nprimarily on their arms, including melee, throwing, and climbing, gain a +10 bonus."
+      },
+      {
+        "name": "Inept",
+        "tier": 2,
+        "description": "Sea-kral are poorly suited for swimming and suffer a -10 to all swimming\nmaneuvers. Their extra joints offer no advantage here.",
+        "overrides": [
+          {
+            "key": "skill",
+            "skillCategory": "Movement",
+            "skillName": "Swimming"
+          }
+        ]
+      }
+    ],
+    "rmu_canonical_name": "Sea-kral"
   },
   {
     "name": "Sibbicai",
@@ -664,7 +2123,68 @@
     "endurance": 10,
     "base_hits": 25,
     "recovery_mult": 1,
-    "dp_bonus_pool": 0
+    "dp_bonus_pool": 0,
+    "description": "Most likely distant kin of the more bestial Vulfen, the Sibbicai\nhave a jackal’s head and smooth, oily black, shorthaired coats covering\ntheir muscular humanoid bodies. Their hair is long only on their heads,\nlike that of a human, and they usually wear it either up in a crest,\nor long, down their backs. An intelligent and cultured people, Sibbicai\nfit in well with other mannish races, assuming the other races have no\nprejudices. However, they often feel a quiet rivalry towards Idiyva\nand a distaste for the disorder of Vulfen and goblinoids.",
+    "creature_category": "Races",
+    "creature_type": "Anthropomorphs",
+    "creature_variety": "Sibbicai",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 0,
+      "gender": {
+        "female": {
+          "height": "5'8\"",
+          "weight": 166
+        },
+        "male": {
+          "height": "6'1\"",
+          "weight": 200
+        }
+      },
+      "variance": 6
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Acute Smell",
+        "tier": 3,
+        "description": "Sibbicai gain a +15 bonus on Perception rolls involving smell."
+      },
+      {
+        "name": "Natural Weaponry",
+        "tier": 1,
+        "description": "Sibbicai may attack by biting,\nusing the bite specialization of Combat Training:\nUnarmed skill.",
+        "overrides": [
+          {
+            "key": "unarmed",
+            "value": "Bite"
+          }
+        ]
+      },
+      {
+        "name": "Hearing, Dog",
+        "tier": 1,
+        "description": "Sibbicai have hearing as sensitive as a dog, allowing them to\npinpoint nearby sounds with high accuracy and hear sounds up\nto 4 times as far away as a human, including very high-pitched\nsounds. This grants +10 on sound-based Perception maneuvers."
+      },
+      {
+        "name": "Prodigy",
+        "tier": 2,
+        "description": "Sibbicai have a natural talent\nfor tracking, in part due to their keen sense of smell.\nThey receive a +10 bonus on Tracking maneuvers.",
+        "overrides": [
+          {
+            "key": "skill",
+            "skillCategory": "Awareness",
+            "skillName": "Tracking"
+          }
+        ]
+      }
+    ],
+    "rmu_canonical_name": "Sibbicai"
   },
   {
     "name": "Sohleugir",
@@ -687,7 +2207,66 @@
     "endurance": 10,
     "base_hits": 25,
     "recovery_mult": 1,
-    "dp_bonus_pool": 2
+    "dp_bonus_pool": 2,
+    "description": "Textured jade scales shimmer on the hide of the amphibious Sohleugir,\ninterrupted by fin-like ridges rising along the spine. These jagged\nspikes march from the tip of the three-foot tail to the crown of the\ndraconic, snouted head. A transparent extra lid covers the eyes\nunderwater or against dust in the air. The digits of their hands and\nfeet bear translucent, claw-like nails. Sohleugir scales have been\nused to make very fine armor—of course, no wise armorer would admit\nthat he works such feats, lest news reach these violent folk.",
+    "creature_category": "Races",
+    "creature_type": "Reptilians",
+    "creature_variety": "Sohleugir",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 0,
+      "gender": {
+        "female": {
+          "height": "6'1\"",
+          "weight": 200
+        },
+        "male": {
+          "height": "6'1\"",
+          "weight": 200
+        }
+      },
+      "variance": 6
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Natural Armor",
+        "tier": 3,
+        "description": "Sohleugir’s scales provide the\nprotection of armor type (AT) 4 against attacks\nwithout any encumbrance or maneuver penalties."
+      },
+      {
+        "name": "Natural Weaponry",
+        "tier": 1,
+        "description": "Sohleugir may attack by biting,\nusing the claw specialization of Combat Training:\nUnarmed skill.",
+        "overrides": [
+          {
+            "key": "unarmed",
+            "value": "Claw"
+          }
+        ]
+      },
+      {
+        "name": "Sight, Gecko",
+        "tier": 1,
+        "description": "Sohleugir eyes perform like those of a gecko, permitting additional\ndetail close-up as well as good depth vision and they do not\nlose color vision in dark conditions (normal penalties for\ndarkness still apply). They gain a +10 bonus to all\nvision-based Perception maneuvers."
+      },
+      {
+        "name": "Tetrachromatic Vision",
+        "tier": 1,
+        "description": "Sohleugir vision encompasses normal color vision as well as\nsensitivity to ultraviolet light. Their sense of colors differs\nfrom other races, and they are more sensitive to cues others\ncannot see. Penalties for spotting invisible\n(including hidden by the Unseen spell) and camouflaged people\nand objects are reduced by 30."
+      },
+      {
+        "name": "Third Eyelid",
+        "tier": 1,
+        "description": "Sohleugir eyes have a transparent\nadditional eyelid, or nictating membrane, which\nprotects them while still permitting sight. They are\nunaffected by dust, sand, or water which otherwise\nmight limit use of their eyes."
+      }
+    ],
+    "rmu_canonical_name": "Sohleugir"
   },
   {
     "name": "Sstoi'isslythi",
@@ -710,7 +2289,79 @@
     "endurance": 0,
     "base_hits": 20,
     "recovery_mult": 2,
-    "dp_bonus_pool": 0
+    "dp_bonus_pool": 0,
+    "description": "Slim men who move with the coiling grace of serpents, Sstoi’isslythi\npossess soft reptilian skins comprised of small golden scales. Hair,\na mammalian feature, remains conspicuously absent from their smooth\nbodies. Venom sacs, located at the neck, supply the fleshy fangs\nfolded in their mouths with poison when danger arrives to stiffen\nthese organs in preparation for the strike. Sstoi’isslythi live in\nfamily groups, each member of which is immunized to their relatives’\nvenom. Relations between families are surrounded by ritualized courtesy\nto minimize any hostility, since the strike reflex, once aroused,\nis impossible to quell. Dependent upon the environment for warmth, the\nSstoi’isslythi inhabit sunny climes that never experience the chill\nof winter. Wide terraces for relaxation in the heat and skylights to\nwarm interior spaces with the sun’s rays dominate their elegant cities.",
+    "creature_category": "Races",
+    "creature_type": "Reptilians",
+    "creature_variety": "Sstoi'isslythi",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 6,
+      "gender": {
+        "female": {
+          "height": "5'7\"",
+          "weight": 120
+        },
+        "male": {
+          "height": "5'7\"",
+          "weight": 120
+        }
+      },
+      "variance": 3
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Heatsense",
+        "tier": 1,
+        "description": "Sstoi’isslythi have very sensitive pit\norgans on their faces which allow them to gauge\ntemperature at close range up to 1/1000th of a degree.\nThis permits them to sense prey nearby or detect tracks\nof prey within several hours of its passing. This grants\na bonus up to +20 on Perception and Tracking maneuvers\nto detect living creatures or other warm or cold objects,\nas long as the Sstoi’isslythi comes within close proximity to\nthem or their tracks."
+      },
+      {
+        "name": "Natural Weaponry",
+        "tier": 1,
+        "description": "Sstoi’isslythi may attack with their fangs, using the bite specialization\nof Combat Training: Unarmed skill. Attacks are resolved\non the Stinger table.",
+        "overrides": [
+          {
+            "key": "unarmed",
+            "value": "Bite",
+            "attackUUID": "Compendium.rmu.items.Item.mEUwt5hNeJksN8MK"
+          }
+        ]
+      },
+      {
+        "name": "Poison Injection",
+        "tier": 1,
+        "description": "The bite of a Sstoi’isslythi injects poison. If the attack scores a\ncritical (any severity), the target must make a Physical RR against\nthe Sstoi’isslythi’s level or suffer the effect of a muscle poison\n(see Section 15.6 for details).",
+        "overrides": [
+          {
+            "key": "rider",
+            "value": "poison"
+          },
+          {
+            "key": "skill",
+            "skillCategory": "Combat Training",
+            "skillName": "Unarmed",
+            "skillSpecialization": "Bite"
+          }
+        ]
+      },
+      {
+        "name": "Strike Reflex",
+        "tier": 1,
+        "description": "A powerful strike reflex allows the\nSstoi’isslythi to act with tremendous speed, gaining a +20 initiative\nmodifier, when the reflex is triggered by any sudden movement towards\nor away from them by a target within range of their attack. This\ninstinctive response is impossible to quell, even if they want to;\nthe Sstoi’isslythi must take immediate offensive action in the round\nin which they are startled, rather than waiting to see what is happening."
+      },
+      {
+        "name": "Slow Healer",
+        "tier": 1,
+        "description": "Sstoi’isslythi recover slower than normal. Recovery times are doubled."
+      }
+    ],
+    "rmu_canonical_name": "Sstoi'isslythi"
   },
   {
     "name": "Troll",
@@ -733,7 +2384,107 @@
     "endurance": 10,
     "base_hits": 25,
     "recovery_mult": 1,
-    "dp_bonus_pool": 29
+    "dp_bonus_pool": 29,
+    "description": "Trolls are large and immensely strong (usually about 9' tall and\nmassively built), but mentally slow compared to most other races.\nTrolls are covered in a thick, hard skin that overlaps at the joints,\nsimilar to the hide of a rhinoceros. They have hands capable of fine\nmanipulation, but their fingertips end in slightly curved claws,\nand their teeth are obviously the ripping and tearing tools of a carnivore.",
+    "creature_category": "Races",
+    "creature_type": "Trolls",
+    "creature_variety": "Troll",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Big",
+      "stride": 6,
+      "gender": {
+        "female": {
+          "height": "9'",
+          "weight": 800
+        },
+        "male": {
+          "height": "9'",
+          "weight": 800
+        }
+      },
+      "variance": 8
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Darkvision",
+        "tier": 1,
+        "description": "Trolls can see 10' with no penalties even in complete darkness."
+      },
+      {
+        "name": "Inept",
+        "tier": 5,
+        "description": "Trolls by nature and reputation are\nviolent and dangerous. They suffer a -25 penalty on any\nattempt to use Influence skills, except to provoke a fear or\nmorale reaction.",
+        "overrides": [
+          {
+            "key": "skill",
+            "situational": true,
+            "skillCategory": "Social",
+            "skillName": "Influence",
+            "skillSpecialization": "Charm"
+          }
+        ]
+      },
+      {
+        "name": "Increased Size",
+        "tier": 1,
+        "description": "Trolls are Big creatures. In addition to other effects of size, multiply\ntheir concussion hits by 1.5."
+      },
+      {
+        "name": "Light Sensitivity",
+        "tier": 2,
+        "description": "Trolls suffer a -50 penalty when in bright light equal to direct sunlight,\n-25 on cloudy days, and no penalty in shaded conditions."
+      },
+      {
+        "name": "Natural Armor",
+        "tier": 3,
+        "description": "The tough hide of a troll provides the\nprotection of armor type (AT) 4 against attacks\nwithout any encumbrance or maneuver penalties."
+      },
+      {
+        "name": "Natural Weaponry",
+        "tier": 1,
+        "description": "Trolls may attack with their claw, using the bite specialization\nof Combat Training: Unarmed skill. Attacks are resolved\non the Stinger table.",
+        "overrides": [
+          {
+            "key": "unarmed",
+            "value": "Claw"
+          }
+        ]
+      },
+      {
+        "name": "Nightvision",
+        "tier": 1,
+        "description": "Trolls can see in dim light, equivalent to nighttime conditions, as well as\na human can see in daylight. All penalties for darkness are reduced by 40,\nexcept in pitch dark conditions."
+      },
+      {
+        "name": "Elemental Resistance",
+        "tier": 3,
+        "description": "Trolls are very hardy and gain a +15 DB,\nRR, and Endurance bonus against cold and ice.\nIf the effect is a fixed critical and none of these modifiers\napply, the severity of Cold criticals is reduced by\none. These modifiers also apply to extreme environmental\nconditions such as traveling in arctic conditions.",
+        "overrides": [
+          {
+            "key": "resistance",
+            "value": "Cold"
+          }
+        ]
+      },
+      {
+        "name": "Elemental Resistance",
+        "tier": 3,
+        "description": "Trolls are very hardy and gain a +15 DB,\nRR, and Endurance bonus against heat, and fire.\nIf the effect is a fixed critical and none of these modifiers\napply, the severity of Heat criticals is reduced by\none. These modifiers also apply to extreme environmental\nconditions such as traveling in an extremely hot desert conditions.",
+        "overrides": [
+          {
+            "key": "resistance",
+            "value": "Fire"
+          }
+        ]
+      }
+    ],
+    "rmu_canonical_name": "Troll"
   },
   {
     "name": "Vulfen",
@@ -756,7 +2507,71 @@
     "endurance": 10,
     "base_hits": 30,
     "recovery_mult": 1,
-    "dp_bonus_pool": 0
+    "dp_bonus_pool": 0,
+    "description": "Furred men with wolfish heads and tails, Vulfen are often confused\nwith werewolves. Such is the fear and loathing with which Vulfen\nare generally regarded that this usually winds up being worse for\nthe Werewolves. Cunning intelligence shapes the behavior of Vulfen,\nbut cruelty and bloodthirst deprive them of Mannish respect and\nliking. Vulfen run in packs, killing and devouring all in their\npath until exhaustion and sated hunger compel them to rest for a\nfew days. They are nocturnal, sleeping by day and rampaging by night.\nTheir lives are brutal but usually short, rarely beyond 40 years.\nTheir own armament of fangs and claws is often supplemented by\nweapons garnered from fallen foes.",
+    "creature_category": "Races",
+    "creature_type": "Anthropomorphs",
+    "creature_variety": "Vulfen",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 1,
+      "gender": {
+        "female": {
+          "height": "5'9\"",
+          "weight": 190
+        },
+        "male": {
+          "height": "6'3\"",
+          "weight": 225
+        }
+      },
+      "variance": 6
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Acute Smell",
+        "tier": 2,
+        "description": "Vulfen gain a +10 bonus on Perception rolls involving smell."
+      },
+      {
+        "name": "Hearing, Dog",
+        "tier": 1,
+        "description": "Vulfen have hearing as sensitive as a dog, allowing them to\npinpoint nearby sounds with high accuracy and hear sounds\nup to 4 times as far away as a human, including very\nhigh-pitched sounds. This grants +10 on sound based\nPerception maneuvers."
+      },
+      {
+        "name": "Natural Weaponry",
+        "tier": 1,
+        "description": "Vulfen may attack by biting,\nusing the claw specialization of Combat Training:\nUnarmed skill.",
+        "overrides": [
+          {
+            "key": "unarmed",
+            "value": "Claw"
+          }
+        ]
+      },
+      {
+        "name": "Restricted Diet",
+        "tier": 1,
+        "description": "Vulfen are carnivores and gain no sustenance from foods other than meat."
+      },
+      {
+        "name": "Frenzy",
+        "tier": 1,
+        "description": "Vulfen can enter a frenzied rage with a successful Adrenal Focus\nmaneuver. While frenzied, they gain a +5 Strength Bonus."
+      },
+      {
+        "name": "Tough",
+        "tier": 1,
+        "description": "Vulfen are exceptionally tough and pain resistant. Their base hits are increased by 5."
+      }
+    ],
+    "rmu_canonical_name": "Vulfen"
   },
   {
     "name": "Argo (A)",
@@ -808,32 +2623,151 @@
     "name": "Half-Orc (A)",
     "stat_bonuses": {
       "Agility": 0,
-      "Constitution": 2,
-      "Empathy": 0,
+      "Constitution": 3,
+      "Empathy": -3,
       "Intuition": 0,
       "Memory": 0,
       "Presence": 0,
       "Quickness": 0,
       "Reasoning": -1,
-      "Self Discipline": 1,
+      "Self Discipline": -2,
       "Strength": 2
     },
-    "channeling_rr": -5,
-    "essence_rr": -5,
-    "mentalism_rr": -5,
+    "channeling_rr": 0,
+    "essence_rr": 0,
+    "mentalism_rr": 0,
     "physical_rr": 5,
-    "endurance": 5,
+    "endurance": 0,
     "base_hits": 25,
-    "recovery_mult": 0.75,
-    "dp_bonus_pool": 0
+    "recovery_mult": 0.5,
+    "dp_bonus_pool": 31,
+    "description": "<p>In some settings, orcs and humans may occasionally interbreed, resulting in half-orcs. They\nare almost as hardy as orcs, but not so dimwitted.<p>\n<hr>\n<p>This race is from the example in Core-Law p.249.</p>",
+    "creature_category": "Races",
+    "creature_type": "Goblinoids",
+    "creature_variety": "Half-Orc",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 0,
+      "gender": {
+        "female": {
+          "height": "5'7\"",
+          "weight": 160
+        },
+        "male": {
+          "height": "5'11\"",
+          "weight": 200
+        }
+      },
+      "variance": 4
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Nightvision",
+        "tier": 1,
+        "description": "Half Orcs can see in dim light, equivalent to nighttime conditions, as well as a human\ncan see in daylight. All penalties for darkness are reduced by 40, except in pitch\ndark conditions."
+      },
+      {
+        "name": "Fast Healer",
+        "tier": 1,
+        "description": "Half Orcs recover faster than normal. Recovery times are halved."
+      }
+    ],
+    "rmu_canonical_name": "Orc, Half"
   },
   {
     "name": "Dyari (SW)",
     "stat_bonuses": {
       "Agility": 2,
-      "Constitution": -1,
-      "Empathy": 1,
-      "Intuition": -1,
+      "Constitution": -2,
+      "Empathy": 3,
+      "Intuition": -2,
+      "Memory": 1,
+      "Presence": 3,
+      "Quickness": 2,
+      "Reasoning": 2,
+      "Self Discipline": -5,
+      "Strength": 0
+    },
+    "channeling_rr": -20,
+    "essence_rr": -5,
+    "mentalism_rr": 5,
+    "physical_rr": 10,
+    "endurance": 0,
+    "base_hits": 20,
+    "recovery_mult": 2,
+    "dp_bonus_pool": 2,
+    "description": "<p><b>Typical Culture:</b> Ascended.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Elf",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 2,
+      "gender": {
+        "female": {
+          "height": "6'2",
+          "weight": 140
+        },
+        "male": {
+          "height": "6'7",
+          "weight": 170
+        }
+      },
+      "variance": 4
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Cold Resistant",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Heat Resistant",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Efficient Sleeper",
+        "tier": 2,
+        "description": "Elves meditate rather than sleep, and two hours of meditation replaces four hours of sleep."
+      },
+      {
+        "name": "Immune to Disease",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Acute Hearing",
+        "tier": 2,
+        "description": ""
+      },
+      {
+        "name": "Nightvision",
+        "tier": 1,
+        "description": ""
+      }
+    ],
+    "rmu_canonical_name": "Dyari"
+  },
+  {
+    "name": "Erlini (SW)",
+    "stat_bonuses": {
+      "Agility": 3,
+      "Constitution": 0,
+      "Empathy": 2,
+      "Intuition": 0,
       "Memory": 1,
       "Presence": 2,
       "Quickness": 2,
@@ -842,43 +2776,159 @@
       "Strength": 0
     },
     "channeling_rr": -10,
-    "essence_rr": -5,
-    "mentalism_rr": 5,
+    "essence_rr": -10,
+    "mentalism_rr": -10,
     "physical_rr": 10,
-    "endurance": 10,
+    "endurance": 0,
     "base_hits": 20,
     "recovery_mult": 2,
-    "dp_bonus_pool": 0
-  },
-  {
-    "name": "Erlini (SW)",
-    "stat_bonuses": {
-      "Agility": 2,
-      "Constitution": 0,
-      "Empathy": 1,
-      "Intuition": 0,
-      "Memory": 1,
-      "Presence": 1,
-      "Quickness": 1,
-      "Reasoning": 0,
-      "Self Discipline": -5,
-      "Strength": 0
+    "dp_bonus_pool": 3,
+    "description": "<p><b>Typical Culture:</b> Hunter. Sylvan could also be appropriate for less martial settlements.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Elf",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 3,
+      "gender": {
+        "female": {
+          "height": "5'11",
+          "weight": 125
+        },
+        "male": {
+          "height": "6'4",
+          "weight": 170
+        }
+      },
+      "variance": 4
     },
-    "channeling_rr": -5,
-    "essence_rr": -5,
-    "mentalism_rr": -5,
-    "physical_rr": 10,
-    "endurance": 10,
-    "base_hits": 20,
-    "recovery_mult": 2,
-    "dp_bonus_pool": 0
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Cold Resistant",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Heat Resistant",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Efficient Sleeper",
+        "tier": 2,
+        "description": "Elves meditate rather than sleep, and two hours of meditation replaces four hours of sleep."
+      },
+      {
+        "name": "Immune to Disease",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Acute Hearing",
+        "tier": 2,
+        "description": ""
+      },
+      {
+        "name": "Nightvision",
+        "tier": 1,
+        "description": ""
+      }
+    ],
+    "rmu_canonical_name": "Erlini"
   },
   {
     "name": "Linæri (SW)",
     "stat_bonuses": {
-      "Agility": 1,
+      "Agility": 2,
       "Constitution": -1,
-      "Empathy": 1,
+      "Empathy": 2,
+      "Intuition": 0,
+      "Memory": 1,
+      "Presence": 4,
+      "Quickness": 2,
+      "Reasoning": 0,
+      "Self Discipline": -5,
+      "Strength": 0
+    },
+    "channeling_rr": -10,
+    "essence_rr": -10,
+    "mentalism_rr": -10,
+    "physical_rr": 10,
+    "endurance": 0,
+    "base_hits": 20,
+    "recovery_mult": 2,
+    "dp_bonus_pool": 4,
+    "description": "<p><b>Typical Culture:</b> Ascended.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Elf",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 2,
+      "gender": {
+        "female": {
+          "height": "6'2",
+          "weight": 140
+        },
+        "male": {
+          "height": "6'7",
+          "weight": 170
+        }
+      },
+      "variance": 4
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Cold Resistant",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Heat Resistant",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Efficient Sleeper",
+        "tier": 2,
+        "description": "Elves meditate rather than sleep, and two hours of meditation replaces four hours of sleep."
+      },
+      {
+        "name": "Immune to Disease",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Acute Hearing",
+        "tier": 2,
+        "description": ""
+      },
+      {
+        "name": "Nightvision",
+        "tier": 1,
+        "description": ""
+      }
+    ],
+    "rmu_canonical_name": "Linaeri"
+  },
+  {
+    "name": "Loari (SW)",
+    "stat_bonuses": {
+      "Agility": 2,
+      "Constitution": 0,
+      "Empathy": 2,
       "Intuition": 0,
       "Memory": 1,
       "Presence": 3,
@@ -887,66 +2937,78 @@
       "Self Discipline": -5,
       "Strength": 0
     },
-    "channeling_rr": -5,
-    "essence_rr": -5,
-    "mentalism_rr": -5,
+    "channeling_rr": -10,
+    "essence_rr": -10,
+    "mentalism_rr": -10,
     "physical_rr": 10,
-    "endurance": 10,
+    "endurance": 0,
     "base_hits": 20,
     "recovery_mult": 2,
-    "dp_bonus_pool": 0
-  },
-  {
-    "name": "Loari (SW)",
-    "stat_bonuses": {
-      "Agility": 1,
-      "Constitution": 0,
-      "Empathy": 1,
-      "Intuition": 0,
-      "Memory": 1,
-      "Presence": 2,
-      "Quickness": 2,
-      "Reasoning": 0,
-      "Self Discipline": -5,
-      "Strength": 0
+    "dp_bonus_pool": 4,
+    "description": "<p><b>Typical Culture:</b> Ascended.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Elf",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 2,
+      "gender": {
+        "female": {
+          "height": "6'2",
+          "weight": 140
+        },
+        "male": {
+          "height": "6'7",
+          "weight": 170
+        }
+      },
+      "variance": 4
     },
-    "channeling_rr": -5,
-    "essence_rr": -5,
-    "mentalism_rr": -5,
-    "physical_rr": 10,
-    "endurance": 10,
-    "base_hits": 20,
-    "recovery_mult": 2,
-    "dp_bonus_pool": 0
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Cold Resistant",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Heat Resistant",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Efficient Sleeper",
+        "tier": 2,
+        "description": "Elves meditate rather than sleep, and two hours of meditation replaces four hours of sleep."
+      },
+      {
+        "name": "Immune to Disease",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Acute Hearing",
+        "tier": 2,
+        "description": ""
+      },
+      {
+        "name": "Nightvision",
+        "tier": 1,
+        "description": ""
+      }
+    ],
+    "rmu_canonical_name": "Loari"
   },
   {
     "name": "Eritari (SW)",
     "stat_bonuses": {
-      "Agility": 1,
-      "Constitution": 1,
-      "Empathy": 1,
-      "Intuition": 1,
-      "Memory": 0,
-      "Presence": 1,
-      "Quickness": 1,
-      "Reasoning": -1,
-      "Self Discipline": -1,
-      "Strength": 0
-    },
-    "channeling_rr": 0,
-    "essence_rr": 0,
-    "mentalism_rr": 10,
-    "physical_rr": 20,
-    "endurance": 5,
-    "base_hits": 22,
-    "recovery_mult": 1.5,
-    "dp_bonus_pool": 0
-  },
-  {
-    "name": "Kytaari (SW)",
-    "stat_bonuses": {
-      "Agility": 1,
-      "Constitution": 1,
+      "Agility": 2,
+      "Constitution": 0,
       "Empathy": 0,
       "Intuition": 0,
       "Memory": 0,
@@ -959,163 +3021,352 @@
     "channeling_rr": -5,
     "essence_rr": -5,
     "mentalism_rr": 10,
-    "physical_rr": 20,
-    "endurance": 5,
-    "base_hits": 22,
-    "recovery_mult": 1.5,
-    "dp_bonus_pool": 0
+    "physical_rr": 10,
+    "endurance": 0,
+    "base_hits": 25,
+    "recovery_mult": 1,
+    "dp_bonus_pool": 2,
+    "description": "<p><b>Typical Culture:</b> Half-Elves are very diverse. Choose an appropriate culture based on their upbringing. In many cases this will be the culture of a parent.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Half-Elf",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 2,
+      "gender": {
+        "female": {
+          "height": "6'3",
+          "weight": 165
+        },
+        "male": {
+          "height": "6'7",
+          "weight": 180
+        }
+      },
+      "variance": 4
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Efficient Sleeper",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Lesser Nightvision",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Heat Resistant",
+        "tier": 1,
+        "description": ""
+      }
+    ],
+    "rmu_canonical_name": "Eritari"
   },
   {
-    "name": "Punkari (SW)",
+    "name": "Kytaari (SW)",
     "stat_bonuses": {
       "Agility": 2,
       "Constitution": 1,
       "Empathy": 0,
       "Intuition": 0,
       "Memory": 0,
-      "Presence": 1,
-      "Quickness": 1,
+      "Presence": 2,
+      "Quickness": 2,
       "Reasoning": 0,
       "Self Discipline": -1,
       "Strength": 1
     },
-    "channeling_rr": 0,
-    "essence_rr": 0,
+    "channeling_rr": -10,
+    "essence_rr": -10,
     "mentalism_rr": 5,
-    "physical_rr": 20,
-    "endurance": 5,
-    "base_hits": 22,
-    "recovery_mult": 1.5,
-    "dp_bonus_pool": 0
+    "physical_rr": 10,
+    "endurance": 0,
+    "base_hits": 25,
+    "recovery_mult": 1,
+    "dp_bonus_pool": 1,
+    "description": "<p><b>Typical Culture:</b> Half-Elves are very diverse. Choose an appropriate culture based on their upbringing. In many cases this will be the culture of a parent.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Half-Elf",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 2,
+      "gender": {
+        "female": {
+          "height": "5'11",
+          "weight": 130
+        },
+        "male": {
+          "height": "6'5",
+          "weight": 170
+        }
+      },
+      "variance": 4
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Efficient Sleeper",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Lesser Nightvision",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Cold Resistant",
+        "tier": 2,
+        "description": ""
+      },
+      {
+        "name": "Solar Recovery",
+        "tier": 1,
+        "description": ""
+      }
+    ],
+    "rmu_canonical_name": "Ky-taari"
+  },
+  {
+    "name": "Punkari (SW)",
+    "stat_bonuses": {
+      "Agility": 2,
+      "Constitution": 0,
+      "Empathy": 0,
+      "Intuition": 0,
+      "Memory": 0,
+      "Presence": 1,
+      "Quickness": 1,
+      "Reasoning": 0,
+      "Self Discipline": -1,
+      "Strength": 2
+    },
+    "channeling_rr": -5,
+    "essence_rr": -5,
+    "mentalism_rr": 5,
+    "physical_rr": 10,
+    "endurance": 0,
+    "base_hits": 25,
+    "recovery_mult": 1,
+    "dp_bonus_pool": 3,
+    "description": "<p><b>Typical Culture:</b> Half-Elves are very diverse. Choose an appropriate culture based on their upbringing. In many cases this will be the culture of a parent.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Half-Elf",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 2,
+      "gender": {
+        "female": {
+          "height": "5'10",
+          "weight": 160
+        },
+        "male": {
+          "height": "6'4",
+          "weight": 210
+        }
+      },
+      "variance": 4
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Efficient Sleeper",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Lesser Nightvision",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Heat Resistant",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Cold Resistant",
+        "tier": 1,
+        "description": ""
+      }
+    ],
+    "rmu_canonical_name": "Punkari"
   },
   {
     "name": "Sulini (SW)",
     "stat_bonuses": {
-      "Agility": 1,
-      "Constitution": 1,
-      "Empathy": 1,
+      "Agility": 2,
+      "Constitution": 0,
+      "Empathy": 2,
       "Intuition": 1,
       "Memory": 0,
-      "Presence": 1,
+      "Presence": 2,
       "Quickness": 2,
       "Reasoning": -1,
-      "Self Discipline": -2,
+      "Self Discipline": -3,
       "Strength": 0
     },
-    "channeling_rr": 0,
-    "essence_rr": 0,
+    "channeling_rr": -5,
+    "essence_rr": -5,
     "mentalism_rr": 10,
-    "physical_rr": 20,
-    "endurance": 5,
-    "base_hits": 22,
-    "recovery_mult": 1.5,
-    "dp_bonus_pool": 0
+    "physical_rr": 10,
+    "endurance": 0,
+    "base_hits": 25,
+    "recovery_mult": 1,
+    "dp_bonus_pool": 0,
+    "description": "<p><b>Typical Culture:</b> Half-Elves are very diverse. Choose an appropriate culture based on their upbringing. In many cases this will be the culture of a parent.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Half-Elf",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 2,
+      "gender": {
+        "female": {
+          "height": "6'3",
+          "weight": 160
+        },
+        "male": {
+          "height": "6'9",
+          "weight": 190
+        }
+      },
+      "variance": 4
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Efficient Sleeper",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Lesser Nightvision",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Heat Resistant",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Cold Resistant",
+        "tier": 1,
+        "description": ""
+      }
+    ],
+    "rmu_canonical_name": "Sulini"
   },
   {
     "name": "Vorloi (SW)",
     "stat_bonuses": {
       "Agility": 3,
       "Constitution": 1,
-      "Empathy": 2,
+      "Empathy": 3,
       "Intuition": 1,
       "Memory": 0,
       "Presence": 0,
       "Quickness": 3,
       "Reasoning": 0,
-      "Self Discipline": -2,
-      "Strength": -1
+      "Self Discipline": -3,
+      "Strength": -2
     },
     "channeling_rr": 0,
     "essence_rr": 0,
     "mentalism_rr": 0,
-    "physical_rr": 20,
-    "endurance": 5,
-    "base_hits": 22,
-    "recovery_mult": 1.5,
-    "dp_bonus_pool": 0
-  },
-  {
-    "name": "Nomari (SW)",
-    "stat_bonuses": {
-      "Agility": -1,
-      "Constitution": 3,
-      "Empathy": -2,
-      "Intuition": 0,
-      "Memory": 0,
-      "Presence": -2,
-      "Quickness": -1,
-      "Reasoning": 0,
-      "Self Discipline": 1,
-      "Strength": 2
+    "physical_rr": 5,
+    "endurance": 0,
+    "base_hits": 25,
+    "recovery_mult": 1,
+    "dp_bonus_pool": 0,
+    "description": "<p><b>Typical Culture:</b> Half-Elves are very diverse. Choose an appropriate culture based on their upbringing. In many cases this will be the culture of a parent.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Half-Elf",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 0,
+      "gender": {
+        "female": {
+          "height": "4'11",
+          "weight": 90
+        },
+        "male": {
+          "height": "5'3",
+          "weight": 130
+        }
+      },
+      "variance": 4
     },
-    "channeling_rr": 0,
-    "essence_rr": 15,
-    "mentalism_rr": 15,
-    "physical_rr": 10,
-    "endurance": 20,
-    "base_hits": 30,
-    "recovery_mult": 0.5,
-    "dp_bonus_pool": 0
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Efficient Sleeper",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Lesser Nightvision",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Heat Resistant",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Cold Resistant",
+        "tier": 1,
+        "description": ""
+      }
+    ],
+    "rmu_canonical_name": "Vorloi"
   },
   {
     "name": "Hui (SW)",
     "stat_bonuses": {
       "Agility": 0,
-      "Constitution": 1,
-      "Empathy": -1,
+      "Constitution": 2,
+      "Empathy": -2,
       "Intuition": 1,
       "Memory": 0,
       "Presence": -2,
       "Quickness": -1,
       "Reasoning": 0,
       "Self Discipline": 0,
-      "Strength": 1
-    },
-    "channeling_rr": 0,
-    "essence_rr": 5,
-    "mentalism_rr": 5,
-    "physical_rr": 10,
-    "endurance": 10,
-    "base_hits": 25,
-    "recovery_mult": 1,
-    "dp_bonus_pool": 0
-  },
-  {
-    "name": "Anzeti (SW)",
-    "stat_bonuses": {
-      "Agility": 0,
-      "Constitution": 2,
-      "Empathy": 0,
-      "Intuition": 1,
-      "Memory": 0,
-      "Presence": -1,
-      "Quickness": 0,
-      "Reasoning": 1,
-      "Self Discipline": 1,
-      "Strength": 1
-    },
-    "channeling_rr": 0,
-    "essence_rr": 0,
-    "mentalism_rr": 0,
-    "physical_rr": 10,
-    "endurance": 0,
-    "base_hits": 25,
-    "recovery_mult": 1,
-    "dp_bonus_pool": 0
-  },
-  {
-    "name": "Haid (SW)",
-    "stat_bonuses": {
-      "Agility": 0,
-      "Constitution": 1,
-      "Empathy": -1,
-      "Intuition": 1,
-      "Memory": 0,
-      "Presence": -2,
-      "Quickness": -1,
-      "Reasoning": 0,
-      "Self Discipline": 1,
-      "Strength": 1
+      "Strength": 2
     },
     "channeling_rr": 0,
     "essence_rr": 0,
@@ -1124,20 +3375,46 @@
     "endurance": 0,
     "base_hits": 25,
     "recovery_mult": 1,
-    "dp_bonus_pool": 0
+    "dp_bonus_pool": 51,
+    "description": "<p><b>Typical Culture:</b> Underground.</p> or flaws.",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Hui",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": -1,
+      "gender": {
+        "female": {
+          "height": "4'9",
+          "weight": 125
+        },
+        "male": {
+          "height": "5'1",
+          "weight": 140
+        }
+      },
+      "variance": 5
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "rmu_canonical_name": "Hui"
   },
   {
-    "name": "Jaaderi (SW)",
+    "name": "Anzeti (SW)",
     "stat_bonuses": {
       "Agility": 0,
-      "Constitution": 1,
-      "Empathy": 1,
-      "Intuition": 1,
-      "Memory": -1,
-      "Presence": 1,
-      "Quickness": -1,
-      "Reasoning": -1,
-      "Self Discipline": -1,
+      "Constitution": 3,
+      "Empathy": 0,
+      "Intuition": 2,
+      "Memory": 0,
+      "Presence": -2,
+      "Quickness": 0,
+      "Reasoning": 0,
+      "Self Discipline": 2,
       "Strength": 2
     },
     "channeling_rr": 0,
@@ -1147,17 +3424,148 @@
     "endurance": 0,
     "base_hits": 25,
     "recovery_mult": 1,
-    "dp_bonus_pool": 0
+    "dp_bonus_pool": 10,
+    "description": "<p><b>Typical Culture:</b> Harsh.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Human",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": -1,
+      "gender": {
+        "female": {
+          "height": "4'11",
+          "weight": 110
+        },
+        "male": {
+          "height": "5'4",
+          "weight": 125
+        }
+      },
+      "variance": 4
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Cold Resistant",
+        "tier": 1,
+        "description": ""
+      }
+    ],
+    "rmu_canonical_name": "Anzeti"
+  },
+  {
+    "name": "Haid (SW)",
+    "stat_bonuses": {
+      "Agility": 0,
+      "Constitution": 2,
+      "Empathy": -2,
+      "Intuition": 2,
+      "Memory": 0,
+      "Presence": -3,
+      "Quickness": -2,
+      "Reasoning": 0,
+      "Self Discipline": 2,
+      "Strength": 2
+    },
+    "channeling_rr": 0,
+    "essence_rr": 0,
+    "mentalism_rr": 0,
+    "physical_rr": 0,
+    "endurance": 0,
+    "base_hits": 25,
+    "recovery_mult": 1,
+    "dp_bonus_pool": 46,
+    "description": "<p><b>Typical Culture:</b> Hunter, or Reaver for more warlike tribes.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Human",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 0,
+      "gender": {
+        "female": {
+          "height": "5'7",
+          "weight": 160
+        },
+        "male": {
+          "height": "5'11",
+          "weight": 190
+        }
+      },
+      "variance": 5
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "rmu_canonical_name": "Haid"
+  },
+  {
+    "name": "Jaaderi (SW)",
+    "stat_bonuses": {
+      "Agility": 0,
+      "Constitution": 2,
+      "Empathy": 2,
+      "Intuition": 2,
+      "Memory": -1,
+      "Presence": 1,
+      "Quickness": -2,
+      "Reasoning": 0,
+      "Self Discipline": -1,
+      "Strength": 3
+    },
+    "channeling_rr": 0,
+    "essence_rr": 0,
+    "mentalism_rr": 0,
+    "physical_rr": 0,
+    "endurance": 0,
+    "base_hits": 30,
+    "recovery_mult": 1,
+    "dp_bonus_pool": 23,
+    "description": "<p><b>Typical Culture:</b> Proud, Rural, or Urban. Noble and Sanctified are also appropriate for the upper castes of the Lankan Empire.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Human",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 0,
+      "gender": {
+        "female": {
+          "height": "5'11",
+          "weight": 180
+        },
+        "male": {
+          "height": "6'4",
+          "weight": 210
+        }
+      },
+      "variance": 5
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "rmu_canonical_name": "Jaaderi"
   },
   {
     "name": "Jineri (SW)",
     "stat_bonuses": {
       "Agility": 1,
       "Constitution": 0,
-      "Empathy": 1,
-      "Intuition": 1,
+      "Empathy": 2,
+      "Intuition": 2,
       "Memory": 0,
-      "Presence": 1,
+      "Presence": 2,
       "Quickness": 1,
       "Reasoning": 0,
       "Self Discipline": 0,
@@ -1170,44 +3578,103 @@
     "endurance": 0,
     "base_hits": 25,
     "recovery_mult": 1,
-    "dp_bonus_pool": 0
+    "dp_bonus_pool": 9,
+    "description": "<p><b>Typical Culture:</b> Coastal, Mariner, Rural, or Urban.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Human",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 0,
+      "gender": {
+        "female": {
+          "height": "5'9",
+          "weight": 115
+        },
+        "male": {
+          "height": "6'1",
+          "weight": 140
+        }
+      },
+      "variance": 5
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "rmu_canonical_name": "Jineri"
   },
   {
     "name": "Laan (SW)",
     "stat_bonuses": {
-      "Agility": 1,
-      "Constitution": 1,
+      "Agility": 0,
+      "Constitution": 2,
       "Empathy": 1,
       "Intuition": 0,
       "Memory": 1,
-      "Presence": 2,
-      "Quickness": -1,
+      "Presence": 3,
+      "Quickness": -2,
       "Reasoning": 0,
       "Self Discipline": 1,
-      "Strength": 2
+      "Strength": 3
     },
     "channeling_rr": -5,
     "essence_rr": -5,
     "mentalism_rr": -5,
     "physical_rr": 10,
     "endurance": 0,
-    "base_hits": 25,
+    "base_hits": 30,
     "recovery_mult": 1,
-    "dp_bonus_pool": 0
+    "dp_bonus_pool": 7,
+    "description": "<p><b>Typical Culture:</b> Highland, Mariner, Noble, Proud, Rural, or Urban.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Human",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 1,
+      "gender": {
+        "female": {
+          "height": "6'0",
+          "weight": 175
+        },
+        "male": {
+          "height": "6'5",
+          "weight": 220
+        }
+      },
+      "variance": 5
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Cold Resistant",
+        "tier": 1,
+        "description": ""
+      }
+    ],
+    "rmu_canonical_name": "Laan"
   },
   {
     "name": "Lydians (SW)",
     "stat_bonuses": {
-      "Agility": 1,
+      "Agility": 2,
       "Constitution": 1,
       "Empathy": 0,
       "Intuition": 0,
       "Memory": 0,
       "Presence": 0,
-      "Quickness": 1,
+      "Quickness": 2,
       "Reasoning": 0,
       "Self Discipline": 0,
-      "Strength": 1
+      "Strength": 2
     },
     "channeling_rr": 0,
     "essence_rr": 0,
@@ -1216,7 +3683,45 @@
     "endurance": 0,
     "base_hits": 25,
     "recovery_mult": 1,
-    "dp_bonus_pool": 0
+    "dp_bonus_pool": 9,
+    "description": "<p><b>Typical Culture:</b> Variable, select based on the character’s background.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Human",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 1,
+      "gender": {
+        "female": {
+          "height": "6'4",
+          "weight": 140
+        },
+        "male": {
+          "height": "6'9",
+          "weight": 170
+        }
+      },
+      "variance": 5
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Cold Resistant",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Heat Intolerant",
+        "tier": 1,
+        "description": ""
+      }
+    ],
+    "rmu_canonical_name": "Lydians"
   },
   {
     "name": "Ochu (SW)",
@@ -1224,28 +3729,54 @@
       "Agility": 0,
       "Constitution": 0,
       "Empathy": 0,
-      "Intuition": 2,
-      "Memory": 1,
+      "Intuition": 3,
+      "Memory": 2,
       "Presence": -1,
       "Quickness": 0,
-      "Reasoning": -1,
-      "Self Discipline": -1,
+      "Reasoning": 0,
+      "Self Discipline": -2,
       "Strength": -1
     },
-    "channeling_rr": -10,
-    "essence_rr": -10,
+    "channeling_rr": -5,
+    "essence_rr": -5,
     "mentalism_rr": -5,
     "physical_rr": 0,
     "endurance": 0,
     "base_hits": 25,
     "recovery_mult": 1,
-    "dp_bonus_pool": 0
+    "dp_bonus_pool": 55,
+    "description": "<p><b>Typical Culture:</b> Variable, select based on the character’s background.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Human",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 0,
+      "gender": {
+        "female": {
+          "height": "5'7",
+          "weight": 125
+        },
+        "male": {
+          "height": "6'0",
+          "weight": 155
+        }
+      },
+      "variance": 5
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "rmu_canonical_name": "Ochu"
   },
   {
     "name": "Shay (SW)",
     "stat_bonuses": {
       "Agility": 0,
-      "Constitution": 1,
+      "Constitution": 2,
       "Empathy": 0,
       "Intuition": 0,
       "Memory": 0,
@@ -1253,7 +3784,7 @@
       "Quickness": 0,
       "Reasoning": 0,
       "Self Discipline": 0,
-      "Strength": 1
+      "Strength": 2
     },
     "channeling_rr": 0,
     "essence_rr": 0,
@@ -1262,67 +3793,152 @@
     "endurance": 0,
     "base_hits": 25,
     "recovery_mult": 1,
-    "dp_bonus_pool": 0
+    "dp_bonus_pool": 31,
+    "description": "<p><b>Typical Culture:</b> Highland, Mariner, Rural, or Urban.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Human",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 0,
+      "gender": {
+        "female": {
+          "height": "5'5",
+          "weight": 155
+        },
+        "male": {
+          "height": "5'9",
+          "weight": 175
+        }
+      },
+      "variance": 5
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "rmu_canonical_name": "Shay"
   },
   {
     "name": "Talath (SW)",
     "stat_bonuses": {
       "Agility": 0,
-      "Constitution": 2,
+      "Constitution": 3,
       "Empathy": 1,
       "Intuition": 1,
-      "Memory": -1,
+      "Memory": -2,
       "Presence": 2,
-      "Quickness": -1,
+      "Quickness": -2,
       "Reasoning": -2,
-      "Self Discipline": 1,
+      "Self Discipline": 2,
       "Strength": 3
     },
     "channeling_rr": -5,
     "essence_rr": 10,
     "mentalism_rr": 5,
-    "physical_rr": 15,
+    "physical_rr": 10,
     "endurance": 0,
     "base_hits": 25,
     "recovery_mult": 1,
-    "dp_bonus_pool": 0
+    "dp_bonus_pool": 7,
+    "description": "<p><b>Typical Culture:</b> Proud, Rural.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Human",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 2,
+      "gender": {
+        "female": {
+          "height": "6'7",
+          "weight": 220
+        },
+        "male": {
+          "height": "7'3",
+          "weight": 280
+        }
+      },
+      "variance": 6
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Cold Resistant",
+        "tier": 1,
+        "description": ""
+      }
+    ],
+    "rmu_canonical_name": "Talath"
   },
   {
     "name": "Thesians (SW)",
     "stat_bonuses": {
-      "Agility": 1,
-      "Constitution": -1,
-      "Empathy": 1,
+      "Agility": 2,
+      "Constitution": -2,
+      "Empathy": 2,
       "Intuition": 0,
-      "Memory": -1,
-      "Presence": 4,
-      "Quickness": 2,
+      "Memory": -2,
+      "Presence": 3,
+      "Quickness": 1,
       "Reasoning": 2,
-      "Self Discipline": 3,
+      "Self Discipline": 2,
       "Strength": 0
     },
     "channeling_rr": 10,
     "essence_rr": 10,
     "mentalism_rr": -15,
-    "physical_rr": 10,
+    "physical_rr": 0,
     "endurance": 0,
     "base_hits": 25,
-    "recovery_mult": 1,
-    "dp_bonus_pool": 0
+    "recovery_mult": 0.5,
+    "dp_bonus_pool": 5,
+    "description": "<p><b>Typical Culture:</b> Variable, select based on the character’s background.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Human",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 0,
+      "gender": {
+        "female": {
+          "height": "5'11",
+          "weight": 145
+        },
+        "male": {
+          "height": "6'4",
+          "weight": 170
+        }
+      },
+      "variance": 5
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "rmu_canonical_name": "Thesians"
   },
   {
     "name": "Umli (SW)",
     "stat_bonuses": {
       "Agility": 0,
-      "Constitution": 3,
+      "Constitution": 5,
       "Empathy": 0,
       "Intuition": 1,
       "Memory": 0,
-      "Presence": -1,
-      "Quickness": -1,
-      "Reasoning": 1,
-      "Self Discipline": 2,
-      "Strength": 1
+      "Presence": -2,
+      "Quickness": -2,
+      "Reasoning": 0,
+      "Self Discipline": 4,
+      "Strength": 2
     },
     "channeling_rr": 0,
     "essence_rr": 0,
@@ -1330,54 +3946,151 @@
     "physical_rr": 10,
     "endurance": 0,
     "base_hits": 25,
-    "recovery_mult": 1,
-    "dp_bonus_pool": 0
+    "recovery_mult": 2,
+    "dp_bonus_pool": 10,
+    "description": "<p><b>Typical Culture:</b> Harsh.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Human",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": -1,
+      "gender": {
+        "female": {
+          "height": "5'3",
+          "weight": 150
+        },
+        "male": {
+          "height": "5'6",
+          "weight": 170
+        }
+      },
+      "variance": 5
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Cold Resistant",
+        "tier": 2,
+        "description": ""
+      }
+    ],
+    "rmu_canonical_name": "Umli"
   },
   {
     "name": "Y'nari (SW)",
     "stat_bonuses": {
-      "Agility": 1,
-      "Constitution": 1,
-      "Empathy": -1,
+      "Agility": 2,
+      "Constitution": 2,
+      "Empathy": -2,
       "Intuition": 0,
-      "Memory": 1,
+      "Memory": 2,
       "Presence": 2,
-      "Quickness": 1,
-      "Reasoning": 1,
-      "Self Discipline": 2,
-      "Strength": -1
+      "Quickness": 2,
+      "Reasoning": 0,
+      "Self Discipline": 3,
+      "Strength": -2
     },
     "channeling_rr": 0,
     "essence_rr": 0,
     "mentalism_rr": 0,
-    "physical_rr": 5,
-    "endurance": 0,
+    "physical_rr": 0,
+    "endurance": 5,
     "base_hits": 25,
     "recovery_mult": 1,
-    "dp_bonus_pool": 0
+    "dp_bonus_pool": 11,
+    "description": "<p><b>Typical Culture:</b> Highland.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Human",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 0,
+      "gender": {
+        "female": {
+          "height": "5'7",
+          "weight": 115
+        },
+        "male": {
+          "height": "6'0",
+          "weight": 140
+        }
+      },
+      "variance": 5
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "rmu_canonical_name": "Y'nari"
   },
   {
     "name": "Dúranaki (SW)",
     "stat_bonuses": {
-      "Agility": 2,
+      "Agility": 3,
       "Constitution": 0,
-      "Empathy": 1,
-      "Intuition": -2,
+      "Empathy": 2,
+      "Intuition": -4,
       "Memory": 0,
-      "Presence": 1,
-      "Quickness": 2,
+      "Presence": 2,
+      "Quickness": 3,
       "Reasoning": 1,
-      "Self Discipline": -1,
+      "Self Discipline": -2,
       "Strength": 0
     },
-    "channeling_rr": 5,
+    "channeling_rr": 0,
     "essence_rr": -10,
     "mentalism_rr": 5,
-    "physical_rr": 5,
+    "physical_rr": 0,
     "endurance": 0,
     "base_hits": 25,
     "recovery_mult": 1,
-    "dp_bonus_pool": 0
+    "dp_bonus_pool": 3,
+    "description": "<p><b>Typical Culture:</b> Underground.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Human",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 0,
+      "gender": {
+        "female": {
+          "height": "5'6",
+          "weight": 135
+        },
+        "male": {
+          "height": "5'11",
+          "weight": 160
+        }
+      },
+      "variance": 5
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Nightvision",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Darkvision",
+        "tier": 3,
+        "description": ""
+      }
+    ],
+    "rmu_canonical_name": "Duranaki"
   },
   {
     "name": "Kinsai (SW)",
@@ -1389,18 +4102,44 @@
       "Memory": 0,
       "Presence": 4,
       "Quickness": 1,
-      "Reasoning": 1,
+      "Reasoning": 0,
       "Self Discipline": 2,
       "Strength": 1
     },
-    "channeling_rr": 5,
+    "channeling_rr": 0,
     "essence_rr": 5,
     "mentalism_rr": -10,
     "physical_rr": 10,
     "endurance": 0,
     "base_hits": 25,
     "recovery_mult": 1,
-    "dp_bonus_pool": 0
+    "dp_bonus_pool": 7,
+    "description": "<p><b>Typical Culture:</b> Nomad.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Human",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 0,
+      "gender": {
+        "female": {
+          "height": "5'11",
+          "weight": 150
+        },
+        "male": {
+          "height": "6'4",
+          "weight": 175
+        }
+      },
+      "variance": 5
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "rmu_canonical_name": "Kinsai"
   },
   {
     "name": "Ilourians (SW)",
@@ -1408,22 +4147,48 @@
       "Agility": 4,
       "Constitution": -2,
       "Empathy": 2,
-      "Intuition": 0,
+      "Intuition": 2,
       "Memory": 0,
       "Presence": 0,
-      "Quickness": 6,
+      "Quickness": 5,
       "Reasoning": 0,
       "Self Discipline": 0,
-      "Strength": -4
+      "Strength": -3
     },
     "channeling_rr": 0,
     "essence_rr": 0,
     "mentalism_rr": 0,
     "physical_rr": 0,
     "endurance": 0,
-    "base_hits": 25,
+    "base_hits": 20,
     "recovery_mult": 1,
-    "dp_bonus_pool": 0
+    "dp_bonus_pool": 22,
+    "description": "<p><b>Typical Culture:</b> Variable, select based on the character’s background. The T’loc-Loc have a Hunter culture.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Human",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": -2,
+      "gender": {
+        "female": {
+          "height": "4'8",
+          "weight": 80
+        },
+        "male": {
+          "height": "4'10",
+          "weight": 100
+        }
+      },
+      "variance": 3
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "rmu_canonical_name": "Ilourians"
   },
   {
     "name": "Jameri (SW)",
@@ -1436,31 +4201,57 @@
       "Presence": 0,
       "Quickness": 0,
       "Reasoning": 0,
-      "Self Discipline": 1,
-      "Strength": 1
+      "Self Discipline": 2,
+      "Strength": 3
     },
     "channeling_rr": 0,
     "essence_rr": 0,
     "mentalism_rr": 0,
-    "physical_rr": 5,
+    "physical_rr": 0,
     "endurance": 0,
     "base_hits": 25,
     "recovery_mult": 1,
-    "dp_bonus_pool": 0
+    "dp_bonus_pool": 30,
+    "description": "<p><b>Typical Culture:</b> Rural, Urban.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Human",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 0,
+      "gender": {
+        "female": {
+          "height": "5'7",
+          "weight": 165
+        },
+        "male": {
+          "height": "5'11",
+          "weight": 190
+        }
+      },
+      "variance": 5
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "rmu_canonical_name": "Jameri"
   },
   {
     "name": "Muadani (SW)",
     "stat_bonuses": {
-      "Agility": 1,
+      "Agility": 2,
       "Constitution": 0,
-      "Empathy": 1,
-      "Intuition": 2,
-      "Memory": -1,
+      "Empathy": 2,
+      "Intuition": 1,
+      "Memory": -2,
       "Presence": 0,
-      "Quickness": 1,
-      "Reasoning": -1,
-      "Self Discipline": 2,
-      "Strength": 2
+      "Quickness": 2,
+      "Reasoning": 0,
+      "Self Discipline": 1,
+      "Strength": 1
     },
     "channeling_rr": 0,
     "essence_rr": 0,
@@ -1469,20 +4260,53 @@
     "endurance": 0,
     "base_hits": 25,
     "recovery_mult": 1,
-    "dp_bonus_pool": 0
+    "dp_bonus_pool": 9,
+    "description": "<p><b>Typical Culture:</b> Variable, select based on the character's background.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Muadani",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 1,
+      "gender": {
+        "female": {
+          "height": "6'1",
+          "weight": 160
+        },
+        "male": {
+          "height": "6'6",
+          "weight": 190
+        }
+      },
+      "variance": 5
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Heat Resistant",
+        "tier": 1,
+        "description": ""
+      }
+    ],
+    "rmu_canonical_name": "Muadani"
   },
   {
     "name": "Rhiani (SW)",
     "stat_bonuses": {
-      "Agility": 1,
-      "Constitution": 1,
-      "Empathy": -1,
-      "Intuition": 1,
-      "Memory": -1,
+      "Agility": 2,
+      "Constitution": 2,
+      "Empathy": -2,
+      "Intuition": 2,
+      "Memory": -2,
       "Presence": 1,
       "Quickness": 0,
-      "Reasoning": -1,
-      "Self Discipline": 1,
+      "Reasoning": 0,
+      "Self Discipline": 2,
       "Strength": 1
     },
     "channeling_rr": 0,
@@ -1492,21 +4316,64 @@
     "endurance": 0,
     "base_hits": 25,
     "recovery_mult": 1,
-    "dp_bonus_pool": 0
+    "dp_bonus_pool": 6,
+    "description": "<p><b>Typical Culture:</b> Nomad.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Human",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 0,
+      "gender": {
+        "female": {
+          "height": "5'9",
+          "weight": 145
+        },
+        "male": {
+          "height": "6'1",
+          "weight": 170
+        }
+      },
+      "variance": 5
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Heat Resistant",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Lesser Nightvision",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Third Eyelid",
+        "tier": 1,
+        "description": ""
+      }
+    ],
+    "rmu_canonical_name": "Rhiani"
   },
   {
     "name": "Syrkakar (SW)",
     "stat_bonuses": {
       "Agility": 0,
-      "Constitution": 1,
-      "Empathy": -1,
-      "Intuition": 1,
+      "Constitution": 2,
+      "Empathy": -2,
+      "Intuition": 2,
       "Memory": 0,
       "Presence": -2,
-      "Quickness": -1,
+      "Quickness": -2,
       "Reasoning": 0,
       "Self Discipline": 0,
-      "Strength": 1
+      "Strength": 2
     },
     "channeling_rr": 0,
     "essence_rr": 0,
@@ -1515,7 +4382,33 @@
     "endurance": 0,
     "base_hits": 25,
     "recovery_mult": 1,
-    "dp_bonus_pool": 0
+    "dp_bonus_pool": 51,
+    "description": "<p><b>Typical Culture:</b> Variable, select based on the character’s background.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Syrkakar",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": -2,
+      "gender": {
+        "female": {
+          "height": "4'3",
+          "weight": 90
+        },
+        "male": {
+          "height": "4'11",
+          "weight": 110
+        }
+      },
+      "variance": 5
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "rmu_canonical_name": "Syrkakar"
   },
   {
     "name": "Y'kin (SW)",
@@ -1523,21 +4416,1443 @@
       "Agility": 0,
       "Constitution": 0,
       "Empathy": 0,
-      "Intuition": 2,
-      "Memory": 1,
+      "Intuition": 3,
+      "Memory": 0,
       "Presence": -1,
       "Quickness": 0,
-      "Reasoning": -1,
-      "Self Discipline": -1,
+      "Reasoning": 0,
+      "Self Discipline": -2,
       "Strength": -1
     },
-    "channeling_rr": -10,
-    "essence_rr": -10,
+    "channeling_rr": -5,
+    "essence_rr": -5,
     "mentalism_rr": -5,
     "physical_rr": 0,
     "endurance": 0,
     "base_hits": 25,
     "recovery_mult": 1,
-    "dp_bonus_pool": 0
+    "dp_bonus_pool": 63,
+    "description": "<p><b>Typical Culture:</b> Highland, Rural, Urban.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Human",
+    "fear_rr": 0,
+    "frame": {
+      "size": "Medium",
+      "stride": 0,
+      "gender": {
+        "female": {
+          "height": "5'4",
+          "weight": 120
+        },
+        "male": {
+          "height": "5'8",
+          "weight": 160
+        }
+      },
+      "variance": 5
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "rmu_canonical_name": "Y'kin"
+  },
+  {
+    "name": "Shuluri",
+    "stat_bonuses": {
+      "Agility": 2,
+      "Constitution": 1,
+      "Empathy": 2,
+      "Intuition": 0,
+      "Memory": 1,
+      "Presence": 2,
+      "Quickness": 2,
+      "Reasoning": 0,
+      "Self Discipline": -5,
+      "Strength": 1
+    },
+    "channeling_rr": 0,
+    "essence_rr": -10,
+    "mentalism_rr": 0,
+    "physical_rr": 10,
+    "fear_rr": 0,
+    "endurance": 0,
+    "base_hits": 20,
+    "recovery_mult": 2,
+    "dp_bonus_pool": -28,
+    "description": "<p><b>Typical Culture:</b> Oceanic. Mariner or Ascended could also be appropriate for those living on land.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Elf",
+    "frame": {
+      "size": "Medium",
+      "stride": 2,
+      "gender": {
+        "female": {
+          "height": "6'3",
+          "weight": 160
+        },
+        "male": {
+          "height": "6'8",
+          "weight": 200
+        }
+      },
+      "variance": 4
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Cold Resistant",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Efficient Sleeper",
+        "tier": 2,
+        "description": "Elves meditate rather than sleep, and two hours of meditation replaces four hours of sleep."
+      },
+      {
+        "name": "Immune to Disease",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Nightvision",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Swimming",
+        "tier": 2,
+        "description": "Shuluri have a base movement rate of 20’ in water, with a maximum pace of Jog."
+      },
+      {
+        "name": "Air and Water Breathing",
+        "tier": 1,
+        "description": "The Shuluri may breathe water or air without difficulty."
+      }
+    ],
+    "rmu_canonical_name": "Shuluri",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Jhordi",
+    "stat_bonuses": {
+      "Agility": 0,
+      "Constitution": 1,
+      "Empathy": -2,
+      "Intuition": -1,
+      "Memory": 0,
+      "Presence": 4,
+      "Quickness": 0,
+      "Reasoning": 0,
+      "Self Discipline": 1,
+      "Strength": 2
+    },
+    "channeling_rr": 0,
+    "essence_rr": 0,
+    "mentalism_rr": 10,
+    "physical_rr": 5,
+    "fear_rr": 0,
+    "endurance": 0,
+    "base_hits": 25,
+    "recovery_mult": 1,
+    "dp_bonus_pool": 0,
+    "description": "<p><b>Typical Culture:</b> Ascended.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Jhordi",
+    "frame": {
+      "size": "Medium",
+      "stride": 1,
+      "gender": {
+        "female": {
+          "height": "6'8",
+          "weight": 280
+        },
+        "male": {
+          "height": "6'8",
+          "weight": 280
+        }
+      },
+      "variance": 6
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Mute",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Innate Spell List",
+        "tier": 10,
+        "description": "All Jhordi know the Mind Speech spell list (Mentalist base) to level 10. Spells are cast as described in Spell Law section 4.8, including a spell casting roll and chance of spell failure. Innate spell-lists are treated as Base lists for SCR."
+      }
+    ],
+    "rmu_canonical_name": "Jhordi",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Goblin (Murlogi)",
+    "stat_bonuses": {
+      "Agility": 5,
+      "Constitution": 5,
+      "Empathy": -3,
+      "Intuition": -1,
+      "Memory": -1,
+      "Presence": -3,
+      "Quickness": 2,
+      "Reasoning": 0,
+      "Self Discipline": -2,
+      "Strength": 0
+    },
+    "channeling_rr": 0,
+    "essence_rr": 0,
+    "mentalism_rr": 0,
+    "physical_rr": 5,
+    "fear_rr": 0,
+    "endurance": 0,
+    "base_hits": 20,
+    "recovery_mult": 0.5,
+    "dp_bonus_pool": 31,
+    "description": "<p><b>Typical Culture:</b> Skulker. Underground could also be appropriate.</p>",
+    "creature_category": "Races",
+    "creature_type": "Goblinoids",
+    "creature_variety": "Goblin",
+    "frame": {
+      "size": "Small",
+      "stride": -6,
+      "gender": {
+        "female": {
+          "height": "3'7",
+          "weight": 50
+        },
+        "male": {
+          "height": "3'10",
+          "weight": 65
+        }
+      },
+      "variance": 3
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Prodigy",
+        "tier": 5,
+        "description": "+25 to Mechanics skill.",
+        "overrides": [
+          {
+            "key": "skill",
+            "skillCategory": "Technical",
+            "skillName": "Mechanics"
+          }
+        ]
+      },
+      {
+        "name": "Nightvision",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Light Sensitivity",
+        "tier": 2,
+        "description": ""
+      },
+      {
+        "name": "Cold Resistant",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Acute Hearing",
+        "tier": 2,
+        "description": ""
+      }
+    ],
+    "rmu_canonical_name": "Goblin (Murlogi)",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Gark",
+    "stat_bonuses": {
+      "Agility": 1,
+      "Constitution": 2,
+      "Empathy": 1,
+      "Intuition": 0,
+      "Memory": -2,
+      "Presence": -1,
+      "Quickness": 1,
+      "Reasoning": -2,
+      "Self Discipline": -1,
+      "Strength": 2
+    },
+    "channeling_rr": 5,
+    "essence_rr": 15,
+    "mentalism_rr": 15,
+    "physical_rr": 10,
+    "fear_rr": 0,
+    "endurance": 0,
+    "base_hits": 25,
+    "recovery_mult": 1,
+    "dp_bonus_pool": 9,
+    "description": "<p><b>Typical Culture:</b> Skulker. Snow Garks might use Harsh. Jungle and Cliff Garks could also use Hunter.</p>",
+    "creature_category": "Races",
+    "creature_type": "Anthropomorphs",
+    "creature_variety": "Garks",
+    "frame": {
+      "size": "Medium",
+      "stride": 0,
+      "gender": {
+        "female": {
+          "height": "4'2",
+          "weight": 100
+        },
+        "male": {
+          "height": "4'6",
+          "weight": 120
+        }
+      },
+      "variance": 4
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Hearing, Cat",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Distinct Odor",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Prehensile Appendage",
+        "tier": 1,
+        "description": "Gark tails are dexterous enough to hold and grasp objects."
+      }
+    ],
+    "rmu_canonical_name": "Gark",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Lugroki, Greater",
+    "stat_bonuses": {
+      "Agility": 0,
+      "Constitution": 5,
+      "Empathy": -4,
+      "Intuition": 0,
+      "Memory": -2,
+      "Presence": -2,
+      "Quickness": 0,
+      "Reasoning": -2,
+      "Self Discipline": -4,
+      "Strength": 3
+    },
+    "channeling_rr": 0,
+    "essence_rr": 0,
+    "mentalism_rr": 0,
+    "physical_rr": 10,
+    "fear_rr": 0,
+    "endurance": 10,
+    "base_hits": 30,
+    "recovery_mult": 0.5,
+    "dp_bonus_pool": 38,
+    "description": "<p><b>Typical Culture:</b> Dark.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Lugroki",
+    "frame": {
+      "size": "Medium",
+      "stride": 0,
+      "gender": {
+        "female": {
+          "height": "6'0",
+          "weight": 190
+        },
+        "male": {
+          "height": "6'4",
+          "weight": 220
+        }
+      },
+      "variance": 6
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Cold Resistant",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Heat Resistant",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Nightvision",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Light Sensitivity",
+        "tier": 1,
+        "description": ""
+      }
+    ],
+    "rmu_canonical_name": "Lugroki, Greater",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Synshari",
+    "stat_bonuses": {
+      "Agility": 2,
+      "Constitution": 2,
+      "Empathy": 1,
+      "Intuition": 0,
+      "Memory": 0,
+      "Presence": -2,
+      "Quickness": 2,
+      "Reasoning": 0,
+      "Self Discipline": 0,
+      "Strength": 1
+    },
+    "channeling_rr": 0,
+    "essence_rr": 0,
+    "mentalism_rr": 0,
+    "physical_rr": 0,
+    "fear_rr": 0,
+    "endurance": 10,
+    "base_hits": 25,
+    "recovery_mult": 1,
+    "dp_bonus_pool": 11,
+    "description": "<p><b>Typical Culture:</b> Harsh.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Synshari",
+    "frame": {
+      "size": "Medium",
+      "stride": 2,
+      "gender": {
+        "female": {
+          "height": "6'10",
+          "weight": 195
+        },
+        "male": {
+          "height": "7'2",
+          "weight": 220
+        }
+      },
+      "variance": 5
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Heat Resistant",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Cold Sensitive",
+        "tier": 2,
+        "description": "Synshari are sluggish in cold weather and suffer a penalty to all actions of -1 per degree below 70°F."
+      },
+      {
+        "name": "Third Eyelid",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Natural Armor",
+        "tier": 2,
+        "description": "The leathery skin of the Synshari provides them with AT 3."
+      },
+      {
+        "name": "Traction (Synshari)",
+        "tier": 1,
+        "description": ""
+      }
+    ],
+    "rmu_canonical_name": "Synshari",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Hirazi",
+    "stat_bonuses": {
+      "Agility": 4,
+      "Constitution": -3,
+      "Empathy": 2,
+      "Intuition": 0,
+      "Memory": 0,
+      "Presence": 0,
+      "Quickness": 2,
+      "Reasoning": 0,
+      "Self Discipline": 0,
+      "Strength": -2
+    },
+    "channeling_rr": -5,
+    "essence_rr": -5,
+    "mentalism_rr": -5,
+    "physical_rr": -10,
+    "fear_rr": 0,
+    "endurance": 10,
+    "base_hits": 25,
+    "recovery_mult": 1,
+    "dp_bonus_pool": 31,
+    "description": "<p><b>Typical Culture:</b> Aerial.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Hirazi",
+    "frame": {
+      "size": "Medium",
+      "stride": 4,
+      "gender": {
+        "female": {
+          "height": "6'9",
+          "weight": 140
+        },
+        "male": {
+          "height": "7'3",
+          "weight": 160
+        }
+      },
+      "variance": 3
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Wings, Flying",
+        "tier": 2,
+        "description": "Hirazi have a base movement rate of 60’/rnd while flying. They can reach a Run pace in level flight or Sprint while diving."
+      },
+      {
+        "name": "Light-boned",
+        "tier": 1,
+        "description": "Hirazi are treated as Small creatures for purposes of their hits (determine their hits normally, then multiply by 0.75) and as the targets of attacks. However, they are treated as Medium creatures for attacks they make."
+      }
+    ],
+    "rmu_canonical_name": "Hirazi",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Lugroki, Lesser",
+    "stat_bonuses": {
+      "Agility": 0,
+      "Constitution": 2,
+      "Empathy": -3,
+      "Intuition": 0,
+      "Memory": -2,
+      "Presence": -3,
+      "Quickness": 0,
+      "Reasoning": -2,
+      "Self Discipline": -4,
+      "Strength": 1
+    },
+    "channeling_rr": 0,
+    "essence_rr": 0,
+    "mentalism_rr": 0,
+    "physical_rr": 5,
+    "fear_rr": 0,
+    "endurance": 5,
+    "base_hits": 25,
+    "recovery_mult": 0.5,
+    "dp_bonus_pool": 78,
+    "description": "<p><b>Typical Culture:</b> Skulker.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Lugroki",
+    "frame": {
+      "size": "Medium",
+      "stride": -2,
+      "gender": {
+        "female": {
+          "height": "5'6",
+          "weight": 155
+        },
+        "male": {
+          "height": "5'10",
+          "weight": 180
+        }
+      },
+      "variance": 5
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Cold Resistant",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Heat Resistant",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Nightvision",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Light Sensitivity",
+        "tier": 2,
+        "description": ""
+      }
+    ],
+    "rmu_canonical_name": "Lugroki, Lesser",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Trogli",
+    "stat_bonuses": {
+      "Agility": 0,
+      "Constitution": 3,
+      "Empathy": -2,
+      "Intuition": -2,
+      "Memory": -2,
+      "Presence": -2,
+      "Quickness": 0,
+      "Reasoning": -2,
+      "Self Discipline": -2,
+      "Strength": 3
+    },
+    "channeling_rr": 10,
+    "essence_rr": 10,
+    "mentalism_rr": 10,
+    "physical_rr": 10,
+    "fear_rr": 0,
+    "endurance": 0,
+    "base_hits": 25,
+    "recovery_mult": 0.5,
+    "dp_bonus_pool": 5,
+    "description": "<p><b>Typical Culture:</b> Dark</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Trogli",
+    "frame": {
+      "size": "Medium",
+      "stride": 0,
+      "gender": {
+        "female": {
+          "height": "5'0",
+          "weight": 140
+        },
+        "male": {
+          "height": "5'8",
+          "weight": 180
+        }
+      },
+      "variance": 5
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Nightvision",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Darkvision",
+        "tier": 3,
+        "description": ""
+      },
+      {
+        "name": "Trogli Joints",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Phobia",
+        "tier": 3,
+        "description": "Trogli are terrified of daylight. Being exposed to daylight requires a fear RR, taking the effects as shown in RMU Core Law on Table 14-3a. Any surrender result indicates paralysis for one round per 10 failure. If you must interact with daylight directly, treat it as 10th level fear attack. If you will be surrounded by daylight, treat it as 20th level. If they do manage to control their fear, they do not suffer any penalties on their actions."
+      }
+    ],
+    "rmu_canonical_name": "Trogli",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Quaidu",
+    "stat_bonuses": {
+      "Agility": 2,
+      "Constitution": 2,
+      "Empathy": -2,
+      "Intuition": 0,
+      "Memory": 1,
+      "Presence": 2,
+      "Quickness": 0,
+      "Reasoning": 0,
+      "Self Discipline": 2,
+      "Strength": 3
+    },
+    "channeling_rr": -5,
+    "essence_rr": -5,
+    "mentalism_rr": -5,
+    "physical_rr": 10,
+    "fear_rr": 0,
+    "endurance": 0,
+    "base_hits": 30,
+    "recovery_mult": 1,
+    "dp_bonus_pool": 9,
+    "description": "<p><b>Typical Culture:</b> Variable, select based on the character’s background.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Quaidu",
+    "frame": {
+      "size": "Medium",
+      "stride": 0,
+      "gender": {
+        "female": {
+          "height": "5'11",
+          "weight": 180
+        },
+        "male": {
+          "height": "6'3",
+          "weight": 220
+        }
+      },
+      "variance": 5
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Albino",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Nightvision",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Light Sensitivity",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Cold Resistant",
+        "tier": 1,
+        "description": ""
+      }
+    ],
+    "rmu_canonical_name": "Quaidu",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Kuluku",
+    "stat_bonuses": {
+      "Agility": 2,
+      "Constitution": 0,
+      "Empathy": 0,
+      "Intuition": 2,
+      "Memory": 0,
+      "Presence": 1,
+      "Quickness": 1,
+      "Reasoning": 0,
+      "Self Discipline": -2,
+      "Strength": 0
+    },
+    "channeling_rr": 0,
+    "essence_rr": -10,
+    "mentalism_rr": 0,
+    "physical_rr": 0,
+    "fear_rr": 0,
+    "endurance": 0,
+    "base_hits": 25,
+    "recovery_mult": 1,
+    "dp_bonus_pool": 0,
+    "description": "<p><b>Typical Culture:</b> Sylvan.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Kuluku",
+    "frame": {
+      "size": "Medium",
+      "stride": 2,
+      "gender": {
+        "female": {
+          "height": "6'7",
+          "weight": 180
+        },
+        "male": {
+          "height": "6'11",
+          "weight": 210
+        }
+      },
+      "variance": 5
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Kuluku Camouflage",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Lesser Nightvision",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Acute Smell",
+        "tier": 2,
+        "description": ""
+      },
+      {
+        "name": "Climbing, Claw",
+        "tier": 1,
+        "description": ""
+      }
+    ],
+    "rmu_canonical_name": "Kuluku",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Centaur",
+    "stat_bonuses": {
+      "Agility": 2,
+      "Constitution": 2,
+      "Empathy": 1,
+      "Intuition": 1,
+      "Memory": 0,
+      "Presence": 0,
+      "Quickness": 1,
+      "Reasoning": 0,
+      "Self Discipline": 1,
+      "Strength": 2
+    },
+    "channeling_rr": 0,
+    "essence_rr": 0,
+    "mentalism_rr": 0,
+    "physical_rr": -10,
+    "fear_rr": 0,
+    "endurance": 0,
+    "base_hits": 25,
+    "recovery_mult": 1,
+    "dp_bonus_pool": -55,
+    "description": "<p><b>Typical Culture:</b> Sylvan.</p> <p>\n  Due to their numerous advantages, Centaurs have a high point cost and as a result have a negative number\n  of racial bonus DP. This results in a DP deficit which must be paid off, and due to the magnitude it will\n  be necessary to do so over multiple levels. An adult Centaur will not be a 1st level character.\n  For very low level Centaurs, it may be appropriate to treat them as juveniles, one size smaller than\n  adults, with lower stat bonuses. Starting off as a Medium creature and reducing Co, Em, Me, Pr, Re, SD,\n  and St bonuses by 1 each will result in a net +3 racial bonus DP rather than a negative value.\n  These reduced bonuses must then be paid off as the Centaur grows into adulthood.\n</p>",
+    "creature_category": "Races",
+    "creature_type": "Centaurs",
+    "creature_variety": "Centaur, Horse",
+    "frame": {
+      "size": "Big",
+      "stride": 5,
+      "gender": {
+        "female": {
+          "height": "6'11",
+          "weight": 800
+        },
+        "male": {
+          "height": "7'3",
+          "weight": 900
+        }
+      },
+      "variance": 15
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Lesser Attack",
+        "tier": 1,
+        "description": "Although Centaurs are Big creatures, any attacks using their arms (e.g., wielding weapons) are merely Medium."
+      },
+      {
+        "name": "Restricted Diet",
+        "tier": 1,
+        "description": "Centaurs are strictly herbivores."
+      },
+      {
+        "name": "Hearing, Cat",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Acute Taste",
+        "tier": 5,
+        "description": ""
+      },
+      {
+        "name": "Acute Smell",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Additional Limb Pair",
+        "tier": 1,
+        "description": "Centaurs have two arms and four legs."
+      },
+      {
+        "name": "Walking, Quadrupedal",
+        "tier": 1,
+        "description": "As quadrupeds, Centaurs have a base movement rate (BMR) of 30’/round, with a maximum pace of Dash, and gain a +10 bonus to their Running skill. (Note that Centaurs also have a +5 stride bonus, so their actual BMR before modification for their Quickness bonus is 35’/round.)"
+      }
+    ],
+    "rmu_canonical_name": "Centaur",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Droloi",
+    "stat_bonuses": {
+      "Agility": -2,
+      "Constitution": 2,
+      "Empathy": 0,
+      "Intuition": 0,
+      "Memory": 0,
+      "Presence": -4,
+      "Quickness": -2,
+      "Reasoning": 0,
+      "Self Discipline": 0,
+      "Strength": 2
+    },
+    "channeling_rr": 0,
+    "essence_rr": 0,
+    "mentalism_rr": 0,
+    "physical_rr": -10,
+    "fear_rr": 0,
+    "endurance": 0,
+    "base_hits": 30,
+    "recovery_mult": 2,
+    "dp_bonus_pool": 33,
+    "description": "<p> <b>Typical Culture:</b> Little information is provided regarding the cultural practices of the Droloi, except that they tend to live in small groups, at least sometimes underground. Underground, Hunter, or Dark may be appropriate depending on their nature. </p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Droloi",
+    "frame": {
+      "size": "Medium",
+      "stride": -1,
+      "gender": {
+        "female": {
+          "height": "5'2",
+          "weight": 100
+        },
+        "male": {
+          "height": "5'2",
+          "weight": 100
+        }
+      },
+      "variance": 4
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Nightvision",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Darkvision",
+        "tier": 5,
+        "description": ""
+      },
+      {
+        "name": "Natural Weaponry",
+        "tier": 1,
+        "description": "Droloi may make unarmed Claw attacks."
+      },
+      {
+        "name": "Cold Resistant",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Disturbing Form",
+        "tier": 1,
+        "description": "Other races find the Droloi’s appearance to be extremely disturbing. This gives a penalty of -20 to any maneuver to calm or persuade, if the Droloi is visible."
+      },
+      {
+        "name": "Natural Armor",
+        "tier": 1,
+        "description": "Droloi have a natural AT of 2."
+      }
+    ],
+    "rmu_canonical_name": "Droloi",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Saurkur",
+    "stat_bonuses": {
+      "Agility": 0,
+      "Constitution": 3,
+      "Empathy": 0,
+      "Intuition": 0,
+      "Memory": -2,
+      "Presence": -2,
+      "Quickness": 0,
+      "Reasoning": 0,
+      "Self Discipline": -2,
+      "Strength": 2
+    },
+    "channeling_rr": 0,
+    "essence_rr": -5,
+    "mentalism_rr": 0,
+    "physical_rr": 0,
+    "fear_rr": 0,
+    "endurance": 10,
+    "base_hits": 25,
+    "recovery_mult": 1,
+    "dp_bonus_pool": 2,
+    "description": "<p><b>Typical Culture:</b> Sylvan for those living in and working the jungles, Mariner for fishermen and others working the coast, Rural for those engaged in agriculture, and Urban for those living in the larger cities.</p>",
+    "creature_category": "Races",
+    "creature_type": "Reptilians",
+    "creature_variety": "Saurkur",
+    "frame": {
+      "size": "Medium",
+      "stride": 0,
+      "gender": {
+        "female": {
+          "height": "6'1",
+          "weight": 250
+        },
+        "male": {
+          "height": "6'7",
+          "weight": 300
+        }
+      },
+      "variance": 6
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Third Eyelid",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Sight, Gecko",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Tetrachromatic Vision",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Natural Weaponry",
+        "tier": 1,
+        "description": "Saurkur may make unarmed attacks using their claws."
+      },
+      {
+        "name": "Natural Armor",
+        "tier": 3,
+        "description": "Saurkur scales provide them with natural AT 4."
+      }
+    ],
+    "rmu_canonical_name": "Saurkur",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Krylites",
+    "stat_bonuses": {
+      "Agility": 2,
+      "Constitution": -2,
+      "Empathy": -2,
+      "Intuition": -2,
+      "Memory": 0,
+      "Presence": 3,
+      "Quickness": 3,
+      "Reasoning": 0,
+      "Self Discipline": 0,
+      "Strength": -2
+    },
+    "channeling_rr": 0,
+    "essence_rr": 0,
+    "mentalism_rr": 0,
+    "physical_rr": 20,
+    "fear_rr": 0,
+    "endurance": 0,
+    "base_hits": 20,
+    "recovery_mult": 1,
+    "dp_bonus_pool": 11,
+    "description": "<p><b>Typical Culture:</b> Skulker</p>",
+    "creature_category": "Races",
+    "creature_type": "Insectoids",
+    "creature_variety": "Krylites",
+    "frame": {
+      "size": "Medium",
+      "stride": 0,
+      "gender": {
+        "female": {
+          "height": "4'8",
+          "weight": 90
+        },
+        "male": {
+          "height": "5'3",
+          "weight": 110
+        }
+      },
+      "variance": 4
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Poison Injection",
+        "tier": 1,
+        "description": "Krylite defenders produce a reduction venom which is delivered upon a successful tongue attack (i.e., an attack which inflicts a critical)."
+      },
+      {
+        "name": "Natural Weaponry",
+        "tier": 1,
+        "description": "Krylite defenders have powerful pincers which they use in melee, attacking on the Beak table."
+      },
+      {
+        "name": "Natural Weaponry",
+        "tier": 1,
+        "description": "In addition to their pincers, Krylites have an eversible tongue appendage capable of making Stinger attacks."
+      }
+    ],
+    "rmu_canonical_name": "Krylites",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Zjedrahir",
+    "stat_bonuses": {
+      "Agility": 0,
+      "Constitution": 2,
+      "Empathy": 2,
+      "Intuition": 2,
+      "Memory": -1,
+      "Presence": 1,
+      "Quickness": -2,
+      "Reasoning": 0,
+      "Self Discipline": -1,
+      "Strength": 3
+    },
+    "channeling_rr": 0,
+    "essence_rr": 0,
+    "mentalism_rr": 0,
+    "physical_rr": 0,
+    "fear_rr": 0,
+    "endurance": 0,
+    "base_hits": 30,
+    "recovery_mult": 1,
+    "dp_bonus_pool": 17,
+    "description": "<p><b>Typical Culture:</b> Variable, select based on the character’s background. Proud might be appropriate.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Zjedrahir",
+    "frame": {
+      "size": "Medium",
+      "stride": 0,
+      "gender": {
+        "female": {
+          "height": "6'2",
+          "weight": 190
+        },
+        "male": {
+          "height": "6'8",
+          "weight": 240
+        }
+      },
+      "variance": 5
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Heat Resistant",
+        "tier": 1,
+        "description": ""
+      }
+    ],
+    "rmu_canonical_name": "Zjedrahir",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Rasha-ai",
+    "stat_bonuses": {
+      "Agility": 2,
+      "Constitution": 2,
+      "Empathy": 2,
+      "Intuition": 0,
+      "Memory": 0,
+      "Presence": 0,
+      "Quickness": 2,
+      "Reasoning": 0,
+      "Self Discipline": 0,
+      "Strength": -2
+    },
+    "channeling_rr": -5,
+    "essence_rr": -5,
+    "mentalism_rr": -5,
+    "physical_rr": 0,
+    "fear_rr": 0,
+    "endurance": 20,
+    "base_hits": 25,
+    "recovery_mult": 1,
+    "dp_bonus_pool": 19,
+    "description": "<p><b>Typical Culture:</b> Rural.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Rasha-ai",
+    "frame": {
+      "size": "Medium",
+      "stride": 2,
+      "gender": {
+        "female": {
+          "height": "6'3",
+          "weight": 130
+        },
+        "male": {
+          "height": "6'4",
+          "weight": 135
+        }
+      },
+      "variance": 4
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Camouflage, Pattern",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Restricted Diet",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Photosynthetic Skin",
+        "tier": 1,
+        "description": ""
+      }
+    ],
+    "rmu_canonical_name": "Rasha-ai",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Dwarf (Nomari)",
+    "stat_bonuses": {
+      "Agility": -1,
+      "Constitution": 6,
+      "Empathy": -6,
+      "Intuition": 0,
+      "Memory": 0,
+      "Presence": -3,
+      "Quickness": -1,
+      "Reasoning": 0,
+      "Self Discipline": 0,
+      "Strength": 2
+    },
+    "channeling_rr": 0,
+    "essence_rr": 10,
+    "mentalism_rr": 10,
+    "physical_rr": 10,
+    "fear_rr": 0,
+    "endurance": 20,
+    "base_hits": 30,
+    "recovery_mult": 0.5,
+    "dp_bonus_pool": 11,
+    "description": "<p><b>Typical Culture:</b> Underground.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Dwarf",
+    "frame": {
+      "size": "Medium",
+      "stride": -3,
+      "gender": {
+        "female": {
+          "height": "4'2",
+          "weight": 112
+        },
+        "male": {
+          "height": "4'6",
+          "weight": 135
+        }
+      },
+      "variance": 5
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Darkvision",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Nightvision",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Inept",
+        "tier": 5,
+        "description": "Due to their density, dwarves must work especially hard to keep from drowning. They suffer a -25 penalty on Endurance rolls while swimming.",
+        "overrides": [
+          {
+            "key": "situational",
+            "value": "true"
+          },
+          {
+            "key": "skill",
+            "skillCategory": "Movement",
+            "skillName": "Swimming"
+          }
+        ]
+      },
+      {
+        "name": "Heat Resistant",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Cold Sensitive",
+        "tier": 1,
+        "description": ""
+      },
+      {
+        "name": "Hibernation (Nomari)",
+        "tier": 1,
+        "description": ""
+      }
+    ],
+    "rmu_canonical_name": "Dwarf (Nomari)",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Mermen",
+    "stat_bonuses": {
+      "Agility": 0,
+      "Constitution": 1,
+      "Empathy": -1,
+      "Intuition": 0,
+      "Memory": 1,
+      "Presence": 1,
+      "Quickness": 0,
+      "Reasoning": 0,
+      "Self Discipline": 0,
+      "Strength": 1
+    },
+    "channeling_rr": 0,
+    "essence_rr": 0,
+    "mentalism_rr": 0,
+    "physical_rr": 0,
+    "fear_rr": 0,
+    "endurance": 0,
+    "base_hits": 25,
+    "recovery_mult": 1,
+    "dp_bonus_pool": 28,
+    "description": "<p><b>Typical Culture:</b> Oceanic.</p>",
+    "creature_category": "Races",
+    "creature_type": "Humanoids",
+    "creature_variety": "Mermen",
+    "frame": {
+      "size": "Medium",
+      "stride": 0,
+      "gender": {
+        "female": {
+          "height": "7'0",
+          "weight": 210
+        },
+        "male": {
+          "height": "7'6",
+          "weight": 230
+        }
+      },
+      "variance": 6
+    },
+    "build": {
+      "randomBuildRoll": null,
+      "randomHeightTotal": null,
+      "randomWeightTotal": null
+    },
+    "racial_talents": [
+      {
+        "name": "Swimming",
+        "tier": 3,
+        "description": "Mermen move easily through water, with a base movement rate of 30’/round and a maximum pace of Run."
+      },
+      {
+        "name": "Air and Water Breathing",
+        "tier": 1,
+        "description": "Mermen can breathe water or air without difficulty."
+      },
+      {
+        "name": "Amphibious",
+        "tier": 1,
+        "description": "Mermen require regular immersion in water. After a day out of water, they suffer a penalty on all actions of -1 per hour they have spent out of water. This penalty may only be removed by immersion in water."
+      },
+      {
+        "name": "Awkward Movement",
+        "tier": 3,
+        "description": "It’s possible for a Merman to move on land, but they are awkward and slow. Their base movement rate on land is halved with a maximum pace of Run, and they have a -15 penalty on Running skill. A Merman capable of transforming their tail into legs does not suffer these penalties while they have legs; this may be purchased as an 8 DP talent, requiring 1 minute to transform and lasting for 4 hours plus 1 hour per level."
+      }
+    ],
+    "rmu_canonical_name": "Mermen",
+    "source": "rmu-system"
   }
 ]

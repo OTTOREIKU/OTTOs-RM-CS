@@ -1,236 +1,814 @@
 {
   "melee": {
     "label": "Melee Fumbles",
-    "columns": ["1-Handed Melee", "2-Handed Melee", "Animals", "Mounted Arms", "Unarmed"],
+    "columns": [
+      "1-Handed Melee",
+      "2-Handed Melee",
+      "Animals",
+      "Mounted Arms",
+      "Unarmed"
+    ],
     "rows": [
-      { "min": 1,  "max": 20, "results": [
-        "Sweaty palm — may try next round.",
-        "Heavy weapon, lose chance to swing.",
-        "Odd smell distracts. Try next round.",
-        "Coordination failure with mount; lose attack (not mount).",
-        "Foe too quick — lose chance to attack."
-      ]},
-      { "min": 21, "max": 30, "results": [
-        "Weapon flies 2d10' in random direction. Wipe hands next time.",
-        "One hand slips; weapon out of position. Lose rest of round recovering.",
-        "Try to look like you meant to. No attack this round.",
-        "Use weapon column for this fumble.",
-        "Trip over own feet — lose chance to attack."
-      ]},
-      { "min": 31, "max": 40, "results": [
-        "Overenthusiastic attack — off-balance. −5 initiative next round.",
-        "Mind wanders; lose control of weapon. −8 initiative next round.",
-        "Off-balance. −3 initiative next round.",
-        "You and mount disagree on direction. Both −10 initiative next round.",
-        "Mighty yell fails, leaves you breathless. −5 Fatigue."
-      ]},
-      { "min": 41, "max": 50, "results": [
-        "Tiring! −5 Fatigue.",
-        "Stumble over imaginary invisible turtle; Stunned 2 rounds. [−25][−25]",
-        "Strike yourself for 1d10 hits.",
-        "Mount shies suddenly; lose attack, −10 next round. Mount also loses its attack.",
-        "Strike self for 1d5 hits; −7 initiative next round."
-      ]},
-      { "min": 51, "max": 60, "results": [
-        "Try spin maneuver — fail. Stunned 2 rounds. [−25][−25]",
-        "Furious but poorly-executed strikes avoided easily. −10 Fatigue.",
-        "Stunned 1 round. [−25]",
-        "Mount Dazed rest of round and all of next. [−25][−25]",
-        "Lost your weapon? Wait, you weren't using one. Spend next round Stunned. [−25]"
-      ]},
-      { "min": 61, "max": 65, "results": [
-        "Hit inanimate object; both weapon and object make breakage checks.",
-        "Completely lose grip; weapon flies 1d10' in random direction.",
-        "Instinct unreliable; attack at −30 for next 3 rounds.",
-        "Use weapon column for this fumble.",
-        "Acrobatic but misjudged; fall flat on back, Stunned 1 round. [−50]"
-      ]},
-      { "min": 66, "max": 66, "results": [
-        "Attack nearest ally (or bystander, or imaginary friend).",
-        "Attack nearest ally.",
-        "Attack nearest ally.",
-        "Attack nearest ally; if only mount in reach, deal 2d10 hits + 2 rounds Stun to mount.",
-        "Attack nearest ally."
-      ]},
-      { "min": 67, "max": 70, "results": [
-        "Weapon balance seems off. −25 for 2 rounds until you realize grip is wrong.",
-        "Successfully hit yourself with an A-severity Subdual critical. (A Subdual)",
-        "Such an itch! Concentrate on scratching for 2 rounds.",
-        "Use weapon column for this fumble.",
-        "Awesome kill move failed. Stunned 2 rounds by failure."
-      ]},
-      { "min": 71, "max": 80, "results": [
-        "Overwhelmed; can't initiate attack for 2 rounds (may full parry if attacked).",
-        "Strain shoulders in mighty miss. −20 penalty.",
-        "Fight going out of you. −15 Fatigue.",
-        "Nearly fall off mount; Concentrate 2 rounds to regain seat. Mount at −30 during this time.",
-        "Hit something hard with your body. 2d10 hits + Stunned 2 rounds. [−50][−50]"
-      ]},
-      { "min": 81, "max": 85, "results": [
-        "Suddenly winded; −20 Fatigue.",
-        "Limbs all crossed; −50 for 3 rounds.",
-        "Bite inside of own mouth for 1d10 hits; Stunned 1 round unable to parry, then Stunned 1 round. Foes within 10' must save vs. level 1 Fear effect.",
-        "Hard riding maneuver or fall off mount. If successful, 1 round Dazed + −5 from groin pull.",
-        "Perfect blow blocked casually; Stunned 2 rounds. [−50][−50]"
-      ]},
-      { "min": 86, "max": 90, "results": [
-        "Clip self with weapon; Stunned this round, Dazed next. [−50][−25]",
-        "Lower back: pull muscle; Stunned 2 rounds + −25 injury. [−50][−50]",
-        "Tumble 2d10' in random direction. Stunned rest of round + all of next. [−50][−50]",
-        "Tangled in mount's tack; 10 AP to free. Until free, all actions −100 except Riding.",
-        "Foot slips; fall and Stun yourself 2 rounds. [−50][−50]"
-      ]},
-      { "min": 91, "max": 95, "results": [
-        "Trip and fall prone; Stunned 2 rounds then Dazed in third. [−50][−50][−25]",
-        "Down on one knee hard; Stunned 1 round then Dazed. −15 knee injury. Drop weapon. [−50][−25]",
-        "Got own tail! 2d10 hits + Stunned 1 round + Dazed 1 round. [−50][−25]",
-        "Poorly expressed directives; you and mount lose attacks + −50 to all actions for 3 rounds.",
-        "Balance off on one foot; −20 ankle sprain."
-      ]},
-      { "min": 96, "max": 99, "results": [
-        "Stunned unable to parry this round, Stunned next, Dazed third. [−75][−50][−25]",
-        "Shoulder shouldn't bend that way. Stunned 2 rounds + −25 injury. [−50][−50]",
-        "Look one way, move another; take A-severity Unbalancing critical.",
-        "Use weapon column for this fumble.",
-        "Miss and overextend; pull back muscle (−20 injury). 2d10 hits + Stunned 1 round. [−50]"
-      ]},
-      { "min": 100, "max": 100, "results": [
-        "Execute declared attack on yourself — no parry DB.",
-        "Worst move seen in ages! Stunned 5 rounds unable to parry, −30 pulled groin. 50% chance foes laugh 3 rounds. [−75][−75][−75][−75][−75]",
-        "Get turned around; foe is now behind you and gets a free attack on your back.",
-        "Drop weapon; fall from mount. Mount at −30 for 2 rounds.",
-        "Textbook headbutt — to the ground. Prone, Stunned 3 rounds, bleeding 1 hit/round."
-      ]}
+      {
+        "min": 1,
+        "max": 20,
+        "results": [
+          "Sweaty palm — may try next round.",
+          "Heavy weapon, lose chance to swing.",
+          "Odd smell distracts. Try next round.",
+          "Coordination failure with mount; lose attack (not mount).",
+          "Foe too quick — lose chance to attack."
+        ]
+      },
+      {
+        "min": 21,
+        "max": 30,
+        "results": [
+          "Weapon flies 2d10' in random direction. Wipe hands next time.",
+          "One hand slips; weapon out of position. Lose rest of round recovering.",
+          "Try to look like you meant to. No attack this round.",
+          "Use weapon column for this fumble.",
+          "Trip over own feet — lose chance to attack."
+        ]
+      },
+      {
+        "min": 31,
+        "max": 40,
+        "results": [
+          "Overenthusiastic attack — off-balance. −5 initiative next round.",
+          "Mind wanders; lose control of weapon. −8 initiative next round.",
+          "Off-balance. −3 initiative next round.",
+          "You and mount disagree on direction. Both −10 initiative next round.",
+          "Mighty yell fails, leaves you breathless. −5 Fatigue."
+        ]
+      },
+      {
+        "min": 41,
+        "max": 50,
+        "results": [
+          "Tiring! −5 Fatigue.",
+          "Stumble over imaginary invisible turtle; Stunned 2 rounds. [−25][−25]",
+          "Strike yourself for 1d10 hits.",
+          "Mount shies suddenly; lose attack, −10 next round. Mount also loses its attack.",
+          "Strike self for 1d5 hits; −7 initiative next round."
+        ]
+      },
+      {
+        "min": 51,
+        "max": 60,
+        "results": [
+          "Try spin maneuver — fail. Stunned 2 rounds. [−25][−25]",
+          "Furious but poorly-executed strikes avoided easily. −10 Fatigue.",
+          "Stunned 1 round. [−25]",
+          "Mount Dazed rest of round and all of next. [−25][−25]",
+          "Lost your weapon? Wait, you weren't using one. Spend next round Stunned. [−25]"
+        ]
+      },
+      {
+        "min": 61,
+        "max": 65,
+        "results": [
+          "Hit inanimate object; both weapon and object make breakage checks.",
+          "Completely lose grip; weapon flies 1d10' in random direction.",
+          "Instinct unreliable; attack at −30 for next 3 rounds.",
+          "Use weapon column for this fumble.",
+          "Acrobatic but misjudged; fall flat on back, Stunned 1 round. [−50]"
+        ]
+      },
+      {
+        "min": 66,
+        "max": 66,
+        "results": [
+          "Attack nearest ally (or bystander, or imaginary friend).",
+          "Attack nearest ally.",
+          "Attack nearest ally.",
+          "Attack nearest ally; if only mount in reach, deal 2d10 hits + 2 rounds Stun to mount.",
+          "Attack nearest ally."
+        ]
+      },
+      {
+        "min": 67,
+        "max": 70,
+        "results": [
+          "Weapon balance seems off. −25 for 2 rounds until you realize grip is wrong.",
+          "Successfully hit yourself with an A-severity Subdual critical. (A Subdual)",
+          "Such an itch! Concentrate on scratching for 2 rounds.",
+          "Use weapon column for this fumble.",
+          "Awesome kill move failed. Stunned 2 rounds by failure."
+        ]
+      },
+      {
+        "min": 71,
+        "max": 80,
+        "results": [
+          "Overwhelmed; can't initiate attack for 2 rounds (may full parry if attacked).",
+          "Strain shoulders in mighty miss. −20 penalty.",
+          "Fight going out of you. −15 Fatigue.",
+          "Nearly fall off mount; Concentrate 2 rounds to regain seat. Mount at −30 during this time.",
+          "Hit something hard with your body. 2d10 hits + Stunned 2 rounds. [−50][−50]"
+        ]
+      },
+      {
+        "min": 81,
+        "max": 85,
+        "results": [
+          "Suddenly winded; −20 Fatigue.",
+          "Limbs all crossed; −50 for 3 rounds.",
+          "Bite inside of own mouth for 1d10 hits; Stunned 1 round unable to parry, then Stunned 1 round. Foes within 10' must save vs. level 1 Fear effect.",
+          "Hard riding maneuver or fall off mount. If successful, 1 round Dazed + −5 from groin pull.",
+          "Perfect blow blocked casually; Stunned 2 rounds. [−50][−50]"
+        ]
+      },
+      {
+        "min": 86,
+        "max": 90,
+        "results": [
+          "Clip self with weapon; Stunned this round, Dazed next. [−50][−25]",
+          "Lower back: pull muscle; Stunned 2 rounds + −25 injury. [−50][−50]",
+          "Tumble 2d10' in random direction. Stunned rest of round + all of next. [−50][−50]",
+          "Tangled in mount's tack; 10 AP to free. Until free, all actions −100 except Riding.",
+          "Foot slips; fall and Stun yourself 2 rounds. [−50][−50]"
+        ]
+      },
+      {
+        "min": 91,
+        "max": 95,
+        "results": [
+          "Trip and fall prone; Stunned 2 rounds then Dazed in third. [−50][−50][−25]",
+          "Down on one knee hard; Stunned 1 round then Dazed. −15 knee injury. Drop weapon. [−50][−25]",
+          "Got own tail! 2d10 hits + Stunned 1 round + Dazed 1 round. [−50][−25]",
+          "Poorly expressed directives; you and mount lose attacks + −50 to all actions for 3 rounds.",
+          "Balance off on one foot; −20 ankle sprain."
+        ]
+      },
+      {
+        "min": 96,
+        "max": 99,
+        "results": [
+          "Stunned unable to parry this round, Stunned next, Dazed third. [−75][−50][−25]",
+          "Shoulder shouldn't bend that way. Stunned 2 rounds + −25 injury. [−50][−50]",
+          "Look one way, move another; take A-severity Unbalancing critical.",
+          "Use weapon column for this fumble.",
+          "Miss and overextend; pull back muscle (−20 injury). 2d10 hits + Stunned 1 round. [−50]"
+        ]
+      },
+      {
+        "min": 100,
+        "max": 100,
+        "results": [
+          "Execute declared attack on yourself — no parry DB.",
+          "Worst move seen in ages! Stunned 5 rounds unable to parry, −30 pulled groin. 50% chance foes laugh 3 rounds. [−75][−75][−75][−75][−75]",
+          "Get turned around; foe is now behind you and gets a free attack on your back.",
+          "Drop weapon; fall from mount. Mount at −30 for 2 rounds.",
+          "Textbook headbutt — to the ground. Prone, Stunned 3 rounds, bleeding 1 hit/round."
+        ]
+      }
     ]
   },
   "ranged": {
     "label": "Ranged Fumbles",
-    "columns": ["Bows", "Slings", "Thrown", "Bolt Spells", "Ball/Cone Spells"],
+    "columns": [
+      "Bows",
+      "Slings",
+      "Thrown",
+      "Bolt Spells",
+      "Ball/Cone Spells"
+    ],
     "rows": [
-      { "min": 1,  "max": 20, "results": [
-        "Sweat in eye — lose attack.",
-        "Not enough spin; hold attack until next round.",
-        "Weak grip; elect not to attack for lack of control.",
-        "Unruly element: hold bolt, attack next round without recasting (if you don't act rest of round).",
-        "Hold the spell; may attack next round without recasting."
-      ]},
-      { "min": 21, "max": 30, "results": [
-        "Overthink it; fail to attack this round.",
-        "Stone flies off as +0 attack on target; sling goes with it.",
-        "Lose control on release; weapon falls halfway to target.",
-        "Energies resist; reroll attack with Size reduced by one.",
-        "Element loses focus; if hold rest of round and all next, may attack round after without recasting."
-      ]},
-      { "min": 31, "max": 40, "results": [
-        "Spill ammunition on ground.",
-        "Partly lose grip; stone skips harmlessly along ground. Retain sling.",
-        "Trip over own feet; fall face-down but keep weapon.",
-        "Bolt deflects 90° left.",
-        "Ball detonates 90° left; roll +0 attacks on those in zone."
-      ]},
-      { "min": 41, "max": 50, "results": [
-        "Projectile breaks; half still on string. 8 AP to clear.",
-        "−5 Fatigue.",
-        "Bad grip; smack self in head. Stunned 2 rounds. [−50][−50]",
-        "Bolt appears as fist-sized ball of elemental material, floats 10'/round toward target. Resolves as +0 attack on contact.",
-        "Elements become head-sized ball, floats 10'/round; resolves as ball attack on contact."
-      ]},
-      { "min": 51, "max": 60, "results": [
-        "Projectile drives into ground between feet. Breaks.",
-        "Sling spins nearly out of control. −10 initiative next round.",
-        "Poor release; if anyone within 15' of target, roll +0 attack on closest.",
-        "Bolt launched 90° right of intended path.",
-        "Attack launched 90° right."
-      ]},
-      { "min": 61, "max": 65, "results": [
-        "Bow slips from sweaty hands; falls at feet.",
-        "Sure it's the perfect sling — stone is on the ground at feet. Next action −20.",
-        "Very poor throw; weapon ends up 10+1d10' away in random direction.",
-        "Bolt launched straight down.",
-        "Attack launched straight down."
-      ]},
-      { "min": 66, "max": 66, "results": [
-        "ATTACK NEAREST ALLY (or yourself for 2d10 hits + −20 flesh wound).",
-        "ATTACK NEAREST ALLY (or A-severity Unbalancing critical on self).",
-        "ATTACK NEAREST ALLY (or weapon bounces back as +0 surprise attack on you).",
-        "Attack executes on nearest ally! (If no ally in range, attack is lost.)",
-        "ATTACK CENTERED ON NEAREST ALLY (or execute centered on self)."
-      ]},
-      { "min": 67, "max": 70, "results": [
-        "Mishandle weapon; Stunned 1 round. [−50]",
-        "Stone drops on own foot. 1d5 hits.",
-        "Weapon flies 20' beyond max range past target; roll +0 attack if someone there. −10 Fatigue.",
-        "Bolt launched 180° (opposite direction from intended target).",
-        "Attack launched 180° opposite."
-      ]},
-      { "min": 71, "max": 80, "results": [
-        "Bowstring snaps. Draw another bow or restring.",
-        "Too much body; fall before releasing. Dazed 1 round. [−25]",
-        "Slip and fall prone just before releasing; Stunned 1 round. [−50]",
-        "Bolt launched 45° left.",
-        "Attack launched 45° left."
-      ]},
-      { "min": 81, "max": 85, "results": [
-        "Hold thumb in way of string. Miss + Stunned 2 rounds. [−50][−50]",
-        "Clip own head; Stunned 1 round. [−50]",
-        "Weapon drops to ground; hits foot for 1d10 hits.",
-        "Bolt launched 45° right.",
-        "Attack launched 45° right."
-      ]},
-      { "min": 86, "max": 90, "results": [
-        "Shot goes wild 3d10' from target; +0 attack if someone there.",
-        "Clip side of own head; Stunned 2 rounds. [−50][−50]",
-        "Poor weak release; weapon goes up 2', comes back and hits you. No damage but Stunned 1 round. [−50]",
-        "Bolt launched 45° above intended.",
-        "Attack launched 45° above."
-      ]},
-      { "min": 91, "max": 95, "results": [
-        "Slip and fall; prone + Stunned 2 rounds. [−50][−50]",
-        "Injure tendon in wrist; −15 injury.",
-        "Throw weapon 4d10' behind you; anyone in the way takes +0 attack. Dazed 1 round. [−25]",
-        "Bolt launched 45° below intended.",
-        "Attack launched 45° below."
-      ]},
-      { "min": 96, "max": 99, "results": [
-        "Breakage check: fail → bow snaps + A-severity Puncture from splinter; pass → string snaps + A-severity Slash critical.",
-        "Pull muscle in slinging arm; −20 penalty.",
-        "Trip on release; weapon flies as +0 attack on nearest creature. Stunned 2 rounds. [−50][−50]",
-        "Bolt launched straight up.",
-        "Attack launched straight up."
-      ]},
-      { "min": 100, "max": 100, "results": [
-        "SHOOT SELF IN FOOT. Foot pinned (6 AP to free). Stunned 2 rounds, bleeding 1 hit/round, −30 flesh wound.",
-        "HIT SELF with A-severity Krush critical as sling becomes melee weapon.",
-        "WEAPON FLIES STRAIGHT UP; comes down as +50 attack on yourself.",
-        "Take A-severity critical of appropriate elemental type.",
-        "Take C-severity critical of appropriate elemental type."
-      ]}
+      {
+        "min": 1,
+        "max": 20,
+        "results": [
+          "Sweat in eye — lose attack.",
+          "Not enough spin; hold attack until next round.",
+          "Weak grip; elect not to attack for lack of control.",
+          "Unruly element: hold bolt, attack next round without recasting (if you don't act rest of round).",
+          "Hold the spell; may attack next round without recasting."
+        ]
+      },
+      {
+        "min": 21,
+        "max": 30,
+        "results": [
+          "Overthink it; fail to attack this round.",
+          "Stone flies off as +0 attack on target; sling goes with it.",
+          "Lose control on release; weapon falls halfway to target.",
+          "Energies resist; reroll attack with Size reduced by one.",
+          "Element loses focus; if hold rest of round and all next, may attack round after without recasting."
+        ]
+      },
+      {
+        "min": 31,
+        "max": 40,
+        "results": [
+          "Spill ammunition on ground.",
+          "Partly lose grip; stone skips harmlessly along ground. Retain sling.",
+          "Trip over own feet; fall face-down but keep weapon.",
+          "Bolt deflects 90° left.",
+          "Ball detonates 90° left; roll +0 attacks on those in zone."
+        ]
+      },
+      {
+        "min": 41,
+        "max": 50,
+        "results": [
+          "Projectile breaks; half still on string. 8 AP to clear.",
+          "−5 Fatigue.",
+          "Bad grip; smack self in head. Stunned 2 rounds. [−50][−50]",
+          "Bolt appears as fist-sized ball of elemental material, floats 10'/round toward target. Resolves as +0 attack on contact.",
+          "Elements become head-sized ball, floats 10'/round; resolves as ball attack on contact."
+        ]
+      },
+      {
+        "min": 51,
+        "max": 60,
+        "results": [
+          "Projectile drives into ground between feet. Breaks.",
+          "Sling spins nearly out of control. −10 initiative next round.",
+          "Poor release; if anyone within 15' of target, roll +0 attack on closest.",
+          "Bolt launched 90° right of intended path.",
+          "Attack launched 90° right."
+        ]
+      },
+      {
+        "min": 61,
+        "max": 65,
+        "results": [
+          "Bow slips from sweaty hands; falls at feet.",
+          "Sure it's the perfect sling — stone is on the ground at feet. Next action −20.",
+          "Very poor throw; weapon ends up 10+1d10' away in random direction.",
+          "Bolt launched straight down.",
+          "Attack launched straight down."
+        ]
+      },
+      {
+        "min": 66,
+        "max": 66,
+        "results": [
+          "ATTACK NEAREST ALLY (or yourself for 2d10 hits + −20 flesh wound).",
+          "ATTACK NEAREST ALLY (or A-severity Unbalancing critical on self).",
+          "ATTACK NEAREST ALLY (or weapon bounces back as +0 surprise attack on you).",
+          "Attack executes on nearest ally! (If no ally in range, attack is lost.)",
+          "ATTACK CENTERED ON NEAREST ALLY (or execute centered on self)."
+        ]
+      },
+      {
+        "min": 67,
+        "max": 70,
+        "results": [
+          "Mishandle weapon; Stunned 1 round. [−50]",
+          "Stone drops on own foot. 1d5 hits.",
+          "Weapon flies 20' beyond max range past target; roll +0 attack if someone there. −10 Fatigue.",
+          "Bolt launched 180° (opposite direction from intended target).",
+          "Attack launched 180° opposite."
+        ]
+      },
+      {
+        "min": 71,
+        "max": 80,
+        "results": [
+          "Bowstring snaps. Draw another bow or restring.",
+          "Too much body; fall before releasing. Dazed 1 round. [−25]",
+          "Slip and fall prone just before releasing; Stunned 1 round. [−50]",
+          "Bolt launched 45° left.",
+          "Attack launched 45° left."
+        ]
+      },
+      {
+        "min": 81,
+        "max": 85,
+        "results": [
+          "Hold thumb in way of string. Miss + Stunned 2 rounds. [−50][−50]",
+          "Clip own head; Stunned 1 round. [−50]",
+          "Weapon drops to ground; hits foot for 1d10 hits.",
+          "Bolt launched 45° right.",
+          "Attack launched 45° right."
+        ]
+      },
+      {
+        "min": 86,
+        "max": 90,
+        "results": [
+          "Shot goes wild 3d10' from target; +0 attack if someone there.",
+          "Clip side of own head; Stunned 2 rounds. [−50][−50]",
+          "Poor weak release; weapon goes up 2', comes back and hits you. No damage but Stunned 1 round. [−50]",
+          "Bolt launched 45° above intended.",
+          "Attack launched 45° above."
+        ]
+      },
+      {
+        "min": 91,
+        "max": 95,
+        "results": [
+          "Slip and fall; prone + Stunned 2 rounds. [−50][−50]",
+          "Injure tendon in wrist; −15 injury.",
+          "Throw weapon 4d10' behind you; anyone in the way takes +0 attack. Dazed 1 round. [−25]",
+          "Bolt launched 45° below intended.",
+          "Attack launched 45° below."
+        ]
+      },
+      {
+        "min": 96,
+        "max": 99,
+        "results": [
+          "Breakage check: fail → bow snaps + A-severity Puncture from splinter; pass → string snaps + A-severity Slash critical.",
+          "Pull muscle in slinging arm; −20 penalty.",
+          "Trip on release; weapon flies as +0 attack on nearest creature. Stunned 2 rounds. [−50][−50]",
+          "Bolt launched straight up.",
+          "Attack launched straight up."
+        ]
+      },
+      {
+        "min": 100,
+        "max": 100,
+        "results": [
+          "SHOOT SELF IN FOOT. Foot pinned (6 AP to free). Stunned 2 rounds, bleeding 1 hit/round, −30 flesh wound.",
+          "HIT SELF with A-severity Krush critical as sling becomes melee weapon.",
+          "WEAPON FLIES STRAIGHT UP; comes down as +50 attack on yourself.",
+          "Take A-severity critical of appropriate elemental type.",
+          "Take C-severity critical of appropriate elemental type."
+        ]
+      }
     ]
   },
   "_col_map": {
-    "Short Bow":     ["ranged", 0],
-    "Crossbow":      ["ranged", 0],
-    "Sling":         ["ranged", 1],
-    "Rock":          ["ranged", 2],
-    "Broadsword":    ["melee",  0],
-    "Club":          ["melee",  0],
-    "Dagger":        ["melee",  0],
-    "Falchion":      ["melee",  0],
-    "Fighting Stick":["melee",  0],
-    "Flail":         ["melee",  0],
-    "Mace":          ["melee",  0],
-    "Rapier":        ["melee",  0],
-    "Scimitar":      ["melee",  0],
-    "Shield":        ["melee",  0],
-    "Spear":         ["melee",  0],
-    "War Hammer":    ["melee",  0],
-    "Whip":          ["melee",  0],
-    "Claw":          ["melee",  2],
-    "Horn":          ["melee",  2],
-    "Stinger":       ["melee",  2],
-    "Trample":       ["melee",  2],
-    "Crush":         ["melee",  4],
-    "Grapple":       ["melee",  4],
-    "Ram":           ["melee",  4]
+    "Short Bow": [
+      "ranged",
+      0
+    ],
+    "Crossbow": [
+      "ranged",
+      0
+    ],
+    "Sling": [
+      "ranged",
+      1
+    ],
+    "Rock": [
+      "ranged",
+      2
+    ],
+    "Broadsword": [
+      "melee",
+      0
+    ],
+    "Club": [
+      "melee",
+      0
+    ],
+    "Dagger": [
+      "melee",
+      0
+    ],
+    "Falchion": [
+      "melee",
+      0
+    ],
+    "Fighting Stick": [
+      "melee",
+      0
+    ],
+    "Flail": [
+      "melee",
+      0
+    ],
+    "Mace": [
+      "melee",
+      0
+    ],
+    "Rapier": [
+      "melee",
+      0
+    ],
+    "Scimitar": [
+      "melee",
+      0
+    ],
+    "Shield": [
+      "melee",
+      0
+    ],
+    "Spear": [
+      "melee",
+      0
+    ],
+    "War Hammer": [
+      "melee",
+      0
+    ],
+    "Whip": [
+      "melee",
+      0
+    ],
+    "Claw": [
+      "melee",
+      2
+    ],
+    "Horn": [
+      "melee",
+      2
+    ],
+    "Stinger": [
+      "melee",
+      2
+    ],
+    "Trample": [
+      "melee",
+      2
+    ],
+    "Crush": [
+      "melee",
+      4
+    ],
+    "Grapple": [
+      "melee",
+      4
+    ],
+    "Ram": [
+      "melee",
+      4
+    ]
+  },
+  "rmu_fumbles": {
+    "1-Handed Melee": {
+      "label": "1-Handed Melee",
+      "formula": "1d100",
+      "rows": [
+        {
+          "min": 1,
+          "max": 20,
+          "text": "Your palm is sweaty. Maybe you will improve."
+        },
+        {
+          "min": 21,
+          "max": 30,
+          "text": "You lose your grip on your weapon; it flies 2d10 feet in a random direction. Next time wipe your hands first."
+        },
+        {
+          "min": 31,
+          "max": 40,
+          "text": "Overenthusiastic attack puts you off balance. You suffer a -5 initiative penalty next round.\n-5 Initiative"
+        },
+        {
+          "min": 41,
+          "max": 50,
+          "text": "Fighting sure is tiring! Take a -5 Fatigue penalty.\n-5 Fatigue"
+        },
+        {
+          "min": 51,
+          "max": 60,
+          "text": "You try to impress your opponent with a spin maneuver. Too bad. Spend two rounds Stunned.\n2(-25 Stun)"
+        },
+        {
+          "min": 61,
+          "max": 65,
+          "text": "You hit an innocent inanimate object. Both it and your weapon must make breakage checks.\nBreakage"
+        },
+        {
+          "min": 66,
+          "max": 66,
+          "text": "Execute the declared attack on the nearest ally, whoops! If no ally is in reach, an innocent  bystander will do. Failing that, attack an imaginary friend."
+        },
+        {
+          "min": 67,
+          "max": 70,
+          "text": "Your weapon's balance seems off somehow. Spend two rounds attacking at -25 before you realize your grip is wrong.\n2(-25 Strain)"
+        },
+        {
+          "min": 71,
+          "max": 80,
+          "text": "You are distracted and overwhelmed. You may not initiate an attack for two rounds (you may full parry if attacked)."
+        },
+        {
+          "min": 81,
+          "max": 85,
+          "text": "You are suddenly very winded. Take a -20 Fatigue penalty.\n2(-20 Fatigue)"
+        },
+        {
+          "min": 86,
+          "max": 90,
+          "text": "You clip yourself with your own weapon. You are Stunned this round and Dazed next round.\n-50 Stun, -25 Stun"
+        },
+        {
+          "min": 91,
+          "max": 95,
+          "text": "You trip and fall prone as your swing goes wide. You are Stunned for two rounds, then Dazed in the third.\n2(-50 Stun), -25 Stun, Prone"
+        },
+        {
+          "min": 96,
+          "max": 99,
+          "text": "The excitement is just too much! Your momentary frenzy leaves you Stunned unable to parry this round, Stunned next round, and Dazed the third round.\n-75 Stun, -50 Stun, -25 Stun"
+        },
+        {
+          "min": 100,
+          "max": 100,
+          "text": "Execute the declared attack on yourself, with no parry DB. Ow!"
+        }
+      ]
+    },
+    "2-Handed Melee": {
+      "label": "2-Handed Melee",
+      "formula": "1d100",
+      "rows": [
+        {
+          "min": 1,
+          "max": 20,
+          "text": "My that weapon is heavy! You lose the opportunity to take a swing."
+        },
+        {
+          "min": 21,
+          "max": 30,
+          "text": "One hand slips from your weapon and it moves out of position; you lose the rest of the round recovering."
+        },
+        {
+          "min": 31,
+          "max": 40,
+          "text": "You mind wanders, and you partly lose control of your weapon. Suffer a -8 initiative penalty next round.\n-8 Initiative"
+        },
+        {
+          "min": 41,
+          "max": 50,
+          "text": "You stumble over an imaginary, invisible, deceased turtle. This leaves you Stunned for two rounds.\n2(-25 Stun)"
+        },
+        {
+          "min": 51,
+          "max": 60,
+          "text": "You launch a furious, but poorly-executed series of strikes that your opponent avoids easily. You only tire yourself. Take a -10 Fatigue penalty.\n-10 Fatigue"
+        },
+        {
+          "min": 61,
+          "max": 65,
+          "text": "You manage to completely lose your grip on your weapon, which ends up 1d10 feet away in a random direction."
+        },
+        {
+          "min": 66,
+          "max": 66,
+          "text": "Execute the declared attack on the nearest ally, whoops! If no ally is in reach, an innocent bystander will do. Failing that, attack an  imaginary friend."
+        },
+        {
+          "min": 67,
+          "max": 70,
+          "text": "The good news is that you successfully hit, delivering an 'A' Subdual critical. The bad news is, the target was yourself."
+        },
+        {
+          "min": 71,
+          "max": 80,
+          "text": "You strain your shoulders in a mighty swing (that misses). Take a -20 penalty.\n-20 Injury"
+        },
+        {
+          "min": 81,
+          "max": 85,
+          "text": "You confuse yourself and get your limbs all crossed. You are -50 for three rounds.\n3(-50 Strain)"
+        },
+        {
+          "min": 86,
+          "max": 90,
+          "text": "Your lower back screams as you twist too far and pull a muscle. You are Stunned two rounds and suffer a -25 penalty for the injury.\n-25 Injury, 2(-50 Stun)"
+        },
+        {
+          "min": 91,
+          "max": 95,
+          "text": "You go down hard on one knee. The pain leaves you Stunned for one round, then Dazed for the next.  The knee injury is a -15 flesh wound. You also drop your weapon.\n-15 Injury, -50 Stun, -25 Stun"
+        },
+        {
+          "min": 96,
+          "max": 99,
+          "text": "Your shoulder should not bend that way! You are Stunned for three rounds. The pulled muscle provides a -25 injury.\n-25 Injury, 2(-50 Stun)"
+        },
+        {
+          "min": 100,
+          "max": 100,
+          "text": "Worst move seen in ages! You are Stunned and unable to parry for five rounds and are at -30 with a pulled groin muscle.  There is a 50% chance your foes will be out for 3 rounds, laughing.\n-30 Injury, 5(-75 Stun)"
+        }
+      ]
+    },
+    "Bows": {
+      "label": "Bows",
+      "formula": "1d100",
+      "rows": [
+        {
+          "min": 1,
+          "max": 20,
+          "text": "Sweat gets in your eye. You lose this round's attack to wipe it off."
+        },
+        {
+          "min": 21,
+          "max": 30,
+          "text": "What should be automatic with practice becomes clumsy as you overthink it. You fail to attack this round."
+        },
+        {
+          "min": 31,
+          "max": 40,
+          "text": "You spill your ammunition on the ground. Did you do something to offend the gods recently?"
+        },
+        {
+          "min": 41,
+          "max": 50,
+          "text": "The projectile breaks, but half is still caught on the string. It requires 8 Action Points to clear it.\nStaggered(8)"
+        },
+        {
+          "min": 51,
+          "max": 60,
+          "text": "\"Twang!\" The projectile drives into the ground between your feet. It breaks."
+        },
+        {
+          "min": 61,
+          "max": 65,
+          "text": "Bow slips from your sweaty hands and falls at your feet."
+        },
+        {
+          "min": 66,
+          "max": 66,
+          "text": "Execute the declared attack on the nearest ally, whoops! (If no ally in range, put projectile through  your own foot for 2d10 hits and a -20 flesh wound.)\n-20 Injury"
+        },
+        {
+          "min": 67,
+          "max": 70,
+          "text": "You mishandle your weapon, causing yourself pain. Take one round Stunned.\n-50 Stun"
+        },
+        {
+          "min": 71,
+          "max": 80,
+          "text": "The bowstring snaps. Draw another weapon or restring your bow."
+        },
+        {
+          "min": 81,
+          "max": 85,
+          "text": "You managed to hold your thumb in the way of the string. Your shot misses, and you are Stunned for two rounds.\n2(-50 Stun)"
+        },
+        {
+          "min": 86,
+          "max": 90,
+          "text": "Your shot goes wild, landing 3d10 feet from target in a random direction. If someone is there, roll a +0 attack."
+        },
+        {
+          "min": 91,
+          "max": 95,
+          "text": "You slip and fall as you fire. Your shot goes astray. You are now prone and Stunned for two rounds.\n2(-50 Stun), Prone"
+        },
+        {
+          "min": 96,
+          "max": 99,
+          "text": "Make a breakage check. If it fails, the bow snaps and you take an 'A' Puncture from a flying splinter;  if it is passed, the string snaps and lashes you, doing an 'A' Slash critical."
+        },
+        {
+          "min": 100,
+          "max": 100,
+          "text": "You shoot yourself in the foot (A Critical). Your foot is pinned to the ground (6 Action Points to free yourself).  You are Stunned for two rounds, bleeding at 1 hit/round, and have a -30 flesh wound.\n1 Bleed, -30 Injury, 2(-50 Stun), Staggered(6)"
+        }
+      ]
+    },
+    "Slings": {
+      "label": "Slings",
+      "formula": "1d100",
+      "rows": [
+        {
+          "min": 1,
+          "max": 20,
+          "text": "Not enough spin. Hold your attack until next round."
+        },
+        {
+          "min": 21,
+          "max": 30,
+          "text": "You lose your grip. The stone still goes flying off to make a +0 attack on the target, but your sling goes along for the ride."
+        },
+        {
+          "min": 31,
+          "max": 40,
+          "text": "You partly lose your grip. The stone goes skipping off harmlessly along the ground, but you retain your sling."
+        },
+        {
+          "min": 41,
+          "max": 50,
+          "text": "You have been overdoing it. Take a -5 Fatigue penalty.\n-5 Fatigue"
+        },
+        {
+          "min": 51,
+          "max": 60,
+          "text": "You spin your sling so fast that you almost lose control of it. Suffer a -10 initiative penalty next round.\n-10 Initiative"
+        },
+        {
+          "min": 61,
+          "max": 65,
+          "text": "You are sure it is the perfect sling until you tire of waiting for your target to fall and notice the stone  is on the ground near your feet. Your next action is at -20.\n-20 Injury"
+        },
+        {
+          "min": 66,
+          "max": 66,
+          "text": "Execute the declared attack on the nearest ally, whoops! (If no ally in range, you do yourself an 'A' Unbalancing crit.)"
+        },
+        {
+          "min": 67,
+          "max": 70,
+          "text": "The stone drops on your foot. Take 1d5 hits of damage."
+        },
+        {
+          "min": 71,
+          "max": 80,
+          "text": "You put too much body into it, and you fall down before you can release your attack. You are Stunned one round.\n-25 Stun"
+        },
+        {
+          "min": 81,
+          "max": 85,
+          "text": "You clip the side of your head and suffer one round Stunned.\n-50 Stun"
+        },
+        {
+          "min": 86,
+          "max": 90,
+          "text": "You clip the side of your head and suffer two rounds Stunned.\n2(-50 Stun)"
+        },
+        {
+          "min": 91,
+          "max": 95,
+          "text": "You injure a tendon in the wrist of your slinging hand. This results in a -15 injury penalty.\n-15 Injury"
+        },
+        {
+          "min": 96,
+          "max": 99,
+          "text": "You pull a muscle in your slinging arm, resulting in a -20 penalty injury.\n-20 Injury"
+        },
+        {
+          "min": 100,
+          "max": 100,
+          "text": "The sling becomes a melee weapon as you manage to hit yourself for an 'A' Krush critical."
+        }
+      ]
+    },
+    "Thrown": {
+      "label": "Thrown",
+      "formula": "1d100",
+      "rows": [
+        {
+          "min": 1,
+          "max": 20,
+          "text": "Your grip is weak. You elect not to attack because of lack of control."
+        },
+        {
+          "min": 21,
+          "max": 30,
+          "text": "You lose control as you release the weapon and it falls harmlessly to the ground halfway to your target."
+        },
+        {
+          "min": 31,
+          "max": 40,
+          "text": "You trip over your own feet. You land face down, but hang on to your weapon."
+        },
+        {
+          "min": 41,
+          "max": 50,
+          "text": "You begin juggling your weapon because of a bad grip and smack yourself in the head. You are Stunned for 2 rounds.\n2(-50 Stun)"
+        },
+        {
+          "min": 51,
+          "max": 60,
+          "text": "Poor release. If there is someone else within 15' of the intended target, roll a +0 attack on the closest."
+        },
+        {
+          "min": 61,
+          "max": 65,
+          "text": "You throw very poorly. The weapon ends up 10 + 1d10 feet away in a random direction and must make a breakage check.\nBreakage"
+        },
+        {
+          "min": 66,
+          "max": 66,
+          "text": "Execute the declared attack on the nearest ally, whoops! (If no ally in range, weapon bounces off an object,  comes back at you as a +0 surprise attack.)"
+        },
+        {
+          "min": 67,
+          "max": 70,
+          "text": "What a throw! The weapon flies out twenty feet beyond its normal maximum range past the intended target. If someone is there, roll a +0 attack. You take a -10 Fatigue penalty from your exertion.\n-10 Fatigue"
+        },
+        {
+          "min": 71,
+          "max": 80,
+          "text": "Just as you are about to release, you slip and fall prone, and are Stunned for one round.\n-50 Stun, Prone"
+        },
+        {
+          "min": 81,
+          "max": 85,
+          "text": "Your weapon drops to the ground, hitting your foot on the way for 1d10 hits."
+        },
+        {
+          "min": 86,
+          "max": 90,
+          "text": "Your poor and weak release sends the weapon up two feet. It immediately comes down and hits you. You take no damage, but are Stunned for one round.\n-50 Stun"
+        },
+        {
+          "min": 91,
+          "max": 95,
+          "text": "You manage to throw your weapon 4d10 feet behind you. Anyone in the way takes a +0 attack. You are Stunned one round.\n-25 Stun"
+        },
+        {
+          "min": 96,
+          "max": 99,
+          "text": "You trip as you release your weapon, which flies off to make a +0 attack on the nearest creature. You are Stunned for two rounds.\n2(-50 Stun)"
+        },
+        {
+          "min": 100,
+          "max": 100,
+          "text": "You throw the weapon straight up and it comes down as a +50 attack on yourself."
+        }
+      ]
+    }
   }
 }

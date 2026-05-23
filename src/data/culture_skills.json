@@ -2,232 +2,1006 @@
   {
     "name": "Cosmopolitan",
     "grants": [
-      { "skill": "Perception",         "ranks": 2 },
-      { "skill": "Body Development",   "ranks": 1 },
-      { "skill": "Unarmed",            "ranks": 1, "choice": "combat_unarmed",     "note": "Choose a combat-training unarmed skill (Strikes or Grappling/Wrestling)" },
-      { "skill": "Composition & Perf. Art", "ranks": 4, "choice": "composition_perf_art", "max_per_skill": 2, "note": "Distribute among Musical Composition, Writing, Drawing/Painting, Acting, Music; max 2 ranks/skill" },
-      { "skill": "Crafting & Vocation","ranks": 6, "choice": "crafting_vocation",  "max_per_skill": 2, "note": "Distribute among any Crafting skills (Culinary, Fabric Craft, Leathercraft, Metalcraft, Stonecraft, Woodcraft, etc.); max 2 ranks/skill" },
-      { "skill": "Languages",          "ranks": 19, "choice": "language",          "note": "Distribute across Spoken/Written language skills" },
-      { "skill": "Region Lore", "ranks": 5, "choice": "region_lore", "note": "Choose own region (required specialization)" },
-      { "skill": "Region Lore (Neighboring)", "ranks": 2, "choice": "region_lore", "note": "Choose a neighboring region" },
-      { "skill": "Religion/Philosophy","ranks": 2 },
-      { "skill": "Other Lores",        "ranks": 7, "choice": "lore",               "note": "Distribute across any Lore skills (Creature, Historic, Materials, Racial, Spell, or specialization lores)" },
-      { "skill": "Running",            "ranks": 1 },
-      { "skill": "Influence",          "ranks": 2, "choice": "influence",          "note": "Choose from Persuasion, Intimidation, or Duping" },
-      { "skill": "Social Awareness",   "ranks": 3 },
-      { "skill": "Trading",            "ranks": 1 }
-    ]
+      {
+        "skill": "Perception",
+        "ranks": 2
+      },
+      {
+        "skill": "Body Development",
+        "ranks": 1
+      },
+      {
+        "skill": "Unarmed",
+        "ranks": 1,
+        "choice": "combat_unarmed",
+        "note": "Choose a combat-training unarmed skill (Strikes or Grappling/Wrestling)"
+      },
+      {
+        "skill": "Composition & Perf. Art",
+        "ranks": 4,
+        "choice": "composition_perf_art",
+        "max_per_skill": 2,
+        "note": "Distribute among Musical Composition, Writing, Drawing/Painting, Acting, Music; max 2 ranks/skill"
+      },
+      {
+        "skill": "Crafting & Vocation",
+        "ranks": 6,
+        "choice": "crafting_vocation",
+        "max_per_skill": 2,
+        "note": "Distribute among any Crafting skills (Culinary, Fabric Craft, Leathercraft, Metalcraft, Stonecraft, Woodcraft, etc.); max 2 ranks/skill"
+      },
+      {
+        "skill": "Languages",
+        "ranks": 19,
+        "choice": "language",
+        "note": "Distribute across Spoken/Written language skills"
+      },
+      {
+        "skill": "Region Lore",
+        "ranks": 5,
+        "choice": "region_lore",
+        "note": "Choose own region (required specialization)"
+      },
+      {
+        "skill": "Region Lore (Neighboring)",
+        "ranks": 2,
+        "choice": "region_lore",
+        "note": "Choose a neighboring region"
+      },
+      {
+        "skill": "Religion/Philosophy",
+        "ranks": 2
+      },
+      {
+        "skill": "Other Lores",
+        "ranks": 7,
+        "choice": "lore",
+        "note": "Distribute across any Lore skills (Creature, Historic, Materials, Racial, Spell, or specialization lores)"
+      },
+      {
+        "skill": "Running",
+        "ranks": 1
+      },
+      {
+        "skill": "Influence",
+        "ranks": 2,
+        "choice": "influence",
+        "note": "Choose from Persuasion, Intimidation, or Duping"
+      },
+      {
+        "skill": "Social Awareness",
+        "ranks": 3
+      },
+      {
+        "skill": "Trading",
+        "ranks": 1
+      }
+    ],
+    "description": "When a city gets large enough, those who dwell in it cease to be merely urban in\nculture. Large cities tend to have very finely specialized craftsmen, and the\nmajority of their economy is devoted to trade and commerce. The combination of\nspecialization, access to resources and cultural experiences you only find in\nlarge urban areas, and exposure to other people via trade and travel create a\nculture that is cosmopolitan.",
+    "book": "RMU Core Law",
+    "table": "2-3",
+    "rmu_canonical_name": "Cosmopolitan"
   },
   {
     "name": "Harsh",
     "grants": [
-      { "skill": "Perception",         "ranks": 2 },
-      { "skill": "Tracking",           "ranks": 1 },
-      { "skill": "Maneuver in Armor",  "ranks": 1 },
-      { "skill": "Body Development",   "ranks": 3 },
-      { "skill": "Unarmed",            "ranks": 1, "choice": "combat_unarmed",     "note": "Choose a combat-training unarmed skill" },
-      { "skill": "Melee Weapons",      "ranks": 1, "choice": "combat_melee",       "note": "Choose a melee weapon skill (Blade, Hafted, etc.)" },
-      { "skill": "Crafting & Vocation","ranks": 4, "choice": "crafting_vocation",  "max_per_skill": 2, "note": "Distribute among Crafting skills; max 2 ranks/skill" },
-      { "skill": "Navigation",         "ranks": 1 },
-      { "skill": "Survival (Own Region)", "ranks": 3, "choice": "survival",        "note": "Choose own region biome" },
-      { "skill": "Languages",          "ranks": 8,  "choice": "language",          "note": "Distribute across Spoken/Written language skills" },
-      { "skill": "Region Lore", "ranks": 5, "choice": "region_lore", "note": "Choose own region (required specialization)" },
-      { "skill": "Other Lores",        "ranks": 2, "choice": "lore",               "note": "Distribute across any Lore skills" },
-      { "skill": "Medicine",           "ranks": 2 },
-      { "skill": "Running",            "ranks": 2 },
-      { "skill": "Concealment",        "ranks": 1 },
-      { "skill": "Stalking",           "ranks": 2 }
-    ]
+      {
+        "skill": "Perception",
+        "ranks": 2
+      },
+      {
+        "skill": "Tracking",
+        "ranks": 1
+      },
+      {
+        "skill": "Maneuver in Armor",
+        "ranks": 1
+      },
+      {
+        "skill": "Body Development",
+        "ranks": 3
+      },
+      {
+        "skill": "Unarmed",
+        "ranks": 1,
+        "choice": "combat_unarmed",
+        "note": "Choose a combat-training unarmed skill"
+      },
+      {
+        "skill": "Melee Weapons",
+        "ranks": 1,
+        "choice": "combat_melee",
+        "note": "Choose a melee weapon skill (Blade, Hafted, etc.)"
+      },
+      {
+        "skill": "Crafting & Vocation",
+        "ranks": 4,
+        "choice": "crafting_vocation",
+        "max_per_skill": 2,
+        "note": "Distribute among Crafting skills; max 2 ranks/skill"
+      },
+      {
+        "skill": "Navigation",
+        "ranks": 1
+      },
+      {
+        "skill": "Survival (Own Region)",
+        "ranks": 3,
+        "choice": "survival",
+        "note": "Choose own region biome"
+      },
+      {
+        "skill": "Languages",
+        "ranks": 8,
+        "choice": "language",
+        "note": "Distribute across Spoken/Written language skills"
+      },
+      {
+        "skill": "Region Lore",
+        "ranks": 5,
+        "choice": "region_lore",
+        "note": "Choose own region (required specialization)"
+      },
+      {
+        "skill": "Other Lores",
+        "ranks": 2,
+        "choice": "lore",
+        "note": "Distribute across any Lore skills"
+      },
+      {
+        "skill": "Medicine",
+        "ranks": 2
+      },
+      {
+        "skill": "Running",
+        "ranks": 2
+      },
+      {
+        "skill": "Concealment",
+        "ranks": 1
+      },
+      {
+        "skill": "Stalking",
+        "ranks": 2
+      }
+    ],
+    "description": "This culture represents people living in wastelands, though the type can vary.\nTundra, ice shelves, lava fields, true deserts, or even some form of chemically\nor magically hostile wasteland all apply. People in these cultures live on the\nedge of survival and tend to be very focused on survival skills applicable to\ntheir harsh environment.",
+    "book": "RMU Core Law",
+    "table": "2-3",
+    "rmu_canonical_name": "Harsh"
   },
   {
     "name": "Highland",
     "grants": [
-      { "skill": "Animal Handling",    "ranks": 1, "choice": "animal_specialization", "note": "Choose animal type" },
-      { "skill": "Perception",         "ranks": 1 },
-      { "skill": "Tracking",           "ranks": 1 },
-      { "skill": "Maneuver in Armor",  "ranks": 1 },
-      { "skill": "Body Development",   "ranks": 2 },
-      { "skill": "Unarmed",            "ranks": 1, "choice": "combat_unarmed",     "note": "Choose a combat-training unarmed skill" },
-      { "skill": "Melee Weapons",      "ranks": 1, "choice": "combat_melee",       "note": "Choose a melee weapon skill" },
-      { "skill": "Composition & Perf. Art", "ranks": 1, "choice": "composition_perf_art", "max_per_skill": 2, "note": "Choose from Musical Composition, Writing, etc.; max 2 ranks/skill" },
-      { "skill": "Crafting & Vocation","ranks": 4, "choice": "crafting_vocation",  "max_per_skill": 2, "note": "Distribute among Crafting skills; max 2 ranks/skill" },
-      { "skill": "Survival (Own Region)", "ranks": 2, "choice": "survival",        "note": "Choose own region biome" },
-      { "skill": "Jumping",            "ranks": 1 },
-      { "skill": "Languages",          "ranks": 13, "choice": "language",          "note": "Distribute across Spoken/Written language skills" },
-      { "skill": "Region Lore", "ranks": 5, "choice": "region_lore", "note": "Choose own region (required specialization)" },
-      { "skill": "Other Lores",        "ranks": 4, "choice": "lore",               "note": "Distribute across any Lore skills" },
-      { "skill": "Medicine",           "ranks": 1 },
-      { "skill": "Climbing",           "ranks": 1 },
-      { "skill": "Running",            "ranks": 2 },
-      { "skill": "Swimming",           "ranks": 1 },
-      { "skill": "Social Awareness",   "ranks": 1 },
-      { "skill": "Stalking",           "ranks": 1 }
-    ]
+      {
+        "skill": "Animal Handling",
+        "ranks": 1,
+        "choice": "animal_specialization",
+        "note": "Choose animal type"
+      },
+      {
+        "skill": "Perception",
+        "ranks": 1
+      },
+      {
+        "skill": "Tracking",
+        "ranks": 1
+      },
+      {
+        "skill": "Maneuver in Armor",
+        "ranks": 1
+      },
+      {
+        "skill": "Body Development",
+        "ranks": 2
+      },
+      {
+        "skill": "Unarmed",
+        "ranks": 1,
+        "choice": "combat_unarmed",
+        "note": "Choose a combat-training unarmed skill"
+      },
+      {
+        "skill": "Melee Weapons",
+        "ranks": 1,
+        "choice": "combat_melee",
+        "note": "Choose a melee weapon skill"
+      },
+      {
+        "skill": "Composition & Perf. Art",
+        "ranks": 1,
+        "choice": "composition_perf_art",
+        "max_per_skill": 2,
+        "note": "Choose from Musical Composition, Writing, etc.; max 2 ranks/skill"
+      },
+      {
+        "skill": "Crafting & Vocation",
+        "ranks": 4,
+        "choice": "crafting_vocation",
+        "max_per_skill": 2,
+        "note": "Distribute among Crafting skills; max 2 ranks/skill"
+      },
+      {
+        "skill": "Survival (Own Region)",
+        "ranks": 2,
+        "choice": "survival",
+        "note": "Choose own region biome"
+      },
+      {
+        "skill": "Jumping",
+        "ranks": 1
+      },
+      {
+        "skill": "Languages",
+        "ranks": 13,
+        "choice": "language",
+        "note": "Distribute across Spoken/Written language skills"
+      },
+      {
+        "skill": "Region Lore",
+        "ranks": 5,
+        "choice": "region_lore",
+        "note": "Choose own region (required specialization)"
+      },
+      {
+        "skill": "Other Lores",
+        "ranks": 4,
+        "choice": "lore",
+        "note": "Distribute across any Lore skills"
+      },
+      {
+        "skill": "Medicine",
+        "ranks": 1
+      },
+      {
+        "skill": "Climbing",
+        "ranks": 1
+      },
+      {
+        "skill": "Running",
+        "ranks": 2
+      },
+      {
+        "skill": "Swimming",
+        "ranks": 1
+      },
+      {
+        "skill": "Social Awareness",
+        "ranks": 1
+      },
+      {
+        "skill": "Stalking",
+        "ranks": 1
+      }
+    ],
+    "description": "Highlanders live in rough hills or mountainous terrain. They are usually\nsomewhat isolated by the local geography and limited in food sources by a lack\nof flat land. They tend to engage in limited agriculture and herding.",
+    "book": "RMU Core Law",
+    "table": "2-3",
+    "rmu_canonical_name": "Highland"
   },
   {
     "name": "Mariner",
     "grants": [
-      { "skill": "Perception",         "ranks": 2 },
-      { "skill": "Body Development",   "ranks": 1 },
-      { "skill": "Weight Training",    "ranks": 1 },
-      { "skill": "Unarmed",            "ranks": 1, "choice": "combat_unarmed",     "note": "Choose a combat-training unarmed skill" },
-      { "skill": "Composition & Perf. Art", "ranks": 1, "choice": "composition_perf_art", "max_per_skill": 2, "note": "Choose from Musical Composition, Writing, etc.; max 2 ranks/skill" },
-      { "skill": "Crafting & Vocation","ranks": 4, "choice": "crafting_vocation",  "max_per_skill": 2, "note": "Distribute among Crafting skills; max 2 ranks/skill" },
-      { "skill": "Navigation",         "ranks": 1 },
-      { "skill": "Survival (Own Region)", "ranks": 1, "choice": "survival",        "note": "Choose own region biome" },
-      { "skill": "Acrobatics",         "ranks": 1 },
-      { "skill": "Jumping",            "ranks": 1 },
-      { "skill": "Languages",          "ranks": 15, "choice": "language",          "note": "Distribute across Spoken/Written language skills" },
-      { "skill": "Region Lore", "ranks": 5, "choice": "region_lore", "note": "Choose own region (required specialization)" },
-      { "skill": "Region Lore (Neighboring)", "ranks": 2, "choice": "region_lore", "note": "Choose a neighboring region" },
-      { "skill": "Other Lores",        "ranks": 5, "choice": "lore",               "note": "Distribute across any Lore skills" },
-      { "skill": "Medicine",           "ranks": 1 },
-      { "skill": "Climbing",           "ranks": 1 },
-      { "skill": "Running",            "ranks": 1 },
-      { "skill": "Swimming",           "ranks": 2 },
-      { "skill": "Influence",          "ranks": 1, "choice": "influence",          "note": "Choose from Persuasion, Intimidation, or Duping" },
-      { "skill": "Social Awareness",   "ranks": 1 },
-      { "skill": "Trading",            "ranks": 1 }
-    ]
+      {
+        "skill": "Perception",
+        "ranks": 2
+      },
+      {
+        "skill": "Body Development",
+        "ranks": 1
+      },
+      {
+        "skill": "Weight Training",
+        "ranks": 1
+      },
+      {
+        "skill": "Unarmed",
+        "ranks": 1,
+        "choice": "combat_unarmed",
+        "note": "Choose a combat-training unarmed skill"
+      },
+      {
+        "skill": "Composition & Perf. Art",
+        "ranks": 1,
+        "choice": "composition_perf_art",
+        "max_per_skill": 2,
+        "note": "Choose from Musical Composition, Writing, etc.; max 2 ranks/skill"
+      },
+      {
+        "skill": "Crafting & Vocation",
+        "ranks": 4,
+        "choice": "crafting_vocation",
+        "max_per_skill": 2,
+        "note": "Distribute among Crafting skills; max 2 ranks/skill"
+      },
+      {
+        "skill": "Navigation",
+        "ranks": 1
+      },
+      {
+        "skill": "Survival (Own Region)",
+        "ranks": 1,
+        "choice": "survival",
+        "note": "Choose own region biome"
+      },
+      {
+        "skill": "Acrobatics",
+        "ranks": 1
+      },
+      {
+        "skill": "Jumping",
+        "ranks": 1
+      },
+      {
+        "skill": "Languages",
+        "ranks": 15,
+        "choice": "language",
+        "note": "Distribute across Spoken/Written language skills"
+      },
+      {
+        "skill": "Region Lore",
+        "ranks": 5,
+        "choice": "region_lore",
+        "note": "Choose own region (required specialization)"
+      },
+      {
+        "skill": "Region Lore (Neighboring)",
+        "ranks": 2,
+        "choice": "region_lore",
+        "note": "Choose a neighboring region"
+      },
+      {
+        "skill": "Other Lores",
+        "ranks": 5,
+        "choice": "lore",
+        "note": "Distribute across any Lore skills"
+      },
+      {
+        "skill": "Medicine",
+        "ranks": 1
+      },
+      {
+        "skill": "Climbing",
+        "ranks": 1
+      },
+      {
+        "skill": "Running",
+        "ranks": 1
+      },
+      {
+        "skill": "Swimming",
+        "ranks": 2
+      },
+      {
+        "skill": "Influence",
+        "ranks": 1,
+        "choice": "influence",
+        "note": "Choose from Persuasion, Intimidation, or Duping"
+      },
+      {
+        "skill": "Social Awareness",
+        "ranks": 1
+      },
+      {
+        "skill": "Trading",
+        "ranks": 1
+      }
+    ],
+    "description": "Mariner cultures are usually located along the shores of an ocean, lake, or\nriver, and their economies are usually fishing and trade based. They get the\nmajority of their subsistence from the water, though they may also engage in\nherding or agriculture.",
+    "book": "RMU Core Law",
+    "table": "2-3",
+    "rmu_canonical_name": "Mariner"
   },
   {
     "name": "Nomad",
     "grants": [
-      { "skill": "Animal Handling",    "ranks": 4, "choice": "animal_specialization", "note": "Choose animal type" },
-      { "skill": "Riding",             "ranks": 3, "choice": "animal_specialization", "note": "Choose animal type" },
-      { "skill": "Perception",         "ranks": 1 },
-      { "skill": "Tracking",           "ranks": 1 },
-      { "skill": "Body Development",   "ranks": 1 },
-      { "skill": "Unarmed",            "ranks": 1, "choice": "combat_unarmed",     "note": "Choose a combat-training unarmed skill" },
-      { "skill": "Composition & Perf. Art", "ranks": 1, "choice": "composition_perf_art", "max_per_skill": 2, "note": "Choose from Musical Composition, Writing, etc.; max 2 ranks/skill" },
-      { "skill": "Crafting & Vocation","ranks": 4, "choice": "crafting_vocation",  "max_per_skill": 2, "note": "Distribute among Crafting skills; max 2 ranks/skill" },
-      { "skill": "Navigation",         "ranks": 1 },
-      { "skill": "Survival (Own Region)", "ranks": 1, "choice": "survival",        "note": "Choose own region biome" },
-      { "skill": "Languages",          "ranks": 14, "choice": "language",          "note": "Distribute across Spoken/Written language skills" },
-      { "skill": "Region Lore", "ranks": 5, "choice": "region_lore", "note": "Choose own region (required specialization)" },
-      { "skill": "Region Lore (Neighboring)", "ranks": 2, "choice": "region_lore", "note": "Choose a neighboring region" },
-      { "skill": "Other Lores",        "ranks": 4, "choice": "lore",               "note": "Distribute across any Lore skills" },
-      { "skill": "Herbalism",          "ranks": 1 },
-      { "skill": "Medicine",           "ranks": 1 },
-      { "skill": "Running",            "ranks": 2 },
-      { "skill": "Social Awareness",   "ranks": 1 },
-      { "skill": "Trading",            "ranks": 1 }
-    ]
+      {
+        "skill": "Animal Handling",
+        "ranks": 4,
+        "choice": "animal_specialization",
+        "note": "Choose animal type"
+      },
+      {
+        "skill": "Riding",
+        "ranks": 3,
+        "choice": "animal_specialization",
+        "note": "Choose animal type"
+      },
+      {
+        "skill": "Perception",
+        "ranks": 1
+      },
+      {
+        "skill": "Tracking",
+        "ranks": 1
+      },
+      {
+        "skill": "Body Development",
+        "ranks": 1
+      },
+      {
+        "skill": "Unarmed",
+        "ranks": 1,
+        "choice": "combat_unarmed",
+        "note": "Choose a combat-training unarmed skill"
+      },
+      {
+        "skill": "Composition & Perf. Art",
+        "ranks": 1,
+        "choice": "composition_perf_art",
+        "max_per_skill": 2,
+        "note": "Choose from Musical Composition, Writing, etc.; max 2 ranks/skill"
+      },
+      {
+        "skill": "Crafting & Vocation",
+        "ranks": 4,
+        "choice": "crafting_vocation",
+        "max_per_skill": 2,
+        "note": "Distribute among Crafting skills; max 2 ranks/skill"
+      },
+      {
+        "skill": "Navigation",
+        "ranks": 1
+      },
+      {
+        "skill": "Survival (Own Region)",
+        "ranks": 1,
+        "choice": "survival",
+        "note": "Choose own region biome"
+      },
+      {
+        "skill": "Languages",
+        "ranks": 14,
+        "choice": "language",
+        "note": "Distribute across Spoken/Written language skills"
+      },
+      {
+        "skill": "Region Lore",
+        "ranks": 5,
+        "choice": "region_lore",
+        "note": "Choose own region (required specialization)"
+      },
+      {
+        "skill": "Region Lore (Neighboring)",
+        "ranks": 2,
+        "choice": "region_lore",
+        "note": "Choose a neighboring region"
+      },
+      {
+        "skill": "Other Lores",
+        "ranks": 4,
+        "choice": "lore",
+        "note": "Distribute across any Lore skills"
+      },
+      {
+        "skill": "Herbalism",
+        "ranks": 1
+      },
+      {
+        "skill": "Medicine",
+        "ranks": 1
+      },
+      {
+        "skill": "Running",
+        "ranks": 2
+      },
+      {
+        "skill": "Social Awareness",
+        "ranks": 1
+      },
+      {
+        "skill": "Trading",
+        "ranks": 1
+      }
+    ],
+    "description": "Nomadic cultures tend to center around herding or hunting, driving their food\nsupply with them, or following its migrations. Mounts and herd animals are the\ncore of their lives, and they tend to be far more focused on portable property\nand less focused on land ownership than non-nomads.",
+    "book": "RMU Core Law",
+    "table": "2-3",
+    "rmu_canonical_name": "Nomad"
   },
   {
     "name": "Reaver",
     "grants": [
-      { "skill": "Animal Handling",    "ranks": 1, "choice": "animal_specialization", "note": "Choose animal type" },
-      { "skill": "Riding",             "ranks": 1, "choice": "animal_specialization", "note": "Choose animal type" },
-      { "skill": "Perception",         "ranks": 1 },
-      { "skill": "Tracking",           "ranks": 1 },
-      { "skill": "Maneuver in Armor",  "ranks": 2 },
-      { "skill": "Body Development",   "ranks": 2 },
-      { "skill": "Unarmed",            "ranks": 2, "choice": "combat_unarmed",     "note": "Choose a combat-training unarmed skill" },
-      { "skill": "Melee Weapons",      "ranks": 1, "choice": "combat_melee",       "note": "Choose a melee weapon skill" },
-      { "skill": "Ranged Weapons",     "ranks": 1, "choice": "combat_ranged",      "note": "Choose a ranged weapon skill (Bow, Exotic Ranged, etc.)" },
-      { "skill": "Crafting & Vocation","ranks": 3, "choice": "crafting_vocation",  "max_per_skill": 2, "note": "Distribute among Crafting skills; max 2 ranks/skill" },
-      { "skill": "Survival (Own Region)", "ranks": 1, "choice": "survival",        "note": "Choose own region biome" },
-      { "skill": "Jumping",            "ranks": 1 },
-      { "skill": "Languages",          "ranks": 11, "choice": "language",          "note": "Distribute across Spoken/Written language skills" },
-      { "skill": "Region Lore", "ranks": 5, "choice": "region_lore", "note": "Choose own region (required specialization)" },
-      { "skill": "Region Lore (Neighboring)", "ranks": 1, "choice": "region_lore", "note": "Choose a neighboring region" },
-      { "skill": "Other Lores",        "ranks": 3, "choice": "lore",               "note": "Distribute across any Lore skills" },
-      { "skill": "Medicine",           "ranks": 1 },
-      { "skill": "Climbing",           "ranks": 1 },
-      { "skill": "Running",            "ranks": 2 },
-      { "skill": "Stalking",           "ranks": 1 }
-    ]
+      {
+        "skill": "Animal Handling",
+        "ranks": 1,
+        "choice": "animal_specialization",
+        "note": "Choose animal type"
+      },
+      {
+        "skill": "Riding",
+        "ranks": 1,
+        "choice": "animal_specialization",
+        "note": "Choose animal type"
+      },
+      {
+        "skill": "Perception",
+        "ranks": 1
+      },
+      {
+        "skill": "Tracking",
+        "ranks": 1
+      },
+      {
+        "skill": "Maneuver in Armor",
+        "ranks": 2
+      },
+      {
+        "skill": "Body Development",
+        "ranks": 2
+      },
+      {
+        "skill": "Unarmed",
+        "ranks": 2,
+        "choice": "combat_unarmed",
+        "note": "Choose a combat-training unarmed skill"
+      },
+      {
+        "skill": "Melee Weapons",
+        "ranks": 1,
+        "choice": "combat_melee",
+        "note": "Choose a melee weapon skill"
+      },
+      {
+        "skill": "Ranged Weapons",
+        "ranks": 1,
+        "choice": "combat_ranged",
+        "note": "Choose a ranged weapon skill (Bow, Exotic Ranged, etc.)"
+      },
+      {
+        "skill": "Crafting & Vocation",
+        "ranks": 3,
+        "choice": "crafting_vocation",
+        "max_per_skill": 2,
+        "note": "Distribute among Crafting skills; max 2 ranks/skill"
+      },
+      {
+        "skill": "Survival (Own Region)",
+        "ranks": 1,
+        "choice": "survival",
+        "note": "Choose own region biome"
+      },
+      {
+        "skill": "Jumping",
+        "ranks": 1
+      },
+      {
+        "skill": "Languages",
+        "ranks": 11,
+        "choice": "language",
+        "note": "Distribute across Spoken/Written language skills"
+      },
+      {
+        "skill": "Region Lore",
+        "ranks": 5,
+        "choice": "region_lore",
+        "note": "Choose own region (required specialization)"
+      },
+      {
+        "skill": "Region Lore (Neighboring)",
+        "ranks": 1,
+        "choice": "region_lore",
+        "note": "Choose a neighboring region"
+      },
+      {
+        "skill": "Other Lores",
+        "ranks": 3,
+        "choice": "lore",
+        "note": "Distribute across any Lore skills"
+      },
+      {
+        "skill": "Medicine",
+        "ranks": 1
+      },
+      {
+        "skill": "Climbing",
+        "ranks": 1
+      },
+      {
+        "skill": "Running",
+        "ranks": 2
+      },
+      {
+        "skill": "Stalking",
+        "ranks": 1
+      }
+    ],
+    "description": "Reavers represent a society of raiders, generally found in badlands adjacent to\na more settled culture. They live by preying on the productivity of others,\nthough they may also engage in herding or agriculture on a limited basis.",
+    "book": "RMU Core Law",
+    "table": "2-3",
+    "rmu_canonical_name": "Reaver"
   },
   {
     "name": "Rural",
     "grants": [
-      { "skill": "Animal Handling",    "ranks": 3, "choice": "animal_specialization", "note": "Choose animal type" },
-      { "skill": "Riding",             "ranks": 2, "choice": "animal_specialization", "note": "Choose animal type" },
-      { "skill": "Perception",         "ranks": 1 },
-      { "skill": "Body Development",   "ranks": 1 },
-      { "skill": "Weight Training",    "ranks": 1 },
-      { "skill": "Unarmed",            "ranks": 1, "choice": "combat_unarmed",     "note": "Choose a combat-training unarmed skill" },
-      { "skill": "Ranged Weapons",     "ranks": 1, "choice": "combat_ranged",      "note": "Choose a ranged weapon skill" },
-      { "skill": "Composition & Perf. Art", "ranks": 1, "choice": "composition_perf_art", "max_per_skill": 2, "note": "Choose from Musical Composition, Writing, etc.; max 2 ranks/skill" },
-      { "skill": "Crafting & Vocation","ranks": 4, "choice": "crafting_vocation",  "max_per_skill": 2, "note": "Distribute among Crafting skills; max 2 ranks/skill" },
-      { "skill": "Piloting",           "ranks": 1, "choice": "vehicle",            "note": "Choose vehicle type" },
-      { "skill": "Languages",          "ranks": 13, "choice": "language",          "note": "Distribute across Spoken/Written language skills" },
-      { "skill": "Region Lore", "ranks": 5, "choice": "region_lore", "note": "Choose own region (required specialization)" },
-      { "skill": "Other Lores",        "ranks": 5, "choice": "lore",               "note": "Distribute across any Lore skills" },
-      { "skill": "Herbalism",          "ranks": 1 },
-      { "skill": "Medicine",           "ranks": 1 },
-      { "skill": "Climbing",           "ranks": 1 },
-      { "skill": "Running",            "ranks": 1 },
-      { "skill": "Swimming",           "ranks": 1 },
-      { "skill": "Influence",          "ranks": 1, "choice": "influence",          "note": "Choose from Persuasion, Intimidation, or Duping" },
-      { "skill": "Social Awareness",   "ranks": 1 },
-      { "skill": "Trading",            "ranks": 1 }
-    ]
+      {
+        "skill": "Animal Handling",
+        "ranks": 3,
+        "choice": "animal_specialization",
+        "note": "Choose animal type"
+      },
+      {
+        "skill": "Riding",
+        "ranks": 2,
+        "choice": "animal_specialization",
+        "note": "Choose animal type"
+      },
+      {
+        "skill": "Perception",
+        "ranks": 1
+      },
+      {
+        "skill": "Body Development",
+        "ranks": 1
+      },
+      {
+        "skill": "Weight Training",
+        "ranks": 1
+      },
+      {
+        "skill": "Unarmed",
+        "ranks": 1,
+        "choice": "combat_unarmed",
+        "note": "Choose a combat-training unarmed skill"
+      },
+      {
+        "skill": "Ranged Weapons",
+        "ranks": 1,
+        "choice": "combat_ranged",
+        "note": "Choose a ranged weapon skill"
+      },
+      {
+        "skill": "Composition & Perf. Art",
+        "ranks": 1,
+        "choice": "composition_perf_art",
+        "max_per_skill": 2,
+        "note": "Choose from Musical Composition, Writing, etc.; max 2 ranks/skill"
+      },
+      {
+        "skill": "Crafting & Vocation",
+        "ranks": 4,
+        "choice": "crafting_vocation",
+        "max_per_skill": 2,
+        "note": "Distribute among Crafting skills; max 2 ranks/skill"
+      },
+      {
+        "skill": "Piloting",
+        "ranks": 1,
+        "choice": "vehicle",
+        "note": "Choose vehicle type"
+      },
+      {
+        "skill": "Languages",
+        "ranks": 13,
+        "choice": "language",
+        "note": "Distribute across Spoken/Written language skills"
+      },
+      {
+        "skill": "Region Lore",
+        "ranks": 5,
+        "choice": "region_lore",
+        "note": "Choose own region (required specialization)"
+      },
+      {
+        "skill": "Other Lores",
+        "ranks": 5,
+        "choice": "lore",
+        "note": "Distribute across any Lore skills"
+      },
+      {
+        "skill": "Herbalism",
+        "ranks": 1
+      },
+      {
+        "skill": "Medicine",
+        "ranks": 1
+      },
+      {
+        "skill": "Climbing",
+        "ranks": 1
+      },
+      {
+        "skill": "Running",
+        "ranks": 1
+      },
+      {
+        "skill": "Swimming",
+        "ranks": 1
+      },
+      {
+        "skill": "Influence",
+        "ranks": 1,
+        "choice": "influence",
+        "note": "Choose from Persuasion, Intimidation, or Duping"
+      },
+      {
+        "skill": "Social Awareness",
+        "ranks": 1
+      },
+      {
+        "skill": "Trading",
+        "ranks": 1
+      }
+    ],
+    "description": "Most of the above cultures take place in rural environments, but this culture\nspecifically refers to people who dwell in the rural areas of relatively open,\nsettled lands. Rural people are usually farmers of some sort, and tied to the\nland they tend. Some rural dwellers are engaged in crafts, but they tend to be\nsmall scale and oriented towards local use. Rural dwellers generally have a\nsymbiotic relationship with nearby urban dwellers, exchanging food and raw\nmaterials for most of their manufactured goods.",
+    "book": "RMU Core Law",
+    "table": "2-3",
+    "rmu_canonical_name": "Rural"
   },
   {
     "name": "Sylvan",
     "grants": [
-      { "skill": "Animal Handling",    "ranks": 2, "choice": "animal_specialization", "note": "Choose animal type" },
-      { "skill": "Perception",         "ranks": 1 },
-      { "skill": "Tracking",           "ranks": 1 },
-      { "skill": "Body Development",   "ranks": 1 },
-      { "skill": "Unarmed",            "ranks": 1, "choice": "combat_unarmed",     "note": "Choose a combat-training unarmed skill" },
-      { "skill": "Ranged Weapons",     "ranks": 1, "choice": "combat_ranged",      "note": "Choose a ranged weapon skill" },
-      { "skill": "Crafting & Vocation","ranks": 4, "choice": "crafting_vocation",  "max_per_skill": 2, "note": "Distribute among Crafting skills; max 2 ranks/skill" },
-      { "skill": "Survival (Own Region)", "ranks": 2, "choice": "survival",        "note": "Choose own region biome" },
-      { "skill": "Languages",          "ranks": 13, "choice": "language",          "note": "Distribute across Spoken/Written language skills" },
-      { "skill": "Region Lore", "ranks": 5, "choice": "region_lore", "note": "Choose own region (required specialization)" },
-      { "skill": "Other Lores",        "ranks": 4, "choice": "lore",               "note": "Distribute across any Lore skills" },
-      { "skill": "Herbalism",          "ranks": 1 },
-      { "skill": "Medicine",           "ranks": 1 },
-      { "skill": "Climbing",           "ranks": 2 },
-      { "skill": "Running",            "ranks": 2 },
-      { "skill": "Social Awareness",   "ranks": 1 },
-      { "skill": "Concealment",        "ranks": 1 },
-      { "skill": "Stalking",           "ranks": 2 }
-    ]
+      {
+        "skill": "Animal Handling",
+        "ranks": 2,
+        "choice": "animal_specialization",
+        "note": "Choose animal type"
+      },
+      {
+        "skill": "Perception",
+        "ranks": 1
+      },
+      {
+        "skill": "Tracking",
+        "ranks": 1
+      },
+      {
+        "skill": "Body Development",
+        "ranks": 1
+      },
+      {
+        "skill": "Unarmed",
+        "ranks": 1,
+        "choice": "combat_unarmed",
+        "note": "Choose a combat-training unarmed skill"
+      },
+      {
+        "skill": "Ranged Weapons",
+        "ranks": 1,
+        "choice": "combat_ranged",
+        "note": "Choose a ranged weapon skill"
+      },
+      {
+        "skill": "Crafting & Vocation",
+        "ranks": 4,
+        "choice": "crafting_vocation",
+        "max_per_skill": 2,
+        "note": "Distribute among Crafting skills; max 2 ranks/skill"
+      },
+      {
+        "skill": "Survival (Own Region)",
+        "ranks": 2,
+        "choice": "survival",
+        "note": "Choose own region biome"
+      },
+      {
+        "skill": "Languages",
+        "ranks": 13,
+        "choice": "language",
+        "note": "Distribute across Spoken/Written language skills"
+      },
+      {
+        "skill": "Region Lore",
+        "ranks": 5,
+        "choice": "region_lore",
+        "note": "Choose own region (required specialization)"
+      },
+      {
+        "skill": "Other Lores",
+        "ranks": 4,
+        "choice": "lore",
+        "note": "Distribute across any Lore skills"
+      },
+      {
+        "skill": "Herbalism",
+        "ranks": 1
+      },
+      {
+        "skill": "Medicine",
+        "ranks": 1
+      },
+      {
+        "skill": "Climbing",
+        "ranks": 2
+      },
+      {
+        "skill": "Running",
+        "ranks": 2
+      },
+      {
+        "skill": "Social Awareness",
+        "ranks": 1
+      },
+      {
+        "skill": "Concealment",
+        "ranks": 1
+      },
+      {
+        "skill": "Stalking",
+        "ranks": 2
+      }
+    ],
+    "description": "Sylvan peoples are woodland dwellers who may practice some limited herding\nand/or farming, but mostly live by hunting and gathering in their rich\nenvironment. These cultures tend to be spread out with low populations, as high\nconcentrations of people often result in the forest being cleared and the\nculture shifting to a new type.",
+    "book": "RMU Core Law",
+    "table": "2-3",
+    "rmu_canonical_name": "Sylvan"
   },
   {
     "name": "Underground",
     "grants": [
-      { "skill": "Perception",         "ranks": 2 },
-      { "skill": "Body Development",   "ranks": 2 },
-      { "skill": "Weight Training",    "ranks": 1 },
-      { "skill": "Unarmed",            "ranks": 1, "choice": "combat_unarmed",     "note": "Choose a combat-training unarmed skill" },
-      { "skill": "Melee Weapons",      "ranks": 1, "choice": "combat_melee",       "note": "Choose a melee weapon skill" },
-      { "skill": "Crafting & Vocation","ranks": 5, "choice": "crafting_vocation",  "max_per_skill": 2, "note": "Distribute among Crafting skills; max 2 ranks/skill" },
-      { "skill": "Survival (Own Region)", "ranks": 2, "choice": "survival",        "note": "Choose own region biome (underground)" },
-      { "skill": "Languages",          "ranks": 13, "choice": "language",          "note": "Distribute across Spoken/Written language skills" },
-      { "skill": "Region Lore", "ranks": 5, "choice": "region_lore", "note": "Choose own region (required specialization)" },
-      { "skill": "Other Lores",        "ranks": 4, "choice": "lore",               "note": "Distribute across any Lore skills" },
-      { "skill": "Medicine",           "ranks": 2 },
-      { "skill": "Climbing",           "ranks": 1 },
-      { "skill": "Running",            "ranks": 1 },
-      { "skill": "Social Awareness",   "ranks": 1 },
-      { "skill": "Concealment",        "ranks": 1 },
-      { "skill": "Stalking",           "ranks": 2 }
-    ]
+      {
+        "skill": "Perception",
+        "ranks": 2
+      },
+      {
+        "skill": "Body Development",
+        "ranks": 2
+      },
+      {
+        "skill": "Weight Training",
+        "ranks": 1
+      },
+      {
+        "skill": "Unarmed",
+        "ranks": 1,
+        "choice": "combat_unarmed",
+        "note": "Choose a combat-training unarmed skill"
+      },
+      {
+        "skill": "Melee Weapons",
+        "ranks": 1,
+        "choice": "combat_melee",
+        "note": "Choose a melee weapon skill"
+      },
+      {
+        "skill": "Crafting & Vocation",
+        "ranks": 5,
+        "choice": "crafting_vocation",
+        "max_per_skill": 2,
+        "note": "Distribute among Crafting skills; max 2 ranks/skill"
+      },
+      {
+        "skill": "Survival (Own Region)",
+        "ranks": 2,
+        "choice": "survival",
+        "note": "Choose own region biome (underground)"
+      },
+      {
+        "skill": "Languages",
+        "ranks": 13,
+        "choice": "language",
+        "note": "Distribute across Spoken/Written language skills"
+      },
+      {
+        "skill": "Region Lore",
+        "ranks": 5,
+        "choice": "region_lore",
+        "note": "Choose own region (required specialization)"
+      },
+      {
+        "skill": "Other Lores",
+        "ranks": 4,
+        "choice": "lore",
+        "note": "Distribute across any Lore skills"
+      },
+      {
+        "skill": "Medicine",
+        "ranks": 2
+      },
+      {
+        "skill": "Climbing",
+        "ranks": 1
+      },
+      {
+        "skill": "Running",
+        "ranks": 1
+      },
+      {
+        "skill": "Social Awareness",
+        "ranks": 1
+      },
+      {
+        "skill": "Concealment",
+        "ranks": 1
+      },
+      {
+        "skill": "Stalking",
+        "ranks": 2
+      }
+    ],
+    "description": "People who spend most or all of their time underground or inside vast structures\nare of this culture. Some steady supply of food must be available, be it animal\nherds, fungus farms, or fishing, or else the culture becomes fully dependent on\ntrade for food (those that raid for food become Reavers).",
+    "book": "RMU Core Law",
+    "table": "2-3",
+    "rmu_canonical_name": "Underground"
   },
   {
     "name": "Urban",
     "grants": [
-      { "skill": "Animal Handling",    "ranks": 1, "choice": "animal_specialization", "note": "Choose animal type" },
-      { "skill": "Perception",         "ranks": 2 },
-      { "skill": "Body Development",   "ranks": 1 },
-      { "skill": "Unarmed",            "ranks": 1, "choice": "combat_unarmed",     "note": "Choose a combat-training unarmed skill" },
-      { "skill": "Composition & Perf. Art", "ranks": 3, "choice": "composition_perf_art", "max_per_skill": 2, "note": "Distribute among Musical Composition, Writing, Drawing/Painting, Acting, Music; max 2 ranks/skill" },
-      { "skill": "Crafting & Vocation","ranks": 7, "choice": "crafting_vocation",  "max_per_skill": 2, "note": "Distribute among Crafting skills; max 2 ranks/skill" },
-      { "skill": "Languages",          "ranks": 17, "choice": "language",          "note": "Distribute across Spoken/Written language skills" },
-      { "skill": "Region Lore", "ranks": 5, "choice": "region_lore", "note": "Choose own region (required specialization)" },
-      { "skill": "Region Lore (Neighboring)", "ranks": 3, "choice": "region_lore", "note": "Choose a neighboring region" },
-      { "skill": "Religion/Philosophy","ranks": 1 },
-      { "skill": "Other Lores",        "ranks": 7, "choice": "lore",               "note": "Distribute across any Lore skills" },
-      { "skill": "Running",            "ranks": 1 },
-      { "skill": "Influence",          "ranks": 2, "choice": "influence",          "note": "Choose from Persuasion, Intimidation, or Duping" },
-      { "skill": "Social Awareness",   "ranks": 2 },
-      { "skill": "Trading",            "ranks": 2 }
-    ]
+      {
+        "skill": "Animal Handling",
+        "ranks": 1,
+        "choice": "animal_specialization",
+        "note": "Choose animal type"
+      },
+      {
+        "skill": "Perception",
+        "ranks": 2
+      },
+      {
+        "skill": "Body Development",
+        "ranks": 1
+      },
+      {
+        "skill": "Unarmed",
+        "ranks": 1,
+        "choice": "combat_unarmed",
+        "note": "Choose a combat-training unarmed skill"
+      },
+      {
+        "skill": "Composition & Perf. Art",
+        "ranks": 3,
+        "choice": "composition_perf_art",
+        "max_per_skill": 2,
+        "note": "Distribute among Musical Composition, Writing, Drawing/Painting, Acting, Music; max 2 ranks/skill"
+      },
+      {
+        "skill": "Crafting & Vocation",
+        "ranks": 7,
+        "choice": "crafting_vocation",
+        "max_per_skill": 2,
+        "note": "Distribute among Crafting skills; max 2 ranks/skill"
+      },
+      {
+        "skill": "Languages",
+        "ranks": 17,
+        "choice": "language",
+        "note": "Distribute across Spoken/Written language skills"
+      },
+      {
+        "skill": "Region Lore",
+        "ranks": 5,
+        "choice": "region_lore",
+        "note": "Choose own region (required specialization)"
+      },
+      {
+        "skill": "Region Lore (Neighboring)",
+        "ranks": 3,
+        "choice": "region_lore",
+        "note": "Choose a neighboring region"
+      },
+      {
+        "skill": "Religion/Philosophy",
+        "ranks": 1
+      },
+      {
+        "skill": "Other Lores",
+        "ranks": 7,
+        "choice": "lore",
+        "note": "Distribute across any Lore skills"
+      },
+      {
+        "skill": "Running",
+        "ranks": 1
+      },
+      {
+        "skill": "Influence",
+        "ranks": 2,
+        "choice": "influence",
+        "note": "Choose from Persuasion, Intimidation, or Duping"
+      },
+      {
+        "skill": "Social Awareness",
+        "ranks": 2
+      },
+      {
+        "skill": "Trading",
+        "ranks": 2
+      }
+    ],
+    "description": "Urban dwellers are the people who live in the towns and small cities of a\nsettled area. They tend to mostly be skilled specialists or craftsmen, and\nusually live a symbiotic existence with the rural people of their region,\nexchanging finished goods for food and raw materials.",
+    "book": "RMU Core Law",
+    "table": "2-3",
+    "rmu_canonical_name": "Urban"
   },
   {
     "name": "Argo",
@@ -238,5 +1012,1621 @@
     "name": "Hobbit",
     "grants": [],
     "_note": "Not in CoreLaw Table 2-3 — supplement culture, no standard skill grants defined"
+  },
+  {
+    "name": "Oceanic",
+    "book": "Shadow World Conversion Guide",
+    "table": "2-3",
+    "description": "<p data-i18n='SW_RC.CULTURE.OCEANIC.DESCRIPTION'> Cultures whose inhabitants usually or exclusively live in the ocean, rather than simply along the coast. In Shadow World, this includes the Shuluri and Mermen. </p> <ul> <li data-i18n='SW_RC.CULTURE.OCEANIC.CRAFTS'><strong>Crafts:</strong> Culinary (most food will be eaten raw, but preparation is still an art), Fabric Craft (spinster, weaver), Stonecraft (stone mason). Shuluri who choose to spend at least some of their time out of the water may also develop any other craft. </li> <li data-i18n='SW_RC.CULTURE.OCEANIC.VOCATIONS'>\n  <strong>Vocations:</strong>Hunter, shaman, healer, farmer (e.g., raising seaweed or shellfish).\n</li> </ul>",
+    "grants": [
+      {
+        "ranks": 2,
+        "skill": "Animal Handling"
+      },
+      {
+        "ranks": 2,
+        "skill": "Perception"
+      },
+      {
+        "ranks": 1,
+        "skill": "Body Development"
+      },
+      {
+        "ranks": 1,
+        "skill": "Unarmed",
+        "choice": "unarmed",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 2,
+        "skill": "Melee Weapons",
+        "choice": "melee_weapons",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Composition & Performance Art",
+        "choice": "composition_performance_art",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 4,
+        "skill": "Crafting & Vocation",
+        "choice": "crafting_vocation",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Navigation"
+      },
+      {
+        "ranks": 2,
+        "skill": "Survival",
+        "label": "Own Region"
+      },
+      {
+        "ranks": 12,
+        "skill": "Languages",
+        "choice": "languages",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 5,
+        "skill": "Region Lore",
+        "label": "Own"
+      },
+      {
+        "ranks": 4,
+        "skill": "Other Lores",
+        "choice": "other_lores",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Medicine"
+      },
+      {
+        "ranks": 1,
+        "skill": "Climbing"
+      },
+      {
+        "ranks": 2,
+        "skill": "Swimming"
+      },
+      {
+        "ranks": 1,
+        "skill": "Social Awareness"
+      },
+      {
+        "ranks": 2,
+        "skill": "Stalking"
+      }
+    ],
+    "rmu_canonical_name": "Oceanic",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Skulker",
+    "book": "Shadow World Conversion Guide",
+    "table": "2-3",
+    "description": "<p>\n  Cultures which frequently raid other settlements, but which have limited martial might and may be subjugated\n  or need to live in hiding. In Shadow World, these are Murlogi, Garks, and Lesser Lugroki.\n</p> <ul> <li>\n  <strong>Crafts:</strong> Culinary (cook), Leathercraft (tanner, leather worker, armorer),\n  Metalcraft (blacksmith, weapon smith, armorer).\n</li> <li>\n  <strong>Vocations:</strong> Raider, hunter, scout, bonesetter, shaman.\n</li> </ul>",
+    "grants": [
+      {
+        "ranks": 1,
+        "skill": "Animal Handling"
+      },
+      {
+        "ranks": 1,
+        "skill": "Perception"
+      },
+      {
+        "ranks": 1,
+        "skill": "Tracking"
+      },
+      {
+        "ranks": 2,
+        "skill": "Maneuvering in Armor"
+      },
+      {
+        "ranks": 2,
+        "skill": "Body Development"
+      },
+      {
+        "ranks": 2,
+        "skill": "Unarmed",
+        "choice": "unarmed",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Melee Weapons",
+        "choice": "melee_weapons",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 3,
+        "skill": "Crafting & Vocation",
+        "choice": "crafting_vocation",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 2,
+        "skill": "Survival",
+        "label": "Own Region"
+      },
+      {
+        "ranks": 1,
+        "skill": "Jumping"
+      },
+      {
+        "ranks": 6,
+        "skill": "Languages",
+        "choice": "languages",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 5,
+        "skill": "Region Lore",
+        "label": "Own"
+      },
+      {
+        "ranks": 1,
+        "skill": "Region Lore",
+        "label": "Neighboring"
+      },
+      {
+        "ranks": 3,
+        "skill": "Other Lores",
+        "choice": "other_lores",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Medicine"
+      },
+      {
+        "ranks": 1,
+        "skill": "Poison Mastery"
+      },
+      {
+        "ranks": 2,
+        "skill": "Climbing"
+      },
+      {
+        "ranks": 2,
+        "skill": "Running"
+      },
+      {
+        "ranks": 2,
+        "skill": "Stalking"
+      }
+    ],
+    "rmu_canonical_name": "Skulker",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Hunter",
+    "book": "Shadow World Conversion Guide",
+    "table": "2-3",
+    "description": "<p data-i18n='SW_RC.CULTURE.HUNTER.DESCRIPTION'>\n  Living in dense natural environments (forest, jungle), with some limited herding and farming but\nmore emphasis on hunting and gathering. This culture is very similar to Sylvan (in RMU Core), but slightly more martial at the expense of lore and crafts. In Shadow World, it is typified by the Erlini. </p> <ul> <li data-i18n='SW_RC.CULTURE.HUNTER.CRAFTS'>\n  <strong>Crafts:</strong> Culinary (any), Fabric Craft (any), Leathercraft (tanner, leather worker, cobbler,\n  armorer), Metalcraft (blacksmith, weapon smith), Stonecraft (potter),\n  Woodcraft (sawyer, carpenter, cooper, bowyer, fletcher).\n</li> <li data-i18n='SW_RC.CULTURE.HUNTER.VOCATIONS'>\n  <strong>Vocations:</strong> Hunter, farmer, scout, weaver, carpenter, leather worker.\n</li> </ul>",
+    "grants": [
+      {
+        "ranks": 2,
+        "skill": "Animal Handling"
+      },
+      {
+        "ranks": 1,
+        "skill": "Perception"
+      },
+      {
+        "ranks": 1,
+        "skill": "Tracking"
+      },
+      {
+        "ranks": 1,
+        "skill": "Body Development"
+      },
+      {
+        "ranks": 1,
+        "skill": "Unarmed",
+        "choice": "unarmed",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 2,
+        "skill": "Ranged Weapons",
+        "choice": "ranged_weapons",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 3,
+        "skill": "Crafting & Vocation",
+        "choice": "crafting_vocation",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 2,
+        "skill": "Survival",
+        "label": "Own Region"
+      },
+      {
+        "ranks": 11,
+        "skill": "Languages",
+        "choice": "languages",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 5,
+        "skill": "Region Lore",
+        "label": "Own"
+      },
+      {
+        "ranks": 4,
+        "skill": "Other Lores",
+        "choice": "other_lores",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Herbalism"
+      },
+      {
+        "ranks": 1,
+        "skill": "Medicine"
+      },
+      {
+        "ranks": 2,
+        "skill": "Climbing"
+      },
+      {
+        "ranks": 2,
+        "skill": "Running"
+      },
+      {
+        "ranks": 1,
+        "skill": "Social Awareness"
+      },
+      {
+        "ranks": 1,
+        "skill": "Concealment"
+      },
+      {
+        "ranks": 2,
+        "skill": "Stalking"
+      }
+    ],
+    "rmu_canonical_name": "Hunter",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Industrious",
+    "book": "RMU Non-Human Cultures",
+    "table": "",
+    "description": "Hard-working Dwarves, who may not be living Underground anyway, depending on setting. Heavy emphasis on practical hard work and trade. For more martial Dwarves, the Underground culture may be more appropriate.",
+    "grants": [
+      {
+        "ranks": 2,
+        "skill": "Perception"
+      },
+      {
+        "ranks": 2,
+        "skill": "Body Development"
+      },
+      {
+        "ranks": 1,
+        "skill": "Weight Training"
+      },
+      {
+        "ranks": 1,
+        "skill": "Unarmed",
+        "choice": "unarmed",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 2,
+        "skill": "Composition & Performance Art",
+        "choice": "composition_performance_art",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 9,
+        "skill": "Crafting & Vocation",
+        "choice": "crafting_vocation",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Survival",
+        "label": "Own Region"
+      },
+      {
+        "ranks": 16,
+        "skill": "Languages",
+        "choice": "languages"
+      },
+      {
+        "ranks": 5,
+        "skill": "Region Lore",
+        "label": "Neighboring"
+      },
+      {
+        "ranks": 6,
+        "skill": "Other Lores",
+        "choice": "other_lores",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Medicine"
+      },
+      {
+        "ranks": 1,
+        "skill": "Running"
+      },
+      {
+        "ranks": 1,
+        "skill": "Social Awareness"
+      },
+      {
+        "ranks": 2,
+        "skill": "Trading"
+      }
+    ],
+    "rmu_canonical_name": "Industrious",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Dark",
+    "book": "Shadow World Conversion Guide",
+    "table": "2-3",
+    "description": "<p> Relatively powerful raider cultures more likely to subjugate others than be subjugated. In Shadow World,  these are the Greater Lugroki and Trogli. </p> <ul> <li>\n  <b>Crafts</b> Culinary (cook), Leathercraft (tanner, leather worker, armorer),\n  Metalcraft (blacksmith, weapon smith, armorer).\n</li> <li>\n  <b>Vocations</b> Raider, hunter, scout, bonesetter, shaman, slave master.\n</li> </ul>",
+    "grants": [
+      {
+        "ranks": 1,
+        "skill": "Animal Handling"
+      },
+      {
+        "ranks": 1,
+        "skill": "Riding"
+      },
+      {
+        "ranks": 1,
+        "skill": "Perception"
+      },
+      {
+        "ranks": 1,
+        "skill": "Tracking"
+      },
+      {
+        "ranks": 2,
+        "skill": "Maneuvering in Armor"
+      },
+      {
+        "ranks": 2,
+        "skill": "Body Development"
+      },
+      {
+        "ranks": 2,
+        "skill": "Unarmed",
+        "choice": "unarmed",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Melee Weapons",
+        "choice": "melee_weapons",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Ranged Weapons",
+        "choice": "ranged_weapons",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 3,
+        "skill": "Crafting & Vocation",
+        "choice": "crafting_vocation",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Survival",
+        "label": "Own Region"
+      },
+      {
+        "ranks": 1,
+        "skill": "Jumping"
+      },
+      {
+        "ranks": 9,
+        "skill": "Languages",
+        "choice": "languages",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 5,
+        "skill": "Region Lore",
+        "label": "Own"
+      },
+      {
+        "ranks": 1,
+        "skill": "Region Lore",
+        "label": "Neighboring"
+      },
+      {
+        "ranks": 5,
+        "skill": "Other Lores",
+        "choice": "other_lores",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Medicine"
+      },
+      {
+        "ranks": 1,
+        "skill": "Climbing"
+      },
+      {
+        "ranks": 2,
+        "skill": "Running"
+      },
+      {
+        "ranks": 1,
+        "skill": "Stalking"
+      }
+    ],
+    "rmu_canonical_name": "Dark",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Coastal",
+    "book": "Shadow World Conversion Guide",
+    "table": "2-3",
+    "description": "<p data-i18n='SW_RC.CULTURE.COASTAL.DESCRIPTION'>Small settlements along the ocean shore (or possibly very large lakes) foster the coastal culture. While mariner is the culture of ships and port cities, with commerce to distant lands, coastal is the culture of small fishing villages whose fishing boats do not travel far. It is rural where mariner is urban. </p> <ul> <li data-i18n='SW_RC.CULTURE.COASTAL.CRAFTS'>\n  <strong>Crafts:</strong> Culinary (cook, brewer), Fabric Craft (tailor, seamstress, rope braider),\n  Leathercraft (leather worker, armorer), Metalcraft (blacksmith, weapon smith, armorer), Woodcraft\n  (carpenter, boat wright, cooper).\n</li> <li data-i18n='SW_RC.CULTURE.COASTAL.VOCATIONS'>\n  <strong>Vocations:</strong> Sailor, fisherman, chandler, sailmaker, rope maker.\n</li> </ul>",
+    "grants": [
+      {
+        "ranks": 1,
+        "skill": "Animal Handling"
+      },
+      {
+        "ranks": 2,
+        "skill": "Perception"
+      },
+      {
+        "ranks": 1,
+        "skill": "Body Development"
+      },
+      {
+        "ranks": 1,
+        "skill": "Unarmed",
+        "choice": "unarmed",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Composition & Performance Art",
+        "choice": "composition_performance_art",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 4,
+        "skill": "Crafting & Vocation",
+        "choice": "crafting_vocation",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Navigation"
+      },
+      {
+        "ranks": 1,
+        "skill": "Piloting"
+      },
+      {
+        "ranks": 1,
+        "skill": "Survival",
+        "label": "Own Region"
+      },
+      {
+        "ranks": 1,
+        "skill": "Jumping"
+      },
+      {
+        "ranks": 12,
+        "skill": "Languages",
+        "choice": "languages",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 5,
+        "skill": "Region Lore",
+        "label": "Own"
+      },
+      {
+        "ranks": 5,
+        "skill": "Other Lores",
+        "choice": "other_lores",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Herbalism"
+      },
+      {
+        "ranks": 1,
+        "skill": "Medicine"
+      },
+      {
+        "ranks": 1,
+        "skill": "Climbing"
+      },
+      {
+        "ranks": 1,
+        "skill": "Running"
+      },
+      {
+        "ranks": 2,
+        "skill": "Swimming"
+      },
+      {
+        "ranks": 1,
+        "skill": "Influence"
+      },
+      {
+        "ranks": 1,
+        "skill": "Social Awareness"
+      },
+      {
+        "ranks": 1,
+        "skill": "Trading"
+      }
+    ],
+    "rmu_canonical_name": "Coastal",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Fringe",
+    "book": "RMU Non-Human Cultures",
+    "table": "",
+    "description": "For those living on the fringes of urban society. Intended for the avinarc, but could also be suitable for goblins and such existing as underclass and criminally-adjacent night-folk in the cities of humans or similar types. This gives Survival (urban), the RMU version of streetwise and a bit of subterfuge, while cutting down a little on the entertainment and gainful employment skills.",
+    "grants": [
+      {
+        "ranks": 2,
+        "skill": "Perception"
+      },
+      {
+        "ranks": 1,
+        "skill": "Body Development"
+      },
+      {
+        "ranks": 1,
+        "skill": "Unarmed",
+        "choice": "unarmed",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 2,
+        "skill": "Composition & Performance Art",
+        "choice": "composition_performance_art",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 5,
+        "skill": "Crafting & Vocation",
+        "choice": "crafting_vocation",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Survival",
+        "label": "Own Region"
+      },
+      {
+        "ranks": 17,
+        "skill": "Languages",
+        "choice": "languages",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 5,
+        "skill": "Region Lore",
+        "label": "Own"
+      },
+      {
+        "ranks": 2,
+        "skill": "Region Lore",
+        "label": "Neighboring"
+      },
+      {
+        "ranks": 7,
+        "skill": "Other Lores",
+        "choice": "other_lores",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Running"
+      },
+      {
+        "ranks": 1,
+        "skill": "Influence"
+      },
+      {
+        "ranks": 2,
+        "skill": "Social Awareness"
+      },
+      {
+        "ranks": 2,
+        "skill": "Trading"
+      },
+      {
+        "ranks": 1,
+        "skill": "Concealment"
+      },
+      {
+        "ranks": 2,
+        "skill": "Stalking"
+      }
+    ],
+    "rmu_canonical_name": "Fringe",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Noble",
+    "book": "Shadow World Conversion Guide",
+    "table": "2-3",
+    "description": "<p data-i18n='SW_RC.CULTURE.NOBLE.DESCRIPTION'>\n  Born into privilege, those of noble birth are raised in a unique environment. They are provided with the\nbest education possible, expected to master social etiquette, and exposed to the arts; they are free from the obligation to learn a trade and engage in rote labor. This culture could encompass the children of the most favored servants, but most lower-class members of noble households will be of the urban or other cultures. This culture is most appropriate in urban areas. Smaller social groups tend to be more egalitarian and the children of leaders will be raised much like any other child. </p> <ul> <li data-i18n='SW_RC.CULTURE.NOBLE.CRAFTS'>\n  <strong>Crafts:</strong> Noble crafts will tend to be artistic rather than mundane, or immediately related to\n  their martial duties. Drawing/Painting, Fabric Craft (spinster, weaver,\n  seamstress), Leathercraft (armorer), Metalcraft (gold smith, jeweler, silver\n  smith, weapon smith, armorer), Stonecraft (sculptor), Woodcraft (carpenter,\n  bowyer).\n</li> <li data-i18n='SW_RC.CULTURE.NOBLE.VOCATIONS'>\n  <strong>Vocations:</strong> Knight, squire, court noble, adviser, landowner.\n</li> </ul>",
+    "grants": [
+      {
+        "ranks": 1,
+        "skill": "Animal Handling"
+      },
+      {
+        "ranks": 1,
+        "skill": "Riding"
+      },
+      {
+        "ranks": 1,
+        "skill": "Perception"
+      },
+      {
+        "ranks": 1,
+        "skill": "Body Development"
+      },
+      {
+        "ranks": 1,
+        "skill": "Unarmed",
+        "choice": "unarmed",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Melee Weapons",
+        "choice": "melee_weapons",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 4,
+        "skill": "Composition & Performance Art",
+        "choice": "composition_performance_art",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 3,
+        "skill": "Crafting & Vocation",
+        "choice": "crafting_vocation",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 17,
+        "skill": "Languages",
+        "choice": "languages",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 5,
+        "skill": "Region Lore",
+        "label": "Own"
+      },
+      {
+        "ranks": 3,
+        "skill": "Region Lore",
+        "label": "Neighboring"
+      },
+      {
+        "ranks": 7,
+        "skill": "Other Lores",
+        "choice": "other_lores",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Medicine"
+      },
+      {
+        "ranks": 1,
+        "skill": "Running"
+      },
+      {
+        "ranks": 2,
+        "skill": "Influence"
+      },
+      {
+        "ranks": 2,
+        "skill": "Social Awareness"
+      },
+      {
+        "ranks": 2,
+        "skill": "Trading"
+      }
+    ],
+    "rmu_canonical_name": "Noble",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Proud",
+    "book": "Shadow World Conversion Guide",
+    "table": "2-3",
+    "description": "<p data-i18n='SW_RC.CULTURE.PROUD.DESCRIPTION'>\n  Placing a high value on\n  honor, this culture is quick to go to war when they believe there is a noble\n  cause. They may take offense easily in which case this is a frequent\n  occurrence, but in any case they see battle as an opportunity to earn\n  status. This may be a relatively egalitarian culture in which everyone is\n  expected to farm in peaceful times and fight in times of war, or this may be\n  the ruling class, in which case the peasantry may be better characterized by\n  the Rural (farming) or Highland (herding) cultures. In Shadow World, this\n  may be an appropriate choice for the Jaaderi, Laan, and Talath.\n</p> <ul> <li data-i18n='SW_RC.CULTURE.PROUD.CRAFTS'>\n  <strong>Crafts:</strong> Culinary (any), Fabric Craft (any), Leathercraft (any), Metalcraft (blacksmith,\n  weapon smith, armorer), Stonecraft (mason, stone dresser, potter), Woodcraft\n  (sawyer, carpenter, cart wright, cooper).\n</li> <li data-i18n='SW_RC.CULTURE.PROUD.VOCATIONS'>\n  <strong>Vocations:</strong> Herdsman, farmer, weaver, stonemason, carpenter, soldier, militia, miner.\n</li> </ul>",
+    "grants": [
+      {
+        "ranks": 1,
+        "skill": "Animal Handling"
+      },
+      {
+        "ranks": 2,
+        "skill": "Riding"
+      },
+      {
+        "ranks": 1,
+        "skill": "Perception"
+      },
+      {
+        "ranks": 1,
+        "skill": "Maneuvering in Armor"
+      },
+      {
+        "ranks": 2,
+        "skill": "Body Development"
+      },
+      {
+        "ranks": 1,
+        "skill": "Weight Training"
+      },
+      {
+        "ranks": 1,
+        "skill": "Unarmed",
+        "choice": "unarmed",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 2,
+        "skill": "Melee Weapons",
+        "choice": "melee_weapons",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Composition & Performance Art",
+        "choice": "composition_performance_art",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 3,
+        "skill": "Crafting & Vocation",
+        "choice": "crafting_vocation",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Survival",
+        "label": "Own Region"
+      },
+      {
+        "ranks": 1,
+        "skill": "Jumping"
+      },
+      {
+        "ranks": 13,
+        "skill": "Languages",
+        "choice": "languages",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 5,
+        "skill": "Region Lore",
+        "label": "Own"
+      },
+      {
+        "ranks": 1,
+        "skill": "Region Lore",
+        "label": "Neighboring"
+      },
+      {
+        "ranks": 4,
+        "skill": "Other Lores",
+        "choice": "other_lores",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Medicine"
+      },
+      {
+        "ranks": 1,
+        "skill": "Climbing"
+      },
+      {
+        "ranks": 2,
+        "skill": "Running"
+      },
+      {
+        "ranks": 1,
+        "skill": "Social Awareness"
+      }
+    ],
+    "rmu_canonical_name": "Proud",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Ascended",
+    "book": "Shadow World Conversion Guide",
+    "table": "2-3",
+    "description": "<p data-i18n='SW_RC.CULTURE.ASCENDED.DESCRIPTION'>\n  These cultures have a\n  connection to nature but nevertheless are city builders and craftsmen rather\n  than living a sylvan lifestyle. They are also more familiar with magic than\n  other cultures. In Shadow World, this includes the Loari, Linaeri, and Dyari\n  elves, as well as the Jhordi.\n</p> <ul> <li data-i18n='SW_RC.CULTURE.ASCENDED.CRAFTS'>\n  <strong>Crafts:</strong> Ascended cultures encourage specialization and appreciate a wide range of crafts. Any\n  craft is appropriate.\n</li> <li data-i18n='SW_RC.CULTURE.ASCENDED.VOCATIONS'>\n  <strong>Vocations:</strong> Bookkeeper, guardsman, librarian, manager, merchant, officer, scribe,\n  soldier, valet, or any type of craftsman. Due to their familiarity with\n  magic, magic-oriented vocations may also be possible, such as magical\n  researchers, healers, and alchemists.\n</li> </ul>",
+    "grants": [
+      {
+        "ranks": 1,
+        "skill": "Animal Handling"
+      },
+      {
+        "ranks": 1,
+        "skill": "Riding"
+      },
+      {
+        "ranks": 1,
+        "skill": "Perception"
+      },
+      {
+        "ranks": 1,
+        "skill": "Body Development"
+      },
+      {
+        "ranks": 1,
+        "skill": "Weight Training"
+      },
+      {
+        "ranks": 1,
+        "skill": "Unarmed",
+        "choice": "unarmed",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Ranged Weapons",
+        "choice": "ranged_weapons",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 2,
+        "skill": "Composition & Performance Art",
+        "choice": "composition_performance_art",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 4,
+        "skill": "Crafting & Vocation",
+        "choice": "crafting_vocation",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Attunement"
+      },
+      {
+        "ranks": 1,
+        "skill": "Survival",
+        "label": "Own Region"
+      },
+      {
+        "ranks": 14,
+        "skill": "Languages",
+        "choice": "languages",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 5,
+        "skill": "Region Lore",
+        "label": "Own"
+      },
+      {
+        "ranks": 7,
+        "skill": "Other Lores",
+        "choice": "other_lores",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Medicine"
+      },
+      {
+        "ranks": 1,
+        "skill": "Climbing"
+      },
+      {
+        "ranks": 2,
+        "skill": "Running"
+      },
+      {
+        "ranks": 1,
+        "skill": "Influence"
+      },
+      {
+        "ranks": 2,
+        "skill": "Social Awareness"
+      },
+      {
+        "ranks": 1,
+        "skill": "Stalking"
+      }
+    ],
+    "rmu_canonical_name": "Ascended",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Singer",
+    "book": "RMU Non-Human Cultures",
+    "table": "",
+    "description": "The artistic and peaceful Nycamerith. Because they are racially non-violent (2 tiers as a Flaw), I did not give them a rank of Unarmed combat training. Instead, they are rich in artistic and crafting skills, as well as learning a great deal of language from the songs they have shared. Their preference for avoiding dangers leads to having all the Movement skills.",
+    "grants": [
+      {
+        "ranks": 1,
+        "skill": "Perception"
+      },
+      {
+        "ranks": 1,
+        "skill": "Body Development"
+      },
+      {
+        "ranks": 6,
+        "skill": "Composition & Performance Art",
+        "choice": "composition_performance_art",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 5,
+        "skill": "Crafting & Vocation",
+        "choice": "crafting_vocation",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Survival",
+        "label": "Own Region"
+      },
+      {
+        "ranks": 20,
+        "skill": "Languages",
+        "choice": "languages",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 5,
+        "skill": "Region Lore",
+        "label": "Own"
+      },
+      {
+        "ranks": 2,
+        "skill": "Region Lore",
+        "label": "Neighboring"
+      },
+      {
+        "ranks": 1,
+        "skill": "Religion/Philosophy",
+        "choice": "religion_philosophy",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 6,
+        "skill": "Other Lores",
+        "choice": "other_lores",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Medicine"
+      },
+      {
+        "ranks": 1,
+        "skill": "Climbing"
+      },
+      {
+        "ranks": 1,
+        "skill": "Running"
+      },
+      {
+        "ranks": 1,
+        "skill": "Swimming"
+      },
+      {
+        "ranks": 1,
+        "skill": "Social Awareness"
+      },
+      {
+        "ranks": 1,
+        "skill": "Trading"
+      },
+      {
+        "ranks": 1,
+        "skill": "Stalking"
+      }
+    ],
+    "rmu_canonical_name": "Singer",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Hermit",
+    "book": "RMU Non-Human Cultures",
+    "table": "",
+    "description": "The unique lifestyle of the Gnomes.",
+    "grants": [
+      {
+        "ranks": 2,
+        "skill": "Perception"
+      },
+      {
+        "ranks": 1,
+        "skill": "Body Development"
+      },
+      {
+        "ranks": 1,
+        "skill": "Unarmed",
+        "choice": "unarmed",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 2,
+        "skill": "Composition & Performance Art",
+        "choice": "composition_performance_art",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 5,
+        "skill": "Crafting & Vocation",
+        "choice": "crafting_vocation",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Attunement"
+      },
+      {
+        "ranks": 3,
+        "skill": "Survival",
+        "label": "Own Region"
+      },
+      {
+        "ranks": 14,
+        "skill": "Languages",
+        "choice": "languages",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 5,
+        "skill": "Region Lore",
+        "label": "Own"
+      },
+      {
+        "ranks": 6,
+        "skill": "Other Lores",
+        "choice": "other_lores",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Herbalism"
+      },
+      {
+        "ranks": 1,
+        "skill": "Medicine"
+      },
+      {
+        "ranks": 1,
+        "skill": "Running"
+      },
+      {
+        "ranks": 2,
+        "skill": "Concealment"
+      },
+      {
+        "ranks": 1,
+        "skill": "Stalking"
+      }
+    ],
+    "rmu_canonical_name": "Hermit",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Aerial",
+    "book": "Shadow World Conversion Guide",
+    "table": "2-3",
+    "description": "<p data-i18n='SW_RC.CULTURE.AERIAL.DESCRIPTION'>\n  Living high in the mountains, unanchored from the earth, winged races are not freed from the\n  need to eke out a living and gather or raise food. However, they make more\n  use of domesticated animals than Harsh cultures, and are more inclined to\n  find and follow prey from the air than to track it along the ground. This\n  culture typifies the Hirzi.\n</p> <ul> <li data-i18n='SW_RC.CULTURE.AERIAL.CRAFTS'>\n  <strong>Crafts:</strong> Aerial cultures need physical goods and build shelters just as earthbound cultures.\n  Their needs are much like those of highland cultures, except they are less\n  likely to accept the encumbrance of heavier armors, and due to living in the\n  most difficult terrain may not make much use of carts and wagons. Culinary\n  (cook, brewer, butcher), Fabric Craft (any), Leathercraft (any), Metalcraft\n  (blacksmith, weapon smith), Stonecraft (mason, stone dresser, potter),\n  Woodcraft (sawyer, carpenter, cooper).\n</li> <li data-i18n='SW_RC.CULTURE.AERIAL.VOCATIONS'>\n  <strong>Vocations:</strong> Herdsman, farmer, hunter, weaver, stonemason, carpenter, soldier.\n</li> </ul>",
+    "grants": [
+      {
+        "ranks": 2,
+        "skill": "Animal Handling"
+      },
+      {
+        "ranks": 2,
+        "skill": "Perception"
+      },
+      {
+        "ranks": 1,
+        "skill": "Body Development"
+      },
+      {
+        "ranks": 1,
+        "skill": "Unarmed",
+        "choice": "unarmed",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Ranged Weapons",
+        "choice": "ranged_weapons",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 2,
+        "skill": "Composition & Performance Art",
+        "choice": "composition_performance_art",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 4,
+        "skill": "Crafting & Vocation",
+        "choice": "crafting_vocation",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Navigation"
+      },
+      {
+        "ranks": 2,
+        "skill": "Survival",
+        "label": "Own Region"
+      },
+      {
+        "ranks": 13,
+        "skill": "Languages",
+        "choice": "languages",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 5,
+        "skill": "Region Lore",
+        "label": "Own"
+      },
+      {
+        "ranks": 4,
+        "skill": "Other Lores",
+        "choice": "other_lores",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Herbalism"
+      },
+      {
+        "ranks": 1,
+        "skill": "Medicine"
+      },
+      {
+        "ranks": 1,
+        "skill": "Climbing"
+      },
+      {
+        "ranks": 2,
+        "skill": "Flying"
+      },
+      {
+        "ranks": 1,
+        "skill": "Running"
+      },
+      {
+        "ranks": 1,
+        "skill": "Influence"
+      },
+      {
+        "ranks": 1,
+        "skill": "Social Awareness"
+      }
+    ],
+    "rmu_canonical_name": "Aerial",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Secret Nomad",
+    "book": "RMU Non-Human Cultures",
+    "table": "",
+    "description": "The cautious, mobile-at-need Gnolls. The Lore skill should be Creature Lore: Elementals.",
+    "grants": [
+      {
+        "ranks": 4,
+        "skill": "Animal Handling"
+      },
+      {
+        "ranks": 2,
+        "skill": "Riding"
+      },
+      {
+        "ranks": 2,
+        "skill": "Perception"
+      },
+      {
+        "ranks": 1,
+        "skill": "Body Development"
+      },
+      {
+        "ranks": 1,
+        "skill": "Unarmed",
+        "choice": "unarmed",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 3,
+        "skill": "Composition & Performance Art",
+        "choice": "composition_performance_art",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 5,
+        "skill": "Crafting & Vocation",
+        "choice": "crafting_vocation",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Navigation"
+      },
+      {
+        "ranks": 1,
+        "skill": "Survival",
+        "label": "Own Region"
+      },
+      {
+        "ranks": 12,
+        "skill": "Languages",
+        "choice": "languages",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 2,
+        "skill": "Region Lore",
+        "label": "Neighboring"
+      },
+      {
+        "ranks": 5,
+        "skill": "Region Lore",
+        "label": "Own"
+      },
+      {
+        "ranks": 1,
+        "skill": "Other Lores",
+        "choice": "other_lores",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Climbing"
+      },
+      {
+        "ranks": 1,
+        "skill": "Running"
+      },
+      {
+        "ranks": 1,
+        "skill": "Social Awareness"
+      },
+      {
+        "ranks": 2,
+        "skill": "Concealment"
+      },
+      {
+        "ranks": 1,
+        "skill": "Stalking"
+      }
+    ],
+    "rmu_canonical_name": "Secret Nomad",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Sanctified",
+    "book": "Shadow World Conversion Guide",
+    "table": "2-3",
+    "description": "<p data-i18n='SW_RC.CULTURE.SANCTIFIED.DESCRIPTION'>\n  Some societies have a\n  well-established religious caste. Those born into this class are raised from\n  birth to become priests and priestesses. Like nobles, they may be largely\n  free from the need to learn a trade, but expected to learn the dogma and\n  practices of their faith, as well as its formalized ceremonies. They may\n  learn arts that glorify the divine, and they will generally be\n  well-educated. Not all members of the clergy will be of this culture;\n  depending on the society, priests may be recruited from all backgrounds.\n  Members of this culture are specifically those individuals who spent their\n  formative years within the temple or church.\n</p> <ul> <li data-i18n='SW_RC.CULTURE.SANCTIFIED.CRAFTS'>\n  <strong>Crafts:</strong> Some religions may practice only crafts deemed to honor their faith, but others\n  may see constructive work as useful in developing discipline. (Although note\n  that faiths which expect full participation in regular society may not be\n  appropriate for the Sanctified culture.) Culinary (any), Drawing/Painting,\n  Fabric Craft (any), Metalcraft (any), Stonecraft (any), Woodcraft\n  (carpenter, cooper).\n</li> <li data-i18n='SW_RC.CULTURE.SANCTIFIED.VOCATIONS'>\n  <strong>Vocations:</strong> Priest, acolyte, singer, musician, dancer, teacher, scribe.\n</li> </ul>",
+    "grants": [
+      {
+        "ranks": 1,
+        "skill": "Animal Handling"
+      },
+      {
+        "ranks": 1,
+        "skill": "Perception"
+      },
+      {
+        "ranks": 1,
+        "skill": "Body Development"
+      },
+      {
+        "ranks": 1,
+        "skill": "Unarmed",
+        "choice": "unarmed",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 3,
+        "skill": "Composition & Performance Art",
+        "choice": "composition_performance_art",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 4,
+        "skill": "Crafting & Vocation",
+        "choice": "crafting_vocation",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Attunement"
+      },
+      {
+        "ranks": 17,
+        "skill": "Languages",
+        "choice": "languages",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 5,
+        "skill": "Region Lore",
+        "label": "Own"
+      },
+      {
+        "ranks": 3,
+        "skill": "Religion/Philosophy",
+        "choice": "religion_philosophy",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 7,
+        "skill": "Other Lores",
+        "choice": "other_lores",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Medicine"
+      },
+      {
+        "ranks": 2,
+        "skill": "Meditation"
+      },
+      {
+        "ranks": 1,
+        "skill": "Running"
+      },
+      {
+        "ranks": 2,
+        "skill": "Influence"
+      },
+      {
+        "ranks": 2,
+        "skill": "Social Awareness"
+      }
+    ],
+    "rmu_canonical_name": "Sanctified",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Sea-Raider",
+    "book": "RMU Non-Human Cultures",
+    "table": "",
+    "description": "For the Sea-Krals. They are good at messing about in boats, but cannot swim. They have that Reaver savagery, but have much less use for animal skills, especially Riding, while Tracking is not all that practical at sea.",
+    "grants": [
+      {
+        "ranks": 2,
+        "skill": "Perception"
+      },
+      {
+        "ranks": 2,
+        "skill": "Body Development"
+      },
+      {
+        "ranks": 1,
+        "skill": "Weight Training"
+      },
+      {
+        "ranks": 2,
+        "skill": "Unarmed",
+        "choice": "unarmed",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Melee Weapons",
+        "choice": "melee_weapons",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Ranged Weapons",
+        "choice": "ranged_weapons",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 4,
+        "skill": "Crafting & Vocation",
+        "choice": "crafting_vocation",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Piloting"
+      },
+      {
+        "ranks": 1,
+        "skill": "Navigation"
+      },
+      {
+        "ranks": 1,
+        "skill": "Survival",
+        "label": "Own Region"
+      },
+      {
+        "ranks": 1,
+        "skill": "Jumping"
+      },
+      {
+        "ranks": 12,
+        "skill": "Languages",
+        "choice": "languages",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 5,
+        "skill": "Region Lore",
+        "label": "Own"
+      },
+      {
+        "ranks": 4,
+        "skill": "Other Lores",
+        "choice": "other_lores",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Medicine"
+      },
+      {
+        "ranks": 1,
+        "skill": "Climbing"
+      },
+      {
+        "ranks": 1,
+        "skill": "Running"
+      },
+      {
+        "ranks": 1,
+        "skill": "Stalking"
+      }
+    ],
+    "rmu_canonical_name": "Sea-Raider",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Ritualist",
+    "book": "RMU Non-Human Cultures",
+    "table": "",
+    "description": "The lifestyle of the Sstoi'isslythi, who are able to focus less on gaining food (with a cold-blooded appetite) and maintain strong, complex traditions.",
+    "grants": [
+      {
+        "ranks": 1,
+        "skill": "Animal Handling"
+      },
+      {
+        "ranks": 1,
+        "skill": "Perception"
+      },
+      {
+        "ranks": 1,
+        "skill": "Tracking"
+      },
+      {
+        "ranks": 1,
+        "skill": "Body Development"
+      },
+      {
+        "ranks": 1,
+        "skill": "Unarmed",
+        "choice": "unarmed",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 2,
+        "skill": "Composition & Performance Art",
+        "choice": "composition_performance_art",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 5,
+        "skill": "Crafting & Vocation",
+        "choice": "crafting_vocation",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Survival",
+        "label": "Own Region"
+      },
+      {
+        "ranks": 16,
+        "skill": "Languages",
+        "choice": "languages",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 5,
+        "skill": "Region Lore",
+        "label": "Own"
+      },
+      {
+        "ranks": 1,
+        "skill": "Religion/Philosophy",
+        "choice": "religion_philosophy",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 7,
+        "skill": "Other Lores",
+        "choice": "other_lores",
+        "max_per_skill": 2
+      },
+      {
+        "ranks": 1,
+        "skill": "Herbalism"
+      },
+      {
+        "ranks": 1,
+        "skill": "Medicine"
+      },
+      {
+        "ranks": 1,
+        "skill": "Poison Mastery"
+      },
+      {
+        "ranks": 1,
+        "skill": "Meditation"
+      },
+      {
+        "ranks": 1,
+        "skill": "Climbing"
+      },
+      {
+        "ranks": 1,
+        "skill": "Running"
+      },
+      {
+        "ranks": 1,
+        "skill": "Social Awareness"
+      },
+      {
+        "ranks": 1,
+        "skill": "Stalking"
+      }
+    ],
+    "rmu_canonical_name": "Ritualist",
+    "source": "rmu-system"
   }
 ]

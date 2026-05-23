@@ -1,0 +1,72 @@
+/* RMU Character+ Sync — dialog styling */
+
+.rmucp-sync-dialog .rmucp-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--color-border-light-tertiary, #888);
+}
+
+.rmucp-sync-dialog .rmucp-tab {
+  padding: 6px 12px;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-weight: 600;
+  color: var(--color-text-dark-secondary, #444);
+}
+
+.rmucp-sync-dialog .rmucp-tab.active {
+  border-bottom-color: var(--color-shadow-primary, #c4a661);
+  color: var(--color-text-dark-primary, #191813);
+}
+
+.rmucp-sync-dialog .rmucp-panel {
+  display: none;
+  padding: 8px 4px;
+}
+
+.rmucp-sync-dialog .rmucp-panel.active {
+  display: block;
+}
+
+.rmucp-sync-dialog .rmucp-hint {
+  font-size: 12px;
+  line-height: 1.4;
+  margin-bottom: 8px;
+  color: var(--color-text-dark-secondary, #555);
+}
+
+.rmucp-sync-dialog textarea.rmucp-textarea {
+  width: 100%;
+  min-height: 220px;
+  font-family: ui-monospace, "Cascadia Mono", "Fira Code", monospace;
+  font-size: 11px;
+  padding: 6px 8px;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+.rmucp-sync-dialog .rmucp-row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.rmucp-sync-dialog .rmucp-row .rmucp-spacer { flex: 1 1 auto; }
+
+.rmucp-sync-dialog input[type="file"] {
+  font-size: 11px;
+}
+
+.rmucp-sync-dialog .rmucp-status {
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--color-text-dark-secondary, #555);
+  min-height: 1.4em;
+}
+
+.rmucp-sync-dialog .rmucp-status.error { color: #aa3333; }
+.rmucp-sync-dialog .rmucp-status.success { color: #2a7a2a; }

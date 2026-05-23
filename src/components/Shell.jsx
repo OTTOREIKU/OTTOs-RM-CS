@@ -127,22 +127,47 @@ export default function Shell({ children }) {
     try {
       const text = await file.text()
       const json = JSON.parse(text)
-      // Foundry actor exports have a "type" field of "Character"
-      if (!json.items || !json.system?.stats) {
-        throw new Error('File does not look like a Foundry actor export (missing items / system.stats)')
+
+      let newChar = null
+      let source  = ''
+
+      // ── Path 1: sync-module Pull output (preferred — { _version, character }) ──
+      if (json && typeof json === 'object' && json.character && typeof json.character === 'object') {
+        newChar = { ...json.character }
+        // Always assign a fresh id so re-imports don't clobber an existing character
+        newChar.id = `char_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`
+        source = 'RMU Character+ Sync module'
       }
-      const newChar = parseFoundryActor(json)
+      // ── Path 2: bare character object (sync-module Pull without wrapper) ──
+      else if (json && (json.stats || json.skills) && json.name) {
+        newChar = { ...json }
+        newChar.id = `char_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`
+        source = 'character JSON'
+      }
+      // ── Path 3 (legacy): raw Foundry actor "Export Data" JSON ──
+      else if (json && json.items && json.system?.stats) {
+        newChar = parseFoundryActor(json)
+        source = 'Foundry actor export (legacy)'
+      }
+      else {
+        throw new Error(
+          'File doesn\'t look like a sync-module export or a Foundry actor JSON. ' +
+          'Expected the .json downloaded from the RMU Character+ Sync module\'s Pull tab, ' +
+          'or a Foundry actor "Export Data" dump.'
+        )
+      }
+
       const chars = loadCharacters()
       chars[newChar.id] = newChar
       saveCharacters(chars)
       saveActiveId(newChar.id)
       reloadCharacters()
       navigate('/sheet')
-      setImportStatus(`Imported "${newChar.name}" from Foundry.`)
-      setTimeout(() => setImportStatus(null), 4000)
+      setImportStatus(`Imported "${newChar.name}" via ${source}.`)
+      setTimeout(() => setImportStatus(null), 4500)
     } catch (err) {
       setImportStatus('Foundry import error: ' + err.message)
-      setTimeout(() => setImportStatus(null), 6000)
+      setTimeout(() => setImportStatus(null), 7000)
     }
   }
 

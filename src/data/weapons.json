@@ -8,7 +8,12 @@
     "size": "+0",
     "length": "4ft",
     "weight": 2.5,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 70,
+    "material": "iron",
+    "rmu_canonical_name": "Arming Sword"
   },
   {
     "name": "Short Sword",
@@ -19,7 +24,12 @@
     "size": "-1",
     "length": "2ft",
     "weight": 3,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 80,
+    "material": "iron",
+    "rmu_canonical_name": "Short Sword"
   },
   {
     "name": "Broadsword",
@@ -30,7 +40,12 @@
     "size": "+0",
     "length": "3ft",
     "weight": 4,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 80,
+    "material": "iron",
+    "rmu_canonical_name": "Broadsword"
   },
   {
     "name": "Epee",
@@ -41,7 +56,12 @@
     "size": "-1",
     "length": "3ft",
     "weight": 1.5,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 80,
+    "material": "iron",
+    "rmu_canonical_name": "Epee"
   },
   {
     "name": "Rapier",
@@ -52,7 +72,12 @@
     "size": "+0",
     "length": "4ft",
     "weight": 2,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 85,
+    "material": "iron",
+    "rmu_canonical_name": "Rapier"
   },
   {
     "name": "Falchion",
@@ -63,7 +88,12 @@
     "size": "+0",
     "length": "3.5ft",
     "weight": 3,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 60,
+    "material": "iron",
+    "rmu_canonical_name": "Falchion"
   },
   {
     "name": "Scimitar",
@@ -74,7 +104,12 @@
     "size": "+0",
     "length": "3.5ft",
     "weight": 3,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 60,
+    "material": "iron",
+    "rmu_canonical_name": "Scimitar"
   },
   {
     "name": "Machete",
@@ -85,7 +120,12 @@
     "size": "-1",
     "length": "1ft",
     "weight": 1.5,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 70,
+    "material": "iron",
+    "rmu_canonical_name": "Machete"
   },
   {
     "name": "Dagger",
@@ -96,7 +136,12 @@
     "size": "+0",
     "length": "1ft",
     "weight": 1,
-    "notes": "Can also be thrown"
+    "notes": "Can also be thrown",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 80,
+    "material": "iron",
+    "rmu_canonical_name": "Dagger"
   },
   {
     "name": "Butterknife",
@@ -118,7 +163,12 @@
     "size": "+1",
     "length": "5ft",
     "weight": 6,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 75,
+    "material": "iron",
+    "rmu_canonical_name": "Longsword"
   },
   {
     "name": "Claymore (2H)",
@@ -129,7 +179,12 @@
     "size": "+1",
     "length": "5ft",
     "weight": 7,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 80,
+    "material": "iron",
+    "rmu_canonical_name": "Claymore"
   },
   {
     "name": "Great Falchion (2H)",
@@ -140,7 +195,12 @@
     "size": "+1",
     "length": "4.5ft",
     "weight": 7,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 80,
+    "material": "iron",
+    "rmu_canonical_name": "Great Falchion"
   },
   {
     "name": "Long Scimitar (2H)",
@@ -151,7 +211,12 @@
     "size": "+1",
     "length": "5ft",
     "weight": 6,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 80,
+    "material": "iron",
+    "rmu_canonical_name": "Long Scimitar"
   },
   {
     "name": "Hand Axe",
@@ -162,7 +227,12 @@
     "size": "-1",
     "length": "2ft",
     "weight": 1.5,
-    "notes": "Can also be thrown"
+    "notes": "Can also be thrown",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 55,
+    "material": "iron",
+    "rmu_canonical_name": "Hand Axe"
   },
   {
     "name": "Battle Axe",
@@ -173,7 +243,12 @@
     "size": "+0",
     "length": "3ft",
     "weight": 3,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 55,
+    "material": "iron",
+    "rmu_canonical_name": "Battle Axe"
   },
   {
     "name": "Club",
@@ -184,7 +259,13 @@
     "size": "+0",
     "length": "3.5ft",
     "weight": 3,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 35,
+    "material": "wood",
+    "rmu_canonical_name": "Club",
+    "production_time_hours": 6
   },
   {
     "name": "Blackjack",
@@ -195,7 +276,13 @@
     "size": "-1",
     "length": "2ft",
     "weight": 2,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 30,
+    "material": "wood",
+    "rmu_canonical_name": "Blackjack",
+    "production_time_hours": 6
   },
   {
     "name": "Light Stick",
@@ -206,7 +293,13 @@
     "size": "-1",
     "length": "2ft",
     "weight": 1.5,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 40,
+    "material": "wood",
+    "rmu_canonical_name": "Light Stick",
+    "production_time_hours": 1
   },
   {
     "name": "Fighting Stick",
@@ -217,7 +310,13 @@
     "size": "+0",
     "length": "3ft",
     "weight": 3,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 45,
+    "material": "wood",
+    "rmu_canonical_name": "Fighting Stick",
+    "production_time_hours": 6
   },
   {
     "name": "Light Mace",
@@ -228,7 +327,12 @@
     "size": "-1",
     "length": "1.5ft",
     "weight": 4,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 55,
+    "material": "iron",
+    "rmu_canonical_name": "Light Mace"
   },
   {
     "name": "Mace",
@@ -239,7 +343,12 @@
     "size": "+0",
     "length": "2ft",
     "weight": 6,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 80,
+    "material": "iron",
+    "rmu_canonical_name": "Mace"
   },
   {
     "name": "War Hammer",
@@ -250,7 +359,12 @@
     "size": "+0",
     "length": "3ft",
     "weight": 3.5,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 65,
+    "material": "iron",
+    "rmu_canonical_name": "War Hammer"
   },
   {
     "name": "Throwing Club",
@@ -261,7 +375,13 @@
     "size": "-1",
     "length": "2ft",
     "weight": 2,
-    "notes": "Thrown weapon"
+    "notes": "Thrown weapon",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 35,
+    "material": "wood",
+    "rmu_canonical_name": "Throwing Club",
+    "production_time_hours": 6
   },
   {
     "name": "Long Axe (2H)",
@@ -272,7 +392,12 @@
     "size": "+1",
     "length": "4.5ft",
     "weight": 6,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 60,
+    "material": "iron",
+    "rmu_canonical_name": "Long Axe"
   },
   {
     "name": "Large Club (2H)",
@@ -283,7 +408,13 @@
     "size": "+1",
     "length": "5ft",
     "weight": 6.5,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 40,
+    "material": "wood",
+    "rmu_canonical_name": "Large Club",
+    "production_time_hours": 12
   },
   {
     "name": "Great Mace (2H)",
@@ -294,7 +425,12 @@
     "size": "+1",
     "length": "4ft",
     "weight": 8,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 80,
+    "material": "iron",
+    "rmu_canonical_name": "Great Mace"
   },
   {
     "name": "War Mattock (2H)",
@@ -305,7 +441,12 @@
     "size": "+1",
     "length": "4.5ft",
     "weight": 6,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 55,
+    "material": "iron",
+    "rmu_canonical_name": "War Mattock"
   },
   {
     "name": "Halberd (2H)",
@@ -316,7 +457,12 @@
     "size": "+1",
     "length": "7ft",
     "weight": 5,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 55,
+    "material": "iron",
+    "rmu_canonical_name": "Halberd"
   },
   {
     "name": "Glaive (2H)",
@@ -327,7 +473,12 @@
     "size": "+1",
     "length": "8ft",
     "weight": 6,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 55,
+    "material": "iron",
+    "rmu_canonical_name": "Glaive"
   },
   {
     "name": "Poleaxe (2H)",
@@ -338,7 +489,12 @@
     "size": "+1",
     "length": "6ft",
     "weight": 5,
-    "notes": "Blunt and pointed variants"
+    "notes": "Blunt and pointed variants",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 60,
+    "material": "iron",
+    "rmu_canonical_name": "Poleaxe"
   },
   {
     "name": "Long Spear (2H)",
@@ -349,7 +505,12 @@
     "size": "+1",
     "length": "10ft",
     "weight": 6.5,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 40,
+    "material": "iron",
+    "rmu_canonical_name": "Long Spear"
   },
   {
     "name": "Quarterstaff (2H)",
@@ -360,7 +521,12 @@
     "size": "+1",
     "length": "6ft",
     "weight": 4,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 55,
+    "material": "wood",
+    "rmu_canonical_name": "Quarterstaff"
   },
   {
     "name": "Spear (1H)",
@@ -371,7 +537,12 @@
     "size": "+0",
     "length": "6ft",
     "weight": 4.5,
-    "notes": "Can also be thrown"
+    "notes": "Can also be thrown",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 35,
+    "material": "iron",
+    "rmu_canonical_name": "Spear"
   },
   {
     "name": "Spear (2H)",
@@ -393,7 +564,12 @@
     "size": "-1",
     "length": "5.5ft",
     "weight": 4,
-    "notes": "Thrown weapon"
+    "notes": "Thrown weapon",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 40,
+    "material": "wood",
+    "rmu_canonical_name": "Javelin"
   },
   {
     "name": "Dart",
@@ -404,7 +580,13 @@
     "size": "-1",
     "length": "0.5ft",
     "weight": 0.5,
-    "notes": "Thrown weapon"
+    "notes": "Thrown weapon",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 25,
+    "material": "iron",
+    "rmu_canonical_name": "Dart",
+    "production_time_hours": 1
   },
   {
     "name": "Light Flail",
@@ -415,7 +597,12 @@
     "size": "-1",
     "length": "3ft",
     "weight": 3,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 55,
+    "material": "iron",
+    "rmu_canonical_name": "Light Flail"
   },
   {
     "name": "Flail",
@@ -426,7 +613,12 @@
     "size": "+0",
     "length": "3.5ft",
     "weight": 6,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 65,
+    "material": "iron",
+    "rmu_canonical_name": "Flail"
   },
   {
     "name": "Heavy Flail (2H)",
@@ -448,7 +640,13 @@
     "size": "+0",
     "length": "7.5ft",
     "weight": 3,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 40,
+    "material": "leather",
+    "rmu_canonical_name": "Whip",
+    "production_time_hours": 12
   },
   {
     "name": "Bola",
@@ -459,7 +657,12 @@
     "size": "+0",
     "length": "4.5ft",
     "weight": 4,
-    "notes": "Grappling/krush criticals"
+    "notes": "Grappling/krush criticals",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 30,
+    "material": "stone",
+    "rmu_canonical_name": "Bola"
   },
   {
     "name": "Small Net",
@@ -470,7 +673,12 @@
     "size": "-1",
     "length": "5ft",
     "weight": 2.5,
-    "notes": "Grappling weapon"
+    "notes": "Grappling weapon",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 40,
+    "material": "organic",
+    "rmu_canonical_name": "Small Net"
   },
   {
     "name": "Net",
@@ -481,7 +689,12 @@
     "size": "+0",
     "length": "10ft",
     "weight": 6,
-    "notes": "Grappling weapon"
+    "notes": "Grappling weapon",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 45,
+    "material": "organic",
+    "rmu_canonical_name": "Net"
   },
   {
     "name": "Large Net (2H)",
@@ -492,7 +705,12 @@
     "size": "+1",
     "length": "15ft",
     "weight": 10,
-    "notes": "Grappling weapon"
+    "notes": "Grappling weapon",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 50,
+    "material": "organic",
+    "rmu_canonical_name": "Large Net"
   },
   {
     "name": "Long Bow (2H)",
@@ -503,7 +721,12 @@
     "size": "+0",
     "length": "6ft",
     "weight": 2.5,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 85,
+    "material": "iron",
+    "rmu_canonical_name": "Long Bow"
   },
   {
     "name": "Short Bow (2H)",
@@ -514,7 +737,12 @@
     "size": "+0",
     "length": "3ft",
     "weight": 2,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 80,
+    "material": "iron",
+    "rmu_canonical_name": "Short Bow"
   },
   {
     "name": "Composite Bow (2H)",
@@ -525,7 +753,12 @@
     "size": "+0",
     "length": "4ft",
     "weight": 3,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 80,
+    "material": "iron",
+    "rmu_canonical_name": "Composite Bow"
   },
   {
     "name": "Hand Crossbow (1H)",
@@ -536,7 +769,12 @@
     "size": "-1",
     "length": "1.5ft",
     "weight": 2,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 75,
+    "material": "iron",
+    "rmu_canonical_name": "Hand Crossbow"
   },
   {
     "name": "Crossbow (2H)",
@@ -547,7 +785,12 @@
     "size": "+0",
     "length": "3ft",
     "weight": 6,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 75,
+    "material": "iron",
+    "rmu_canonical_name": "Crossbow"
   },
   {
     "name": "Heavy Crossbow (2H)",
@@ -558,7 +801,12 @@
     "size": "+1",
     "length": "4ft",
     "weight": 10,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 80,
+    "material": "iron",
+    "rmu_canonical_name": "Heavy Crossbow"
   },
   {
     "name": "Slingshot",
@@ -569,7 +817,12 @@
     "size": "-1",
     "length": "0.5ft",
     "weight": 1,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 50,
+    "material": "stone",
+    "rmu_canonical_name": "Slingshot"
   },
   {
     "name": "Sling",
@@ -580,7 +833,13 @@
     "size": "+0",
     "length": "2ft",
     "weight": 1,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 95,
+    "material": "stone",
+    "rmu_canonical_name": "Sling",
+    "production_time_hours": 12
   },
   {
     "name": "Staff-sling (2H)",
@@ -591,7 +850,12 @@
     "size": "+1",
     "length": "5ft",
     "weight": 4,
-    "notes": ""
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 95,
+    "material": "other",
+    "rmu_canonical_name": "Staff-sling"
   },
   {
     "name": "Blowpipe",
@@ -602,7 +866,12 @@
     "size": "-1",
     "length": "5ft",
     "weight": 3,
-    "notes": "Often used with poison"
+    "notes": "Often used with poison",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "item_hp": 35,
+    "material": "wood",
+    "rmu_canonical_name": "Blowpipe"
   },
   {
     "name": "Target Shield",
@@ -680,5 +949,90 @@
     "length": "1ft",
     "weight": 0,
     "notes": ""
+  },
+  {
+    "name": "Heavy Rock",
+    "skill_name": "Thrown",
+    "ob_type": "ranged",
+    "fumble": 3,
+    "str_req": 90,
+    "size": "1",
+    "length": "",
+    "weight": "8",
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "handed": "2H",
+    "training_group": "Ranged Weapons",
+    "rmu_canonical_name": "Heavy Rock",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Greater Flail",
+    "skill_name": "Greater Chain",
+    "ob_type": "melee",
+    "fumble": 10,
+    "str_req": 60,
+    "size": "1",
+    "length": "4ft",
+    "weight": "6",
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "handed": "2H",
+    "training_group": "Melee Weapons",
+    "rmu_canonical_name": "Greater Flail",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Small Rock",
+    "skill_name": "Thrown",
+    "ob_type": "ranged",
+    "fumble": 3,
+    "str_req": 70,
+    "size": "-1",
+    "length": "",
+    "weight": "0.5",
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "handed": "1H",
+    "training_group": "Ranged Weapons",
+    "rmu_canonical_name": "Small Rock",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Lariat",
+    "skill_name": "Thrown",
+    "ob_type": "ranged",
+    "fumble": 6,
+    "str_req": 25,
+    "size": "0",
+    "length": "50\"ft",
+    "weight": "5",
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "handed": "1H",
+    "training_group": "Ranged Weapons",
+    "rmu_canonical_name": "Lariat",
+    "source": "rmu-system"
+  },
+  {
+    "name": "Rock",
+    "skill_name": "Thrown",
+    "ob_type": "ranged",
+    "fumble": 3,
+    "str_req": 70,
+    "size": "0",
+    "length": "",
+    "weight": "2",
+    "notes": "",
+    "book": "RMU Core Law",
+    "item_size": "Medium",
+    "handed": "1H",
+    "training_group": "Ranged Weapons",
+    "rmu_canonical_name": "Rock",
+    "source": "rmu-system"
   }
 ]

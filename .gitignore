@@ -23,10 +23,11 @@ merge_spells.py
 test_*.py
 *_raw.json
 
-# Tool dirs and local working folders
-scripts/
-tools/
-memory/
+# Tool dirs and local working folders (anchored to repo root only —
+# don't accidentally exclude foundry-sync-module/scripts/ etc.)
+/scripts/
+/tools/
+/memory/
 
 # Data extraction toolkit lives in Syncthing — never accidentally re-add here
 rmu-extractor/

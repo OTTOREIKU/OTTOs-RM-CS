@@ -1,0 +1,45 @@
+{
+  "id": "rmu-character-plus-sync",
+  "title": "RMU Character+ Sync",
+  "description": "Push character data from the RMU Character+ web app into your Foundry actor, and pull updates back. Adds a Sync button to the Character actor sheet. Player-friendly — no dev console required. Pairs with the RMU Character+ character sheet web app.",
+  "version": "0.1.0",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "14",
+    "maximum": "14"
+  },
+  "authors": [
+    {
+      "name": "OTTO"
+    }
+  ],
+  "esmodules": ["scripts/main.js"],
+  "styles": ["styles/module.css"],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "relationships": {
+    "systems": [
+      {
+        "id": "rmu",
+        "type": "system",
+        "compatibility": {
+          "minimum": "1.2.0"
+        }
+      }
+    ]
+  },
+  "socket": false,
+  "library": false,
+  "protected": false,
+  "flags": {
+    "hotReload": {
+      "extensions": ["css", "json"],
+      "paths": ["styles", "lang", "data"]
+    }
+  }
+}

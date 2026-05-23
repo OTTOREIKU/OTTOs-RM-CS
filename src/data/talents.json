@@ -1,116 +1,2253 @@
 [
-  {"id":"deadeye","name":"Deadeye","category":"Combat","is_flaw":false,"cost_per_tier":7,"max_tiers":5,"param":null,"description":"Uncanny aim with a ranged weapon. All range penalties for a ranged Combat Training specialization may be reduced by up to 10/Tier.","effects":[]},
-  {"id":"fast_attack","name":"Fast Attack","category":"Combat","is_flaw":false,"cost_per_tier":10,"max_tiers":5,"param":null,"description":"Quick reflexes let you act before others. Gain +5/Tier to your Initiative.","effects":[{"type":"initiative_bonus","per_tier":5}]},
-  {"id":"foiler","name":"Foiler","category":"Combat","is_flaw":false,"cost_per_tier":7,"max_tiers":5,"param":null,"description":"Incorporated moves in one Melee Weapon or Unarmed specialization designed to cause your opponent to mishandle his weapon. Any round you use an appropriate weapon or unarmed attack, any foe attacking you that you are aware of has the fumble numbers of all of his attacks increased by 1/Tier.","effects":[]},
-  {"id":"opportunistic_strike","name":"Opportunistic Strike","category":"Combat","is_flaw":false,"cost_per_tier":15,"max_tiers":1,"param":null,"description":"If in melee combat with a foe and your foe fumbles, you may make an immediate attack roll against him (0 AP, OB not reduced for AP or Parrying).","effects":[]},
-  {"id":"pressing_the_advantage","name":"Pressing the Advantage","category":"Combat","is_flaw":false,"cost_per_tier":5,"max_tiers":5,"param":null,"description":"Aggressive fighting style. Every time you inflict a critical on your opponent using one selected Melee Weapon or Unarmed specialization, you gain +10 OB/Tier to your next attack against this foe.","effects":[]},
-  {"id":"quickdraw","name":"Quickdraw / Quickload","category":"Combat","is_flaw":false,"cost_per_tier":7,"max_tiers":1,"param":null,"description":"Drawing or loading for a specified ranged Combat Training specialization is treated as instantaneous (0 AP) rather than 1 AP.","effects":[]},
-  {"id":"slow_on_the_draw","name":"Slow on the Draw","category":"Combat","is_flaw":true,"cost_per_tier":-5,"max_tiers":1,"param":null,"description":"Clumsy with all weapons when surprised. Drawing your weapon or readying an arrow takes you 2 AP.","effects":[]},
-  {"id":"riposte","name":"Riposte","category":"Combat","is_flaw":false,"cost_per_tier":20,"max_tiers":1,"param":null,"description":"When using all of your OB to parry with one Melee Weapon or Unarmed specialization, you may attempt a riposte attack. If the parry is effective, you may make an immediate (0 AP) attack with an OB of 50 minus the foe's total modified attack roll.","effects":[]},
-  {"id":"sense_weakness","name":"Sense Weakness","category":"Combat","is_flaw":false,"cost_per_tier":20,"max_tiers":1,"param":null,"description":"Able to sense a foe's weakness by observing him for one round (requires Concentration and Medium Perception maneuver). With a Success, you may reroll one critical against him.","effects":[]},
-  {"id":"sharpshooter","name":"Sharpshooter","category":"Combat","is_flaw":false,"cost_per_tier":5,"max_tiers":5,"param":null,"description":"For each full round you spend aiming, you gain +5 to your OB with one ranged Combat Training specialization, to a maximum of +5/Tier.","effects":[]},
-
-  {"id":"frenzy","name":"Frenzy","category":"Discipline","is_flaw":false,"cost_per_tier":20,"max_tiers":1,"param":null,"description":"Enter a frenzied rage with a successful Adrenal Focus maneuver. While frenzied: +5 Strength, attacks treated as +1 Size, no penalties due to hit loss. Continue fighting below 0 Hits until reaching negative Body Development hits. Always attack closest creature. Adrenal Focus maneuver required to exit.","effects":[]},
-  {"id":"light_sleeper","name":"Light Sleeper","category":"Discipline","is_flaw":false,"cost_per_tier":10,"max_tiers":1,"param":null,"description":"Receive a +25 bonus to Perception rolls to awake from sleep.","effects":[{"type":"skill_talent_bonus","skill":"Perception","flat":25}]},
-  {"id":"heavy_sleeper","name":"Heavy Sleeper","category":"Discipline","is_flaw":true,"cost_per_tier":-5,"max_tiers":1,"param":null,"description":"Difficult to awaken; receive -25 to Perception rolls to awaken from sleep. Difficulty of the maneuver is set by the GM.","effects":[{"type":"skill_talent_bonus","skill":"Perception","flat":-25}]},
-
-  {"id":"eloquence","name":"Eloquence","category":"Magical","is_flaw":false,"cost_per_tier":15,"max_tiers":5,"param":null,"description":"Exceptionally gifted at magic. Receive +5/Tier to all Spellcasting rolls.","effects":[{"type":"spellcasting_bonus","per_tier":5}]},
-  {"id":"extended_reach","name":"Extended Reach","category":"Magical","is_flaw":false,"cost_per_tier":5,"cost_tier1":15,"max_tiers":5,"param":"spell_list","description":"Able to cast Touch spells from a single spell list with a range of 5'/Tier. Any range modifiers apply normally using the actual range. (Tier I costs 15 DP, then +5 DP per additional Tier.)","effects":[]},
-  {"id":"graceful_recovery","name":"Graceful Recovery","category":"Magical","is_flaw":false,"cost_per_tier":8,"max_tiers":5,"param":null,"description":"Lower chance of catastrophic failure when casting spells. Spell Failure rolls are reduced by up to 5/Tier (to a minimum of 1).","effects":[]},
-  {"id":"inglorious_failure","name":"Inglorious Failure","category":"Magical","is_flaw":true,"cost_per_tier":-6,"max_tiers":5,"param":null,"description":"When you suffer a Spell Failure, your Spell Failure roll is increased by 5/Tier.","effects":[]},
-  {"id":"mumbler","name":"Mumbler","category":"Magical","is_flaw":true,"cost_per_tier":-10,"max_tiers":5,"param":null,"description":"Penalty of -5/Tier to all Spellcasting rolls.","effects":[{"type":"spellcasting_bonus","per_tier":-5}]},
-  {"id":"power_recycling","name":"Power Recycling","category":"Magical","is_flaw":false,"cost_per_tier":10,"max_tiers":2,"param":null,"description":"When you fail casting a spell you are able to recover ½ (Tier I) or all (Tier II) of the Power Points used.","effects":[]},
-  {"id":"quick_caster","name":"Quick-Caster","category":"Magical","is_flaw":false,"cost_per_tier":10,"max_tiers":2,"param":"spell_list","description":"Particularly adept at quickly casting spells from one of your spell lists. The number of Action Points required to cast is 2-3 AP (Tier I) or 2 AP (Tier II).","effects":[]},
-  {"id":"scope_skills","name":"Scope Skills","category":"Magical","is_flaw":false,"cost_per_tier":20,"max_tiers":5,"param":"spell_list","description":"Spells from one of your spell lists affect a greater area than normal and have their radius or # of targets increased by +100%/Tier. If used with directed spells, applicable directed spells OB must be split between the attacks.","effects":[]},
-  {"id":"spatial_skills","name":"Spatial Skills","category":"Magical","is_flaw":false,"cost_per_tier":10,"max_tiers":5,"param":"spell_list","description":"Spells from one of your spell lists work at greater distances than normal and have their ranges increased by +50%/Tier.","effects":[]},
-  {"id":"subconscious_discipline","name":"Subconscious Discipline","category":"Magical","is_flaw":false,"cost_per_tier":10,"max_tiers":2,"param":null,"description":"Able to extend the duration of Concentration based spells beyond your actual time of concentration. The spell will continue for half (Tier I) or the total (Tier II) rounds spent concentrating after concentration has ceased.","effects":[]},
-  {"id":"temporal_skills","name":"Temporal Skills","category":"Magical","is_flaw":false,"cost_per_tier":10,"max_tiers":5,"param":"spell_list","description":"Spells from one of your spell lists last longer than normal and have their duration increased by +50%/Tier. This only affects spells that have a duration.","effects":[]},
-
-  {"id":"ambidextrous","name":"Ambidextrous","category":"Physical","is_flaw":false,"cost_per_tier":10,"max_tiers":1,"param":null,"description":"Able to use either hand equally well for all maneuvers and activities. The normal -20 penalty for off-hand usage does not apply.","effects":[]},
-  {"id":"beast_of_burden","name":"Beast of Burden","category":"Physical","is_flaw":false,"cost_per_tier":10,"max_tiers":5,"param":null,"description":"Body is particularly well-suited for carrying heavy loads. May carry an additional 10%/Tier of body weight as encumbrance without penalty (encumbrance penalties are not reduced for Dodging).","effects":[{"type":"carry_bonus","per_tier":10}]},
-  {"id":"slow_bleeder","name":"Slow Bleeder","category":"Physical","is_flaw":false,"cost_per_tier":25,"max_tiers":5,"param":null,"description":"Abnormal ability to clot bleeding wounds. Each bleeding injury is reduced by 1 hit/round for each Tier. Slow Bleeder may prevent bleeding entirely.","effects":[{"type":"bleed_mod","per_tier":-1}]},
-  {"id":"rapid_bleeder","name":"Rapid Bleeder","category":"Physical","is_flaw":true,"cost_per_tier":-25,"max_tiers":5,"param":null,"description":"Inability to clot bleeding wounds. Each bleeding injury is increased by 1 hit/round for each Tier.","effects":[{"type":"bleed_mod","per_tier":1}]},
-  {"id":"uncoordinated","name":"Uncoordinated","category":"Physical","is_flaw":true,"cost_per_tier":-10,"max_tiers":2,"param":null,"description":"Terribly uncoordinated; difficult time moving while performing other actions. Penalties to actions made while moving are treated as if you were moving 1 pace (Tier I) or 2 paces (Tier II) higher than your actual pace.","effects":[]},
-
-  {"id":"additional_limb_pair","name":"Additional Limb Pair","category":"Racial","is_flaw":false,"cost_per_tier":20,"max_tiers":5,"param":null,"description":"Possess an additional pair of arms per Tier. The additional arms may be used to manipulate and to make attacks (with the usual penalties for multiple attacks). If the additional limbs are legs unable to make attacks, use Increased Stride instead.","effects":[]},
-  {"id":"breath_holding","name":"Breath Holding","category":"Racial","is_flaw":false,"cost_per_tier":10,"max_tiers":1,"param":null,"description":"May hold your breath for up to 1 minute per character level. If you remain inactive, the time may be doubled, or tripled with a successful Meditation maneuver.","effects":[]},
-  {"id":"darkvision","name":"Darkvision","category":"Racial","is_flaw":false,"cost_per_tier":5,"cost_tier1":10,"max_tiers":5,"param":null,"description":"Can see 10'/Tier even in complete darkness. Nightvision is normally a prerequisite for this talent. (Tier I costs 10 DP, then +5 DP per additional Tier.)","effects":[]},
-  {"id":"defensive_aura","name":"Defensive Aura","category":"Racial","is_flaw":false,"cost_per_tier":6,"max_tiers":5,"param":null,"description":"A glowing or blurred aura surrounds you, making you more difficult to target. You receive +5 DB/Tier. Not cumulative with any Aura or Blur spell.","effects":[{"type":"db_bonus","per_tier":5}]},
-  {"id":"efficient_sleeper","name":"Efficient Sleeper","category":"Racial","is_flaw":false,"cost_per_tier":5,"max_tiers":2,"param":null,"description":"Require less sleep than most people, able to get benefits from 3 hours (Tier I) or 2 hours (Tier II) of sleep as others do in 4. Changes the rate at which you recover Power Points, but not the total per night.","effects":[]},
-  {"id":"restless_sleeper","name":"Restless Sleeper","category":"Racial","is_flaw":true,"cost_per_tier":-4,"max_tiers":2,"param":null,"description":"Must sleep 5 hours (Tier I) or 6 hours (Tier II) to get the benefit of 4 hours. Changes the rate at which you recover Power Points, but not the total per night.","effects":[]},
-  {"id":"elemental_resistance","name":"Elemental Resistance","category":"Racial","is_flaw":false,"cost_per_tier":4,"max_tiers":5,"param":"element","description":"Particularly resistant to one element (Cold/Ice, Heat/Fire, or Electricity/Light). Gain +5/Tier to DBs, RRs, and Endurance against the selected element. Also applies to extreme environmental conditions.","effects":[{"type":"elemental_bonus","element":"param","per_tier":5}]},
-  {"id":"elemental_susceptibility","name":"Elemental Susceptibility","category":"Racial","is_flaw":true,"cost_per_tier":-3,"max_tiers":5,"param":"element","description":"Particularly susceptible to one element (Cold/Ice, Heat/Fire, or Electricity/Light). Suffer -5/Tier to DBs, RRs, and Endurance against the selected element. Also applies to extreme environmental conditions.","effects":[{"type":"elemental_bonus","element":"param","per_tier":-5}]},
-  {"id":"enhanced_attack","name":"Enhanced Attack","category":"Racial","is_flaw":false,"cost_per_tier":10,"max_tiers":5,"param":null,"description":"Able to put an incredible amount of momentum and power into one of your natural attacks (e.g., Bite, Striking). Its size is increased by +1 size/Tier.","effects":[{"type":"size_mod","target":"attack","per_tier":1}]},
-  {"id":"lesser_attack","name":"Lesser Attack","category":"Racial","is_flaw":true,"cost_per_tier":-5,"max_tiers":5,"param":null,"description":"Your natural attack is weak relative to your size and is decreased by -1 size/Tier.","effects":[{"type":"size_mod","target":"attack","per_tier":-1}]},
-  {"id":"extra_joints","name":"Extra Joints","category":"Racial","is_flaw":false,"cost_per_tier":20,"max_tiers":1,"param":null,"description":"Limbs are multiply-jointed or extra flexible (e.g., a tentacle) and agile. All activity with the limb, including melee, throwing, and movement, gains a +20 bonus.","effects":[]},
-  {"id":"fast_healer","name":"Fast Healer","category":"Racial","is_flaw":false,"cost_per_tier":10,"max_tiers":1,"param":null,"description":"Recover faster than normal. Recovery times are cut in half.","effects":[]},
-  {"id":"slow_healer","name":"Slow Healer","category":"Racial","is_flaw":true,"cost_per_tier":-10,"max_tiers":1,"param":null,"description":"Recover slower than normal. Recovery times are doubled.","effects":[]},
-  {"id":"hearing_cat","name":"Hearing, Cat","category":"Racial","is_flaw":false,"cost_per_tier":10,"max_tiers":1,"param":null,"description":"Hearing equivalent to that of a cat. Able to hear very high-pitched sounds. Improved ability to locate a sound's source, gaining +10 on Perception maneuvers to locate a sound.","effects":[{"type":"skill_talent_bonus","skill":"Perception","flat":10}]},
-  {"id":"hearing_dog","name":"Hearing, Dog","category":"Racial","is_flaw":false,"cost_per_tier":15,"max_tiers":1,"param":null,"description":"Hearing as sensitive as a dog. Can pinpoint nearby sounds with high accuracy and may hear sounds up to 4 times as far away as a human, including very high-pitched sounds. Grants +10 on sound-based Perception maneuvers.","effects":[{"type":"skill_talent_bonus","skill":"Perception","flat":10}]},
-  {"id":"hearing_hare","name":"Hearing, Hare","category":"Racial","is_flaw":false,"cost_per_tier":20,"max_tiers":1,"param":null,"description":"Hearing is very good in the high and low frequency range. May localize sounds with great accuracy and hear danger coming from 10 times farther than a human. Gain +20 on hearing Perception maneuvers.","effects":[{"type":"skill_talent_bonus","skill":"Perception","flat":20}]},
-  {"id":"heatsense","name":"Heatsense","category":"Racial","is_flaw":false,"cost_per_tier":10,"max_tiers":1,"param":null,"description":"Sensitive temperature organs that allow gauging temperature at close range. May detect nearby prey or tracks within several hours of passing. Grants +20 on Perception and Tracking maneuvers to detect living creatures or warm/cold objects within close proximity.","effects":[{"type":"skill_talent_bonus","skill":"Perception","flat":20},{"type":"skill_talent_bonus","skill":"Tracking","flat":20}]},
-  {"id":"immune_to_disease","name":"Immune to Disease","category":"Racial","is_flaw":false,"cost_per_tier":10,"tier_costs":[10,30],"max_tiers":2,"param":null,"description":"Exceptional health. Immune to all normal, natural diseases (Tier I, 10 DP) or all diseases including magical ones (Tier II, 30 DP total).","effects":[]},
-  {"id":"increased_size","name":"Increased Size","category":"Racial","is_flaw":false,"cost_per_tier":30,"max_tiers":5,"param":null,"description":"One size (per Tier) larger than medium. Larger size makes attacks more powerful and increases number of concussion hits.","effects":[{"type":"size_mod","target":"size","per_tier":1}]},
-  {"id":"decreased_size","name":"Decreased Size","category":"Racial","is_flaw":true,"cost_per_tier":-30,"max_tiers":5,"param":null,"description":"One size (per Tier) smaller than medium. Smaller size weakens attacks and reduces concussion hits.","effects":[{"type":"size_mod","target":"size","per_tier":-1}]},
-  {"id":"increased_stride","name":"Increased Stride","category":"Racial","is_flaw":false,"cost_per_tier":1,"max_tiers":10,"param":null,"description":"Base movement rate is increased by 2'/round for each Tier.","effects":[{"type":"stride_bonus","per_tier":2}]},
-  {"id":"decreased_stride","name":"Decreased Stride","category":"Racial","is_flaw":true,"cost_per_tier":-1,"max_tiers":10,"param":null,"description":"Base movement rate is decreased by 2'/round for each Tier.","effects":[{"type":"stride_bonus","per_tier":-2}]},
-  {"id":"light_boned","name":"Light-boned","category":"Racial","is_flaw":true,"cost_per_tier":-15,"max_tiers":5,"param":null,"description":"Lightly built and relatively fragile for your size. Your concussion hits and any attacks made against you are adjusted as if you were one size smaller per Tier. Attacks you make against others are not adjusted.","effects":[{"type":"size_mod","target":"hits","per_tier":-1}]},
-  {"id":"light_sensitivity","name":"Light Sensitivity","category":"Racial","is_flaw":true,"cost_per_tier":-10,"max_tiers":5,"param":null,"description":"Cannot take direct sunlight. Penalty of -25/Tier when in bright light equal to direct sunlight. Penalty reduced by 25 for cloudy day, 50 for partially shaded/very cloudy, 75 in full shadows.","effects":[]},
-  {"id":"magical_resistance","name":"Magical Resistance","category":"Racial","is_flaw":false,"cost_per_tier":3,"max_tiers":5,"param":"realm","description":"Innate resistance to one of the realms of magic. Receive +5/Tier to all Resistance Rolls versus that realm.","effects":[{"type":"rr_bonus","realm":"param","per_tier":5}]},
-  {"id":"magical_vulnerability","name":"Magical Vulnerability","category":"Racial","is_flaw":true,"cost_per_tier":-3,"max_tiers":5,"param":"realm","description":"Innate vulnerability to one of the realms of magic. Receive -5/Tier to all Resistance Rolls versus that realm.","effects":[{"type":"rr_bonus","realm":"param","per_tier":-5}]},
-  {"id":"natural_armor","name":"Natural Armor","category":"Racial","is_flaw":false,"cost_per_tier":5,"max_tiers":5,"param":null,"description":"Skin/hide/carapace gives +1 AT/Tier natural armor. Incurs no encumbrance or maneuver penalties. Does not interfere with magic. If combined with worn armor, use the higher AT; if worn armor is heavier, add number of tiers as DB.","effects":[{"type":"at_bonus","per_tier":1}]},
-  {"id":"natural_weaponry","name":"Natural Weaponry","category":"Racial","is_flaw":false,"cost_per_tier":5,"max_tiers":1,"param":null,"description":"Some type of natural weaponry (e.g., Bite, Claw, Sting, Horn, etc.) and may develop skill with it. Allows creatures to get an attack at -1 size for free.","effects":[]},
-  {"id":"nightvision","name":"Nightvision","category":"Racial","is_flaw":false,"cost_per_tier":10,"max_tiers":1,"param":null,"description":"Can see in dim light as well as a human can see in daylight. All darkness penalties (other than complete pitch dark) are reduced by 40. More susceptible to sudden bright lights while using Nightvision.","effects":[]},
-  {"id":"physical_resistance","name":"Physical Resistance","category":"Racial","is_flaw":false,"cost_per_tier":3,"max_tiers":5,"param":null,"description":"Innate resistance to physical ailments (e.g., poison, disease). Receive +5/Tier to all Physical Resistance Rolls.","effects":[{"type":"rr_bonus","realm":"physical","per_tier":5}]},
-  {"id":"physical_vulnerability","name":"Physical Vulnerability","category":"Racial","is_flaw":true,"cost_per_tier":-3,"max_tiers":5,"param":null,"description":"Innate vulnerability to physical ailments (e.g., poison, disease). Receive -5/Tier to all Physical Resistance Rolls.","effects":[{"type":"rr_bonus","realm":"physical","per_tier":-5}]},
-  {"id":"poison_injection","name":"Poison Injection","category":"Racial","is_flaw":false,"cost_per_tier":20,"max_tiers":1,"param":null,"description":"One of your natural attacks (typically a bite or stinger) injects poison. If the attack scores a critical (any severity), the target must make a Physical RR against your level or suffer the effect of the poison (typically Circulatory poison).","effects":[]},
-  {"id":"recurved_musculature","name":"Recurved Musculature","category":"Racial","is_flaw":false,"cost_per_tier":30,"max_tiers":1,"param":null,"description":"Muscles have tremendous capacity and store potential energy like springs. Base jump distance is tripled. Receive +20 bonus to Acrobatics, Climbing, Jumping, and Running maneuvers (other than Dodging).","effects":[{"type":"skill_talent_bonus","skill":"Acrobatics","flat":20},{"type":"skill_talent_bonus","skill":"Climbing","flat":20},{"type":"skill_talent_bonus","skill":"Jumping","flat":20},{"type":"skill_talent_bonus","skill":"Running","flat":20}]},
-  {"id":"sight_eagle","name":"Sight, Eagle","category":"Racial","is_flaw":false,"cost_per_tier":15,"max_tiers":1,"param":null,"description":"Keen eyesight permits good peripheral vision and the ability to focus on distant objects such as a hare two miles away. Gain +20 bonus to all vision-based Perception maneuvers.","effects":[{"type":"skill_talent_bonus","skill":"Perception","flat":20}]},
-  {"id":"sight_gecko","name":"Sight, Gecko","category":"Racial","is_flaw":false,"cost_per_tier":10,"max_tiers":1,"param":null,"description":"Eyes perform like those of a gecko, permitting additional detail close-up and good depth vision. Do not lose color vision in dark conditions. Gain +10 bonus to all vision-based Perception maneuvers.","effects":[{"type":"skill_talent_bonus","skill":"Perception","flat":10}]},
-  {"id":"sight_hawk","name":"Sight, Hawk","category":"Racial","is_flaw":false,"cost_per_tier":20,"max_tiers":1,"param":null,"description":"Exceptional vision, permitting you to see objects up to 5 miles away with great sharpness and the ability to spot tiny movements. Gain +30 bonus to all vision-based Perception maneuvers.","effects":[{"type":"skill_talent_bonus","skill":"Perception","flat":30}]},
-  {"id":"strike_reflex","name":"Strike Reflex","category":"Racial","is_flaw":false,"cost_per_tier":5,"max_tiers":1,"param":null,"description":"Powerful strike reflex allows you to act with tremendous speed (+20 initiative modifier) when the reflex is triggered by any sudden movement towards or away from you by a target within range. This instinctive response is impossible to quell; you must take immediate offensive action.","effects":[]},
-  {"id":"superior_stat","name":"Superior Stat","category":"Racial","is_flaw":false,"cost_per_tier":4,"max_tiers":5,"param":"stat","description":"An average being of your race is superior in one of the 10 statistics over the average human. Get +1/Tier to the stats bonus. This talent can only be taken as a racial talent.","effects":[{"type":"stat_bonus","stat":"param","per_tier":1}]},
-  {"id":"inferior_stat","name":"Inferior Stat","category":"Racial","is_flaw":true,"cost_per_tier":-4,"max_tiers":5,"param":"stat","description":"An average being of your race is inferior in one of the 10 statistics. Get -1/Tier to the stats bonus. This talent can only be taken as a racial talent.","effects":[{"type":"stat_bonus","stat":"param","per_tier":-1}]},
-  {"id":"tetrachromatic_vision","name":"Tetrachromatic Vision","category":"Racial","is_flaw":false,"cost_per_tier":15,"max_tiers":1,"param":null,"description":"Vision encompasses normal color vision as well as sensitivity to ultraviolet light. Sense of colors differs from other races. Penalties for spotting invisible (including Unseen spell) and camouflaged people/objects are reduced by 30.","effects":[]},
-  {"id":"third_eyelid","name":"Third Eyelid","category":"Racial","is_flaw":false,"cost_per_tier":5,"max_tiers":1,"param":null,"description":"Eyes have a transparent additional eyelid (nictating membrane) which protects them while still permitting sight. Unaffected by dust, sand, or water which otherwise might limit use of your eyes.","effects":[]},
-  {"id":"tough","name":"Tough","category":"Racial","is_flaw":false,"cost_per_tier":3,"max_tiers":5,"param":null,"description":"Exceptionally tough with higher pain tolerance than others. Grants +5/Tier to base hits. Base hits are normally equal to 25.","effects":[{"type":"hits_bonus","per_tier":5}]},
-  {"id":"fragile","name":"Fragile","category":"Racial","is_flaw":true,"cost_per_tier":-3,"max_tiers":5,"param":null,"description":"Exceptionally fragile with lower pain tolerance than others. Penalty of -5/Tier to base hits. Base hits are normally equal to 25.","effects":[{"type":"hits_bonus","per_tier":-5}]},
-  {"id":"vigorous","name":"Vigorous","category":"Racial","is_flaw":false,"cost_per_tier":5,"max_tiers":5,"param":null,"description":"Incredible stamina. Gain +10/Tier modifier to all Endurance rolls.","effects":[{"type":"endurance_bonus","per_tier":10}]},
-  {"id":"feeble","name":"Feeble","category":"Racial","is_flaw":true,"cost_per_tier":-5,"max_tiers":5,"param":null,"description":"Lack of stamina. Suffer -10/Tier modifier to all Endurance rolls.","effects":[{"type":"endurance_bonus","per_tier":-10}]},
-  {"id":"wings_vestigial","name":"Wings, Vestigial","category":"Racial","is_flaw":false,"cost_per_tier":5,"max_tiers":1,"param":null,"description":"Small wings which are not adequate for flight, but provide a +10 bonus to Jumping and when using Acrobatics to reduce the impact of a fall.","effects":[{"type":"skill_talent_bonus","skill":"Jumping","flat":10}]},
-
-  {"id":"acute_hearing","name":"Acute Hearing","category":"Senses","is_flaw":false,"cost_per_tier":4,"max_tiers":5,"param":null,"description":"Heightened sense of hearing, providing +5/Tier to Perception rolls involving hearing.","effects":[{"type":"skill_talent_bonus","skill":"Perception","per_tier":5}]},
-  {"id":"poor_hearing","name":"Poor Hearing","category":"Senses","is_flaw":true,"cost_per_tier":-3,"max_tiers":5,"param":null,"description":"Deficient sense of hearing, providing -5/Tier to Perception rolls involving hearing.","effects":[{"type":"skill_talent_bonus","skill":"Perception","per_tier":-5}]},
-  {"id":"acute_smell","name":"Acute Smell","category":"Senses","is_flaw":false,"cost_per_tier":3,"max_tiers":5,"param":null,"description":"Heightened sense of smell, providing +5/Tier to Perception rolls involving smell.","effects":[{"type":"skill_talent_bonus","skill":"Perception","per_tier":5}]},
-  {"id":"poor_smell","name":"Poor Smell","category":"Senses","is_flaw":true,"cost_per_tier":-2,"max_tiers":5,"param":null,"description":"Deficient sense of smell, providing -5/Tier to Perception rolls involving smell.","effects":[{"type":"skill_talent_bonus","skill":"Perception","per_tier":-5}]},
-  {"id":"acute_taste","name":"Acute Taste","category":"Senses","is_flaw":false,"cost_per_tier":2,"max_tiers":5,"param":null,"description":"Superb sense of taste, providing +5/Tier to Perception rolls involving taste.","effects":[{"type":"skill_talent_bonus","skill":"Perception","per_tier":5}]},
-  {"id":"poor_taste","name":"Poor Taste","category":"Senses","is_flaw":true,"cost_per_tier":-1,"max_tiers":5,"param":null,"description":"Deficient sense of taste, providing -5/Tier to Perception rolls involving taste.","effects":[{"type":"skill_talent_bonus","skill":"Perception","per_tier":-5}]},
-  {"id":"acute_touch","name":"Acute Touch","category":"Senses","is_flaw":false,"cost_per_tier":1,"max_tiers":5,"param":null,"description":"Unusually sensitive tactile senses, providing +5/Tier to Perception rolls involving touch.","effects":[{"type":"skill_talent_bonus","skill":"Perception","per_tier":5}]},
-  {"id":"poor_touch","name":"Poor Touch","category":"Senses","is_flaw":true,"cost_per_tier":-1,"max_tiers":5,"param":null,"description":"Deficient tactile senses, providing -5/Tier to Perception rolls involving touch.","effects":[{"type":"skill_talent_bonus","skill":"Perception","per_tier":-5}]},
-  {"id":"acute_vision","name":"Acute Vision","category":"Senses","is_flaw":false,"cost_per_tier":5,"max_tiers":5,"param":null,"description":"Heightened sight, providing +5/Tier to Perception rolls involving vision.","effects":[{"type":"skill_talent_bonus","skill":"Perception","per_tier":5}]},
-  {"id":"poor_vision","name":"Poor Vision","category":"Senses","is_flaw":true,"cost_per_tier":-4,"max_tiers":5,"param":null,"description":"Deficient sight, providing -5/Tier to Perception rolls involving vision.","effects":[{"type":"skill_talent_bonus","skill":"Perception","per_tier":-5}]},
-  {"id":"animal_empathy","name":"Animal Empathy","category":"Senses","is_flaw":false,"cost_per_tier":5,"cost_tier1":15,"max_tiers":5,"param":"animal_type","description":"Affinity with a particular kind of animal. Any maneuvers involving one type of animal are at +25. If you associate with an animal of that type for one month, you can communicate empathically to a range of 100'. For each Tier beyond I, the range is increased by 25'. (Tier I costs 15 DP, then +5 DP per additional Tier.)","effects":[]},
-  {"id":"destiny_sense","name":"Destiny Sense","category":"Senses","is_flaw":false,"cost_per_tier":10,"max_tiers":2,"param":null,"description":"Instinctively know the direction (Tier I) or direction and distance (Tier II) that will take you to a specific goal. This can be used once per day.","effects":[]},
-  {"id":"direction_sense","name":"Direction Sense","category":"Senses","is_flaw":false,"cost_per_tier":10,"max_tiers":1,"param":null,"description":"By detecting the planet's magnetic field or other means, always able to discern which direction is north. This grants a +30 bonus to Navigation.","effects":[{"type":"skill_talent_bonus","skill":"Navigation","flat":30}]},
-  {"id":"empathy","name":"Empathy","category":"Senses","is_flaw":false,"cost_per_tier":20,"max_tiers":1,"param":null,"description":"Can read emotions of those within 25'. If a target is trying to hide his emotions, he gets a Resistance Roll vs. your level; Success means you cannot 'read' that target for 24 hours. This ability grants a +50 bonus to Social Awareness when appropriate.","effects":[{"type":"skill_talent_bonus","skill":"Social Awareness","flat":50}]},
-  {"id":"extra_sense","name":"Extra Sense","category":"Senses","is_flaw":false,"cost_per_tier":5,"max_tiers":5,"param":"sense_description","description":"Can sense something that normally cannot be sensed. Tier I: inside body. Tier II: in contact with body. Tier III: general direction/intensity, attack unseen targets at -50. Tier IV: direction, intensity, and distance, attack unseen at -25. Tier V: specific detail, attack unseen targets normally.","effects":[]},
-  {"id":"missing_sense","name":"Missing Sense","category":"Senses","is_flaw":true,"cost_per_tier":-15,"max_tiers":1,"param":"sense","param_costs":{"Taste":-5,"Touch":-10,"Smell":-10,"Hearing":-15,"Sight":-20},"description":"Completely missing a sense. Costs vary: Taste (-5 DP), Touch (-10 DP), Smell (-10 DP), Hearing (-15 DP), Sight (-20 DP). Suffer -100 penalty on actions requiring the sense, and -20 to -50 on actions that would benefit from it.","effects":[]},
-  {"id":"one_eye","name":"One Eye","category":"Senses","is_flaw":true,"cost_per_tier":-10,"max_tiers":1,"param":null,"description":"Have sight only in one eye. Lack distance perception and peripheral vision on the affected side. All ranged attacks suffer a -25 penalty.","effects":[]},
-  {"id":"visions","name":"Visions","category":"Senses","is_flaw":false,"cost_per_tier":10,"cost_tier1":30,"max_tiers":5,"param":null,"description":"Able to receive spontaneous visions of persons/places/objects based upon objects touched with bare skin. The details are at the GM's discretion. Can be used once per day for every Tier. (Tier I costs 30 DP, then +10 DP per additional Tier.)","effects":[]},
-
-  {"id":"distinct_odor","name":"Distinct Odor","category":"Other","is_flaw":true,"cost_per_tier":-10,"max_tiers":1,"param":null,"description":"Have a distinct odor that transfers to objects touched with bare skin. Grants others a +50 bonus to Perception and Tracking efforts based on smell to detect or track you.","effects":[]},
-  {"id":"disturbing_voice","name":"Disturbing Voice","category":"Other","is_flaw":true,"cost_per_tier":-10,"max_tiers":5,"param":null,"description":"Grating or annoying tone of voice. Penalty of -20/Tier to any maneuver to verbally calm or persuade (Influence, Singing, Leadership, etc.).","effects":[{"type":"skill_talent_bonus","skill":"Leadership","per_tier":-20},{"type":"skill_talent_bonus","skill":"Music: Singing","per_tier":-20},{"type":"skill_talent_bonus","skill":"Influence: Persuasion","per_tier":-20},{"type":"skill_talent_bonus","skill":"Influence: Intimidation","per_tier":-20},{"type":"skill_talent_bonus","skill":"Influence: Duping","per_tier":-20}]},
-  {"id":"golden_throat","name":"Golden Throat","category":"Other","is_flaw":false,"cost_per_tier":5,"max_tiers":5,"param":null,"description":"Soothing and calming voice. Gives +10/Tier to any maneuver to verbally calm or persuade (Charm, Singing, Leadership, etc.).","effects":[{"type":"skill_talent_bonus","skill":"Leadership","per_tier":10},{"type":"skill_talent_bonus","skill":"Music: Singing","per_tier":10},{"type":"skill_talent_bonus","skill":"Influence: Persuasion","per_tier":10},{"type":"skill_talent_bonus","skill":"Influence: Intimidation","per_tier":10},{"type":"skill_talent_bonus","skill":"Influence: Duping","per_tier":10}]},
-  {"id":"iron_will","name":"Iron Will","category":"Other","is_flaw":false,"cost_per_tier":4,"max_tiers":5,"param":null,"description":"Formidable willpower. Get a bonus of +5/Tier to Resistance Rolls versus mental spells (attack, informational, or otherwise).","effects":[{"type":"rr_bonus","realm":"mentalism","per_tier":5}]},
-  {"id":"look_of_eagles","name":"Look of Eagles","category":"Other","is_flaw":false,"cost_per_tier":10,"max_tiers":5,"param":null,"description":"With the gift of inspiration, get +10/Tier to all Leadership maneuvers and followers get +2/Tier to fear RRs.","effects":[{"type":"skill_talent_bonus","skill":"Leadership","per_tier":10}]},
-  {"id":"math_illiterate","name":"Math Illiterate","category":"Other","is_flaw":true,"cost_per_tier":-10,"max_tiers":1,"param":null,"description":"Never learned basic math. Cannot add or subtract without fingers, cannot multiply at all, and cannot count higher than 20.","effects":[]},
-  {"id":"multilingual","name":"Multilingual","category":"Other","is_flaw":false,"cost_per_tier":8,"max_tiers":1,"param":null,"description":"Grew up in a multilingual culture or has always been able to learn languages quickly when immersed in them. Gain 10 ranks in one language or 5 ranks in each of two languages.","effects":[]},
-  {"id":"mute","name":"Mute","category":"Other","is_flaw":true,"cost_per_tier":-10,"max_tiers":1,"param":null,"description":"Cannot speak, although can understand speech and may communicate via other means such as sign language or gesture if you have the ability to do so.","effects":[]},
-  {"id":"neutral_odor","name":"Neutral Odor","category":"Other","is_flaw":false,"cost_per_tier":10,"max_tiers":1,"param":null,"description":"Naturally have a very weak odor. Makes all attempts to perceive your presence based upon smell operate at -50. Penalty may be reduced if carrying objects or equipment that carry strong odors.","effects":[]},
-  {"id":"non_violent","name":"Non-violent","category":"Other","is_flaw":true,"cost_per_tier":-5,"max_tiers":2,"param":null,"description":"Do not want to hurt others, and flinch with remorse when doing so. After inflicting a critical, any action you take in the following round suffers a penalty of -20/Tier.","effects":[]},
-  {"id":"perfect_pitch","name":"Perfect Pitch","category":"Other","is_flaw":false,"cost_per_tier":7,"max_tiers":5,"param":"skill","description":"Perfect pitch and able to reproduce any pitch with voice or appropriate instrument. Gain +10/Tier to a Performance Art: Singing or Play Instrument skill. Cannot be combined with Golden Throat to get a higher bonus to Singing; use the talent with the highest bonus.","effects":[{"type":"skill_talent_bonus","skill":"param","per_tier":10}]},
-  {"id":"prodigy","name":"Prodigy","category":"Other","is_flaw":false,"cost_per_tier":6,"max_tiers":10,"param":"skill","description":"Unusual innate ability giving a bonus of +5/Tier to a single skill (all specializations).","effects":[{"type":"skill_talent_bonus","skill":"param","per_tier":5}]},
-  {"id":"inept","name":"Inept","category":"Other","is_flaw":true,"cost_per_tier":-4,"max_tiers":10,"param":"skill","description":"Inexplicably jinxed in a single skill, suffering -5/Tier to all maneuvers in that skill (all specializations).","effects":[{"type":"skill_talent_bonus","skill":"param","per_tier":-5}]},
-  {"id":"restricted_diet","name":"Restricted Diet","category":"Other","is_flaw":true,"cost_per_tier":-5,"max_tiers":1,"param":null,"description":"Diet limited to certain foods which are normally available but may not be in all circumstances. Other foods either provide no sustenance or will cause operation at significant penalties (at least -20) for the next 24 hours.","effects":[]},
-  {"id":"revulsion","name":"Revulsion","category":"Other","is_flaw":true,"cost_per_tier":-15,"max_tiers":1,"param":null,"description":"Cannot stand the sight of blood. Each round a bleeding character (or bloody corpse) is in view, must make a Fear/Terror RR equal to the amount of bleeding visible. Treat bloody corpses as 10/round bleeding for this calculation.","effects":[]}
+  {
+    "id": "deadeye",
+    "name": "Deadeye",
+    "category": "Combat",
+    "is_flaw": false,
+    "cost_per_tier": 7,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Uncanny aim with a ranged weapon. All range penalties for a ranged Combat Training specialization may be reduced by up to 10/Tier.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Deadeye"
+  },
+  {
+    "id": "fast_attack",
+    "name": "Fast Attack",
+    "category": "Combat",
+    "is_flaw": false,
+    "cost_per_tier": 10,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Quick reflexes let you act before others. Gain +5/Tier to your Initiative.",
+    "effects": [
+      {
+        "type": "initiative_bonus",
+        "per_tier": 5
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Fast Attack"
+  },
+  {
+    "id": "foiler",
+    "name": "Foiler",
+    "category": "Combat",
+    "is_flaw": false,
+    "cost_per_tier": 7,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Incorporated moves in one Melee Weapon or Unarmed specialization designed to cause your opponent to mishandle his weapon. Any round you use an appropriate weapon or unarmed attack, any foe attacking you that you are aware of has the fumble numbers of all of his attacks increased by 1/Tier.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Foiler"
+  },
+  {
+    "id": "opportunistic_strike",
+    "name": "Opportunistic Strike",
+    "category": "Combat",
+    "is_flaw": false,
+    "cost_per_tier": 15,
+    "max_tiers": 1,
+    "param": null,
+    "description": "If in melee combat with a foe and your foe fumbles, you may make an immediate attack roll against him (0 AP, OB not reduced for AP or Parrying).",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Opportunistic Strike"
+  },
+  {
+    "id": "pressing_the_advantage",
+    "name": "Pressing the Advantage",
+    "category": "Combat",
+    "is_flaw": false,
+    "cost_per_tier": 5,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Aggressive fighting style. Every time you inflict a critical on your opponent using one selected Melee Weapon or Unarmed specialization, you gain +10 OB/Tier to your next attack against this foe.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Pressing the Advantage"
+  },
+  {
+    "id": "quickdraw",
+    "name": "Quickdraw / Quickload",
+    "category": "Combat",
+    "is_flaw": false,
+    "cost_per_tier": 7,
+    "max_tiers": 1,
+    "param": null,
+    "description": "Drawing or loading for a specified ranged Combat Training specialization is treated as instantaneous (0 AP) rather than 1 AP.",
+    "effects": []
+  },
+  {
+    "id": "slow_on_the_draw",
+    "name": "Slow on the Draw",
+    "category": "Combat",
+    "is_flaw": true,
+    "cost_per_tier": -5,
+    "max_tiers": 1,
+    "param": null,
+    "description": "Clumsy with all weapons when surprised. Drawing your weapon or readying an arrow takes you 2 AP.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Slow on the Draw"
+  },
+  {
+    "id": "riposte",
+    "name": "Riposte",
+    "category": "Combat",
+    "is_flaw": false,
+    "cost_per_tier": 20,
+    "max_tiers": 1,
+    "param": null,
+    "description": "When using all of your OB to parry with one Melee Weapon or Unarmed specialization, you may attempt a riposte attack. If the parry is effective, you may make an immediate (0 AP) attack with an OB of 50 minus the foe's total modified attack roll.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Riposte"
+  },
+  {
+    "id": "sense_weakness",
+    "name": "Sense Weakness",
+    "category": "Combat",
+    "is_flaw": false,
+    "cost_per_tier": 20,
+    "max_tiers": 1,
+    "param": null,
+    "description": "Able to sense a foe's weakness by observing him for one round (requires Concentration and Medium Perception maneuver). With a Success, you may reroll one critical against him.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Sense Weakness"
+  },
+  {
+    "id": "sharpshooter",
+    "name": "Sharpshooter",
+    "category": "Combat",
+    "is_flaw": false,
+    "cost_per_tier": 5,
+    "max_tiers": 5,
+    "param": null,
+    "description": "For each full round you spend aiming, you gain +5 to your OB with one ranged Combat Training specialization, to a maximum of +5/Tier.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Sharpshooter"
+  },
+  {
+    "id": "frenzy",
+    "name": "Frenzy",
+    "category": "Discipline",
+    "is_flaw": false,
+    "cost_per_tier": 20,
+    "max_tiers": 1,
+    "param": null,
+    "description": "Enter a frenzied rage with a successful Adrenal Focus maneuver. While frenzied: +5 Strength, attacks treated as +1 Size, no penalties due to hit loss. Continue fighting below 0 Hits until reaching negative Body Development hits. Always attack closest creature. Adrenal Focus maneuver required to exit.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Frenzy"
+  },
+  {
+    "id": "light_sleeper",
+    "name": "Light Sleeper",
+    "category": "Discipline",
+    "is_flaw": false,
+    "cost_per_tier": 10,
+    "max_tiers": 1,
+    "param": null,
+    "description": "Receive a +25 bonus to Perception rolls to awake from sleep.",
+    "effects": [
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Perception",
+        "flat": 25
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Light Sleeper"
+  },
+  {
+    "id": "heavy_sleeper",
+    "name": "Heavy Sleeper",
+    "category": "Discipline",
+    "is_flaw": true,
+    "cost_per_tier": -5,
+    "max_tiers": 1,
+    "param": null,
+    "description": "Difficult to awaken; receive -25 to Perception rolls to awaken from sleep. Difficulty of the maneuver is set by the GM.",
+    "effects": [
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Perception",
+        "flat": -25
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Heavy Sleeper"
+  },
+  {
+    "id": "eloquence",
+    "name": "Eloquence",
+    "category": "Magical",
+    "is_flaw": false,
+    "cost_per_tier": 15,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Exceptionally gifted at magic. Receive +5/Tier to all Spellcasting rolls.",
+    "effects": [
+      {
+        "type": "spellcasting_bonus",
+        "per_tier": 5
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Eloquence"
+  },
+  {
+    "id": "extended_reach",
+    "name": "Extended Reach",
+    "category": "Magical",
+    "is_flaw": false,
+    "cost_per_tier": 5,
+    "cost_tier1": 15,
+    "max_tiers": 5,
+    "param": "spell_list",
+    "description": "Able to cast Touch spells from a single spell list with a range of 5'/Tier. Any range modifiers apply normally using the actual range. (Tier I costs 15 DP, then +5 DP per additional Tier.)",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Extended Reach"
+  },
+  {
+    "id": "graceful_recovery",
+    "name": "Graceful Recovery",
+    "category": "Magical",
+    "is_flaw": false,
+    "cost_per_tier": 8,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Lower chance of catastrophic failure when casting spells. Spell Failure rolls are reduced by up to 5/Tier (to a minimum of 1).",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Graceful Recovery"
+  },
+  {
+    "id": "inglorious_failure",
+    "name": "Inglorious Failure",
+    "category": "Magical",
+    "is_flaw": true,
+    "cost_per_tier": -6,
+    "max_tiers": 5,
+    "param": null,
+    "description": "When you suffer a Spell Failure, your Spell Failure roll is increased by 5/Tier.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Inglorious Failure"
+  },
+  {
+    "id": "mumbler",
+    "name": "Mumbler",
+    "category": "Magical",
+    "is_flaw": true,
+    "cost_per_tier": -10,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Penalty of -5/Tier to all Spellcasting rolls.",
+    "effects": [
+      {
+        "type": "spellcasting_bonus",
+        "per_tier": -5
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Mumbler"
+  },
+  {
+    "id": "power_recycling",
+    "name": "Power Recycling",
+    "category": "Magical",
+    "is_flaw": false,
+    "cost_per_tier": 10,
+    "max_tiers": 2,
+    "param": null,
+    "description": "When you fail casting a spell you are able to recover ½ (Tier I) or all (Tier II) of the Power Points used.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Power Recycling"
+  },
+  {
+    "id": "quick_caster",
+    "name": "Quick-Caster",
+    "category": "Magical",
+    "is_flaw": false,
+    "cost_per_tier": 10,
+    "max_tiers": 2,
+    "param": "spell_list",
+    "description": "Particularly adept at quickly casting spells from one of your spell lists. The number of Action Points required to cast is 2-3 AP (Tier I) or 2 AP (Tier II).",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Quick-Caster"
+  },
+  {
+    "id": "scope_skills",
+    "name": "Scope Skills",
+    "category": "Magical",
+    "is_flaw": false,
+    "cost_per_tier": 20,
+    "max_tiers": 5,
+    "param": "spell_list",
+    "description": "Spells from one of your spell lists affect a greater area than normal and have their radius or # of targets increased by +100%/Tier. If used with directed spells, applicable directed spells OB must be split between the attacks.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Scope Skills"
+  },
+  {
+    "id": "spatial_skills",
+    "name": "Spatial Skills",
+    "category": "Magical",
+    "is_flaw": false,
+    "cost_per_tier": 10,
+    "max_tiers": 5,
+    "param": "spell_list",
+    "description": "Spells from one of your spell lists work at greater distances than normal and have their ranges increased by +50%/Tier.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Spatial Skills"
+  },
+  {
+    "id": "subconscious_discipline",
+    "name": "Subconscious Discipline",
+    "category": "Magical",
+    "is_flaw": false,
+    "cost_per_tier": 10,
+    "max_tiers": 2,
+    "param": null,
+    "description": "Able to extend the duration of Concentration based spells beyond your actual time of concentration. The spell will continue for half (Tier I) or the total (Tier II) rounds spent concentrating after concentration has ceased.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Subconscious Discipline"
+  },
+  {
+    "id": "temporal_skills",
+    "name": "Temporal Skills",
+    "category": "Magical",
+    "is_flaw": false,
+    "cost_per_tier": 10,
+    "max_tiers": 5,
+    "param": "spell_list",
+    "description": "Spells from one of your spell lists last longer than normal and have their duration increased by +50%/Tier. This only affects spells that have a duration.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Temporal Skills"
+  },
+  {
+    "id": "ambidextrous",
+    "name": "Ambidextrous",
+    "category": "Physical",
+    "is_flaw": false,
+    "cost_per_tier": 10,
+    "max_tiers": 1,
+    "param": null,
+    "description": "Able to use either hand equally well for all maneuvers and activities. The normal -20 penalty for off-hand usage does not apply.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Ambidextrous"
+  },
+  {
+    "id": "beast_of_burden",
+    "name": "Beast of Burden",
+    "category": "Physical",
+    "is_flaw": false,
+    "cost_per_tier": 10,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Body is particularly well-suited for carrying heavy loads. May carry an additional 10%/Tier of body weight as encumbrance without penalty (encumbrance penalties are not reduced for Dodging).",
+    "effects": [
+      {
+        "type": "carry_bonus",
+        "per_tier": 10
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Beast of Burden"
+  },
+  {
+    "id": "slow_bleeder",
+    "name": "Slow Bleeder",
+    "category": "Physical",
+    "is_flaw": false,
+    "cost_per_tier": 25,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Abnormal ability to clot bleeding wounds. Each bleeding injury is reduced by 1 hit/round for each Tier. Slow Bleeder may prevent bleeding entirely.",
+    "effects": [
+      {
+        "type": "bleed_mod",
+        "per_tier": -1
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Slow Bleeder"
+  },
+  {
+    "id": "rapid_bleeder",
+    "name": "Rapid Bleeder",
+    "category": "Physical",
+    "is_flaw": true,
+    "cost_per_tier": -25,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Inability to clot bleeding wounds. Each bleeding injury is increased by 1 hit/round for each Tier.",
+    "effects": [
+      {
+        "type": "bleed_mod",
+        "per_tier": 1
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Rapid Bleeder"
+  },
+  {
+    "id": "uncoordinated",
+    "name": "Uncoordinated",
+    "category": "Physical",
+    "is_flaw": true,
+    "cost_per_tier": -10,
+    "max_tiers": 2,
+    "param": null,
+    "description": "Terribly uncoordinated; difficult time moving while performing other actions. Penalties to actions made while moving are treated as if you were moving 1 pace (Tier I) or 2 paces (Tier II) higher than your actual pace.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Uncoordinated"
+  },
+  {
+    "id": "additional_limb_pair",
+    "name": "Additional Limb Pair",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 20,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Possess an additional pair of arms per Tier. The additional arms may be used to manipulate and to make attacks (with the usual penalties for multiple attacks). If the additional limbs are legs unable to make attacks, use Increased Stride instead.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Additional Limb Pair"
+  },
+  {
+    "id": "breath_holding",
+    "name": "Breath Holding",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 10,
+    "max_tiers": 1,
+    "param": null,
+    "description": "May hold your breath for up to 1 minute per character level. If you remain inactive, the time may be doubled, or tripled with a successful Meditation maneuver.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Breath Holding"
+  },
+  {
+    "id": "darkvision",
+    "name": "Darkvision",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 5,
+    "cost_tier1": 10,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Can see 10'/Tier even in complete darkness. Nightvision is normally a prerequisite for this talent. (Tier I costs 10 DP, then +5 DP per additional Tier.)",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Darkvision"
+  },
+  {
+    "id": "defensive_aura",
+    "name": "Defensive Aura",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 6,
+    "max_tiers": 5,
+    "param": null,
+    "description": "A glowing or blurred aura surrounds you, making you more difficult to target. You receive +5 DB/Tier. Not cumulative with any Aura or Blur spell.",
+    "effects": [
+      {
+        "type": "db_bonus",
+        "per_tier": 5
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Defensive Aura"
+  },
+  {
+    "id": "efficient_sleeper",
+    "name": "Efficient Sleeper",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 5,
+    "max_tiers": 2,
+    "param": null,
+    "description": "Require less sleep than most people, able to get benefits from 3 hours (Tier I) or 2 hours (Tier II) of sleep as others do in 4. Changes the rate at which you recover Power Points, but not the total per night.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Efficient Sleeper"
+  },
+  {
+    "id": "restless_sleeper",
+    "name": "Restless Sleeper",
+    "category": "Racial",
+    "is_flaw": true,
+    "cost_per_tier": -4,
+    "max_tiers": 2,
+    "param": null,
+    "description": "Must sleep 5 hours (Tier I) or 6 hours (Tier II) to get the benefit of 4 hours. Changes the rate at which you recover Power Points, but not the total per night.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Restless Sleeper"
+  },
+  {
+    "id": "elemental_resistance",
+    "name": "Elemental Resistance",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 4,
+    "max_tiers": 5,
+    "param": "element",
+    "description": "Particularly resistant to one element (Cold/Ice, Heat/Fire, or Electricity/Light). Gain +5/Tier to DBs, RRs, and Endurance against the selected element. Also applies to extreme environmental conditions.",
+    "effects": [
+      {
+        "type": "elemental_bonus",
+        "element": "param",
+        "per_tier": 5
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Elemental Resistance"
+  },
+  {
+    "id": "elemental_susceptibility",
+    "name": "Elemental Susceptibility",
+    "category": "Racial",
+    "is_flaw": true,
+    "cost_per_tier": -3,
+    "max_tiers": 5,
+    "param": "element",
+    "description": "Particularly susceptible to one element (Cold/Ice, Heat/Fire, or Electricity/Light). Suffer -5/Tier to DBs, RRs, and Endurance against the selected element. Also applies to extreme environmental conditions.",
+    "effects": [
+      {
+        "type": "elemental_bonus",
+        "element": "param",
+        "per_tier": -5
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Elemental Susceptibility"
+  },
+  {
+    "id": "enhanced_attack",
+    "name": "Enhanced Attack",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 10,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Able to put an incredible amount of momentum and power into one of your natural attacks (e.g., Bite, Striking). Its size is increased by +1 size/Tier.",
+    "effects": [
+      {
+        "type": "size_mod",
+        "target": "attack",
+        "per_tier": 1
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Enhanced Attack"
+  },
+  {
+    "id": "lesser_attack",
+    "name": "Lesser Attack",
+    "category": "Racial",
+    "is_flaw": true,
+    "cost_per_tier": -5,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Your natural attack is weak relative to your size and is decreased by -1 size/Tier.",
+    "effects": [
+      {
+        "type": "size_mod",
+        "target": "attack",
+        "per_tier": -1
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Lesser Attack"
+  },
+  {
+    "id": "extra_joints",
+    "name": "Extra Joints",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 20,
+    "max_tiers": 1,
+    "param": null,
+    "description": "Limbs are multiply-jointed or extra flexible (e.g., a tentacle) and agile. All activity with the limb, including melee, throwing, and movement, gains a +20 bonus.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Extra Joints"
+  },
+  {
+    "id": "fast_healer",
+    "name": "Fast Healer",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 10,
+    "max_tiers": 1,
+    "param": null,
+    "description": "Recover faster than normal. Recovery times are cut in half.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Fast Healer"
+  },
+  {
+    "id": "slow_healer",
+    "name": "Slow Healer",
+    "category": "Racial",
+    "is_flaw": true,
+    "cost_per_tier": -10,
+    "max_tiers": 1,
+    "param": null,
+    "description": "Recover slower than normal. Recovery times are doubled.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Slow Healer"
+  },
+  {
+    "id": "hearing_cat",
+    "name": "Hearing, Cat",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 10,
+    "max_tiers": 1,
+    "param": null,
+    "description": "Hearing equivalent to that of a cat. Able to hear very high-pitched sounds. Improved ability to locate a sound's source, gaining +10 on Perception maneuvers to locate a sound.",
+    "effects": [
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Perception",
+        "flat": 10
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Hearing, Cat"
+  },
+  {
+    "id": "hearing_dog",
+    "name": "Hearing, Dog",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 15,
+    "max_tiers": 1,
+    "param": null,
+    "description": "Hearing as sensitive as a dog. Can pinpoint nearby sounds with high accuracy and may hear sounds up to 4 times as far away as a human, including very high-pitched sounds. Grants +10 on sound-based Perception maneuvers.",
+    "effects": [
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Perception",
+        "flat": 10
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Hearing, Dog"
+  },
+  {
+    "id": "hearing_hare",
+    "name": "Hearing, Hare",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 20,
+    "max_tiers": 1,
+    "param": null,
+    "description": "Hearing is very good in the high and low frequency range. May localize sounds with great accuracy and hear danger coming from 10 times farther than a human. Gain +20 on hearing Perception maneuvers.",
+    "effects": [
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Perception",
+        "flat": 20
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Hearing, Hare"
+  },
+  {
+    "id": "heatsense",
+    "name": "Heatsense",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 10,
+    "max_tiers": 1,
+    "param": null,
+    "description": "Sensitive temperature organs that allow gauging temperature at close range. May detect nearby prey or tracks within several hours of passing. Grants +20 on Perception and Tracking maneuvers to detect living creatures or warm/cold objects within close proximity.",
+    "effects": [
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Perception",
+        "flat": 20
+      },
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Tracking",
+        "flat": 20
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Heatsense"
+  },
+  {
+    "id": "immune_to_disease",
+    "name": "Immune to Disease",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 10,
+    "tier_costs": [
+      10,
+      30
+    ],
+    "max_tiers": 2,
+    "param": null,
+    "description": "Exceptional health. Immune to all normal, natural diseases (Tier I, 10 DP) or all diseases including magical ones (Tier II, 30 DP total).",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Immune to Disease"
+  },
+  {
+    "id": "increased_size",
+    "name": "Increased Size",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 30,
+    "max_tiers": 5,
+    "param": null,
+    "description": "One size (per Tier) larger than medium. Larger size makes attacks more powerful and increases number of concussion hits.",
+    "effects": [
+      {
+        "type": "size_mod",
+        "target": "size",
+        "per_tier": 1
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Increased Size"
+  },
+  {
+    "id": "decreased_size",
+    "name": "Decreased Size",
+    "category": "Racial",
+    "is_flaw": true,
+    "cost_per_tier": -30,
+    "max_tiers": 5,
+    "param": null,
+    "description": "One size (per Tier) smaller than medium. Smaller size weakens attacks and reduces concussion hits.",
+    "effects": [
+      {
+        "type": "size_mod",
+        "target": "size",
+        "per_tier": -1
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Decreased Size"
+  },
+  {
+    "id": "increased_stride",
+    "name": "Increased Stride",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 1,
+    "max_tiers": 10,
+    "param": null,
+    "description": "Base movement rate is increased by 2'/round for each Tier.",
+    "effects": [
+      {
+        "type": "stride_bonus",
+        "per_tier": 2
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Increased Stride"
+  },
+  {
+    "id": "decreased_stride",
+    "name": "Decreased Stride",
+    "category": "Racial",
+    "is_flaw": true,
+    "cost_per_tier": -1,
+    "max_tiers": 10,
+    "param": null,
+    "description": "Base movement rate is decreased by 2'/round for each Tier.",
+    "effects": [
+      {
+        "type": "stride_bonus",
+        "per_tier": -2
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Decreased Stride"
+  },
+  {
+    "id": "light_boned",
+    "name": "Light-boned",
+    "category": "Racial",
+    "is_flaw": true,
+    "cost_per_tier": -15,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Lightly built and relatively fragile for your size. Your concussion hits and any attacks made against you are adjusted as if you were one size smaller per Tier. Attacks you make against others are not adjusted.",
+    "effects": [
+      {
+        "type": "size_mod",
+        "target": "hits",
+        "per_tier": -1
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Light-boned"
+  },
+  {
+    "id": "light_sensitivity",
+    "name": "Light Sensitivity",
+    "category": "Racial",
+    "is_flaw": true,
+    "cost_per_tier": -10,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Cannot take direct sunlight. Penalty of -25/Tier when in bright light equal to direct sunlight. Penalty reduced by 25 for cloudy day, 50 for partially shaded/very cloudy, 75 in full shadows.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Light Sensitivity"
+  },
+  {
+    "id": "magical_resistance",
+    "name": "Magical Resistance",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 3,
+    "max_tiers": 5,
+    "param": "realm",
+    "description": "Innate resistance to one of the realms of magic. Receive +5/Tier to all Resistance Rolls versus that realm.",
+    "effects": [
+      {
+        "type": "rr_bonus",
+        "realm": "param",
+        "per_tier": 5
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Magical Resistance"
+  },
+  {
+    "id": "magical_vulnerability",
+    "name": "Magical Vulnerability",
+    "category": "Racial",
+    "is_flaw": true,
+    "cost_per_tier": -3,
+    "max_tiers": 5,
+    "param": "realm",
+    "description": "Innate vulnerability to one of the realms of magic. Receive -5/Tier to all Resistance Rolls versus that realm.",
+    "effects": [
+      {
+        "type": "rr_bonus",
+        "realm": "param",
+        "per_tier": -5
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Magical Vulnerability"
+  },
+  {
+    "id": "natural_armor",
+    "name": "Natural Armor",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 5,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Skin/hide/carapace gives +1 AT/Tier natural armor. Incurs no encumbrance or maneuver penalties. Does not interfere with magic. If combined with worn armor, use the higher AT; if worn armor is heavier, add number of tiers as DB.",
+    "effects": [
+      {
+        "type": "at_bonus",
+        "per_tier": 1
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Natural Armor"
+  },
+  {
+    "id": "natural_weaponry",
+    "name": "Natural Weaponry",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 5,
+    "max_tiers": 1,
+    "param": null,
+    "description": "Some type of natural weaponry (e.g., Bite, Claw, Sting, Horn, etc.) and may develop skill with it. Allows creatures to get an attack at -1 size for free.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Natural Weaponry"
+  },
+  {
+    "id": "nightvision",
+    "name": "Nightvision",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 10,
+    "max_tiers": 1,
+    "param": null,
+    "description": "Can see in dim light as well as a human can see in daylight. All darkness penalties (other than complete pitch dark) are reduced by 40. More susceptible to sudden bright lights while using Nightvision.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Nightvision"
+  },
+  {
+    "id": "physical_resistance",
+    "name": "Physical Resistance",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 3,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Innate resistance to physical ailments (e.g., poison, disease). Receive +5/Tier to all Physical Resistance Rolls.",
+    "effects": [
+      {
+        "type": "rr_bonus",
+        "realm": "physical",
+        "per_tier": 5
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Physical Resistance"
+  },
+  {
+    "id": "physical_vulnerability",
+    "name": "Physical Vulnerability",
+    "category": "Racial",
+    "is_flaw": true,
+    "cost_per_tier": -3,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Innate vulnerability to physical ailments (e.g., poison, disease). Receive -5/Tier to all Physical Resistance Rolls.",
+    "effects": [
+      {
+        "type": "rr_bonus",
+        "realm": "physical",
+        "per_tier": -5
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Physical Vulnerability"
+  },
+  {
+    "id": "poison_injection",
+    "name": "Poison Injection",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 20,
+    "max_tiers": 1,
+    "param": null,
+    "description": "One of your natural attacks (typically a bite or stinger) injects poison. If the attack scores a critical (any severity), the target must make a Physical RR against your level or suffer the effect of the poison (typically Circulatory poison).",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Poison Injection"
+  },
+  {
+    "id": "recurved_musculature",
+    "name": "Recurved Musculature",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 30,
+    "max_tiers": 1,
+    "param": null,
+    "description": "Muscles have tremendous capacity and store potential energy like springs. Base jump distance is tripled. Receive +20 bonus to Acrobatics, Climbing, Jumping, and Running maneuvers (other than Dodging).",
+    "effects": [
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Acrobatics",
+        "flat": 20
+      },
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Climbing",
+        "flat": 20
+      },
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Jumping",
+        "flat": 20
+      },
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Running",
+        "flat": 20
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Recurved Musculature"
+  },
+  {
+    "id": "sight_eagle",
+    "name": "Sight, Eagle",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 15,
+    "max_tiers": 1,
+    "param": null,
+    "description": "Keen eyesight permits good peripheral vision and the ability to focus on distant objects such as a hare two miles away. Gain +20 bonus to all vision-based Perception maneuvers.",
+    "effects": [
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Perception",
+        "flat": 20
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Sight, Eagle"
+  },
+  {
+    "id": "sight_gecko",
+    "name": "Sight, Gecko",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 10,
+    "max_tiers": 1,
+    "param": null,
+    "description": "Eyes perform like those of a gecko, permitting additional detail close-up and good depth vision. Do not lose color vision in dark conditions. Gain +10 bonus to all vision-based Perception maneuvers.",
+    "effects": [
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Perception",
+        "flat": 10
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Sight, Gecko"
+  },
+  {
+    "id": "sight_hawk",
+    "name": "Sight, Hawk",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 20,
+    "max_tiers": 1,
+    "param": null,
+    "description": "Exceptional vision, permitting you to see objects up to 5 miles away with great sharpness and the ability to spot tiny movements. Gain +30 bonus to all vision-based Perception maneuvers.",
+    "effects": [
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Perception",
+        "flat": 30
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Sight, Hawk"
+  },
+  {
+    "id": "strike_reflex",
+    "name": "Strike Reflex",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 5,
+    "max_tiers": 1,
+    "param": null,
+    "description": "Powerful strike reflex allows you to act with tremendous speed (+20 initiative modifier) when the reflex is triggered by any sudden movement towards or away from you by a target within range. This instinctive response is impossible to quell; you must take immediate offensive action.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Strike Reflex"
+  },
+  {
+    "id": "superior_stat",
+    "name": "Superior Stat",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 4,
+    "max_tiers": 5,
+    "param": "stat",
+    "description": "An average being of your race is superior in one of the 10 statistics over the average human. Get +1/Tier to the stats bonus. This talent can only be taken as a racial talent.",
+    "effects": [
+      {
+        "type": "stat_bonus",
+        "stat": "param",
+        "per_tier": 1
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Superior Stat"
+  },
+  {
+    "id": "inferior_stat",
+    "name": "Inferior Stat",
+    "category": "Racial",
+    "is_flaw": true,
+    "cost_per_tier": -4,
+    "max_tiers": 5,
+    "param": "stat",
+    "description": "An average being of your race is inferior in one of the 10 statistics. Get -1/Tier to the stats bonus. This talent can only be taken as a racial talent.",
+    "effects": [
+      {
+        "type": "stat_bonus",
+        "stat": "param",
+        "per_tier": -1
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Inferior Stat"
+  },
+  {
+    "id": "tetrachromatic_vision",
+    "name": "Tetrachromatic Vision",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 15,
+    "max_tiers": 1,
+    "param": null,
+    "description": "Vision encompasses normal color vision as well as sensitivity to ultraviolet light. Sense of colors differs from other races. Penalties for spotting invisible (including Unseen spell) and camouflaged people/objects are reduced by 30.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Tetrachromatic Vision"
+  },
+  {
+    "id": "third_eyelid",
+    "name": "Third Eyelid",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 5,
+    "max_tiers": 1,
+    "param": null,
+    "description": "Eyes have a transparent additional eyelid (nictating membrane) which protects them while still permitting sight. Unaffected by dust, sand, or water which otherwise might limit use of your eyes.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Third Eyelid"
+  },
+  {
+    "id": "tough",
+    "name": "Tough",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 3,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Exceptionally tough with higher pain tolerance than others. Grants +5/Tier to base hits. Base hits are normally equal to 25.",
+    "effects": [
+      {
+        "type": "hits_bonus",
+        "per_tier": 5
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Tough"
+  },
+  {
+    "id": "fragile",
+    "name": "Fragile",
+    "category": "Racial",
+    "is_flaw": true,
+    "cost_per_tier": -3,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Exceptionally fragile with lower pain tolerance than others. Penalty of -5/Tier to base hits. Base hits are normally equal to 25.",
+    "effects": [
+      {
+        "type": "hits_bonus",
+        "per_tier": -5
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Fragile"
+  },
+  {
+    "id": "vigorous",
+    "name": "Vigorous",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 5,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Incredible stamina. Gain +10/Tier modifier to all Endurance rolls.",
+    "effects": [
+      {
+        "type": "endurance_bonus",
+        "per_tier": 10
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Vigorous"
+  },
+  {
+    "id": "feeble",
+    "name": "Feeble",
+    "category": "Racial",
+    "is_flaw": true,
+    "cost_per_tier": -5,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Lack of stamina. Suffer -10/Tier modifier to all Endurance rolls.",
+    "effects": [
+      {
+        "type": "endurance_bonus",
+        "per_tier": -10
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Feeble"
+  },
+  {
+    "id": "wings_vestigial",
+    "name": "Wings, Vestigial",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 5,
+    "max_tiers": 1,
+    "param": null,
+    "description": "Small wings which are not adequate for flight, but provide a +10 bonus to Jumping and when using Acrobatics to reduce the impact of a fall.",
+    "effects": [
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Jumping",
+        "flat": 10
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Wings, Vestigial"
+  },
+  {
+    "id": "acute_hearing",
+    "name": "Acute Hearing",
+    "category": "Senses",
+    "is_flaw": false,
+    "cost_per_tier": 4,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Heightened sense of hearing, providing +5/Tier to Perception rolls involving hearing.",
+    "effects": [
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Perception",
+        "per_tier": 5
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Acute Hearing"
+  },
+  {
+    "id": "poor_hearing",
+    "name": "Poor Hearing",
+    "category": "Senses",
+    "is_flaw": true,
+    "cost_per_tier": -3,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Deficient sense of hearing, providing -5/Tier to Perception rolls involving hearing.",
+    "effects": [
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Perception",
+        "per_tier": -5
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Poor Hearing"
+  },
+  {
+    "id": "acute_smell",
+    "name": "Acute Smell",
+    "category": "Senses",
+    "is_flaw": false,
+    "cost_per_tier": 3,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Heightened sense of smell, providing +5/Tier to Perception rolls involving smell.",
+    "effects": [
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Perception",
+        "per_tier": 5
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Acute Smell"
+  },
+  {
+    "id": "poor_smell",
+    "name": "Poor Smell",
+    "category": "Senses",
+    "is_flaw": true,
+    "cost_per_tier": -2,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Deficient sense of smell, providing -5/Tier to Perception rolls involving smell.",
+    "effects": [
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Perception",
+        "per_tier": -5
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Poor Smell"
+  },
+  {
+    "id": "acute_taste",
+    "name": "Acute Taste",
+    "category": "Senses",
+    "is_flaw": false,
+    "cost_per_tier": 2,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Superb sense of taste, providing +5/Tier to Perception rolls involving taste.",
+    "effects": [
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Perception",
+        "per_tier": 5
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Acute Taste"
+  },
+  {
+    "id": "poor_taste",
+    "name": "Poor Taste",
+    "category": "Senses",
+    "is_flaw": true,
+    "cost_per_tier": -1,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Deficient sense of taste, providing -5/Tier to Perception rolls involving taste.",
+    "effects": [
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Perception",
+        "per_tier": -5
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Poor Taste"
+  },
+  {
+    "id": "acute_touch",
+    "name": "Acute Touch",
+    "category": "Senses",
+    "is_flaw": false,
+    "cost_per_tier": 1,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Unusually sensitive tactile senses, providing +5/Tier to Perception rolls involving touch.",
+    "effects": [
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Perception",
+        "per_tier": 5
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Acute Touch"
+  },
+  {
+    "id": "poor_touch",
+    "name": "Poor Touch",
+    "category": "Senses",
+    "is_flaw": true,
+    "cost_per_tier": -1,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Deficient tactile senses, providing -5/Tier to Perception rolls involving touch.",
+    "effects": [
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Perception",
+        "per_tier": -5
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Poor Touch"
+  },
+  {
+    "id": "acute_vision",
+    "name": "Acute Vision",
+    "category": "Senses",
+    "is_flaw": false,
+    "cost_per_tier": 5,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Heightened sight, providing +5/Tier to Perception rolls involving vision.",
+    "effects": [
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Perception",
+        "per_tier": 5
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Acute Vision"
+  },
+  {
+    "id": "poor_vision",
+    "name": "Poor Vision",
+    "category": "Senses",
+    "is_flaw": true,
+    "cost_per_tier": -4,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Deficient sight, providing -5/Tier to Perception rolls involving vision.",
+    "effects": [
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Perception",
+        "per_tier": -5
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Poor Vision"
+  },
+  {
+    "id": "animal_empathy",
+    "name": "Animal Empathy",
+    "category": "Senses",
+    "is_flaw": false,
+    "cost_per_tier": 5,
+    "cost_tier1": 15,
+    "max_tiers": 5,
+    "param": "animal_type",
+    "description": "Affinity with a particular kind of animal. Any maneuvers involving one type of animal are at +25. If you associate with an animal of that type for one month, you can communicate empathically to a range of 100'. For each Tier beyond I, the range is increased by 25'. (Tier I costs 15 DP, then +5 DP per additional Tier.)",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Animal Empathy"
+  },
+  {
+    "id": "destiny_sense",
+    "name": "Destiny Sense",
+    "category": "Senses",
+    "is_flaw": false,
+    "cost_per_tier": 10,
+    "max_tiers": 2,
+    "param": null,
+    "description": "Instinctively know the direction (Tier I) or direction and distance (Tier II) that will take you to a specific goal. This can be used once per day.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Destiny Sense"
+  },
+  {
+    "id": "direction_sense",
+    "name": "Direction Sense",
+    "category": "Senses",
+    "is_flaw": false,
+    "cost_per_tier": 10,
+    "max_tiers": 1,
+    "param": null,
+    "description": "By detecting the planet's magnetic field or other means, always able to discern which direction is north. This grants a +30 bonus to Navigation.",
+    "effects": [
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Navigation",
+        "flat": 30
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Direction Sense"
+  },
+  {
+    "id": "empathy",
+    "name": "Empathy",
+    "category": "Senses",
+    "is_flaw": false,
+    "cost_per_tier": 20,
+    "max_tiers": 1,
+    "param": null,
+    "description": "Can read emotions of those within 25'. If a target is trying to hide his emotions, he gets a Resistance Roll vs. your level; Success means you cannot 'read' that target for 24 hours. This ability grants a +50 bonus to Social Awareness when appropriate.",
+    "effects": [
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Social Awareness",
+        "flat": 50
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Empathy"
+  },
+  {
+    "id": "extra_sense",
+    "name": "Extra Sense",
+    "category": "Senses",
+    "is_flaw": false,
+    "cost_per_tier": 5,
+    "max_tiers": 5,
+    "param": "sense_description",
+    "description": "Can sense something that normally cannot be sensed. Tier I: inside body. Tier II: in contact with body. Tier III: general direction/intensity, attack unseen targets at -50. Tier IV: direction, intensity, and distance, attack unseen at -25. Tier V: specific detail, attack unseen targets normally.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Extra Sense"
+  },
+  {
+    "id": "missing_sense",
+    "name": "Missing Sense",
+    "category": "Senses",
+    "is_flaw": true,
+    "cost_per_tier": -15,
+    "max_tiers": 1,
+    "param": "sense",
+    "param_costs": {
+      "Taste": -5,
+      "Touch": -10,
+      "Smell": -10,
+      "Hearing": -15,
+      "Sight": -20
+    },
+    "description": "Completely missing a sense. Costs vary: Taste (-5 DP), Touch (-10 DP), Smell (-10 DP), Hearing (-15 DP), Sight (-20 DP). Suffer -100 penalty on actions requiring the sense, and -20 to -50 on actions that would benefit from it.",
+    "effects": []
+  },
+  {
+    "id": "one_eye",
+    "name": "One Eye",
+    "category": "Senses",
+    "is_flaw": true,
+    "cost_per_tier": -10,
+    "max_tiers": 1,
+    "param": null,
+    "description": "Have sight only in one eye. Lack distance perception and peripheral vision on the affected side. All ranged attacks suffer a -25 penalty.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "One Eye"
+  },
+  {
+    "id": "visions",
+    "name": "Visions",
+    "category": "Senses",
+    "is_flaw": false,
+    "cost_per_tier": 10,
+    "cost_tier1": 30,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Able to receive spontaneous visions of persons/places/objects based upon objects touched with bare skin. The details are at the GM's discretion. Can be used once per day for every Tier. (Tier I costs 30 DP, then +10 DP per additional Tier.)",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Visions"
+  },
+  {
+    "id": "distinct_odor",
+    "name": "Distinct Odor",
+    "category": "Other",
+    "is_flaw": true,
+    "cost_per_tier": -10,
+    "max_tiers": 1,
+    "param": null,
+    "description": "Have a distinct odor that transfers to objects touched with bare skin. Grants others a +50 bonus to Perception and Tracking efforts based on smell to detect or track you.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Distinct Odor"
+  },
+  {
+    "id": "disturbing_voice",
+    "name": "Disturbing Voice",
+    "category": "Other",
+    "is_flaw": true,
+    "cost_per_tier": -10,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Grating or annoying tone of voice. Penalty of -20/Tier to any maneuver to verbally calm or persuade (Influence, Singing, Leadership, etc.).",
+    "effects": [
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Leadership",
+        "per_tier": -20
+      },
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Music: Singing",
+        "per_tier": -20
+      },
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Influence: Persuasion",
+        "per_tier": -20
+      },
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Influence: Intimidation",
+        "per_tier": -20
+      },
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Influence: Duping",
+        "per_tier": -20
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Disturbing Voice"
+  },
+  {
+    "id": "golden_throat",
+    "name": "Golden Throat",
+    "category": "Other",
+    "is_flaw": false,
+    "cost_per_tier": 5,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Soothing and calming voice. Gives +10/Tier to any maneuver to verbally calm or persuade (Charm, Singing, Leadership, etc.).",
+    "effects": [
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Leadership",
+        "per_tier": 10
+      },
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Music: Singing",
+        "per_tier": 10
+      },
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Influence: Persuasion",
+        "per_tier": 10
+      },
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Influence: Intimidation",
+        "per_tier": 10
+      },
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Influence: Duping",
+        "per_tier": 10
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Golden Throat"
+  },
+  {
+    "id": "iron_will",
+    "name": "Iron Will",
+    "category": "Other",
+    "is_flaw": false,
+    "cost_per_tier": 4,
+    "max_tiers": 5,
+    "param": null,
+    "description": "Formidable willpower. Get a bonus of +5/Tier to Resistance Rolls versus mental spells (attack, informational, or otherwise).",
+    "effects": [
+      {
+        "type": "rr_bonus",
+        "realm": "mentalism",
+        "per_tier": 5
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Iron Will"
+  },
+  {
+    "id": "look_of_eagles",
+    "name": "Look of Eagles",
+    "category": "Other",
+    "is_flaw": false,
+    "cost_per_tier": 10,
+    "max_tiers": 5,
+    "param": null,
+    "description": "With the gift of inspiration, get +10/Tier to all Leadership maneuvers and followers get +2/Tier to fear RRs.",
+    "effects": [
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Leadership",
+        "per_tier": 10
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Look of Eagles"
+  },
+  {
+    "id": "math_illiterate",
+    "name": "Math Illiterate",
+    "category": "Other",
+    "is_flaw": true,
+    "cost_per_tier": -10,
+    "max_tiers": 1,
+    "param": null,
+    "description": "Never learned basic math. Cannot add or subtract without fingers, cannot multiply at all, and cannot count higher than 20.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Math Illiterate"
+  },
+  {
+    "id": "multilingual",
+    "name": "Multilingual",
+    "category": "Other",
+    "is_flaw": false,
+    "cost_per_tier": 8,
+    "max_tiers": 1,
+    "param": null,
+    "description": "Grew up in a multilingual culture or has always been able to learn languages quickly when immersed in them. Gain 10 ranks in one language or 5 ranks in each of two languages.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Multilingual"
+  },
+  {
+    "id": "mute",
+    "name": "Mute",
+    "category": "Other",
+    "is_flaw": true,
+    "cost_per_tier": -10,
+    "max_tiers": 1,
+    "param": null,
+    "description": "Cannot speak, although can understand speech and may communicate via other means such as sign language or gesture if you have the ability to do so.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Mute"
+  },
+  {
+    "id": "neutral_odor",
+    "name": "Neutral Odor",
+    "category": "Other",
+    "is_flaw": false,
+    "cost_per_tier": 10,
+    "max_tiers": 1,
+    "param": null,
+    "description": "Naturally have a very weak odor. Makes all attempts to perceive your presence based upon smell operate at -50. Penalty may be reduced if carrying objects or equipment that carry strong odors.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Neutral Odor"
+  },
+  {
+    "id": "non_violent",
+    "name": "Non-violent",
+    "category": "Other",
+    "is_flaw": true,
+    "cost_per_tier": -5,
+    "max_tiers": 2,
+    "param": null,
+    "description": "Do not want to hurt others, and flinch with remorse when doing so. After inflicting a critical, any action you take in the following round suffers a penalty of -20/Tier.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Non-violent"
+  },
+  {
+    "id": "perfect_pitch",
+    "name": "Perfect Pitch",
+    "category": "Other",
+    "is_flaw": false,
+    "cost_per_tier": 7,
+    "max_tiers": 5,
+    "param": "skill",
+    "description": "Perfect pitch and able to reproduce any pitch with voice or appropriate instrument. Gain +10/Tier to a Performance Art: Singing or Play Instrument skill. Cannot be combined with Golden Throat to get a higher bonus to Singing; use the talent with the highest bonus.",
+    "effects": [
+      {
+        "type": "skill_talent_bonus",
+        "skill": "param",
+        "per_tier": 10
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Perfect Pitch"
+  },
+  {
+    "id": "prodigy",
+    "name": "Prodigy",
+    "category": "Other",
+    "is_flaw": false,
+    "cost_per_tier": 6,
+    "max_tiers": 10,
+    "param": "skill",
+    "description": "Unusual innate ability giving a bonus of +5/Tier to a single skill (all specializations).",
+    "effects": [
+      {
+        "type": "skill_talent_bonus",
+        "skill": "param",
+        "per_tier": 5
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Prodigy"
+  },
+  {
+    "id": "inept",
+    "name": "Inept",
+    "category": "Other",
+    "is_flaw": true,
+    "cost_per_tier": -4,
+    "max_tiers": 10,
+    "param": "skill",
+    "description": "Inexplicably jinxed in a single skill, suffering -5/Tier to all maneuvers in that skill (all specializations).",
+    "effects": [
+      {
+        "type": "skill_talent_bonus",
+        "skill": "param",
+        "per_tier": -5
+      }
+    ],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Inept"
+  },
+  {
+    "id": "restricted_diet",
+    "name": "Restricted Diet",
+    "category": "Other",
+    "is_flaw": true,
+    "cost_per_tier": -5,
+    "max_tiers": 1,
+    "param": null,
+    "description": "Diet limited to certain foods which are normally available but may not be in all circumstances. Other foods either provide no sustenance or will cause operation at significant penalties (at least -20) for the next 24 hours.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Restricted Diet"
+  },
+  {
+    "id": "revulsion",
+    "name": "Revulsion",
+    "category": "Other",
+    "is_flaw": true,
+    "cost_per_tier": -15,
+    "max_tiers": 1,
+    "param": null,
+    "description": "Cannot stand the sight of blood. Each round a bleeding character (or bloody corpse) is in view, must make a Fear/Terror RR equal to the amount of bleeding visible. Treat bloody corpses as 10/round bleeding for this calculation.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Revulsion"
+  },
+  {
+    "id": "solar_recovery",
+    "name": "Solar Recovery",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 0,
+    "max_tiers": 1,
+    "param": null,
+    "description": "<p data-i18n='SW_RC.TALENT.SOLAR_RECOVERY.DESCRIPTION'>Ky-taari are invigorated by sunlight, but less energetic without it. When a Kytaari is in sunlight, they recover from fatigue penalties at double the normal rate (reducing penalties by 2 for every minute of rest). However, when there is no sunlight at all (e.g., underground or at night), they recover from fatigue at half the normal rate (reducing penalties by 1 for every 2 minutes of rest).</p>",
+    "effects": [],
+    "book": "Shadow World Conversion Guide",
+    "rmu_canonical_name": "Solar Recovery",
+    "source": "rmu-system"
+  },
+  {
+    "id": "traction_synshari",
+    "name": "Traction (Synshari)",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 4,
+    "max_tiers": 1,
+    "param": null,
+    "description": "<p data-i18n='SW_RC.TALENT.TRACTION_SYNSHARI.DESCRIPTION'>Synshari move as easily on sand or similar loose material as they do on solid ground. However, they do not have any advantage on snow, ice, or mud, or on wet or oily surfaces.</p>",
+    "effects": [],
+    "book": "Shadow World Conversion Guide",
+    "rmu_canonical_name": "Traction (Synshari)",
+    "source": "rmu-system"
+  },
+  {
+    "id": "phobia",
+    "name": "Phobia",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": -5,
+    "max_tiers": 5,
+    "param": null,
+    "description": "<p data-i18n='SW_RC.TALENT.PHOBIA.DESCRIPTION'>You have an irrational and uncontrollable fear of something. Whenever you encounter it, you must make a RR vs fear, taking the effects as shown in Core Law on Table 14-3a. If surrender is not appropriate for the subject of your fear (e.g., you are afraid of heights, or it is a creature in the far-off distance), any surrender result indicates paralysis for one round per 10 failure. If you are seeing the source of your fear at a safe distance, treat it as a 3rd level fear attack. If you must interact with it directly, treat it as 10th level. If you will be surrounded by it, treat it as 20th level. If you will be in combat against it, add its level to these values. At Tier I, the subject of your fear is something uncommon, such as the number 13, mechanical devices in a medieval setting, or dragons. At Tier II, you fear something moderately common, such as heights, enclosed spaces, crowds, or orcs. At Tier III, it will be encountered very commonly, such as water, blood, or bladed objects.</p>",
+    "effects": [],
+    "book": "SW_RC.SOURCE.CC",
+    "rmu_canonical_name": "Phobia",
+    "source": "rmu-system"
+  },
+  {
+    "id": "missing_sense_feel_touch",
+    "name": "Missing Sense (Feel/Touch)",
+    "category": "Senses",
+    "is_flaw": false,
+    "cost_per_tier": -10,
+    "max_tiers": 1,
+    "param": null,
+    "description": "You are completely missing a sense. You suffer a -100 penalty on\nactions requiring the sense (if it is possible at all) and from -20 to -50 on\nactions which would benefit from the sense.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Missing Sense (Feel/Touch)",
+    "source": "rmu-system"
+  },
+  {
+    "id": "prehensile_appendage",
+    "name": "Prehensile Appendage",
+    "category": "Physical",
+    "is_flaw": false,
+    "cost_per_tier": 10,
+    "max_tiers": 1,
+    "param": null,
+    "description": "The creature has a tail, trunk, or other appendage which is dexterous enough to hold and grasp objects.",
+    "effects": [],
+    "book": "Shadow World Conversion Guide",
+    "rmu_canonical_name": "Prehensile Appendage",
+    "source": "rmu-system"
+  },
+  {
+    "id": "lesser_nightvision",
+    "name": "Lesser Nightvision",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 6,
+    "max_tiers": 1,
+    "param": null,
+    "description": "<p data-i18n='SW_RC.TALENT.LESSER_NIGHTVISION.DESCRIPTION'>Although you don’t have the full Nightvision ability that some races are blessed with, your eyes adapt quickly to darkness and you can get around reasonably well at night. All penalties for darkness (other than pitch dark conditions) are reduced by 20. This reduction is not cumulative with any spell, effect, or ability which grants Nightvision.</p>",
+    "effects": [],
+    "book": "Shadow World Conversion Guide",
+    "rmu_canonical_name": "Lesser Nightvision",
+    "source": "rmu-system"
+  },
+  {
+    "id": "cold_resistant",
+    "name": "Cold Resistant",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 6,
+    "max_tiers": 2,
+    "param": null,
+    "description": "<p data-i18n='SW_RC.TALENT.COLD_RESISTANT.DESCRIPTION'>You are highly tolerant of cold conditions. You suffer no effects of cold temperatures down to 30°F (-1°C), and Endurance penalties apply only for every 5°F below that limit. For other effects of natural cold, you suffer effects as if the temperature was 30°F higher. This talent does not protect you against cold-based attacks and spells. At Tier II, you suffer no effects down to 10°F (-12°C) and otherwise treat effects as if the temperature was 50°F higher. The second Tier is normally appropriate only as a racial talent.</p>",
+    "effects": [],
+    "book": "Shadow World Conversion Guide",
+    "rmu_canonical_name": "Cold Resistant",
+    "source": "rmu-system"
+  },
+  {
+    "id": "hibernation_nomari",
+    "name": "Hibernation (Nomari)",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 3,
+    "max_tiers": 1,
+    "param": null,
+    "description": "<p data-i18n='SW_RC.TALENT.HIBERNATION_NOMARI.DESCRIPTION'>The Nomari can put themselves into a state of deep hibernation, during which they require no food or water and only minimal air. It is difficult to rouse them from this condition and they will suffer activity penalties while they are gradually waking up, as well as being extremely hungry and thirsty.</p>",
+    "effects": [],
+    "book": "Shadow World Conversion Guide",
+    "rmu_canonical_name": "Hibernation (Nomari)",
+    "source": "rmu-system"
+  },
+  {
+    "id": "camouflage_pattern",
+    "name": "Camouflage, Pattern",
+    "category": "Physical",
+    "is_flaw": false,
+    "cost_per_tier": 10,
+    "max_tiers": 1,
+    "param": null,
+    "description": "The creature's hide is well suited to concealment in one particular type of terrain (e.g., forest, desert). While in this terrain, it gains a +25 bonus to Stalking.",
+    "effects": [],
+    "book": "Shadow World Conversion Guide",
+    "rmu_canonical_name": "Camouflage, Pattern",
+    "source": "rmu-system"
+  },
+  {
+    "id": "missing_sense_sight",
+    "name": "Missing Sense (Sight)",
+    "category": "Senses",
+    "is_flaw": false,
+    "cost_per_tier": -20,
+    "max_tiers": 1,
+    "param": null,
+    "description": "You are completely missing a sense. You suffer a -100 penalty on actions\nrequiring the sense (if it is possible at all) and from -20 to -50 on actions\nwhich would benefit from the sense (e.g. -50 might appropriate for many maneuvers\nfor blind characters).",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Missing Sense (Sight)",
+    "source": "rmu-system"
+  },
+  {
+    "id": "heat_resistant",
+    "name": "Heat Resistant",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 6,
+    "max_tiers": 2,
+    "param": null,
+    "description": "<p data-i18n='SW_RC.TALENT.HEAT_RESISTANT.DESCRIPTION'>You are highly tolerant of hot conditions. You suffer no effects of hot temperatures up to 110°F (43°C), and Endurance penalties apply only for every 5°F below that limit. You resist sunburn and you require only normal water rations even in hot conditions. This talent does not protect you against heat-based attacks and spells. At Tier II, you suffer no effects up to 130°F (54°C). The second Tier is normally appropriate only as a racial talent.</p>",
+    "effects": [],
+    "book": "Shadow World Conversion Guide",
+    "rmu_canonical_name": "Heat Resistant",
+    "source": "rmu-system"
+  },
+  {
+    "id": "climbing_claw",
+    "name": "Climbing, Claw",
+    "category": "Movement",
+    "is_flaw": false,
+    "cost_per_tier": 7,
+    "max_tiers": 1,
+    "param": null,
+    "description": "The creature's claws can be used to climb on soft or rough surfaces. It cannot hold on for long, but climbing short stints is easy. Climbing claws are ideal for climbing trees, slippery and oily surfaces, and any fairly soft material. On such surfaces, the creature has a BMR of 16'/round at up to a Jog (2x) pace. On natural rock surfaces, a climbing roll is needed at +10.",
+    "effects": [],
+    "book": "Shadow World Conversion Guide",
+    "rmu_canonical_name": "Climbing, Claw",
+    "source": "rmu-system"
+  },
+  {
+    "id": "missing_sense_smell",
+    "name": "Missing Sense (Smell)",
+    "category": "Senses",
+    "is_flaw": false,
+    "cost_per_tier": -10,
+    "max_tiers": 1,
+    "param": null,
+    "description": "You are completely missing a sense. You suffer a -100 penalty on actions\nrequiring the sense (if it is possible at all) and from -20 to -50 on actions\nwhich would benefit from the sense (e.g. -20 might be appropriate for a deaf\ncharacter on a Perception check to avoid being ambushed, while -50 is\nappropriate for many maneuvers for blind characters).",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Missing Sense (Smell)",
+    "source": "rmu-system"
+  },
+  {
+    "id": "missing_sense_hearing",
+    "name": "Missing Sense (Hearing)",
+    "category": "Senses",
+    "is_flaw": false,
+    "cost_per_tier": -15,
+    "max_tiers": 1,
+    "param": null,
+    "description": "You are completely missing a sense. You suffer a -100 penalty on\nactions requiring the sense (if it is possible at all) and from -20 to -50 on\nactions which would benefit from the sense (e.g. -20 might be appropriate for\na deaf character on a Perception check to avoid being ambushed). \nDeaf characters (and others) may develop lip-reading for a given language\nas a Language specialization.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Missing Sense (Hearing)",
+    "source": "rmu-system"
+  },
+  {
+    "id": "amphibious",
+    "name": "Amphibious",
+    "category": "Physical",
+    "is_flaw": false,
+    "cost_per_tier": -10,
+    "max_tiers": 1,
+    "param": null,
+    "description": "Although capable of surviving out of water, the creature requires immersion in water at regular intervals. It may stay dry for up to one day before returning to the water. After this time, it suffers a penalty of -1 per hour it has spent out of the water. This penalty may only be removed by immersion in water.",
+    "effects": [],
+    "book": "Shadow World Conversion Guide",
+    "rmu_canonical_name": "Amphibious",
+    "source": "rmu-system"
+  },
+  {
+    "id": "trogli_joints",
+    "name": "Trogli Joints",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 20,
+    "max_tiers": 1,
+    "param": null,
+    "description": "<p data-i18n='SW_RC.TALENT.TROGLI_JOINTS.DESCRIPTION'> Trogli gain a bonus of +10 on contortions, balance, throwing, and fine manual work such as picking locks. </p>",
+    "effects": [],
+    "book": "Shadow World Conversion Guide",
+    "rmu_canonical_name": "Trogli Joints",
+    "source": "rmu-system"
+  },
+  {
+    "id": "heat_intolerant",
+    "name": "Heat Intolerant",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": -3,
+    "max_tiers": 1,
+    "param": null,
+    "description": "<p data-i18n='SW_RC.TALENT.HEAT_INTOLERANT.DESCRIPTION'>Although Lydians handle cold easily, they are uncomfortable in warmer conditions. They cannot acclimate to temperatures above 80°F (27.5°C) and suffer -5 Endurance penalties for each 5°F above this temperature.</p>",
+    "effects": [],
+    "book": "Shadow World Conversion Guide",
+    "rmu_canonical_name": "Heat Intolerant",
+    "source": "rmu-system"
+  },
+  {
+    "id": "walking_quadrupedal",
+    "name": "Walking, Quadrupedal",
+    "category": "Movement",
+    "is_flaw": false,
+    "cost_per_tier": 5,
+    "max_tiers": 1,
+    "param": null,
+    "description": "<p> As quadrupeds, Centaurs have a base movement rate (BMR) of 30’/round, with a maximum pace of Dash, and gain a +10 bonus to their Running skill. </p> <p> (Note that Centaurs also have a +5 stride bonus, so their actual BMR before modification for their Quickness bonus is 35’/round.) </p>",
+    "effects": [],
+    "book": "Shadow World Conversion Guide",
+    "rmu_canonical_name": "Walking, Quadrupedal",
+    "source": "rmu-system"
+  },
+  {
+    "id": "albino",
+    "name": "Albino",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": -5,
+    "max_tiers": 1,
+    "param": null,
+    "description": "<p data-i18n='SW_RC.TALENT.COLD_RESISTANT.DESCRIPTION'>You are highly tolerant of cold conditions. You suffer no effects of cold temperatures down to 30°F (-1°C), and Endurance penalties apply only for every 5°F below that limit. For other effects of natural cold, you suffer effects as if the temperature was 30°F higher. This talent does not protect you against cold-based attacks and spells. At Tier II, you suffer no effects down to 10°F (-12°C) and otherwise treat effects as if the temperature was 50°F higher. The second Tier is normally appropriate only as a racial talent.</p>",
+    "effects": [],
+    "book": "Shadow World Conversion Guide",
+    "rmu_canonical_name": "Albino",
+    "source": "rmu-system"
+  },
+  {
+    "id": "quickdraw_rmu",
+    "name": "Quickdraw",
+    "category": "Combat",
+    "is_flaw": false,
+    "cost_per_tier": 7,
+    "max_tiers": 1,
+    "param": null,
+    "description": "You have mastered drawing a weapon quickly. Drawing a specified Melee Combat\nTraining specialization is treated as instantaneous (0 AP) rather than 1 AP.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Quickdraw",
+    "source": "rmu-system"
+  },
+  {
+    "id": "disturbing_form",
+    "name": "Disturbing Form",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": -10,
+    "max_tiers": 5,
+    "param": null,
+    "description": "<p data-i18n='SW_RC.TALENT.DISTURBING_FORM.DESCRIPTION'>Other races find your appearance to be extremely disturbing. This gives a penalty of -20 to any maneuver to calm or persuade, if you are visible.</p>",
+    "effects": [],
+    "book": "Shadow World Conversion Guide",
+    "rmu_canonical_name": "Disturbing Form",
+    "source": "rmu-system"
+  },
+  {
+    "id": "air_and_water_breathing",
+    "name": "Air and Water Breathing",
+    "category": "Physical",
+    "is_flaw": false,
+    "cost_per_tier": 20,
+    "max_tiers": 1,
+    "param": null,
+    "description": "The creature can breathe water as easily as air, allowing it to survive easily both in and out of water. (For creatures that breathe water but not air, use the Gills talent instead.)",
+    "effects": [],
+    "book": "Shadow World Conversion Guide",
+    "rmu_canonical_name": "Air and Water Breathing",
+    "source": "rmu-system"
+  },
+  {
+    "id": "camouflage_kuluku",
+    "name": "Camouflage (Kuluku)",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 20,
+    "max_tiers": 1,
+    "param": null,
+    "description": "<p data-i18n='SW_RC.TALENT.KULUKU_CAMOUFLAGE.DESCRIPTION'> By concentrating, Kuluku can change their coloration to better match their environment, gaining a +50 bonus to Stalking. When they stop concentrating, the effect will continue for one round per level. </p>",
+    "effects": [],
+    "book": "Shadow World Conversion Guide",
+    "rmu_canonical_name": "Camouflage (Kuluku)",
+    "source": "rmu-system"
+  },
+  {
+    "id": "photosynthetic_skin",
+    "name": "Photosynthetic Skin",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 0,
+    "max_tiers": 1,
+    "param": null,
+    "description": "<p data-i18n='SW_RC.TALENT.PHOTOSYNTHETIC_SKIN.DESCRIPTION'>Although this unique trait is not sufficient to replace food, it does explain their considerable endurance (this is not considered a separate talent, aside from their Endurance bonus).</p>",
+    "effects": [],
+    "book": "Shadow World Conversion Guide",
+    "rmu_canonical_name": "Photosynthetic Skin",
+    "source": "rmu-system"
+  },
+  {
+    "id": "missing_sense_taste",
+    "name": "Missing Sense (Taste)",
+    "category": "Senses",
+    "is_flaw": false,
+    "cost_per_tier": -5,
+    "max_tiers": 1,
+    "param": null,
+    "description": "You are completely missing a sense. You suffer a -100 penalty on actions\nrequiring the sense (if it is possible at all) and from -20 to -50 on actions\nwhich would benefit from the sense.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Missing Sense (Taste)",
+    "source": "rmu-system"
+  },
+  {
+    "id": "innate_spell_list",
+    "name": "Innate Spell List",
+    "category": "Miscellaneous",
+    "is_flaw": false,
+    "cost_per_tier": 3,
+    "max_tiers": 100,
+    "param": null,
+    "description": "The creature is endowed with the knowledge or special abilities permitting it to use a single selected spell list to spells up to a level equal to the Tier. Spells are cast as described in Spell Law section 4.8, including a spell casting roll and chance of spell failure. Innate spell-lists are treated as Base lists for SCR.",
+    "effects": [],
+    "book": "Shadow World Conversion Guide",
+    "rmu_canonical_name": "Innate Spell List",
+    "source": "rmu-system"
+  },
+  {
+    "id": "cold_sensitive",
+    "name": "Cold Sensitive",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": -8,
+    "max_tiers": 5,
+    "param": null,
+    "description": "<p data-i18n='SW_RC.TALENT.COLD_SENSITIVE.DESCRIPTION'>You suffer a penalty of -1 /Tier per degree below 40°F on all actions.</p>",
+    "effects": [],
+    "book": "Shadow World Conversion Guide",
+    "rmu_canonical_name": "Cold Sensitive",
+    "source": "rmu-system"
+  },
+  {
+    "id": "quickload",
+    "name": "Quickload",
+    "category": "Combat",
+    "is_flaw": false,
+    "cost_per_tier": 7,
+    "max_tiers": 1,
+    "param": null,
+    "description": "You have mastered loading a missile weapon quickly. Loading for a specified ranged Combat\nTraining specialization is treated as instantaneous (0 AP) rather than 1 AP.",
+    "effects": [],
+    "book": "RMU Core Law",
+    "rmu_canonical_name": "Quickload",
+    "source": "rmu-system"
+  },
+  {
+    "id": "wings_flying",
+    "name": "Wings, Flying",
+    "category": "Movement",
+    "is_flaw": false,
+    "cost_per_tier": 10,
+    "max_tiers": 6,
+    "param": null,
+    "description": "The creature is capable of winged flight (See Table 4-1f). Paces above Run (at Tier III+) may only be achieved while diving (Sprint) or power diving (Dash). See RMCL section 3.17 for more details, including about gliding. <br> <table class=\"rmu-documentation-table\" border=\"1\" cellpadding=\"4\" cellspacing=\"0\">\n  <tr>\n    <th colspan=\"5\" style=\"text-align:center;\">Wings Flying Talent Details</th>\n  </tr>\n  <tr>\n    <th style=\"text-align:center;\">Tier</th>\n    <th style=\"text-align:center;\">DP</th>\n    <th style=\"text-align:center;\">BMR</th>\n    <th style=\"text-align:center;\">Maneuver</th>\n    <th style=\"text-align:center;\">Max. Pace</th>\n  </tr>\n  <tr>\n    <td style=\"text-align:center;\">I</td>\n    <td style=\"text-align:center;\">20</td>\n    <td style=\"text-align:center;\">30'/rnd</td>\n    <td style=\"text-align:center;\">-10</td>\n    <td style=\"text-align:center;\">Brisk (1.5x)</td>\n  </tr>\n  <tr>\n    <td style=\"text-align:center;\">II</td>\n    <td style=\"text-align:center;\">30</td>\n    <td style=\"text-align:center;\">60'/rnd</td>\n    <td style=\"text-align:center;\">+0</td>\n    <td style=\"text-align:center;\">Run (3x)</td>\n  </tr>\n  <tr>\n    <td style=\"text-align:center;\">III</td>\n    <td style=\"text-align:center;\">40</td>\n    <td style=\"text-align:center;\">90'/rnd</td>\n    <td style=\"text-align:center;\">+10</td>\n    <td style=\"text-align:center;\">Sprint (4x)</td>\n  </tr>\n  <tr>\n    <td style=\"text-align:center;\">IV</td>\n    <td style=\"text-align:center;\">50</td>\n    <td style=\"text-align:center;\">120'/rnd</td>\n    <td style=\"text-align:center;\">+20</td>\n    <td style=\"text-align:center;\">Dash (5x)</td>\n  </tr>\n  <tr>\n    <td style=\"text-align:center;\">V</td>\n    <td style=\"text-align:center;\">60</td>\n    <td style=\"text-align:center;\">150'/rnd</td>\n    <td style=\"text-align:center;\">+30</td>\n    <td style=\"text-align:center;\">Dash (5x)</td>\n  </tr>\n  <tr>\n    <td style=\"text-align:center;\">VI</td>\n    <td style=\"text-align:center;\">70</td>\n    <td style=\"text-align:center;\">180'/rnd</td>\n    <td style=\"text-align:center;\">+40</td>\n    <td style=\"text-align:center;\">Dash (5x)</td>\n  </tr>\n</table>",
+    "effects": [],
+    "book": "Shadow World Conversion Guide",
+    "rmu_canonical_name": "Wings, Flying",
+    "source": "rmu-system"
+  },
+  {
+    "id": "awkward_movement",
+    "name": "Awkward Movement",
+    "category": "Movement",
+    "is_flaw": false,
+    "cost_per_tier": -5,
+    "max_tiers": 5,
+    "param": null,
+    "description": "One of the creature's movement modes, such as walking, swimming, or flying, is slow and clumsy. Attacks that depend on movement, such as Trample or Ram, suffer twice the listed maneuver penalty. In addition, DB is halved. See 4-1: Awkward Movement Talent Details. <br> <table border=\"1\" cellpadding=\"4\" cellspacing=\"0\">\n  <tr>\n    <th colspan=\"5\" style=\"text-align:center;\">Awkward Movement Talent Details</th>\n  </tr>\n  <tr>\n    <th style=\"text-align:center;\">Tier</th>\n    <th style=\"text-align:center;\">DP</th>\n    <th style=\"text-align:center;\">Speed</th>\n    <th style=\"text-align:center;\">Maneuver</th>\n    <th style=\"text-align:center;\">Max. Pace</th>\n  </tr>\n  <tr>\n    <td style=\"text-align:center;\">I</td>\n    <td style=\"text-align:center;\">-5</td>\n    <td style=\"text-align:center;\">90%</td>\n    <td style=\"text-align:center;\">-5</td>\n    <td style=\"text-align:center;\">Dash (5x)</td>\n  </tr>\n  <tr>\n    <td style=\"text-align:center;\">II</td>\n    <td style=\"text-align:center;\">-10</td>\n    <td style=\"text-align:center;\">75%</td>\n    <td style=\"text-align:center;\">-10</td>\n    <td style=\"text-align:center;\">Sprint (4x)</td>\n  </tr>\n  <tr>\n    <td style=\"text-align:center;\">III</td>\n    <td style=\"text-align:center;\">-15</td>\n    <td style=\"text-align:center;\">50%</td>\n    <td style=\"text-align:center;\">-15</td>\n    <td style=\"text-align:center;\">Run (3x)</td>\n  </tr>\n  <tr>\n    <td style=\"text-align:center;\">IV</td>\n    <td style=\"text-align:center;\">-20</td>\n    <td style=\"text-align:center;\">25%</td>\n    <td style=\"text-align:center;\">-20</td>\n    <td style=\"text-align:center;\">Jog (2x)</td>\n  </tr>\n  <tr>\n    <td style=\"text-align:center;\">V</td>\n    <td style=\"text-align:center;\">-25</td>\n    <td style=\"text-align:center;\">10%</td>\n    <td style=\"text-align:center;\">-25</td>\n    <td style=\"text-align:center;\">Walk (1x)</td>\n  </tr>\n</table>",
+    "effects": [],
+    "book": "Shadow World Conversion Guide",
+    "rmu_canonical_name": "Awkward Movement",
+    "source": "rmu-system"
+  },
+  {
+    "id": "swimming",
+    "name": "Swimming",
+    "category": "Movement",
+    "is_flaw": false,
+    "cost_per_tier": 5,
+    "max_tiers": 5,
+    "param": null,
+    "description": "<p> The creature is to some extent adapted to movement in the water, ranging from a basic ability to float and paddle (Tier I) to webbed feet (Tier II) or a streamlined form (Tier IV) or even an unnatural ability to move without resistance through the water (Tier V). The creature's swimming BMR, maneuver penalty/bonus, and maximum pace are shown in the table. </p> <br> <table class=\"rmu-documentation-table\" border=\"1\" cellpadding=\"4\" cellspacing=\"0\">\n  <tr>\n    <th colspan=\"5\" style=\"text-align:center;\">Swimming Talent Details</th>\n  </tr>\n  <tr>\n    <th style=\"text-align:center;\">Tier</th>\n    <th style=\"text-align:center;\">DP</th>\n    <th style=\"text-align:center;\">BMR</th>\n    <th style=\"text-align:center;\">Maneuver</th>\n    <th style=\"text-align:center;\">Max. Pace</th>\n  </tr>\n  <tr>\n    <td style=\"text-align:center;\">I</td>\n    <td style=\"text-align:center;\">5</td>\n    <td style=\"text-align:center;\">10'/rnd</td>\n    <td style=\"text-align:center;\">+0</td>\n    <td style=\"text-align:center;\">Walk (1x)</td>\n  </tr>\n  <tr>\n    <td style=\"text-align:center;\">II</td>\n    <td style=\"text-align:center;\">10</td>\n    <td style=\"text-align:center;\">20'/rnd</td>\n    <td style=\"text-align:center;\">+5</td>\n    <td style=\"text-align:center;\">Jog (2x)</td>\n  </tr>\n  <tr>\n    <td style=\"text-align:center;\">III</td>\n    <td style=\"text-align:center;\">15</td>\n    <td style=\"text-align:center;\">30'/rnd</td>\n    <td style=\"text-align:center;\">+10</td>\n    <td style=\"text-align:center;\">Run (3x)</td>\n  </tr>\n  <tr>\n    <td style=\"text-align:center;\">IV</td>\n    <td style=\"text-align:center;\">20</td>\n    <td style=\"text-align:center;\">40'/rnd</td>\n    <td style=\"text-align:center;\">+15</td>\n    <td style=\"text-align:center;\">Sprint (4x)</td>\n  </tr>\n  <tr>\n    <td style=\"text-align:center;\">V</td>\n    <td style=\"text-align:center;\">25</td>\n    <td style=\"text-align:center;\">60'/rnd</td>\n    <td style=\"text-align:center;\">+20</td>\n    <td style=\"text-align:center;\">Dash (5x)</td>\n  </tr>\n</table>",
+    "effects": [],
+    "book": "Shadow World Conversion Guide",
+    "rmu_canonical_name": "Swimming",
+    "source": "rmu-system"
+  },
+  {
+    "id": "shapechange_legs",
+    "name": "Shapechange, Legs",
+    "category": "Racial",
+    "is_flaw": false,
+    "cost_per_tier": 8,
+    "max_tiers": 1,
+    "param": null,
+    "description": "<p data-i18n='SW_RC.TALENT.SHAPECHANGE_LEGS.DESCRIPTION'>A Merman capable of transforming their tail into legs does not suffer these penalties while they have legs; this may be purchased as an 8 DP talent, requiring 1 minute to transform and lasting for 4 hours plus 1 hour per level.</p>",
+    "effects": [],
+    "book": "Shadow World Conversion Guide",
+    "rmu_canonical_name": "Shapechange, Legs",
+    "source": "rmu-system"
+  }
 ]
