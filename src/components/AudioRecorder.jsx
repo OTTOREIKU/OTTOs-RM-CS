@@ -1272,11 +1272,32 @@ function SessionRow({ session, onChange, folderReady }) {
                 Bookmarks
               </div>
               {(session.markers || []).map((m, i) => (
-                <div key={i} style={{
-                  display: 'flex', alignItems: 'center', gap: 8,
-                  padding: '3px 6px', borderRadius: 4,
-                  background: 'var(--surface)', fontSize: 11,
-                }}>
+                <div
+                  key={i}
+                  draggable
+                  onDragStart={(e) => {
+                    // Payload for the notebook's drop handler. Plain text fallback
+                    // for compatibility; JSON for our own consumer.
+                    const payload = {
+                      type: 'rm-audio-bookmark',
+                      sessionId:     session.id,
+                      audioFilename: session.audioFilename || null,
+                      offsetMs:      m.offsetMs,
+                      label:         m.label || '',
+                      sessionLabel:  session.label,
+                    }
+                    e.dataTransfer.setData('application/x-rm-audio-bookmark', JSON.stringify(payload))
+                    e.dataTransfer.setData('text/plain', `[Audio @ ${fmtTime(m.offsetMs)}] ${m.label || session.label}`)
+                    e.dataTransfer.effectAllowed = 'copy'
+                  }}
+                  title="Drag into a note to insert an audio clip"
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: 8,
+                    padding: '3px 6px', borderRadius: 4,
+                    background: 'var(--surface)', fontSize: 11,
+                    cursor: 'grab',
+                  }}
+                >
                   <button
                     onClick={() => handleSeek(m.offsetMs)}
                     style={{

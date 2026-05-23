@@ -22,6 +22,8 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { RMRefExtension, RMRefPicker, registerNoteNav } from '../components/RMRef.jsx'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import AudioRecorder from '../components/AudioRecorder.jsx'
+import { AudioClipNode } from '../components/AudioClipNode.jsx'
+import ClipEditorModal from '../components/ClipEditorModal.jsx'
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -533,6 +535,9 @@ export default function NotebookView() {
     mutate(d => { if (d.notes[activeId]) { d.notes[activeId].content = val; d.notes[activeId].updated_at = new Date().toISOString() }; return d })
   }
 
+  // Pending audio-clip drop — when set, opens the ClipEditorModal pre-filled.
+  const [clipEditor, setClipEditor] = useState(null)  // { mode, initial, insertAt?, updateAttributes?, deleteNode? }
+
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -540,6 +545,7 @@ export default function NotebookView() {
       TaskItem.configure({ nested: true }),
       Placeholder.configure({ placeholder: 'Start writing…' }),
       RMRefExtension,
+      AudioClipNode,
       Underline,
       Highlight.configure({ multicolor: true }),
       TextStyle,
@@ -551,8 +557,77 @@ export default function NotebookView() {
     },
     editorProps: {
       attributes: { class: 'rich-editor' },
+      handleDrop: (view, event, _slice, _moved) => {
+        // Intercept drops carrying our custom audio-bookmark payload
+        const raw = event.dataTransfer?.getData('application/x-rm-audio-bookmark')
+        if (!raw) return false
+        try {
+          const data = JSON.parse(raw)
+          if (data.type !== 'rm-audio-bookmark') return false
+          // Compute the document position at the drop coordinates
+          const coords = { left: event.clientX, top: event.clientY }
+          const posInfo = view.posAtCoords(coords)
+          const insertAt = posInfo?.pos ?? view.state.selection.from
+          event.preventDefault()
+          setClipEditor({
+            mode: 'insert',
+            insertAt,
+            initial: {
+              sessionId:     data.sessionId,
+              audioFilename: data.audioFilename,
+              startMs:       data.offsetMs ?? 0,
+              endMs:         (data.offsetMs ?? 0) + 30000,
+              label:         data.label || '',
+              sessionLabel:  data.sessionLabel || '',
+            },
+          })
+          return true
+        } catch {
+          return false
+        }
+      },
     },
   })
+
+  // Listen for the AudioClipPill's "edit me" event (click on existing pill)
+  useEffect(() => {
+    function handleEdit(e) {
+      const d = e.detail
+      if (!d?.attrs) return
+      setClipEditor({
+        mode: 'edit',
+        initial: {
+          sessionId:     d.attrs.sessionId,
+          audioFilename: d.attrs.audioFilename,
+          startMs:       d.attrs.startMs,
+          endMs:         d.attrs.endMs,
+          label:         d.attrs.label,
+        },
+        updateAttributes: d.updateAttributes,
+        deleteNode:       d.deleteNode,
+      })
+    }
+    window.addEventListener('rm-edit-audio-clip', handleEdit)
+    return () => window.removeEventListener('rm-edit-audio-clip', handleEdit)
+  }, [])
+
+  function handleClipConfirm(attrs) {
+    if (!editor || !clipEditor) return
+    if (clipEditor.mode === 'edit' && clipEditor.updateAttributes) {
+      clipEditor.updateAttributes(attrs)
+    } else if (clipEditor.mode === 'insert') {
+      const pos = clipEditor.insertAt ?? editor.state.selection.from
+      editor.chain().focus().insertContentAt(pos, {
+        type: 'audioClip',
+        attrs,
+      }).run()
+    }
+    setClipEditor(null)
+  }
+  function handleClipDelete() {
+    if (clipEditor?.deleteNode) clipEditor.deleteNode()
+    setClipEditor(null)
+  }
 
   // When active note changes, load its content into the editor
   useEffect(() => {
@@ -1375,6 +1450,16 @@ export default function NotebookView() {
       <RMRefPicker open={pickerOpen} onClose={() => setPickerOpen(false)} editor={editor}
         notes={Object.values(data.notes)} folders={data.folders}
         customSkills={activeChar?.custom_skills || []} />
+
+      {/* ── AUDIO CLIP EDITOR ────────────────────────────────────── */}
+      <ClipEditorModal
+        open={!!clipEditor}
+        initial={clipEditor?.initial}
+        mode={clipEditor?.mode || 'insert'}
+        onClose={() => setClipEditor(null)}
+        onConfirm={handleClipConfirm}
+        onDelete={clipEditor?.mode === 'edit' ? handleClipDelete : null}
+      />
 
       {/* ── CONFIRM DIALOG ───────────────────────────────────────── */}
       {confirmDlg && (
