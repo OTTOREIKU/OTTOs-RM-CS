@@ -11,6 +11,7 @@
 // All text-only labels — no colorful icons. Flat single-color SVG only where unavoidable.
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import fixWebmDuration from 'fix-webm-duration'
 import { useAudioRecorder } from '../hooks/useAudioRecorder.js'
 import {
   saveSession, getAllSessions, deleteSession, updateSessionLabel,
@@ -109,6 +110,20 @@ export default function AudioRecorder() {
       setBookmarks([])
       return
     }
+
+    // Patch the WebM container so its Duration metadata is filled in.
+    // Without this, MediaRecorder leaves the duration as Infinity and the file
+    // can't be seeked in any player. Only applies to webm — pass through
+    // unchanged for other containers.
+    let finalBlob = result.blob
+    if (result.mimeType?.includes('webm')) {
+      try {
+        finalBlob = await fixWebmDuration(result.blob, result.durationMs, { logger: false })
+      } catch (e) {
+        console.warn('[AudioRecorder] fixWebmDuration failed, falling back to raw blob:', e)
+      }
+    }
+
     const id = `audio_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`
     const dateLabel = new Date(result.startedAt).toLocaleString()
     const session = {
@@ -116,6 +131,7 @@ export default function AudioRecorder() {
       characterId: activeChar?.id || null,
       label:       `Recording — ${dateLabel}`,
       ...result,
+      blob: finalBlob,
       markers: [...bookmarks],
     }
     try {
@@ -546,6 +562,7 @@ function SessionRow({ session, onChange }) {
   const [audioReady, setAudioReady] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
   const [playing, setPlaying] = useState(false)
+  const [durationFixing, setDurationFixing] = useState(false)
 
   // Lazy: only create object URL when expanded
   useEffect(() => {
@@ -566,10 +583,54 @@ function SessionRow({ session, onChange }) {
     }
   }, [open, session.blob])
 
+  // MediaRecorder produces WebM/Opus files with `duration=Infinity` because the
+  // container header isn't finalised on stream-end. The standard workaround is
+  // to seek to a huge value, which forces the browser to read through the file
+  // and discover the real duration. After that, normal seeking works.
+  //
+  // Refs: https://bugs.chromium.org/p/chromium/issues/detail?id=642012
+  //       https://stackoverflow.com/questions/38443084
+  function handleLoadedMetadata() {
+    const audio = audioRef.current
+    if (!audio) return
+    if (audio.duration === Infinity || isNaN(audio.duration)) {
+      setDurationFixing(true)
+      const onUpdate = () => {
+        if (audio.duration !== Infinity && !isNaN(audio.duration)) {
+          audio.removeEventListener('durationchange', onUpdate)
+          audio.currentTime = 0
+          setDurationFixing(false)
+          setAudioReady(true)
+        }
+      }
+      audio.addEventListener('durationchange', onUpdate)
+      // Trigger the read-through. Browser will fire `durationchange` once it
+      // figures out the real value.
+      audio.currentTime = 1e10
+    } else {
+      setAudioReady(true)
+    }
+  }
+
   const handleSeek = (ms) => {
     const audio = audioRef.current
     if (!audio) return
-    audio.currentTime = ms / 1000
+    // Ensure duration is known before seeking — otherwise the browser silently
+    // ignores the seek on stream-only WebM files. If duration is still infinite,
+    // run the fix first, then seek once it resolves.
+    if (audio.duration === Infinity || isNaN(audio.duration)) {
+      const onceDurationKnown = () => {
+        if (audio.duration !== Infinity && !isNaN(audio.duration)) {
+          audio.removeEventListener('durationchange', onceDurationKnown)
+          audio.currentTime = Math.min(ms / 1000, audio.duration - 0.05)
+          audio.play().catch(() => {})
+        }
+      }
+      audio.addEventListener('durationchange', onceDurationKnown)
+      audio.currentTime = 1e10
+      return
+    }
+    audio.currentTime = Math.min(ms / 1000, audio.duration - 0.05)
     audio.play().catch(() => {})
   }
 
@@ -664,12 +725,21 @@ function SessionRow({ session, onChange }) {
             ref={audioRef}
             controls
             preload="metadata"
-            onLoadedMetadata={() => setAudioReady(true)}
-            onTimeUpdate={(e) => setCurrentTime(e.target.currentTime)}
+            onLoadedMetadata={handleLoadedMetadata}
+            onTimeUpdate={(e) => {
+              // While we're force-reading the file to fix the duration, the
+              // browser fires timeupdate with current=1e10. Ignore those.
+              if (!durationFixing) setCurrentTime(e.target.currentTime)
+            }}
             onPlay={() => setPlaying(true)}
             onPause={() => setPlaying(false)}
             style={{ width: '100%' }}
           />
+          {durationFixing && (
+            <div style={{ fontSize: 11, color: 'var(--text3)', fontStyle: 'italic' }}>
+              Loading audio metadata…
+            </div>
+          )}
           {audioReady && (
             <div style={{ display: 'flex', gap: 6, fontSize: 11 }}>
               <button onClick={handleAddPlaybackBookmark} style={btnStyle('var(--accent)', '#fff')}>

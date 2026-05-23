@@ -26,6 +26,7 @@
     "@tiptap/extension-underline": "^3.22.5",
     "@tiptap/react": "^3.22.5",
     "@tiptap/starter-kit": "^3.22.5",
+    "fix-webm-duration": "^1.0.6",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "react-resizable-panels": "^2.1.7",
