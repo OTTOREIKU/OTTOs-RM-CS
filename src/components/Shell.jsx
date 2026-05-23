@@ -14,6 +14,7 @@ import {
   UserIcon, BarChartIcon, ZapIcon, PackageIcon, BookOpenIcon, TrendingUpIcon, BookIcon, LayoutIcon,
 } from './Icons.jsx'
 import { loadNavPos } from '../store/theme.js'
+import { useConfirm } from './ConfirmModal.jsx'
 
 const NAV = [
   { to: '/sheet',     label: 'Sheet',    Icon: UserIcon       },
@@ -39,6 +40,7 @@ export default function Shell({ children }) {
   const foundryImportRef = useRef(null)
   const navigate = useNavigate()
   const location = useLocation()
+  const [confirm, confirmEl] = useConfirm()
 
   // Resize + settings-change listeners
   useEffect(() => {
@@ -93,9 +95,13 @@ export default function Shell({ children }) {
     navigate('/sheet')
   }
 
-  function handleDelete(id, e) {
+  async function handleDelete(id, e) {
     e.stopPropagation()
-    if (!confirm(`Delete "${characters[id]?.name}"?`)) return
+    const ok = await confirm(
+      `Delete "${characters[id]?.name}"?`,
+      { title: 'Delete character', confirmLabel: 'Delete', dangerous: true }
+    )
+    if (!ok) return
     deleteCharacter(id)
     navigate('/')
   }
@@ -174,6 +180,7 @@ export default function Shell({ children }) {
 
   return (
     <>
+    {confirmEl}
     {foundryModalOpen && activeChar && (
       <FoundryExportModal char={activeChar} onClose={() => setFoundryModalOpen(false)} />
     )}

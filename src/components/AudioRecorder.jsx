@@ -29,6 +29,7 @@ import {
 } from '../store/fileSync.js'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { ChevronDownIcon, ChevronRightIcon, XIcon, TrashIcon, PencilIcon, GearIcon, FolderIcon } from './Icons.jsx'
+import { useConfirm } from './ConfirmModal.jsx'
 
 // Persisted across app reloads — encoding settings are environment-specific,
 // not per-character, so they live in localStorage.
@@ -146,6 +147,7 @@ export default function AudioRecorder({ onStateChange, inSidebar = false }) {
   const [folderName,        setFolderName]        = useState(null)
   const [needsPermission,   setNeedsPermission]   = useState(false)
   const [setupPromptOpen,   setSetupPromptOpen]   = useState(false)
+  const [confirm, confirmEl] = useConfirm()
   // Active mime/bitrate (settings > recommended default)
   const activeMime = settings.mime || rec.supportedMime
   const activeBitRate = settings.bitsPerSecond || rec.defaultBitRate
@@ -323,7 +325,11 @@ export default function AudioRecorder({ onStateChange, inSidebar = false }) {
     if (ok) await reload()
   }
   const handleUnlinkFolder = async () => {
-    if (!confirm('Unlink the RMUCplus folder? The files on disk stay where they are; the app just stops auto-saving there.')) return
+    const ok = await confirm(
+      'Unlink the RMUCplus folder? The files on disk stay where they are; the app just stops auto-saving there.',
+      { title: 'Unlink folder', confirmLabel: 'Unlink', dangerous: true }
+    )
+    if (!ok) return
     await clearLinkedDirHandle()
     setFolderReady(false)
     setFolderName(null)
@@ -417,6 +423,7 @@ export default function AudioRecorder({ onStateChange, inSidebar = false }) {
           disabled={active}
         />
       )}
+      {confirmEl}
       {settingsOpen && (
         <SettingsPanel
           settings={settings}
@@ -1015,6 +1022,7 @@ function SessionRow({ session, onChange, folderReady }) {
   const [playing, setPlaying] = useState(false)
   const [durationFixing, setDurationFixing] = useState(false)
   const [blobLoading, setBlobLoading] = useState(false)
+  const [confirm, confirmEl] = useConfirm()
 
   // Lazy: create object URL when expanded. In folder mode, also pull the
   // blob bytes off disk on first expand.
@@ -1123,7 +1131,11 @@ function SessionRow({ session, onChange, folderReady }) {
   }
 
   const handleDelete = async () => {
-    if (!confirm(`Delete recording "${session.label}"?\n\n${folderReady ? 'Both the audio file and its bookmarks sidecar will be deleted from disk.' : 'This cannot be undone.'}`)) return
+    const ok = await confirm(
+      `Delete recording "${session.label}"?\n\n${folderReady ? 'Both the audio file and its bookmarks sidecar will be deleted from disk.' : 'This cannot be undone.'}`,
+      { title: 'Delete recording', confirmLabel: 'Delete', dangerous: true }
+    )
+    if (!ok) return
     if (folderReady) await deleteSessionFromFolder(session)
     else             await deleteSession(session.id)
     onChange()
@@ -1158,6 +1170,8 @@ function SessionRow({ session, onChange, folderReady }) {
   }
 
   return (
+    <>
+    {confirmEl}
     <div style={{
       background: 'var(--surface2)',
       border: '1px solid var(--border)',
@@ -1333,6 +1347,7 @@ function SessionRow({ session, onChange, folderReady }) {
         </div>
       )}
     </div>
+    </>
   )
 }
 

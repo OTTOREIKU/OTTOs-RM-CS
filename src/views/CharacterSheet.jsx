@@ -12,6 +12,7 @@ import cultures from '../data/cultures.json'
 import cultureSkillsData from '../data/culture_skills.json'
 import skillCategoryStats from '../data/skill_category_stats.json'
 import professionSkillsData from '../data/profession_skills.json'
+import { useConfirm } from '../components/ConfirmModal.jsx'
 import armorData from '../data/armor.json'
 import weaponsDb from '../data/weapons.json'
 import spellListsDb from '../data/spell_lists.json'
@@ -174,6 +175,7 @@ const CHOICE_LABELS = {
 
 function CultureGrantsPanel({ culture, char, updateCharacter, updateSkill }) {
   const [open, setOpen] = useState(false)
+  const [confirm, confirmEl] = useConfirm()
   const entry = cultureSkillsData.find(c => c.name === culture)
   if (!entry) return null
 
@@ -183,9 +185,13 @@ function CultureGrantsPanel({ culture, char, updateCharacter, updateSkill }) {
   const choice = grants.filter(g =>  g.choice)
   const applied = char.culture_applied === culture
 
-  function handleApply() {
+  async function handleApply() {
     if (applied) {
-      if (!confirm(`Culture skills for ${culture} are already applied. Re-apply and overwrite?`)) return
+      const ok = await confirm(
+        `Culture skills for ${culture} are already applied. Re-apply and overwrite?`,
+        { title: 'Re-apply culture grants', confirmLabel: 'Re-apply' }
+      )
+      if (!ok) return
     }
     fixed.forEach(g => {
       updateSkill(g.skill, 'culture_ranks', g.ranks)
@@ -194,6 +200,8 @@ function CultureGrantsPanel({ culture, char, updateCharacter, updateSkill }) {
   }
 
   return (
+    <>
+    {confirmEl}
     <div style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--border)' }}>
       <button onClick={() => setOpen(p => !p)} style={{
         width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
@@ -278,6 +286,7 @@ function CultureGrantsPanel({ culture, char, updateCharacter, updateSkill }) {
         </div>
       )}
     </div>
+    </>
   )
 }
 
