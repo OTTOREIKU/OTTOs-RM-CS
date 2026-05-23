@@ -10,7 +10,7 @@ import { Color, TextStyle } from '@tiptap/extension-text-style'
 import {
   ChevronDownIcon, ChevronRightIcon, PlusIcon, TrashIcon,
   PencilIcon, PinIcon, FolderIcon, FolderOpenIcon, DotsHIcon, FileIcon, CalendarIcon,
-  XIcon, MenuIcon, ChevronLeftIcon, CheckIcon, CircleIcon,
+  XIcon, MenuIcon, ChevronLeftIcon, CheckIcon, CircleIcon, MicIcon,
 } from '../components/Icons.jsx'
 import {
   loadNotebook, saveNotebook, loadOpenFolders, saveOpenFolders,
@@ -249,6 +249,11 @@ export default function NotebookView() {
   const [activeTag,,     setActiveTag]      = usePersistentOpen('rm_nb_tag',   null)
   const [showSidebar,    setShowSidebar]    = useState(() => window.innerWidth >= 700)
   const [sidebarHidden,  setSidebarHidden]  = useState(false)
+  // Right-side audio sidebar — closed by default, toggled via the mic button.
+  const [audioOpen,        setAudioOpen]        = useState(false)
+  // Background recording indicator — set by AudioRecorder's onStateChange so we
+  // can colour the mic toggle red when recording continues with the panel closed.
+  const [audioRecording,   setAudioRecording]   = useState(false)
   const [isMobile,       setIsMobile]       = useState(() => window.innerWidth < 700)
   const [ctxMenu,        setCtxMenu]        = useState(null)
   const [renaming,       setRenaming]       = useState(null)
@@ -1136,6 +1141,24 @@ export default function NotebookView() {
                       color: activeNote.pinned ? 'var(--accent)' : 'var(--text3)', flexShrink: 0, display: 'flex' }}>
                     <PinIcon size={15} filled={activeNote.pinned} color="currentColor" />
                   </button>
+                  <button
+                    onClick={() => setAudioOpen(o => !o)}
+                    title={audioOpen ? 'Hide audio panel' : (audioRecording ? 'Audio panel (recording in background)' : 'Open audio panel')}
+                    style={{
+                      background: 'none',
+                      border: '1px solid ' + (audioRecording && !audioOpen ? 'var(--danger)' : 'transparent'),
+                      borderRadius: 5,
+                      cursor: 'pointer',
+                      padding: '2px 4px',
+                      color: audioRecording && !audioOpen
+                        ? 'var(--danger)'
+                        : (audioOpen ? 'var(--accent)' : 'var(--text3)'),
+                      flexShrink: 0,
+                      display: 'flex',
+                    }}
+                  >
+                    <MicIcon size={15} color="currentColor" />
+                  </button>
                   <select value={activeNote.folder_id || ''}
                     onChange={e => updateNote(activeId, { folder_id: e.target.value || null })}
                     style={{ fontSize: 11, background: 'var(--surface2)', border: '1px solid var(--border)',
@@ -1207,8 +1230,8 @@ export default function NotebookView() {
                 style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}
               />
 
-              {/* Audio recorder — sits between editor and backlinks; collapsible */}
-              <AudioRecorder />
+              {/* Spacer so editor doesn't bump directly into the backlinks/status bar */}
+              <div style={{ height: 16, flexShrink: 0 }} />
 
               {/* Backlinks panel */}
               {backlinks.length > 0 && (
@@ -1286,6 +1309,57 @@ export default function NotebookView() {
             </div>
           )}
         </div>
+
+      {/* ── AUDIO SIDEBAR (right) ────────────────────────────────── */}
+      {/* Always renders so the recorder stays alive when collapsed — toggling
+          `audioOpen` just hides/shows it via width. That way audio capture
+          continues in the background when you close the panel. */}
+      <div
+        style={{
+          width:       audioOpen ? (isMobile ? '85vw' : 360) : 0,
+          maxWidth:    audioOpen ? (isMobile ? 380 : 460) : 0,
+          flexShrink:  0,
+          borderLeft:  audioOpen ? '1px solid var(--border)' : 'none',
+          background:  'var(--surface)',
+          overflow:    'hidden',
+          display:     'flex',
+          flexDirection: 'column',
+          transition:  'width 180ms ease, max-width 180ms ease',
+          position:    isMobile ? 'absolute' : 'static',
+          top: 0, right: 0, bottom: 0,
+          zIndex:      isMobile ? 197 : 'auto',
+          boxShadow:   isMobile && audioOpen ? '-4px 0 28px rgba(0,0,0,0.5)' : 'none',
+        }}
+      >
+        {/* Inner wrapper so the content doesn't reflow as width animates */}
+        <div style={{ width: isMobile ? '85vw' : 360, maxWidth: isMobile ? 380 : 460, flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+          {/* Close button row */}
+          <div style={{ display: 'flex', alignItems: 'center', padding: '6px 8px', borderBottom: '1px solid var(--border)' }}>
+            <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--text2)', textTransform: 'uppercase', letterSpacing: '0.08em', marginLeft: 6, flex: 1 }}>
+              Audio
+            </span>
+            <button
+              onClick={() => setAudioOpen(false)}
+              title="Hide audio panel"
+              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, color: 'var(--text3)', display: 'flex' }}
+            >
+              <XIcon size={14} color="currentColor" />
+            </button>
+          </div>
+          <AudioRecorder
+            inSidebar
+            onStateChange={(state) => setAudioRecording(state === 'recording' || state === 'paused')}
+          />
+        </div>
+      </div>
+
+      {/* Mobile backdrop for audio sidebar */}
+      {isMobile && audioOpen && (
+        <div
+          onClick={() => setAudioOpen(false)}
+          style={{ position: 'absolute', inset: 0, zIndex: 196, background: 'rgba(0,0,0,0.55)' }}
+        />
+      )}
 
       {/* ── CONTEXT MENU ─────────────────────────────────────────── */}
       {ctxMenu && (

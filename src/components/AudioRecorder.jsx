@@ -73,7 +73,19 @@ function fmtBytes(n) {
   return `${(n / (1024 * 1024)).toFixed(1)} MB`
 }
 
-export default function AudioRecorder() {
+/**
+ * AudioRecorder — notebook recording UI.
+ *
+ * Props:
+ *   onStateChange(state)  — optional. Called whenever the recorder state changes
+ *                           ('idle' | 'recording' | 'paused' | 'stopping').
+ *                           Lets the parent show a "recording in background"
+ *                           indicator when the panel is collapsed/hidden.
+ *   inSidebar             — boolean. When true, drops the embedded outer
+ *                           border/marginTop because the sidebar already
+ *                           provides its own framing.
+ */
+export default function AudioRecorder({ onStateChange, inSidebar = false }) {
   const { activeChar } = useCharacter()
   const rec = useAudioRecorder()
   const [sessions, setSessions] = useState([])
@@ -85,6 +97,11 @@ export default function AudioRecorder() {
   // Active mime/bitrate (settings > recommended default)
   const activeMime = settings.mime || rec.supportedMime
   const activeBitRate = settings.bitsPerSecond || rec.defaultBitRate
+
+  // Notify parent of state changes so it can colour the mic toggle button
+  useEffect(() => {
+    if (onStateChange) onStateChange(rec.state)
+  }, [rec.state, onStateChange])
 
   // Reload sessions list on mount + after each save/delete
   const reload = useCallback(async () => {
@@ -163,20 +180,29 @@ export default function AudioRecorder() {
   return (
     <div style={{
       flexShrink: 0,
-      marginTop: 16,                                       // breathing room above
-      borderTop: '1px solid var(--border)',
-      background: 'var(--surface)',
+      // Embedded mode keeps its outer border + spacer; sidebar mode lets the
+      // sidebar container provide the framing.
+      ...(inSidebar
+        ? { background: 'var(--surface)', display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }
+        : { marginTop: 16, borderTop: '1px solid var(--border)', background: 'var(--surface)' }
+      ),
     }}>
       <HeaderRow
-        expanded={expanded}
-        onToggle={() => setExpanded(e => !e)}
+        expanded={inSidebar ? true : expanded}
+        onToggle={inSidebar ? null : () => setExpanded(e => !e)}
         active={active}
         sessionCount={sessions.length}
         elapsed={rec.elapsed}
         state={rec.state}
       />
-      {expanded && (
-        <div style={{ padding: '10px 16px 12px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+      {(inSidebar || expanded) && (
+        <div style={{
+          padding: '10px 14px 12px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 10,
+          ...(inSidebar ? { flex: 1, overflowY: 'auto', minHeight: 0 } : {}),
+        }}>
           <RecordingControls
             rec={rec}
             active={active}
@@ -213,20 +239,23 @@ export default function AudioRecorder() {
   )
 }
 
-// ── Header row (collapsible) ────────────────────────────────────────────────
+// ── Header row (collapsible when onToggle provided, static in sidebar mode) ─
 function HeaderRow({ expanded, onToggle, active, sessionCount, elapsed, state }) {
+  const interactive = !!onToggle
+  const Tag = interactive ? 'button' : 'div'
   return (
-    <button
-      onClick={onToggle}
+    <Tag
+      onClick={onToggle || undefined}
       style={{
         width: '100%',
         display: 'flex',
         alignItems: 'center',
         gap: 8,
-        padding: '6px 16px',
+        padding: '10px 14px',
         background: 'transparent',
         border: 'none',
-        cursor: 'pointer',
+        borderBottom: '1px solid var(--border)',
+        cursor: interactive ? 'pointer' : 'default',
         color: 'var(--text2)',
         fontSize: 11,
         fontWeight: 600,
@@ -234,9 +263,9 @@ function HeaderRow({ expanded, onToggle, active, sessionCount, elapsed, state })
         letterSpacing: '0.08em',
       }}
     >
-      {expanded
+      {interactive && (expanded
         ? <ChevronDownIcon size={12} color="var(--text3)" />
-        : <ChevronRightIcon size={12} color="var(--text3)" />}
+        : <ChevronRightIcon size={12} color="var(--text3)" />)}
       <span>Audio Recorder</span>
       {active && (
         <span style={{
@@ -249,10 +278,10 @@ function HeaderRow({ expanded, onToggle, active, sessionCount, elapsed, state })
       <div style={{ flex: 1 }} />
       {sessionCount > 0 && (
         <span style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 400, textTransform: 'none', letterSpacing: 0 }}>
-          {sessionCount} saved session{sessionCount !== 1 ? 's' : ''}
+          {sessionCount} saved
         </span>
       )}
-    </button>
+    </Tag>
   )
 }
 
