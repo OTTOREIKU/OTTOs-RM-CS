@@ -43,7 +43,7 @@
   },
   {
     "category": "Battle Expertise",
-    "name": "Maneuver in Armor",
+    "name": "Maneuvering in Armor",
     "dev_cost": "7/10",
     "prof_type": "Normal",
     "stat_keys": "-"
@@ -116,7 +116,7 @@
     "name": "Fortitude",
     "dev_cost": "6/8",
     "prof_type": "Normal",
-    "stat_keys": "St"
+    "stat_keys": "SD"
   },
   {
     "category": "Brawn",
@@ -417,14 +417,14 @@
     "name": "Spell Lore",
     "dev_cost": "1/3",
     "prof_type": "Normal",
-    "stat_keys": "Re"
+    "stat_keys": "In"
   },
   {
     "category": "Lore",
     "name": "Spell Lore: <topic>",
     "dev_cost": "1/3",
     "prof_type": "Normal",
-    "stat_keys": "Re"
+    "stat_keys": "In"
   },
   {
     "category": "Lore",
@@ -478,6 +478,34 @@
   {
     "category": "Lore: Languages",
     "name": "Written: <language 2>",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore: Languages",
+    "name": "Signaled: <language 1>",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore: Languages",
+    "name": "Signaled: <language 2>",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore: Languages",
+    "name": "Lip Reading: <language 1>",
+    "dev_cost": "1/3",
+    "prof_type": "Normal",
+    "stat_keys": "Re"
+  },
+  {
+    "category": "Lore: Languages",
+    "name": "Lip Reading: <language 2>",
     "dev_cost": "1/3",
     "prof_type": "Normal",
     "stat_keys": "Re"
@@ -627,7 +655,7 @@
     "name": "Channeling",
     "dev_cost": "2/3",
     "prof_type": "Normal",
-    "stat_keys": "Me"
+    "stat_keys": "SD"
   },
   {
     "category": "Power Manipulation",

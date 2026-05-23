@@ -92,23 +92,6 @@ export function getInitiativeBonus(char) {
   return quBonus + talentIni
 }
 
-export function getRankBonus(ranks) {
-  // RMU rank bonus table
-  if (!ranks || ranks <= 0) return -25
-  const table = [
-    [1,1,5],[2,5,10],[6,10,15],[11,15,20],[16,20,25],
-    [21,25,30],[26,30,35],[31,40,45],[41,50,55],[51,60,60],
-    [61,75,70],[76,90,80],[91,100,95],
-  ]
-  for (const [lo, hi, bonus] of table) {
-    if (ranks >= lo && ranks <= hi) {
-      const step = (bonus - (lo === 1 ? 5 : table[table.indexOf(table.find(r=>r[0]===lo))-1]?.[2] ?? 5)) / (hi - lo + 1)
-      return Math.round((lo === 1 ? 5 : (table[table.indexOf(table.find(r=>r[0]===lo))-1]?.[2] ?? 5)) + step * (ranks - lo))
-    }
-  }
-  return 95 + Math.floor((ranks - 100) / 10) * 5
-}
-
 // Rank bonus per CoreLaw Table 3-0b:
 //   0 ranks → -25 (untrained penalty)
 //   Ranks  1-10 → +5 each  (max +50 at rank 10)
@@ -121,35 +104,6 @@ export function rankBonus(ranks) {
   if (ranks <= 20) return 50 + (ranks - 10) * 3
   if (ranks <= 30) return 80 + (ranks - 20) * 2
   return 100 + (ranks - 30)
-}
-
-export function getSkillTotal(char, skill, statBonusesMap) {
-  // skill = { category, name, stat_keys, dev_cost }
-  // char.skills[name] = { ranks, culture_ranks, item_bonus, talent_bonus }
-  const charSkill = char.skills?.[skill.name] || {}
-  const ranks = (charSkill.ranks ?? 0) + (charSkill.culture_ranks ?? 0)
-  const rb = rankBonus(ranks)
-
-  // Calculate combined stat bonus from skill's stat keys
-  let statSum = 0
-  if (skill.stat_keys && char.stats) {
-    const keys = skill.stat_keys.split('/').map(k => k.trim())
-    const STAT_MAP = {
-      Ag: 'Agility', Co: 'Constitution', Em: 'Empathy', In: 'Intuition',
-      Me: 'Memory', Pr: 'Presence', Qu: 'Quickness', Re: 'Reasoning',
-      SD: 'Self Discipline', St: 'Strength'
-    }
-    const bonuses = keys.map(k => {
-      const fullName = STAT_MAP[k] || k
-      const stat = char.stats[fullName]
-      return stat ? getTotalStatBonus(stat) : 0
-    })
-    statSum = bonuses.length === 1
-      ? bonuses[0]
-      : Math.round(bonuses.reduce((a, b) => a + b, 0) / bonuses.length)
-  }
-
-  return rb + statSum + (charSkill.item_bonus ?? 0) + (charSkill.talent_bonus ?? 0)
 }
 
 const OB_STATS = {
@@ -289,7 +243,8 @@ export function getSpellCastingBonus(char, listName) {
   const customTalent  = sl.talent_bonus ?? 0
   const namedTalent   = getNamedTalentBonus(char, listName)
   const compB         = _compBonus(char, sl)
-  return rawRanks + _realmStatBonus(char) + talentSpell + customTalent + namedTalent + compB
+  const knackB        = getKnackBonus(char, listName)
+  return rawRanks + _realmStatBonus(char) + talentSpell + customTalent + namedTalent + compB + knackB
 }
 
 /**
@@ -308,7 +263,8 @@ export function getSpellMasteryBonus(char, listName) {
   const meB          = char.stats?.Memory ? getTotalStatBonus(char.stats.Memory) : 0
   const talentSpell  = getTalentBonuses(char).spellcasting
   const compB        = _compBonus(char, sl)
-  return rb + rsB * 2 + meB + item + profB + talentSpell + customTalent + namedTalent + compB
+  const knackB       = getKnackBonus(char, listName)
+  return rb + rsB * 2 + meB + item + profB + talentSpell + customTalent + namedTalent + compB + knackB
 }
 
 export function getBaseHits(char) {

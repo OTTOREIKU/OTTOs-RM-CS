@@ -20,7 +20,8 @@ const STAT_MAP = {
   SD:'Self Discipline', St:'Strength', '-':null,
 }
 
-// Two category-level stats averaged, then add the individual skill stat
+// Category stats are SUMMED with the individual skill stat (not averaged).
+// Verified against RMU's official systems/rmu/module/rmu/skills/skill-category-stats.js.
 const CATEGORY_STATS = {
   'Animal':             'Ag/Em',
   'Awareness':          'In/Re',
@@ -141,7 +142,7 @@ function realmStatKey(char) {
 }
 
 // All stat bonuses are straight-added (never averaged) per CoreLaw p.84.
-// e.g. Animal Handling = Ag bonus + Em bonus + Pr bonus
+// e.g. Animal Handling = Pr (skill.stat) + Ag + Em (category stats from SkillCategoryStats['Animal'])
 function getStatBonus(char, stat_keys) {
   if (!stat_keys || stat_keys === '-') return 0
   const keys = stat_keys.split('/').map(k => {
