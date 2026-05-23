@@ -3,6 +3,7 @@ dist/
 *.xlsx
 xSourcePDFs/
 xcharacterSheets/
+xFoundryRepo/
 __pycache__/
 *.pyc
 *.png
@@ -10,6 +11,24 @@ __pycache__/
 *.jpeg
 .DS_Store
 .claude/
+
+# Old PDF extraction & audit Python scripts (kept locally, never committed)
 extract_*.py
 patch_*.py
+audit*.py
+debug*.py
+check_*.py
+find_headers.py
+merge_spells.py
+test_*.py
+*_raw.json
+
+# Tool dirs and local working folders
 scripts/
+tools/
+memory/
+
+# Data extraction toolkit lives in Syncthing — never accidentally re-add here
+rmu-extractor/
+rmu-system-dump*/
+rmu-console-extractor/
