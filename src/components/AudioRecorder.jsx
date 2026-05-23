@@ -249,9 +249,11 @@ export default function AudioRecorder({ onStateChange, inSidebar = false }) {
     <div style={{
       flexShrink: 0,
       // Embedded mode keeps its outer border + spacer; sidebar mode lets the
-      // sidebar container provide the framing.
+      // sidebar container provide the framing. In sidebar mode we use
+      // flex:1+minHeight:0 instead of height:100% so the footer is pushed
+      // to the bottom regardless of the parent's height resolution.
       ...(inSidebar
-        ? { background: 'var(--surface)', display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }
+        ? { background: 'var(--surface)', display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, overflow: 'hidden' }
         : { marginTop: 16, borderTop: '1px solid var(--border)', background: 'var(--surface)' }
       ),
     }}>
