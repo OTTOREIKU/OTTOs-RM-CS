@@ -351,7 +351,12 @@ export default function AudioRecorder({ onStateChange, inSidebar = false }) {
       // flex:1+minHeight:0 instead of height:100% so the footer is pushed
       // to the bottom regardless of the parent's height resolution.
       ...(inSidebar
-        ? { background: 'var(--surface)', display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, overflow: 'hidden' }
+        ? {
+            background: 'var(--surface)',
+            display: 'flex', flexDirection: 'column',
+            flex: 1, minHeight: 0, minWidth: 0,
+            overflow: 'hidden',          // defensive — no horizontal scrollbar
+          }
         : { marginTop: 16, borderTop: '1px solid var(--border)', background: 'var(--surface)' }
       ),
     }}>
@@ -510,15 +515,23 @@ function RecordingControls({
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-      {/* Top row: device picker + import */}
-      <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+      {/* Device picker row — flex-wraps on narrow widths. Import button moved
+          to the SessionsList header where it sits alongside saved sessions. */}
+      <div style={{ display: 'flex', gap: 8, alignItems: 'center', minWidth: 0 }}>
         <DevicePicker rec={rec} disabled={active} />
-        <div style={{ flex: 1 }} />
+        <input
+          ref={importInputRef}
+          type="file"
+          accept="audio/*,.webm,.mp3,.wav,.m4a,.ogg,.opus,.flac"
+          onChange={handleImportChange}
+          style={{ display: 'none' }}
+        />
         <button
           onClick={handleImportClick}
           disabled={active}
           title="Import an audio file from disk"
           style={{
+            flexShrink: 0,
             background: 'transparent',
             border: '1px solid var(--border)',
             borderRadius: 4,
@@ -530,15 +543,8 @@ function RecordingControls({
             opacity: active ? 0.4 : 1,
           }}
         >
-          Import…
+          Import
         </button>
-        <input
-          ref={importInputRef}
-          type="file"
-          accept="audio/*,.webm,.mp3,.wav,.m4a,.ogg,.opus,.flac"
-          onChange={handleImportChange}
-          style={{ display: 'none' }}
-        />
       </div>
 
       {/* Full-width primary action */}
@@ -716,21 +722,21 @@ function DevicePicker({ rec, disabled }) {
   }
 
   return (
-    <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+    <div style={{ display: 'flex', gap: 4, alignItems: 'center', flex: 1, minWidth: 0 }}>
       <select
         value={rec.selectedDeviceId || ''}
         onChange={(e) => rec.setSelectedDeviceId(e.target.value || null)}
         onMouseDown={() => { if (!unlocked && !busy) requestPermissionAndRefresh() }}
         disabled={disabled}
         style={{
+          flex: 1,
+          minWidth: 0,                // critical for shrinking inside flex parent
           background: 'var(--surface2)',
           color: 'var(--text)',
           border: '1px solid var(--border)',
           borderRadius: 4,
           padding: '5px 8px',
           fontSize: 11,
-          maxWidth: 280,
-          minWidth: 160,
         }}
         title={unlocked ? 'Input device' : 'Click to grant mic permission and see device names'}
       >
@@ -746,6 +752,7 @@ function DevicePicker({ rec, disabled }) {
         disabled={disabled || busy}
         title="Refresh device list (will prompt for mic permission if not yet granted)"
         style={{
+          flexShrink: 0,
           background: 'transparent', border: '1px solid var(--border)', borderRadius: 4,
           padding: '4px 8px', fontSize: 10, fontWeight: 600,
           color: 'var(--text3)', cursor: 'pointer',
