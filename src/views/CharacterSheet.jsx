@@ -11,6 +11,7 @@ import professions from '../data/professions.json'
 import cultures from '../data/cultures.json'
 import cultureSkillsData from '../data/culture_skills.json'
 import skillCategoryStats from '../data/skill_category_stats.json'
+import professionSkillsData from '../data/profession_skills.json'
 import armorData from '../data/armor.json'
 import weaponsDb from '../data/weapons.json'
 import spellListsDb from '../data/spell_lists.json'
@@ -281,10 +282,17 @@ function CultureGrantsPanel({ culture, char, updateCharacter, updateSkill }) {
 }
 
 // ── Knacks Sub-Panel (inside Identity card) ───────────────────────────────────
+// RMU: exactly 2 knacks per character, +5 each to a specific skill or Spellcasting
+// category. Soft-cap UI — extra slots allowed via "Add another", flagged in danger
+// color to remind the user they're over the RMU limit.
+const KNACK_CAP = 2
 function KnacksSubPanel({ char, updateCharacter, allSkillNames }) {
   const [open, setOpen] = useState(false)
   const knacks = char.knacks || []
-  const summary = knacks.length ? knacks.join(', ') : 'none set'
+  const count = knacks.filter(Boolean).length
+  const overCap = count > KNACK_CAP
+  const slotsToRender = Math.max(KNACK_CAP, knacks.length)
+  const counterColor = overCap ? 'var(--danger)' : (count === KNACK_CAP ? 'var(--success)' : 'var(--text3)')
   return (
     <div style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--border)' }}>
       <button onClick={() => setOpen(p => !p)} style={{
@@ -293,35 +301,44 @@ function KnacksSubPanel({ char, updateCharacter, allSkillNames }) {
         color: 'var(--text2)', fontSize: 11, fontWeight: 600,
         textTransform: 'uppercase', letterSpacing: '0.08em',
       }}>
-        <span>Knacks</span>
+        <span>
+          Knacks <span style={{ color: counterColor, fontWeight: 700, marginLeft: 4 }}>{count}/{KNACK_CAP}</span>
+        </span>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          {!open && <span style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 400, textTransform: 'none', letterSpacing: 0 }}>{summary}</span>}
+          {!open && (
+            <span style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 400, textTransform: 'none', letterSpacing: 0 }}>
+              {knacks.filter(Boolean).join(', ') || 'none set'}
+            </span>
+          )}
           {open ? <ChevronUpIcon size={12} color="var(--text3)" /> : <ChevronDownIcon size={12} color="var(--text3)" />}
         </div>
       </button>
       {open && (
         <div style={{ marginTop: 8 }}>
           <div style={{ fontSize: 11, color: 'var(--text3)', marginBottom: 8 }}>
-            2 knacks per character — each grants a permanent <strong style={{ color: 'var(--purple)' }}>+5</strong> to the chosen professional skill.
+            RMU: {KNACK_CAP} knacks per character — each grants a permanent <span style={{ color: 'var(--purple)', fontWeight: 700 }}>+5</span> to a specific skill or Spellcasting category. {overCap && <span style={{ color: 'var(--danger)', fontWeight: 700 }}>You are over the {KNACK_CAP}-knack RMU limit.</span>}
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-            {[0, 1].map(i => {
+            {Array.from({ length: slotsToRender }).map((_, i) => {
               const val = knacks[i] || ''
+              const isOverCap = i >= KNACK_CAP
               return (
                 <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                  <div style={{ fontSize: 10, fontWeight: 600, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                    Knack {i + 1}
-                    {val && <span style={{ marginLeft: 6, color: 'var(--purple)', fontWeight: 700 }}>★ +5</span>}
+                  <div style={{ fontSize: 10, fontWeight: 600, color: isOverCap ? 'var(--danger)' : 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                    Knack {i + 1}{isOverCap && ' (extra)'}
+                    {val && <span style={{ marginLeft: 6, color: 'var(--purple)', fontWeight: 700 }}>+5</span>}
                   </div>
                   <select
                     value={val}
                     onChange={e => {
-                      const next = [knacks[0] || '', knacks[1] || '']
+                      const next = [...knacks]
                       next[i] = e.target.value
-                      updateCharacter({ knacks: next.filter(Boolean) })
+                      // Trim trailing empty entries so the slot count shrinks naturally
+                      while (next.length && !next[next.length - 1]) next.pop()
+                      updateCharacter({ knacks: next })
                     }}
                     style={{ width: '100%', fontSize: 13, padding: '5px 8px', borderRadius: 6,
-                      background: 'var(--surface2)', border: '1px solid var(--border)', color: 'var(--text)' }}
+                      background: 'var(--surface2)', border: '1px solid ' + (isOverCap ? 'var(--danger)' : 'var(--border)'), color: 'var(--text)' }}
                   >
                     <option value="">— none —</option>
                     {allSkillNames.map(name => (
@@ -332,6 +349,152 @@ function KnacksSubPanel({ char, updateCharacter, allSkillNames }) {
               )
             })}
           </div>
+          <div style={{ marginTop: 8, display: 'flex', justifyContent: 'flex-end' }}>
+            <button
+              onClick={() => updateCharacter({ knacks: [...knacks, ''] })}
+              title={`Adds an extra slot beyond the ${KNACK_CAP}-knack RMU limit (e.g. for house rules).`}
+              style={{
+                fontSize: 10, padding: '3px 8px', borderRadius: 5,
+                background: 'transparent', border: '1px dashed var(--border2)',
+                color: 'var(--text3)', cursor: 'pointer',
+              }}
+            >
+              Add knack beyond RMU cap
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ── Professional Skills Sub-Panel (inside Identity card) ──────────────────────
+// RMU: exactly 10 professional skills per character. Each grants +1/rank capped
+// at +30 ranks. Chosen from the profession's ~15 candidates at chargen. Soft cap
+// — over-selection is allowed but flagged in danger color.
+const PROF_SKILL_CAP = 10
+function ProfessionalSkillsSubPanel({ char, updateCharacter, updateSkill }) {
+  const [open, setOpen] = useState(false)
+  const profession = char.profession || ''
+  const candidates = professionSkillsData[profession] || []
+
+  // Count all currently-proficient skills (both inside and outside the profession's list)
+  const profSet = new Set(candidates.map(c => c.skillName))
+  const proficientSkills = []
+  for (const [name, data] of Object.entries(char.skills || {})) {
+    const tmpl = (data && data.proficient !== undefined)
+      ? null
+      : null
+    const isProf = data?.proficient !== undefined
+      ? !!data.proficient
+      : false   // we don't have access to skillsData template here without import; conservative
+    if (data?.proficient === true) proficientSkills.push(name)
+  }
+  const count = proficientSkills.length
+  const overCap = count > PROF_SKILL_CAP
+  const counterColor = overCap ? 'var(--danger)' : (count === PROF_SKILL_CAP ? 'var(--success)' : 'var(--text3)')
+
+  // For each candidate, find the matching skill key in char.skills (handles placeholder slots like "Stonecraft: <specialty 1>")
+  function findCharSkillKey(candidateSkillName) {
+    if (char.skills?.[candidateSkillName] !== undefined) return candidateSkillName
+    // Try first matching placeholder slot
+    const prefix = candidateSkillName + ': '
+    const slotMatch = Object.keys(char.skills || {}).find(k =>
+      k === candidateSkillName || k.startsWith(prefix) || (k.startsWith(candidateSkillName + ':') && k.includes('<'))
+    )
+    return slotMatch || null
+  }
+
+  function toggleProf(candidateName) {
+    let key = findCharSkillKey(candidateName)
+    if (!key) {
+      // Skill not in character's skills yet — add a stub entry so the prof flag has somewhere to live
+      key = candidateName
+      const skills = { ...(char.skills || {}), [key]: { ranks: 0, item_bonus: 0, talent_bonus: 0, proficient: true } }
+      updateCharacter({ skills })
+      return
+    }
+    const cur = char.skills[key]?.proficient ?? false
+    updateSkill(key, 'proficient', !cur)
+  }
+
+  return (
+    <div style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--border)' }}>
+      <button onClick={() => setOpen(p => !p)} style={{
+        width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        background: 'none', border: 'none', cursor: 'pointer', padding: '2px 0',
+        color: 'var(--text2)', fontSize: 11, fontWeight: 600,
+        textTransform: 'uppercase', letterSpacing: '0.08em',
+      }}>
+        <span>
+          Professional Skills <span style={{ color: counterColor, fontWeight: 700, marginLeft: 4 }}>{count}/{PROF_SKILL_CAP}</span>
+        </span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          {!open && (
+            <span style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 400, textTransform: 'none', letterSpacing: 0 }}>
+              {profession ? `${candidates.length} candidates for ${profession}` : 'no profession'}
+            </span>
+          )}
+          {open ? <ChevronUpIcon size={12} color="var(--text3)" /> : <ChevronDownIcon size={12} color="var(--text3)" />}
+        </div>
+      </button>
+      {open && (
+        <div style={{ marginTop: 8 }}>
+          <div style={{ fontSize: 11, color: 'var(--text3)', marginBottom: 8 }}>
+            RMU: {PROF_SKILL_CAP} professional skills per character — each gives <span style={{ color: 'var(--accent)', fontWeight: 700 }}>+1/rank</span> capped at <span style={{ color: 'var(--accent)', fontWeight: 700 }}>+30 ranks</span>. Pick from your profession's {candidates.length} candidates below, or use the toggle on any skill row in the Skills tab. {overCap && <span style={{ color: 'var(--danger)', fontWeight: 700 }}>You are over the {PROF_SKILL_CAP}-skill RMU limit.</span>}
+          </div>
+          {candidates.length === 0 ? (
+            <div style={{ fontSize: 11, color: 'var(--text3)', fontStyle: 'italic', padding: 8 }}>
+              No profession selected, or profession data not available for "{profession}".
+            </div>
+          ) : (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 4, fontSize: 12 }}>
+              {candidates.map(c => {
+                const key = findCharSkillKey(c.skillName)
+                const isProf = key ? !!char.skills?.[key]?.proficient : false
+                return (
+                  <label
+                    key={c.skillName}
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: 6,
+                      padding: '4px 6px', borderRadius: 4, cursor: 'pointer',
+                      background: isProf ? 'rgba(76,139,245,0.10)' : 'transparent',
+                      border: '1px solid ' + (isProf ? 'var(--accent)' : 'transparent'),
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={isProf}
+                      onChange={() => toggleProf(c.skillName)}
+                      style={{ accentColor: 'var(--accent)' }}
+                    />
+                    <span style={{ flex: 1 }}>{c.skillName}</span>
+                    <span style={{ fontSize: 10, color: 'var(--text3)' }}>{c.skillCategory}</span>
+                  </label>
+                )
+              })}
+            </div>
+          )}
+          {/* Show any other proficient skills NOT in the profession's candidate list (overflow / custom picks) */}
+          {(() => {
+            const overflow = proficientSkills.filter(name => {
+              const tryMatch = candidates.find(c =>
+                c.skillName === name || name.startsWith(c.skillName + ':') || name.startsWith(c.skillName + ': <')
+              )
+              return !tryMatch
+            })
+            if (overflow.length === 0) return null
+            return (
+              <div style={{ marginTop: 10, paddingTop: 8, borderTop: '1px dashed var(--border)' }}>
+                <div style={{ fontSize: 10, fontWeight: 600, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>
+                  Also proficient (outside profession's list)
+                </div>
+                <div style={{ fontSize: 11, color: 'var(--text2)' }}>
+                  {overflow.join(' · ')}
+                </div>
+              </div>
+            )
+          })()}
         </div>
       )}
     </div>
@@ -738,11 +901,14 @@ export default function CharacterSheet() {
     for (const listName of Object.keys(c.spell_lists || {})) {
       names.push(listName)
     }
-    // Generic spellcasting category knacks (always available regardless of known lists)
+    // Generic spellcasting category knacks (always available regardless of known lists).
+    // Per RMU there are 6 spellcasting categories — knack +5 applies to all lists
+    // in the selected category.
     names.push(
       'Spellcasting: Base',
       'Spellcasting: Open',
       'Spellcasting: Closed',
+      'Spellcasting: Arcane',
       'Spellcasting: Restricted',
       'Spellcasting: Magical Ritual',
     )
@@ -865,6 +1031,7 @@ export default function CharacterSheet() {
           />
         )}
         <KnacksSubPanel char={c} updateCharacter={updateCharacter} allSkillNames={allSkillNames} />
+        <ProfessionalSkillsSubPanel char={c} updateCharacter={updateCharacter} updateSkill={updateSkill} />
         <CTGroupsSubPanel char={c} updateCharacter={updateCharacter} />
       </Card>
 

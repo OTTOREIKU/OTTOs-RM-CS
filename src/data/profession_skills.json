@@ -1,0 +1,2245 @@
+{
+  "Druid": [
+    {
+      "skillCategory": "Animal",
+      "skillName": "Animal Handling",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Awareness",
+      "skillName": "Perception",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Awareness",
+      "skillName": "Tracking",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Woodcraft",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Environmental",
+      "skillName": "Navigation",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Environmental",
+      "skillName": "Survival",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Creature Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Region Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Magical Expertise",
+      "skillName": "Grace",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Medical",
+      "skillName": "Herbalism",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Power Manipulation",
+      "skillName": "Power Development",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Base",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Open",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Closed",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Subterfuge",
+      "skillName": "Concealment",
+      "defaultSelected": false
+    }
+  ],
+  "Laborer": [
+    {
+      "skillCategory": "Animal",
+      "skillName": "Animal Handling",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Brawn",
+      "skillName": "Body Development",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Brawn",
+      "skillName": "Weight Training",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Culinary",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Drawing/Painting",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Fabric Craft",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Leathercraft",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Metalcraft",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Stonecraft",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Woodcraft",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Environmental",
+      "skillName": "Piloting",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Movement",
+      "skillName": "Running",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Technical",
+      "skillName": "Mechanics",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Vocation",
+      "skillName": "Service",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Vocation",
+      "skillName": "Trade",
+      "defaultSelected": false
+    }
+  ],
+  "Warrior Monk": [
+    {
+      "skillCategory": "Battle Expertise",
+      "skillName": "Subduing",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Body Discipline",
+      "skillName": "Adrenal Defense",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Body Discipline",
+      "skillName": "Adrenal Speed",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Body Discipline",
+      "skillName": "Adrenal Strength",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Brawn",
+      "skillName": "Body Development",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Combat Expertise",
+      "skillName": "Blind Fighting",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Combat Expertise",
+      "skillName": "Multiple Attacks",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Combat Expertise",
+      "skillName": "Reverse Strike",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Combat Training",
+      "skillName": "Unarmed",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Gymnastic",
+      "skillName": "Acrobatics",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Gymnastic",
+      "skillName": "Jumping",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Mental Discipline",
+      "skillName": "Meditation",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Movement",
+      "skillName": "Climbing",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Movement",
+      "skillName": "Running",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Movement",
+      "skillName": "Swimming",
+      "defaultSelected": false
+    }
+  ],
+  "Monk": [
+    {
+      "skillCategory": "Awareness",
+      "skillName": "Perception",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Body Discipline",
+      "skillName": "Adrenal Defense",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Body Discipline",
+      "skillName": "Adrenal Focus",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Body Discipline",
+      "skillName": "Adrenal Speed",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Body Discipline",
+      "skillName": "Adrenal Strength",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Brawn",
+      "skillName": "Body Development",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Combat Expertise",
+      "skillName": "Multiple Attacks",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Combat Training",
+      "skillName": "Unarmed",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Gymnastic",
+      "skillName": "Acrobatics",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Gymnastic",
+      "skillName": "Jumping",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Mental Discipline",
+      "skillName": "Meditation",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Mental Discipline",
+      "skillName": "Mental Focus",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Movement",
+      "skillName": "Climbing",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Movement",
+      "skillName": "Running",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Movement",
+      "skillName": "Swimming",
+      "defaultSelected": false
+    }
+  ],
+  "Mystic": [
+    {
+      "skillCategory": "Awareness",
+      "skillName": "Perception",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Delving",
+      "skillName": "Attunement",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Spell Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Magical Expertise",
+      "skillName": "Grace",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Magical Expertise",
+      "skillName": "Spell Trickery",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Mental Discipline",
+      "skillName": "Meditation",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Mental Discipline",
+      "skillName": "Mental Focus",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Performance Art",
+      "skillName": "Acting",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Power Manipulation",
+      "skillName": "Directed Spell",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Power Manipulation",
+      "skillName": "Power Development",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Base",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Open",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Closed",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Subterfuge",
+      "skillName": "Stalking",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Subterfuge",
+      "skillName": "Trickery",
+      "defaultSelected": false
+    }
+  ],
+  "Rogue": [
+    {
+      "skillCategory": "Animal",
+      "skillName": "Riding",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Awareness",
+      "skillName": "Perception",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Battle Expertise",
+      "skillName": "Maneuvering in Armor",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Battle Expertise",
+      "skillName": "Restricted Quarters",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Brawn",
+      "skillName": "Body Development",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Combat Expertise",
+      "skillName": "Blind Fighting",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Combat Training",
+      "skillName": "Melee Weapons",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Combat Training",
+      "skillName": "Ranged Weapons",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Environmental",
+      "skillName": "Survival",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Gymnastic",
+      "skillName": "Jumping",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Medical",
+      "skillName": "Poison Mastery",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Movement",
+      "skillName": "Climbing",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Movement",
+      "skillName": "Running",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Subterfuge",
+      "skillName": "Ambush",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Subterfuge",
+      "skillName": "Stalking",
+      "defaultSelected": false
+    }
+  ],
+  "Fighter": [
+    {
+      "skillCategory": "Animal",
+      "skillName": "Riding",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Battle Expertise",
+      "skillName": "Maneuvering in Armor",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Battle Expertise",
+      "skillName": "Mounted Combat",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Battle Expertise",
+      "skillName": "Protect",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Brawn",
+      "skillName": "Body Development",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Brawn",
+      "skillName": "Fortitude",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Brawn",
+      "skillName": "Weight Training",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Combat Expertise",
+      "skillName": "Disarm",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Combat Expertise",
+      "skillName": "Multiple Attacks",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Combat Training",
+      "skillName": "Melee Weapons",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Combat Training",
+      "skillName": "Ranged Weapons",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Combat Training",
+      "skillName": "Shield",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Metalcraft",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Movement",
+      "skillName": "Running",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Social",
+      "skillName": "Leadership",
+      "defaultSelected": false
+    }
+  ],
+  "Sorcerer": [
+    {
+      "skillCategory": "Delving",
+      "skillName": "Attunement",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Delving",
+      "skillName": "Runes",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Creature Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Materials Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Spell Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Magical Expertise",
+      "skillName": "Grace",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Power Manipulation",
+      "skillName": "Channeling",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Power Manipulation",
+      "skillName": "Directed Spell",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Power Manipulation",
+      "skillName": "Power Development",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Science",
+      "skillName": "Architecture",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Science",
+      "skillName": "Engineering",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Base",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Open",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Closed",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Magical Ritual",
+      "defaultSelected": false
+    }
+  ],
+  "Bard": [
+    {
+      "skillCategory": "Composition",
+      "skillName": "Musical Composition",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Delving",
+      "skillName": "Attunement",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Historic Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Language",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Racial Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Region Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Religion/Philosophy",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Spell Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Magical Expertise",
+      "skillName": "Spell Trickery",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Movement",
+      "skillName": "Running",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Performance Art",
+      "skillName": "Acting",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Performance Art",
+      "skillName": "Music",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Social",
+      "skillName": "Influence",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Social",
+      "skillName": "Social Awareness",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Social",
+      "skillName": "Trading",
+      "defaultSelected": false
+    }
+  ],
+  "Thief": [
+    {
+      "skillCategory": "Awareness",
+      "skillName": "Perception",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Combat Training",
+      "skillName": "Melee Weapons",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Combat Training",
+      "skillName": "Ranged Weapons",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Gymnastic",
+      "skillName": "Acrobatics",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Gymnastic",
+      "skillName": "Contortions",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Movement",
+      "skillName": "Climbing",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Movement",
+      "skillName": "Running",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Social",
+      "skillName": "Influence",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Social",
+      "skillName": "Social Awareness",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Social",
+      "skillName": "Trading",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Subterfuge",
+      "skillName": "Concealment",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Subterfuge",
+      "skillName": "Stalking",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Subterfuge",
+      "skillName": "Trickery",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Technical",
+      "skillName": "Locks",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Technical",
+      "skillName": "Traps",
+      "defaultSelected": false
+    }
+  ],
+  "Dabbler": [
+    {
+      "skillCategory": "Awareness",
+      "skillName": "Perception",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Metalcraft",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Delving",
+      "skillName": "Attunement",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Spell Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Movement",
+      "skillName": "Climbing",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Movement",
+      "skillName": "Running",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Science",
+      "skillName": "Architecture",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Science",
+      "skillName": "Engineering",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Social",
+      "skillName": "Influence",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Social",
+      "skillName": "Trading",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Subterfuge",
+      "skillName": "Concealment",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Subterfuge",
+      "skillName": "Stalking",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Technical",
+      "skillName": "Locks",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Technical",
+      "skillName": "Mechanics",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Technical",
+      "skillName": "Traps",
+      "defaultSelected": false
+    }
+  ],
+  "Mentalist": [
+    {
+      "skillCategory": "Delving",
+      "skillName": "Attunement",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Language",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Racial Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Magical Expertise",
+      "skillName": "Grace",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Mental Discipline",
+      "skillName": "Meditation",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Mental Discipline",
+      "skillName": "Mental Focus",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Power Manipulation",
+      "skillName": "Power Development",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Social",
+      "skillName": "Influence",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Social",
+      "skillName": "Leadership",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Social",
+      "skillName": "Social Awareness",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Base",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Open",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Closed",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Magical Ritual",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Vocation",
+      "skillName": "Administration",
+      "defaultSelected": false
+    }
+  ],
+  "Paladin": [
+    {
+      "skillCategory": "Animal",
+      "skillName": "Riding",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Battle Expertise",
+      "skillName": "Maneuvering in Armor",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Battle Expertise",
+      "skillName": "Mounted Combat",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Battle Expertise",
+      "skillName": "Protect",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Brawn",
+      "skillName": "Body Development",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Combat Training",
+      "skillName": "Melee Weapons",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Combat Training",
+      "skillName": "Shield",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Metalcraft",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Religion/Philosophy",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Magical Expertise",
+      "skillName": "Transcendence",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Mental Discipline",
+      "skillName": "Mental Focus",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Movement",
+      "skillName": "Running",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Power Manipulation",
+      "skillName": "Channeling",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Social",
+      "skillName": "Influence",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Social",
+      "skillName": "Leadership",
+      "defaultSelected": false
+    }
+  ],
+  "Seer": [
+    {
+      "skillCategory": "Awareness",
+      "skillName": "Perception",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Delving",
+      "skillName": "Attunement",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Historic Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Language",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Region Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Spell Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Magical Expertise",
+      "skillName": "Grace",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Mental Discipline",
+      "skillName": "Meditation",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Mental Discipline",
+      "skillName": "Mental Focus",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Power Manipulation",
+      "skillName": "Power Development",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Social",
+      "skillName": "Social Awareness",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Base",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Open",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Closed",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Magical Ritual",
+      "defaultSelected": false
+    }
+  ],
+  "Scholar": [
+    {
+      "skillCategory": "Composition",
+      "skillName": "Writing",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Creature Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Historic Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Language",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Materials Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Racial Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Region Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Religion/Philosophy",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Science",
+      "skillName": "Architecture",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Science",
+      "skillName": "Astronomy",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Science",
+      "skillName": "Engineering",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Science",
+      "skillName": "Mathematics",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Vocation",
+      "skillName": "Administration",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Vocation",
+      "skillName": "Service",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Vocation",
+      "skillName": "Trade",
+      "defaultSelected": false
+    }
+  ],
+  "Astrologer": [
+    {
+      "skillCategory": "Delving",
+      "skillName": "Attunement",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Environmental",
+      "skillName": "Navigation",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Language",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Religion/Philosophy",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Spell Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Magical Expertise",
+      "skillName": "Grace",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Mental Discipline",
+      "skillName": "Meditation",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Mental Discipline",
+      "skillName": "Mental Focus",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Power Manipulation",
+      "skillName": "Power Development",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Power Manipulation",
+      "skillName": "Channeling",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Science",
+      "skillName": "Astronomy",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Base",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Open",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Closed",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Magical Ritual",
+      "defaultSelected": false
+    }
+  ],
+  "Magician": [
+    {
+      "skillCategory": "Delving",
+      "skillName": "Attunement",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Delving",
+      "skillName": "Runes",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Spell Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Magical Expertise",
+      "skillName": "Grace",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Power Manipulation",
+      "skillName": "Directed Spell",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Power Manipulation",
+      "skillName": "Power Development",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Power Manipulation",
+      "skillName": "Power Projection",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Science",
+      "skillName": "Architecture",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Science",
+      "skillName": "Astronomy",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Science",
+      "skillName": "Engineering",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Science",
+      "skillName": "Mathematics",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Base",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Open",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Closed",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Magical Ritual",
+      "defaultSelected": false
+    }
+  ],
+  "Illusionist": [
+    {
+      "skillCategory": "Awareness",
+      "skillName": "Perception",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Composition",
+      "skillName": "Illusion Crafting",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Drawing/Painting",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Delving",
+      "skillName": "Attunement",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Spell Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Magical Expertise",
+      "skillName": "Grace",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Magical Expertise",
+      "skillName": "Spell Trickery",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Performance Art",
+      "skillName": "Acting",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Performance Art",
+      "skillName": "Music",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Performance Art",
+      "skillName": "Stage Magic",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Power Manipulation",
+      "skillName": "Power Development",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Base",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Open",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Closed",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Subterfuge",
+      "skillName": "Trickery",
+      "defaultSelected": false
+    }
+  ],
+  "Healer": [
+    {
+      "skillCategory": "Brawn",
+      "skillName": "Body Development",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Delving",
+      "skillName": "Attunement",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Racial Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Magical Expertise",
+      "skillName": "Grace",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Medical",
+      "skillName": "Herbalism",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Medical",
+      "skillName": "Medicine",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Mental Discipline",
+      "skillName": "Meditation",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Mental Discipline",
+      "skillName": "Mental Focus",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Power Manipulation",
+      "skillName": "Channeling",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Power Manipulation",
+      "skillName": "Power Development",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Social",
+      "skillName": "Social Awareness",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Base",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Open",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Closed",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Magical Ritual",
+      "defaultSelected": false
+    }
+  ],
+  "Magent": [
+    {
+      "skillCategory": "Awareness",
+      "skillName": "Perception",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Combat Training",
+      "skillName": "Melee Weapons",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Combat Training",
+      "skillName": "Ranged Weapons",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Gymnastic",
+      "skillName": "Acrobatics",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Gymnastic",
+      "skillName": "Contortions",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Gymnastic",
+      "skillName": "Jumping",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Medical",
+      "skillName": "Poison Mastery",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Mental Discipline",
+      "skillName": "Mental Focus",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Movement",
+      "skillName": "Climbing",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Movement",
+      "skillName": "Running",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Movement",
+      "skillName": "Swimming",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Subterfuge",
+      "skillName": "Ambush",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Subterfuge",
+      "skillName": "Concealment",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Subterfuge",
+      "skillName": "Stalking",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Subterfuge",
+      "skillName": "Trickery",
+      "defaultSelected": false
+    }
+  ],
+  "Ranger": [
+    {
+      "skillCategory": "Animal",
+      "skillName": "Animal Handling",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Animal",
+      "skillName": "Riding",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Awareness",
+      "skillName": "Perception",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Awareness",
+      "skillName": "Tracking",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Combat Training",
+      "skillName": "Melee Weapons",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Combat Training",
+      "skillName": "Ranged Weapons",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Environmental",
+      "skillName": "Navigation",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Environmental",
+      "skillName": "Survival",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Creature Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Region Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Movement",
+      "skillName": "Climbing",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Movement",
+      "skillName": "Running",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Movement",
+      "skillName": "Swimming",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Subterfuge",
+      "skillName": "Concealment",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Subterfuge",
+      "skillName": "Stalking",
+      "defaultSelected": false
+    }
+  ],
+  "No Profession": [
+    {
+      "skillCategory": "Animal",
+      "skillName": "Animal Handling",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Animal",
+      "skillName": "Riding",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Awareness",
+      "skillName": "Perception",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Awareness",
+      "skillName": "Tracking",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Battle Expertise",
+      "skillName": "Maneuvering in Armor",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Battle Expertise",
+      "skillName": "Mounted Combat",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Battle Expertise",
+      "skillName": "Protect",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Battle Expertise",
+      "skillName": "Restricted Quarters",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Battle Expertise",
+      "skillName": "Subduing",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Body Discipline",
+      "skillName": "Adrenal Defense",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Body Discipline",
+      "skillName": "Adrenal Focus",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Body Discipline",
+      "skillName": "Adrenal Speed",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Body Discipline",
+      "skillName": "Adrenal Strength",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Brawn",
+      "skillName": "Body Development",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Brawn",
+      "skillName": "Fortitude",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Brawn",
+      "skillName": "Weight Training",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Combat Expertise",
+      "skillName": "Blind Fighting",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Combat Expertise",
+      "skillName": "Disarm",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Combat Expertise",
+      "skillName": "Footwork",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Combat Expertise",
+      "skillName": "Multiple Attacks",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Combat Expertise",
+      "skillName": "Reverse Strike",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Combat Training",
+      "skillName": "Melee Weapons",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Combat Training",
+      "skillName": "Ranged Weapons",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Combat Training",
+      "skillName": "Shield",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Combat Training",
+      "skillName": "Unarmed",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Composition",
+      "skillName": "Illusion Crafting",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Composition",
+      "skillName": "Musical Composition",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Composition",
+      "skillName": "Writing",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Culinary",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Drawing/Painting",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Fabric Craft",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Leathercraft",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Metalcraft",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Stonecraft",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Woodcraft",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Delving",
+      "skillName": "Attunement",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Delving",
+      "skillName": "Runes",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Environmental",
+      "skillName": "Navigation",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Environmental",
+      "skillName": "Piloting",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Environmental",
+      "skillName": "Survival",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Gymnastic",
+      "skillName": "Acrobatics",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Gymnastic",
+      "skillName": "Contortions",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Gymnastic",
+      "skillName": "Jumping",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Creature Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Historic Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Language",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Materials Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Racial Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Region Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Religion/Philosophy",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Spell Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Magical Expertise",
+      "skillName": "Grace",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Magical Expertise",
+      "skillName": "Spell Trickery",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Magical Expertise",
+      "skillName": "Transcendence",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Medical",
+      "skillName": "Herbalism",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Medical",
+      "skillName": "Medicine",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Medical",
+      "skillName": "Poison Mastery",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Mental Discipline",
+      "skillName": "Control Lycanthropy",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Mental Discipline",
+      "skillName": "Meditation",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Mental Discipline",
+      "skillName": "Mental Focus",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Movement",
+      "skillName": "Climbing",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Movement",
+      "skillName": "Flying",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Movement",
+      "skillName": "Running",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Movement",
+      "skillName": "Swimming",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Performance Art",
+      "skillName": "Acting",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Performance Art",
+      "skillName": "Music",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Performance Art",
+      "skillName": "Stage Magic",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Power Manipulation",
+      "skillName": "Channeling",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Power Manipulation",
+      "skillName": "Directed Spell",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Power Manipulation",
+      "skillName": "Power Development",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Power Manipulation",
+      "skillName": "Power Projection",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Science",
+      "skillName": "Architecture",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Science",
+      "skillName": "Astronomy",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Science",
+      "skillName": "Engineering",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Science",
+      "skillName": "Mathematics",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Social",
+      "skillName": "Influence",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Social",
+      "skillName": "Leadership",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Social",
+      "skillName": "Social Awareness",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Social",
+      "skillName": "Trading",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Arcane",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Base",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Open",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Closed",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Magical Ritual",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Subterfuge",
+      "skillName": "Ambush",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Subterfuge",
+      "skillName": "Concealment",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Subterfuge",
+      "skillName": "Stalking",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Subterfuge",
+      "skillName": "Trickery",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Technical",
+      "skillName": "Locks",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Technical",
+      "skillName": "Mechanics",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Technical",
+      "skillName": "Traps",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Vocation",
+      "skillName": "Administration",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Vocation",
+      "skillName": "Service",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Vocation",
+      "skillName": "Trade",
+      "defaultSelected": false
+    }
+  ],
+  "Lay Healer": [
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Fabric Craft",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Woodcraft",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Delving",
+      "skillName": "Attunement",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Racial Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Magical Expertise",
+      "skillName": "Grace",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Medical",
+      "skillName": "Herbalism",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Medical",
+      "skillName": "Medicine",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Mental Discipline",
+      "skillName": "Mental Focus",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Power Manipulation",
+      "skillName": "Power Development",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Social",
+      "skillName": "Influence",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Social",
+      "skillName": "Social Awareness",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Base",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Open",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Closed",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Magical Ritual",
+      "defaultSelected": false
+    }
+  ],
+  "Cleric": [
+    {
+      "skillCategory": "Delving",
+      "skillName": "Attunement",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Religion/Philosophy",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Spell Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Magical Expertise",
+      "skillName": "Grace",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Medical",
+      "skillName": "Medicine",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Mental Discipline",
+      "skillName": "Meditation",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Power Manipulation",
+      "skillName": "Channeling",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Power Manipulation",
+      "skillName": "Power Development",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Science",
+      "skillName": "Astronomy",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Social",
+      "skillName": "Influence",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Social",
+      "skillName": "Leadership",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Base",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Open",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Closed",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Magical Ritual",
+      "defaultSelected": false
+    }
+  ]
+}
