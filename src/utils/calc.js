@@ -355,10 +355,25 @@ export function getSpellMasteryBonus(char, listName) {
   return rb + rsB * 2 + meB + item + profB + talentSpell + customTalent + namedTalent + compB + knackB
 }
 
+// RMU CreatureSize.hitMultiplier table from systems/rmu/module/rmu/size.js.
+// Values are percentages — 100 = Medium baseline.
+const SIZE_HIT_MULT = {
+  Minuscule:  0.25, Diminutive: 0.50, Tiny:       0.67,
+  Small:      0.75, Medium:     1.00, Big:        1.50,
+  Large:      2.00, Huge:       3.00, Gigantic:   4.00,
+  Enormous:   5.00, Immense:    6.00, Behemoth:   7.00, Leviathan: 8.00,
+}
+
+function getSizeHitMultiplier(char) {
+  const raceEntry = racesData.find(r => r.name === char.race)
+  // Prefer the character's own appearance.size override if set
+  const sizeName = char.size || raceEntry?.frame?.size || 'Medium'
+  return SIZE_HIT_MULT[sizeName] ?? 1.0
+}
+
 export function getBaseHits(char) {
-  // HP = Race base_hits + Body Development skill bonus
-  // Brawn category stats: Co + SD (summed); Body Dev individual stat: Co
-  // Total stat contribution = coBonus + sdBonus + coBonus  →  2×Co + SD
+  // RMU: Base Hits = (race base + full Body-Development skill bonus) × size mult
+  // BD skill bonus already includes Brawn category stats: cat=[Co,SD] + skill.stat=Co → 2×Co + SD
   const raceEntry  = racesData.find(r => r.name === char.race)
   const racialBase = raceEntry?.base_hits ?? 25
   const co = char.stats?.Constitution
@@ -373,7 +388,9 @@ export function getBaseHits(char) {
   const talentB   = bdSkill.talent_bonus ?? 0
   const profB     = bdSkill.proficient ? Math.min(bdRanks, 30) : 0
   const talentHits = getTalentBonuses(char).hits
-  return racialBase + rb + statBonus + itemB + talentB + profB + talentHits
+  const sizeMult  = getSizeHitMultiplier(char)
+  const raw       = racialBase + rb + statBonus + itemB + talentB + profB + talentHits
+  return Math.max(1, Math.floor(raw * sizeMult))
 }
 
 export function getEndurance(char) {

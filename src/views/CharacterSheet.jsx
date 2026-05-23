@@ -781,7 +781,10 @@ export default function CharacterSheet() {
   const armorParts  = c.armor_parts || {}
   const shield      = armorParts.shield || {}
   const shieldDB    = SHIELD_DB[shield.type] ?? 0
-  const totalDB     = db + shieldDB + (shield.db ?? 0)
+  // Sum per-part magical/special DB bonuses from armor pieces (torso/head/arms/legs).
+  // These come from magical armor (e.g., +5 plate breastplate) and stack with shield + Qu DB.
+  const armorPartDB = ['torso','head','arms','legs'].reduce((sum, part) => sum + (armorParts[part]?.db ?? 0), 0)
+  const totalDB     = db + shieldDB + (shield.db ?? 0) + armorPartDB
 
   function getArmorPenalty(part) {
     const section = ARMOR_SECTION_MAP[part]
