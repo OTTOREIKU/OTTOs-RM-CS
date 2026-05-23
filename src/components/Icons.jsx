@@ -228,6 +228,16 @@ export function BarChartIcon({ size, color }) {
   )
 }
 
+// 2-column outlined rectangle — represents the workspace / split-pane layout.
+export function LayoutIcon({ size, color }) {
+  return (
+    <Icon size={size} color={color}>
+      <rect x="3" y="4" width="18" height="16" rx="1.5" />
+      <line x1="12" y1="4" x2="12" y2="20" />
+    </Icon>
+  )
+}
+
 export function ZapIcon({ size, color }) {
   return (
     <Icon size={size} color={color}>

@@ -11,7 +11,7 @@ import {
 } from '../store/fileSync.js'
 import {
   SwordsIcon, ChevronDownIcon, XIcon, SaveIcon,
-  UserIcon, BarChartIcon, ZapIcon, PackageIcon, BookOpenIcon, TrendingUpIcon, BookIcon,
+  UserIcon, BarChartIcon, ZapIcon, PackageIcon, BookOpenIcon, TrendingUpIcon, BookIcon, LayoutIcon,
 } from './Icons.jsx'
 import { loadNavPos } from '../store/theme.js'
 
@@ -23,6 +23,7 @@ const NAV = [
   { to: '/notebook',  label: 'Notes',    Icon: BookOpenIcon   },
   { to: '/levelup',   label: 'Level Up', Icon: TrendingUpIcon },
   { to: '/reference', label: 'Ref',      Icon: BookIcon       },
+  { to: '/workspace', label: 'Tiled',    Icon: LayoutIcon     },
 ]
 
 export default function Shell({ children }) {

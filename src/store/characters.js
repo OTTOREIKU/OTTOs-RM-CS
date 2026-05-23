@@ -129,6 +129,15 @@ export function makeBlankCharacter(id) {
     // Stored as resolved display names (e.g. "Melee: Dagger", "Perception").
     knacks: [],
 
+    // Workspace (multi-pane tiling) layout, per character.
+    // null = default single-pane (just show whatever view the URL says).
+    // Otherwise: { rows: [{ size, panes: [{ view, size }] }] }
+    //   - `rows` is the vertical split (top→bottom). Each row contains horizontal panes.
+    //   - `view` is one of the route paths without the leading slash: 'sheet', 'skills',
+    //     'spells', 'gear', 'notebook', 'levelup', 'reference'.
+    //   - `size` is the % share within its container.
+    workspace_layout: null,
+
     // Combat Training DP cost group assignment (CoreLaw §3.X):
     // Player assigns which tier cost (1–4) applies to each training group.
     // Each tier should be unique; defaults spread 1–4 evenly across groups.
