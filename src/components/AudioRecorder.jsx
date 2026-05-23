@@ -17,8 +17,18 @@ import {
   saveSession, getAllSessions, deleteSession, updateSessionLabel,
   addSessionMarker, removeSessionMarker, downloadSession,
 } from '../store/audioStorage.js'
+import {
+  isFolderReady, listFolderSessions, loadSessionBlob,
+  saveSessionToFolder, renameSessionInFolder, updateSessionMarkersInFolder,
+  deleteSessionFromFolder, importFileToFolder,
+} from '../store/audioFolderStore.js'
+import {
+  DIR_SYNC_SUPPORTED,
+  getLinkedDirHandle, getLinkedDirName, clearLinkedDirHandle,
+  hasDirWritePermission, requestDirWritePermission, pickRMUCplusFolder,
+} from '../store/fileSync.js'
 import { useCharacter } from '../store/CharacterContext.jsx'
-import { ChevronDownIcon, ChevronRightIcon, XIcon, TrashIcon, PencilIcon, GearIcon } from './Icons.jsx'
+import { ChevronDownIcon, ChevronRightIcon, XIcon, TrashIcon, PencilIcon, GearIcon, FolderIcon } from './Icons.jsx'
 
 // Persisted across app reloads — encoding settings are environment-specific,
 // not per-character, so they live in localStorage.
@@ -131,6 +141,11 @@ export default function AudioRecorder({ onStateChange, inSidebar = false }) {
   const [bookmarkLabelDraft, setBookmarkLabelDraft] = useState('')
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [settings, setSettings] = useState(() => loadSettings())
+  // Folder state
+  const [folderReady,       setFolderReady]       = useState(false)
+  const [folderName,        setFolderName]        = useState(null)
+  const [needsPermission,   setNeedsPermission]   = useState(false)
+  const [setupPromptOpen,   setSetupPromptOpen]   = useState(false)
   // Active mime/bitrate (settings > recommended default)
   const activeMime = settings.mime || rec.supportedMime
   const activeBitRate = settings.bitsPerSecond || rec.defaultBitRate
@@ -140,17 +155,43 @@ export default function AudioRecorder({ onStateChange, inSidebar = false }) {
     if (onStateChange) onStateChange(rec.state)
   }, [rec.state, onStateChange])
 
-  // Reload sessions list on mount + after each save/delete
+  // Check folder linkage on mount. Three outcomes:
+  //   - Folder linked + permission granted → use folder backend
+  //   - Folder linked but permission revoked (e.g. page reload) → show "Reconnect" prompt
+  //   - No folder linked → show first-time setup prompt
+  const checkFolder = useCallback(async () => {
+    if (!DIR_SYNC_SUPPORTED) {
+      setFolderReady(false); setNeedsPermission(false); setFolderName(null); return
+    }
+    const root = await getLinkedDirHandle()
+    if (!root) {
+      setFolderReady(false); setNeedsPermission(false); setFolderName(null)
+      setSetupPromptOpen(true)   // first-time prompt
+      return
+    }
+    setFolderName(root.name)
+    const ok = await hasDirWritePermission(root)
+    setFolderReady(ok)
+    setNeedsPermission(!ok)
+  }, [])
+
+  // Reload sessions list — chooses folder backend when ready, IDB otherwise
   const reload = useCallback(async () => {
     try {
-      const all = await getAllSessions()
-      setSessions(all)
+      if (await isFolderReady()) {
+        const all = await listFolderSessions()
+        setSessions(all)
+      } else {
+        const all = await getAllSessions()
+        setSessions(all)
+      }
     } catch (e) {
       console.error('audio reload failed:', e)
     }
   }, [])
 
-  useEffect(() => { reload() }, [reload])
+  useEffect(() => { checkFolder() }, [checkFolder])
+  useEffect(() => { reload() }, [reload, folderReady])
 
   // ── Start / Stop wiring ─────────────────────────────────────────────────
   const handleStart = async () => {
@@ -189,13 +230,21 @@ export default function AudioRecorder({ onStateChange, inSidebar = false }) {
       markers: [...bookmarks],
     }
     try {
-      await saveSession(session)
-      downloadSession(session)             // ← triggers browser save prompt
+      if (await isFolderReady()) {
+        // Folder mode: write straight to disk via the linked folder, no
+        // download prompt. The sidecar JSON gets written automatically.
+        await saveSessionToFolder(session)
+      } else {
+        // Fallback mode: IndexedDB + auto-download (legacy behavior)
+        await saveSession(session)
+        downloadSession(session)
+      }
       setBookmarks([])
       await reload()
     } catch (e) {
       console.error('saveSession failed:', e)
-      // Still try to download so the user doesn't lose the recording
+      // Last-ditch fallback: at least trigger a download so the user doesn't
+      // lose the recording, even if folder writes are failing.
       downloadSession(session)
       setBookmarks([])
     }
@@ -210,34 +259,77 @@ export default function AudioRecorder({ onStateChange, inSidebar = false }) {
   }
 
   // Import an external audio file (someone sent you a recording, etc).
-  // Detects duration via a hidden <audio> element, then saves to IndexedDB as
-  // a regular session. Imported files are NOT modified — the original blob is
-  // stored exactly as imported. Filename becomes the default label.
+  // Detects duration via a hidden <audio> element. Saves to the linked folder
+  // when available; otherwise falls back to IndexedDB.
   const handleImport = async (file) => {
     if (!file) return
     try {
       const durationMs = await detectAudioDuration(file)
-      const id = `audio_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`
-      const session = {
-        id,
-        characterId: activeChar?.id || null,
-        label:       file.name.replace(/\.[^.]+$/, '') || 'Imported audio',
-        startedAt:   Date.now(),
-        endedAt:     Date.now(),
-        durationMs,
-        mimeType:    file.type || 'audio/unknown',
-        bitRate:     0,
-        deviceLabel: 'imported',
-        blob:        file,
-        markers:     [],
-        imported:    true,
+      const label = file.name.replace(/\.[^.]+$/, '') || 'Imported audio'
+
+      if (await isFolderReady()) {
+        await importFileToFolder(file, {
+          label,
+          characterId: activeChar?.id || null,
+          durationMs,
+          startedAt: file.lastModified || Date.now(),
+          endedAt:   file.lastModified || Date.now(),
+          deviceLabel: 'imported',
+        })
+      } else {
+        const id = `audio_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`
+        const session = {
+          id,
+          characterId: activeChar?.id || null,
+          label,
+          startedAt:   Date.now(),
+          endedAt:     Date.now(),
+          durationMs,
+          mimeType:    file.type || 'audio/unknown',
+          bitRate:     0,
+          deviceLabel: 'imported',
+          blob:        file,
+          markers:     [],
+          imported:    true,
+        }
+        await saveSession(session)
       }
-      await saveSession(session)
       await reload()
     } catch (e) {
       console.error('Import failed:', e)
       alert('Could not import that file: ' + (e.message || 'unknown error'))
     }
+  }
+
+  // ── Folder linkage actions ─────────────────────────────────────────────
+  const handleLinkFolder = async () => {
+    try {
+      const root = await pickRMUCplusFolder()
+      if (!root) return    // user cancelled
+      setSetupPromptOpen(false)
+      await checkFolder()
+      await reload()
+    } catch (e) {
+      console.error('Folder link failed:', e)
+      alert('Could not link folder: ' + (e.message || 'unknown error'))
+    }
+  }
+  const handleReconnectFolder = async () => {
+    const root = await getLinkedDirHandle()
+    if (!root) { setSetupPromptOpen(true); return }
+    const ok = await requestDirWritePermission(root)
+    setFolderReady(ok)
+    setNeedsPermission(!ok)
+    if (ok) await reload()
+  }
+  const handleUnlinkFolder = async () => {
+    if (!confirm('Unlink the RMUCplus folder? The files on disk stay where they are; the app just stops auto-saving there.')) return
+    await clearLinkedDirHandle()
+    setFolderReady(false)
+    setFolderName(null)
+    setNeedsPermission(false)
+    setSetupPromptOpen(false)
+    await reload()
   }
 
   const recording = rec.state === 'recording'
@@ -273,6 +365,23 @@ export default function AudioRecorder({ onStateChange, inSidebar = false }) {
           gap: 10,
           ...(inSidebar ? { flex: 1, overflowY: 'auto', minHeight: 0 } : {}),
         }}>
+          {/* First-time folder setup prompt */}
+          {setupPromptOpen && DIR_SYNC_SUPPORTED && (
+            <SetupPrompt
+              onLink={handleLinkFolder}
+              onSkip={() => setSetupPromptOpen(false)}
+            />
+          )}
+
+          {/* Permission-revoked prompt (page reloaded, need re-grant) */}
+          {needsPermission && !setupPromptOpen && (
+            <PermissionPrompt
+              folderName={folderName}
+              onReconnect={handleReconnectFolder}
+              onUnlink={handleUnlinkFolder}
+            />
+          )}
+
           <RecordingControls
             rec={rec}
             active={active}
@@ -292,6 +401,7 @@ export default function AudioRecorder({ onStateChange, inSidebar = false }) {
             <SessionsList
               sessions={sessions}
               onChange={reload}
+              folderReady={folderReady}
             />
           )}
           <div style={{ height: 10 }} />
@@ -311,6 +421,12 @@ export default function AudioRecorder({ onStateChange, inSidebar = false }) {
         <SettingsPanel
           settings={settings}
           rec={rec}
+          folderReady={folderReady}
+          folderName={folderName}
+          needsPermission={needsPermission}
+          onLinkFolder={handleLinkFolder}
+          onReconnectFolder={handleReconnectFolder}
+          onUnlinkFolder={handleUnlinkFolder}
           onSave={(next) => { setSettings(next); saveSettings(next); setSettingsOpen(false) }}
           onClose={() => setSettingsOpen(false)}
         />
@@ -635,7 +751,11 @@ function DevicePicker({ rec, disabled }) {
 }
 
 // ── Settings panel (codec / bitrate / channels / processing toggles) ──────
-function SettingsPanel({ settings, rec, onSave, onClose }) {
+function SettingsPanel({
+  settings, rec, folderReady, folderName, needsPermission,
+  onLinkFolder, onReconnectFolder, onUnlinkFolder,
+  onSave, onClose,
+}) {
   const [draft, setDraft] = useState({
     mime:          settings.mime          ?? rec.supportedMime,
     bitsPerSecond: settings.bitsPerSecond ?? rec.defaultBitRate,
@@ -680,35 +800,96 @@ function SettingsPanel({ settings, rec, onSave, onClose }) {
           </button>
         </div>
 
-        <div style={{ padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 10, fontSize: 12 }}>
-          <SettingRow label="Codec / Container">
-            <select
-              value={draft.mime || ''}
-              onChange={(e) => setDraft(d => ({ ...d, mime: e.target.value }))}
-              style={selectStyle}
-            >
-              {supportedCodecs.map(c => (
-                <option key={c.mime} value={c.mime}>{c.label}</option>
-              ))}
-            </select>
-          </SettingRow>
+        <div style={{ padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 14, fontSize: 12 }}>
 
-          <SettingRow label="Bitrate">
-            <select
-              value={draft.bitsPerSecond}
-              onChange={(e) => setDraft(d => ({ ...d, bitsPerSecond: parseInt(e.target.value, 10) }))}
-              style={selectStyle}
-            >
-              {BITRATE_CHOICES.map(b => (
-                <option key={b.value} value={b.value}>{b.label}</option>
-              ))}
-            </select>
-          </SettingRow>
+          {/* Folder linkage section */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            <div style={{ fontWeight: 700, color: 'var(--text)', fontSize: 12, display: 'flex', alignItems: 'center', gap: 6 }}>
+              <FolderIcon size={13} color="currentColor" /> RMUCplus Folder
+            </div>
+            {!DIR_SYNC_SUPPORTED ? (
+              <div style={{ fontSize: 11, color: 'var(--text3)', lineHeight: 1.5 }}>
+                Your browser doesn't support the File System Access API. Use Chrome, Edge, or Opera
+                on desktop to link a folder. (Firefox and Safari fall back to download prompts.)
+              </div>
+            ) : folderReady ? (
+              <>
+                <div style={{ fontSize: 11, color: 'var(--text2)' }}>
+                  Linked: <strong style={{ color: 'var(--accent)' }}>{folderName}</strong>
+                  <span style={{ color: 'var(--success)', marginLeft: 6 }}>· active</span>
+                </div>
+                <div style={{ fontSize: 10, color: 'var(--text3)' }}>
+                  Recordings + bookmarks save directly to <code>{folderName}/Audio Recordings/</code> and{' '}
+                  <code>{folderName}/Audio Bookmarks/</code>.
+                </div>
+                <div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
+                  <button onClick={onLinkFolder} style={btnStyle('var(--surface2)', 'var(--text)')}>
+                    Change folder
+                  </button>
+                  <button onClick={onUnlinkFolder} style={btnStyle('transparent', 'var(--text3)')}>
+                    Unlink
+                  </button>
+                </div>
+              </>
+            ) : needsPermission ? (
+              <>
+                <div style={{ fontSize: 11, color: 'var(--text2)' }}>
+                  Linked: <strong>{folderName}</strong>
+                  <span style={{ color: 'var(--warning, #c2410c)', marginLeft: 6 }}>· permission needed</span>
+                </div>
+                <div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
+                  <button onClick={onReconnectFolder} style={btnStyle('var(--accent)', '#fff', true)}>
+                    Reconnect
+                  </button>
+                  <button onClick={onUnlinkFolder} style={btnStyle('transparent', 'var(--text3)')}>
+                    Unlink
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <div style={{ fontSize: 11, color: 'var(--text3)', lineHeight: 1.5 }}>
+                  No folder linked. Recordings save to browser storage + download on Stop.
+                </div>
+                <button onClick={onLinkFolder} style={{ ...btnStyle('var(--accent)', '#fff', true), alignSelf: 'flex-start', marginTop: 4 }}>
+                  Choose folder
+                </button>
+              </>
+            )}
+          </div>
 
-          <div style={{ fontSize: 10, color: 'var(--text3)', marginTop: 4 }}>
-            Channels, sample rate, and processing flags are fixed at 2-channel / 48 kHz / no
-            echo-cancellation, noise-suppression, or AGC — best for preserving game-session ambiance.
-            Recording quality settings only apply to the NEXT session you start.
+          {/* Encoding section */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8, borderTop: '1px solid var(--border)', paddingTop: 12 }}>
+            <div style={{ fontWeight: 700, color: 'var(--text)', fontSize: 12 }}>Encoding</div>
+            <SettingRow label="Codec / Container">
+              <select
+                value={draft.mime || ''}
+                onChange={(e) => setDraft(d => ({ ...d, mime: e.target.value }))}
+                style={selectStyle}
+              >
+                {supportedCodecs.map(c => (
+                  <option key={c.mime} value={c.mime}>{c.label}</option>
+                ))}
+              </select>
+            </SettingRow>
+
+            <SettingRow label="Bitrate">
+              <select
+                value={draft.bitsPerSecond}
+                onChange={(e) => setDraft(d => ({ ...d, bitsPerSecond: parseInt(e.target.value, 10) }))}
+                style={selectStyle}
+              >
+                {BITRATE_CHOICES.map(b => (
+                  <option key={b.value} value={b.value}>{b.label}</option>
+                ))}
+              </select>
+            </SettingRow>
+
+            <div style={{ fontSize: 10, color: 'var(--text3)', marginTop: 4 }}>
+              Channels, sample rate, and processing flags are fixed at 2-channel / 48 kHz / no
+              echo-cancellation, noise-suppression, or AGC — best for preserving game-session ambiance.
+              Encoding changes apply to the NEXT session you start.
+            </div>
           </div>
         </div>
 
@@ -747,52 +928,132 @@ const selectStyle = {
   fontSize: 12,
 }
 
+// ── Folder setup / permission prompts ───────────────────────────────────────
+function SetupPrompt({ onLink, onSkip }) {
+  return (
+    <div style={{
+      padding: '12px 14px',
+      background: 'var(--surface2)',
+      border: '1px solid var(--accent)',
+      borderRadius: 6,
+      display: 'flex', flexDirection: 'column', gap: 8,
+      fontSize: 12,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'var(--accent)', fontWeight: 700 }}>
+        <FolderIcon size={14} color="currentColor" />
+        <span>Set up your audio folder</span>
+      </div>
+      <div style={{ color: 'var(--text2)', lineHeight: 1.5 }}>
+        Pick a parent folder once. The app will create <strong>RMUCplus/</strong> inside it with
+        subfolders for recordings, bookmarks, and (in a future update) characters and notebooks.
+        Recordings save directly to disk — no download prompt every time.
+      </div>
+      <div style={{ display: 'flex', gap: 6, justifyContent: 'flex-end' }}>
+        <button onClick={onSkip} style={btnStyle('var(--surface)', 'var(--text2)')}>
+          Skip for now
+        </button>
+        <button onClick={onLink} style={btnStyle('var(--accent)', '#fff', true)}>
+          Choose folder
+        </button>
+      </div>
+    </div>
+  )
+}
+
+function PermissionPrompt({ folderName, onReconnect, onUnlink }) {
+  return (
+    <div style={{
+      padding: '10px 14px',
+      background: 'var(--surface2)',
+      border: '1px solid var(--warning, #c2410c)',
+      borderRadius: 6,
+      display: 'flex', flexDirection: 'column', gap: 6,
+      fontSize: 12,
+    }}>
+      <div style={{ color: 'var(--text)', lineHeight: 1.4 }}>
+        Folder <strong>{folderName}</strong> is linked but the browser revoked write
+        access (this happens on every page reload — normal browser security).
+      </div>
+      <div style={{ display: 'flex', gap: 6, justifyContent: 'flex-end' }}>
+        <button onClick={onUnlink} style={btnStyle('transparent', 'var(--text3)')}>
+          Unlink
+        </button>
+        <button onClick={onReconnect} style={btnStyle('var(--accent)', '#fff', true)}>
+          Reconnect
+        </button>
+      </div>
+    </div>
+  )
+}
+
 // ── Sessions list ───────────────────────────────────────────────────────────
-function SessionsList({ sessions, onChange }) {
+function SessionsList({ sessions, onChange, folderReady }) {
   return (
     <div style={{
       display: 'flex', flexDirection: 'column', gap: 6,
       borderTop: '1px dashed var(--border)', paddingTop: 8,
     }}>
       <div style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-        Saved sessions
+        {folderReady ? 'Audio Folder Sessions' : 'In-app Sessions'}
       </div>
       {sessions.map(s => (
-        <SessionRow key={s.id} session={s} onChange={onChange} />
+        <SessionRow key={s.id} session={s} onChange={onChange} folderReady={folderReady} />
       ))}
     </div>
   )
 }
 
-function SessionRow({ session, onChange }) {
+function SessionRow({ session, onChange, folderReady }) {
   const [open, setOpen] = useState(false)
   const [editingLabel, setEditingLabel] = useState(false)
   const [labelDraft, setLabelDraft] = useState(session.label || '')
   const audioRef = useRef(null)
   const objectUrlRef = useRef(null)
+  const blobRef = useRef(null)        // lazy-loaded blob (folder mode)
   const [audioReady, setAudioReady] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
   const [playing, setPlaying] = useState(false)
   const [durationFixing, setDurationFixing] = useState(false)
+  const [blobLoading, setBlobLoading] = useState(false)
 
-  // Lazy: only create object URL when expanded
+  // Lazy: create object URL when expanded. In folder mode, also pull the
+  // blob bytes off disk on first expand.
   useEffect(() => {
-    if (open && session.blob && !objectUrlRef.current) {
-      objectUrlRef.current = URL.createObjectURL(session.blob)
-      if (audioRef.current) audioRef.current.src = objectUrlRef.current
-    }
-    if (!open && objectUrlRef.current) {
-      URL.revokeObjectURL(objectUrlRef.current)
-      objectUrlRef.current = null
-      setAudioReady(false)
-    }
-    return () => {
+    if (!open) {
       if (objectUrlRef.current) {
         URL.revokeObjectURL(objectUrlRef.current)
         objectUrlRef.current = null
+        setAudioReady(false)
       }
+      return
     }
-  }, [open, session.blob])
+    let cancelled = false
+    ;(async () => {
+      let blob = session.blob || blobRef.current
+      if (!blob && folderReady) {
+        setBlobLoading(true)
+        try { blob = await loadSessionBlob(session) } catch {}
+        setBlobLoading(false)
+        if (cancelled) return
+        blobRef.current = blob
+      }
+      if (blob && !objectUrlRef.current) {
+        objectUrlRef.current = URL.createObjectURL(blob)
+        if (audioRef.current) audioRef.current.src = objectUrlRef.current
+      }
+    })()
+    return () => {
+      cancelled = true
+    }
+  }, [open, session, folderReady])
+
+  // Clean up object URL on unmount
+  useEffect(() => () => {
+    if (objectUrlRef.current) {
+      URL.revokeObjectURL(objectUrlRef.current)
+      objectUrlRef.current = null
+    }
+  }, [])
 
   // MediaRecorder produces WebM/Opus files with `duration=Infinity` because the
   // container header isn't finalised on stream-end. The standard workaround is
@@ -851,20 +1112,49 @@ function SessionRow({ session, onChange }) {
     const offsetMs = Math.round(audio.currentTime * 1000)
     const label = prompt('Bookmark label (optional):', '')
     if (label === null) return  // cancelled
-    await addSessionMarker(session.id, { offsetMs, label: label.trim(), kind: 'manual' })
+    const marker = { offsetMs, label: label.trim(), kind: 'manual' }
+    if (folderReady) {
+      const next = [...(session.markers || []), marker]
+      await updateSessionMarkersInFolder(session, next)
+    } else {
+      await addSessionMarker(session.id, marker)
+    }
     onChange()
   }
 
   const handleDelete = async () => {
-    if (!confirm(`Delete recording "${session.label}"? This cannot be undone.`)) return
-    await deleteSession(session.id)
+    if (!confirm(`Delete recording "${session.label}"?\n\n${folderReady ? 'Both the audio file and its bookmarks sidecar will be deleted from disk.' : 'This cannot be undone.'}`)) return
+    if (folderReady) await deleteSessionFromFolder(session)
+    else             await deleteSession(session.id)
     onChange()
   }
 
   const handleSaveLabel = async () => {
-    await updateSessionLabel(session.id, labelDraft.trim() || session.label)
+    const newLabel = labelDraft.trim() || session.label
+    try {
+      if (folderReady) {
+        await renameSessionInFolder(session, newLabel)
+      } else {
+        await updateSessionLabel(session.id, newLabel)
+      }
+    } catch (e) {
+      alert('Rename failed: ' + (e.message || 'unknown error'))
+      setLabelDraft(session.label || '')
+    }
     setEditingLabel(false)
     onChange()
+  }
+
+  // For download button in folder mode, we need to ensure the blob is loaded
+  const handleDownload = async () => {
+    let blob = session.blob || blobRef.current
+    if (!blob && folderReady) {
+      blob = await loadSessionBlob(session)
+      blobRef.current = blob
+    }
+    if (blob) {
+      downloadSession({ ...session, blob })
+    }
   }
 
   return (
@@ -919,10 +1209,10 @@ function SessionRow({ session, onChange }) {
           </span>
         )}
         <span style={{ color: 'var(--text3)', fontSize: 11 }}>
-          {fmtTime(session.durationMs)} · {fmtBytes(session.blob?.size || 0)}
+          {fmtTime(session.durationMs)} · {fmtBytes(session.size || session.blob?.size || 0)}
         </span>
         <button
-          onClick={(e) => { e.stopPropagation(); downloadSession(session) }}
+          onClick={(e) => { e.stopPropagation(); handleDownload() }}
           title="Download file"
           style={btnStyle('var(--surface)', 'var(--text)')}
         >
@@ -954,6 +1244,11 @@ function SessionRow({ session, onChange }) {
             onPause={() => setPlaying(false)}
             style={{ width: '100%' }}
           />
+          {blobLoading && (
+            <div style={{ fontSize: 11, color: 'var(--text3)', fontStyle: 'italic' }}>
+              Loading audio file from disk…
+            </div>
+          )}
           {durationFixing && (
             <div style={{ fontSize: 11, color: 'var(--text3)', fontStyle: 'italic' }}>
               Loading audio metadata…
@@ -997,7 +1292,12 @@ function SessionRow({ session, onChange }) {
                   </span>
                   <button
                     onClick={async () => {
-                      await removeSessionMarker(session.id, i)
+                      if (folderReady) {
+                        const next = (session.markers || []).filter((_, idx) => idx !== i)
+                        await updateSessionMarkersInFolder(session, next)
+                      } else {
+                        await removeSessionMarker(session.id, i)
+                      }
                       onChange()
                     }}
                     title="Remove bookmark"
