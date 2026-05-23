@@ -21,6 +21,7 @@ import { importNotebookFromFile } from '../store/characters.js'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { RMRefExtension, RMRefPicker, registerNoteNav } from '../components/RMRef.jsx'
 import { useCharacter } from '../store/CharacterContext.jsx'
+import AudioRecorder from '../components/AudioRecorder.jsx'
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -1205,6 +1206,9 @@ export default function NotebookView() {
                 editor={editor}
                 style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}
               />
+
+              {/* Audio recorder — sits between editor and backlinks; collapsible */}
+              <AudioRecorder />
 
               {/* Backlinks panel */}
               {backlinks.length > 0 && (
