@@ -378,17 +378,19 @@ function ProfessionalSkillsSubPanel({ char, updateCharacter, updateSkill }) {
   const profession = char.profession || ''
   const candidates = professionSkillsData[profession] || []
 
-  // Count all currently-proficient skills (both inside and outside the profession's list)
-  const profSet = new Set(candidates.map(c => c.skillName))
+  // Count all currently-proficient skills (both regular and custom). Each entry tracks
+  // its raw key (for matching against profession candidates, which use bare names) +
+  // its resolved display name (for showing in UI with placeholders filled in).
   const proficientSkills = []
   for (const [name, data] of Object.entries(char.skills || {})) {
-    const tmpl = (data && data.proficient !== undefined)
-      ? null
-      : null
-    const isProf = data?.proficient !== undefined
-      ? !!data.proficient
-      : false   // we don't have access to skillsData template here without import; conservative
-    if (data?.proficient === true) proficientSkills.push(name)
+    if (data?.proficient === true) {
+      proficientSkills.push({ rawKey: name, display: displaySkillName(name, data.label || '') })
+    }
+  }
+  for (const cs of (char.custom_skills || [])) {
+    if (cs?.proficient === true) {
+      proficientSkills.push({ rawKey: cs.template_name, display: displaySkillName(cs.template_name, cs.label || '') })
+    }
   }
   const count = proficientSkills.length
   const overCap = count > PROF_SKILL_CAP
@@ -475,11 +477,13 @@ function ProfessionalSkillsSubPanel({ char, updateCharacter, updateSkill }) {
               })}
             </div>
           )}
-          {/* Show any other proficient skills NOT in the profession's candidate list (overflow / custom picks) */}
+          {/* Show any other proficient skills NOT in the profession's candidate list (overflow / custom picks).
+              Match against candidates using the rawKey (which is the template name), but display the resolved
+              name with the user's label substituted in. */}
           {(() => {
-            const overflow = proficientSkills.filter(name => {
+            const overflow = proficientSkills.filter(({ rawKey }) => {
               const tryMatch = candidates.find(c =>
-                c.skillName === name || name.startsWith(c.skillName + ':') || name.startsWith(c.skillName + ': <')
+                c.skillName === rawKey || rawKey.startsWith(c.skillName + ':') || rawKey.startsWith(c.skillName + ': <')
               )
               return !tryMatch
             })
@@ -490,7 +494,7 @@ function ProfessionalSkillsSubPanel({ char, updateCharacter, updateSkill }) {
                   Also proficient (outside profession's list)
                 </div>
                 <div style={{ fontSize: 11, color: 'var(--text2)' }}>
-                  {overflow.join(' · ')}
+                  {overflow.map(s => s.display).join(' · ')}
                 </div>
               </div>
             )
