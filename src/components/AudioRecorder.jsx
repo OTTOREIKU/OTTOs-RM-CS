@@ -58,6 +58,43 @@ function shortCodecLabel(mime) {
   return mime
 }
 
+// Read duration of an arbitrary audio Blob/File via a hidden <audio> element.
+// Returns ms. Handles the WebM infinite-duration case by force-seeking to 1e10
+// which makes the browser read through the file to discover the real value.
+function detectAudioDuration(blob) {
+  return new Promise((resolve) => {
+    const url = URL.createObjectURL(blob)
+    const audio = new Audio()
+    audio.preload = 'metadata'
+    audio.src = url
+    let done = false
+    const finish = (ms) => {
+      if (done) return
+      done = true
+      try { URL.revokeObjectURL(url) } catch {}
+      resolve(Math.max(0, Math.round(ms || 0)))
+    }
+    audio.addEventListener('loadedmetadata', () => {
+      if (audio.duration === Infinity || isNaN(audio.duration)) {
+        // WebM bug — force-read to discover true duration
+        const onDurChange = () => {
+          if (audio.duration !== Infinity && !isNaN(audio.duration)) {
+            audio.removeEventListener('durationchange', onDurChange)
+            finish(audio.duration * 1000)
+          }
+        }
+        audio.addEventListener('durationchange', onDurChange)
+        audio.currentTime = 1e10
+      } else {
+        finish(audio.duration * 1000)
+      }
+    })
+    audio.addEventListener('error', () => finish(0))
+    // Fail-safe: don't hang forever
+    setTimeout(() => finish(audio.duration ? audio.duration * 1000 : 0), 8000)
+  })
+}
+
 function fmtTime(ms) {
   const sec = Math.max(0, Math.floor(ms / 1000))
   const h = Math.floor(sec / 3600)
@@ -172,6 +209,37 @@ export default function AudioRecorder({ onStateChange, inSidebar = false }) {
     }
   }
 
+  // Import an external audio file (someone sent you a recording, etc).
+  // Detects duration via a hidden <audio> element, then saves to IndexedDB as
+  // a regular session. Imported files are NOT modified — the original blob is
+  // stored exactly as imported. Filename becomes the default label.
+  const handleImport = async (file) => {
+    if (!file) return
+    try {
+      const durationMs = await detectAudioDuration(file)
+      const id = `audio_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`
+      const session = {
+        id,
+        characterId: activeChar?.id || null,
+        label:       file.name.replace(/\.[^.]+$/, '') || 'Imported audio',
+        startedAt:   Date.now(),
+        endedAt:     Date.now(),
+        durationMs,
+        mimeType:    file.type || 'audio/unknown',
+        bitRate:     0,
+        deviceLabel: 'imported',
+        blob:        file,
+        markers:     [],
+        imported:    true,
+      }
+      await saveSession(session)
+      await reload()
+    } catch (e) {
+      console.error('Import failed:', e)
+      alert('Could not import that file: ' + (e.message || 'unknown error'))
+    }
+  }
+
   const recording = rec.state === 'recording'
   const paused    = rec.state === 'paused'
   const active    = recording || paused
@@ -197,7 +265,7 @@ export default function AudioRecorder({ onStateChange, inSidebar = false }) {
       />
       {(inSidebar || expanded) && (
         <div style={{
-          padding: '10px 14px 12px',
+          padding: '10px 14px 0',
           display: 'flex',
           flexDirection: 'column',
           gap: 10,
@@ -212,12 +280,11 @@ export default function AudioRecorder({ onStateChange, inSidebar = false }) {
             bookmarks={bookmarks}
             bookmarkLabelDraft={bookmarkLabelDraft}
             setBookmarkLabelDraft={setBookmarkLabelDraft}
+            setBookmarks={setBookmarks}
             onStart={handleStart}
             onStop={handleStop}
             onAddBookmark={handleAddBookmark}
-            activeMime={activeMime}
-            activeBitRate={activeBitRate}
-            onOpenSettings={() => setSettingsOpen(true)}
+            onImport={handleImport}
           />
           {sessions.length > 0 && (
             <SessionsList
@@ -225,7 +292,18 @@ export default function AudioRecorder({ onStateChange, inSidebar = false }) {
               onChange={reload}
             />
           )}
+          <div style={{ height: 10 }} />
         </div>
+      )}
+      {/* Footer: encoding info + settings gear (always visible when panel open) */}
+      {(inSidebar || expanded) && (
+        <EncodingFooter
+          rec={rec}
+          activeMime={activeMime}
+          activeBitRate={activeBitRate}
+          onOpenSettings={() => setSettingsOpen(true)}
+          disabled={active}
+        />
       )}
       {settingsOpen && (
         <SettingsPanel
@@ -285,99 +363,201 @@ function HeaderRow({ expanded, onToggle, active, sessionCount, elapsed, state })
   )
 }
 
-// ── Recording controls (device picker + buttons + bookmark) ─────────────────
+// ── Recording controls (device picker + record button + bookmarks) ──────────
 function RecordingControls({
   rec, active, recording, paused, stopping,
-  bookmarks, bookmarkLabelDraft, setBookmarkLabelDraft,
-  onStart, onStop, onAddBookmark,
-  activeMime, activeBitRate, onOpenSettings,
+  bookmarks, bookmarkLabelDraft, setBookmarkLabelDraft, setBookmarks,
+  onStart, onStop, onAddBookmark, onImport,
 }) {
+  const importInputRef = useRef(null)
+
+  function handleImportClick() {
+    importInputRef.current?.click()
+  }
+  function handleImportChange(e) {
+    const file = e.target.files?.[0]
+    if (file) onImport(file)
+    e.target.value = ''   // allow re-import of same filename
+  }
+  function removeDraftBookmark(idx) {
+    setBookmarks(b => b.filter((_, i) => i !== idx))
+  }
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-      {/* Top row: device picker + start/pause/stop */}
-      <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+      {/* Top row: device picker + import */}
+      <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
         <DevicePicker rec={rec} disabled={active} />
         <div style={{ flex: 1 }} />
-        {!active && (
-          <button
-            onClick={onStart}
-            disabled={stopping}
-            style={btnStyle('var(--danger)', '#fff', true)}
-          >
-            ● Record
-          </button>
-        )}
-        {active && (
-          <>
-            <button
-              onClick={rec.pause}
-              style={btnStyle(paused ? 'var(--success)' : 'var(--surface2)', paused ? '#fff' : 'var(--text)')}
-            >
-              {paused ? 'Resume' : 'Pause'}
-            </button>
-            <button
-              onClick={onStop}
-              disabled={stopping}
-              style={btnStyle('var(--danger)', '#fff', true)}
-            >
-              {stopping ? 'Stopping…' : 'Stop & Save'}
-            </button>
-          </>
-        )}
+        <button
+          onClick={handleImportClick}
+          disabled={active}
+          title="Import an audio file from disk"
+          style={{
+            background: 'transparent',
+            border: '1px solid var(--border)',
+            borderRadius: 4,
+            padding: '5px 10px',
+            fontSize: 11,
+            fontWeight: 600,
+            color: active ? 'var(--text3)' : 'var(--text2)',
+            cursor: active ? 'not-allowed' : 'pointer',
+            opacity: active ? 0.4 : 1,
+          }}
+        >
+          Import…
+        </button>
+        <input
+          ref={importInputRef}
+          type="file"
+          accept="audio/*,.webm,.mp3,.wav,.m4a,.ogg,.opus,.flac"
+          onChange={handleImportChange}
+          style={{ display: 'none' }}
+        />
       </div>
+
+      {/* Full-width primary action */}
+      {!active && (
+        <button
+          onClick={onStart}
+          disabled={stopping}
+          style={{
+            width: '100%',
+            padding: '10px 16px',
+            background: 'var(--danger)',
+            color: '#fff',
+            border: 'none',
+            borderRadius: 6,
+            fontSize: 13,
+            fontWeight: 700,
+            cursor: 'pointer',
+          }}
+        >
+          ● Record
+        </button>
+      )}
+      {active && (
+        <div style={{ display: 'flex', gap: 6 }}>
+          <button
+            onClick={rec.pause}
+            style={{
+              flex: 1, padding: '10px 8px', borderRadius: 6, fontSize: 12, fontWeight: 700, cursor: 'pointer',
+              background: paused ? 'var(--success)' : 'var(--surface2)',
+              color:      paused ? '#fff'           : 'var(--text)',
+              border: '1px solid var(--border)',
+            }}
+          >
+            {paused ? 'Resume' : 'Pause'}
+          </button>
+          <button
+            onClick={onStop}
+            disabled={stopping}
+            style={{
+              flex: 2, padding: '10px 8px', borderRadius: 6, fontSize: 12, fontWeight: 700, cursor: 'pointer',
+              background: 'var(--danger)', color: '#fff', border: 'none',
+            }}
+          >
+            {stopping ? 'Stopping…' : '■ Stop & Save'}
+          </button>
+        </div>
+      )}
 
       {/* Bookmark row (only visible during recording) */}
       {active && (
         <div style={{
-          display: 'flex', gap: 8, alignItems: 'center',
+          display: 'flex', flexDirection: 'column', gap: 6,
           padding: '8px 10px',
           background: 'var(--surface2)',
           border: '1px solid var(--border)', borderRadius: 6,
         }}>
-          <input
-            type="text"
-            placeholder="Bookmark label (optional)…"
-            value={bookmarkLabelDraft}
-            onChange={(e) => setBookmarkLabelDraft(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && onAddBookmark()}
-            style={{
-              flex: 1, fontSize: 12, padding: '5px 8px', borderRadius: 4,
-              background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--text)',
-            }}
-          />
-          <button onClick={onAddBookmark} style={btnStyle('var(--accent)', '#fff')}>
-            + Bookmark
-          </button>
-          <span style={{ fontSize: 11, color: 'var(--text3)' }}>
-            {bookmarks.length} so far
-          </span>
+          <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+            <input
+              type="text"
+              placeholder="Bookmark label (optional)…"
+              value={bookmarkLabelDraft}
+              onChange={(e) => setBookmarkLabelDraft(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && onAddBookmark()}
+              style={{
+                flex: 1, fontSize: 12, padding: '5px 8px', borderRadius: 4,
+                background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--text)',
+              }}
+            />
+            <button onClick={onAddBookmark} style={btnStyle('var(--accent)', '#fff')}>
+              + Bookmark
+            </button>
+          </div>
+          {bookmarks.length === 0 ? (
+            <div style={{ fontSize: 10, color: 'var(--text3)', fontStyle: 'italic' }}>
+              No bookmarks yet. Drop one to mark an important moment.
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 2, maxHeight: 140, overflowY: 'auto' }}>
+              {bookmarks.map((b, i) => (
+                <div key={i} style={{
+                  display: 'flex', alignItems: 'center', gap: 6,
+                  padding: '2px 4px', fontSize: 11,
+                }}>
+                  <span style={{
+                    fontFamily: 'ui-monospace, monospace', fontSize: 10, fontWeight: 600,
+                    color: 'var(--accent)', minWidth: 44,
+                  }}>
+                    {fmtTime(b.offsetMs)}
+                  </span>
+                  <span style={{ flex: 1, color: 'var(--text)' }}>
+                    {b.label || <span style={{ color: 'var(--text3)', fontStyle: 'italic' }}>(no label)</span>}
+                  </span>
+                  <button
+                    onClick={() => removeDraftBookmark(i)}
+                    title="Remove this bookmark"
+                    style={{ background: 'transparent', border: 'none', cursor: 'pointer', padding: 2, color: 'var(--text3)' }}
+                  >
+                    <XIcon size={10} color="currentColor" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
+    </div>
+  )
+}
 
-      {/* Quality info line + settings gear */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 10, color: 'var(--text3)' }}>
-        {rec.error ? (
-          <span style={{ color: 'var(--danger)' }}>Error: {rec.error}</span>
-        ) : (
-          <span>
-            Encoding: {shortCodecLabel(activeMime)} · {Math.round(activeBitRate / 1000)} kbps Stereo
-          </span>
-        )}
-        <div style={{ flex: 1 }} />
-        <button
-          onClick={onOpenSettings}
-          disabled={active}
-          title={active ? 'Stop recording to change settings' : 'Audio settings'}
-          style={{
-            background: 'transparent', border: 'none', cursor: active ? 'not-allowed' : 'pointer',
-            padding: 2, color: 'var(--text3)',
-            opacity: active ? 0.4 : 1,
-            display: 'flex', alignItems: 'center',
-          }}
-        >
-          <GearIcon size={13} color="currentColor" />
-        </button>
-      </div>
+// ── Encoding footer (sticky bottom — codec + bitrate + settings gear) ────────
+function EncodingFooter({ rec, activeMime, activeBitRate, onOpenSettings, disabled }) {
+  return (
+    <div style={{
+      flexShrink: 0,
+      borderTop: '1px solid var(--border)',
+      background: 'var(--surface)',
+      padding: '6px 14px',
+      display: 'flex',
+      alignItems: 'center',
+      gap: 8,
+      fontSize: 10,
+      color: 'var(--text3)',
+    }}>
+      {rec.error ? (
+        <span style={{ color: 'var(--danger)', flex: 1 }}>Error: {rec.error}</span>
+      ) : (
+        <span style={{ flex: 1 }}>
+          Encoding: {shortCodecLabel(activeMime)} · {Math.round(activeBitRate / 1000)} kbps Stereo
+        </span>
+      )}
+      <button
+        onClick={onOpenSettings}
+        disabled={disabled}
+        title={disabled ? 'Stop recording to change settings' : 'Audio settings'}
+        style={{
+          background: 'transparent', border: 'none',
+          cursor: disabled ? 'not-allowed' : 'pointer',
+          padding: 4, color: 'var(--text3)',
+          opacity: disabled ? 0.4 : 1,
+          display: 'flex', alignItems: 'center',
+        }}
+      >
+        <GearIcon size={13} color="currentColor" />
+      </button>
     </div>
   )
 }
@@ -692,23 +872,31 @@ function SessionRow({ session, onChange }) {
       borderRadius: 6,
       overflow: 'hidden',
     }}>
-      {/* Row header */}
-      <div style={{
-        display: 'flex', alignItems: 'center', gap: 8,
-        padding: '6px 10px', fontSize: 12,
-      }}>
-        <button
-          onClick={() => setOpen(o => !o)}
-          style={{ background: 'transparent', border: 'none', cursor: 'pointer', padding: 0, color: 'var(--text3)' }}
-        >
+      {/* Row header — the entire left half of the row toggles expand. Specific
+          controls (label, download, delete) stopPropagation so their own
+          click handlers run instead. */}
+      <div
+        onClick={() => setOpen(o => !o)}
+        style={{
+          display: 'flex', alignItems: 'center', gap: 8,
+          padding: '10px 10px', fontSize: 12, cursor: 'pointer',
+        }}
+      >
+        <div style={{
+          // Larger invisible click zone around the chevron — fills row height
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          width: 22, height: 22, color: 'var(--text3)', flexShrink: 0,
+        }}>
           {open ? <ChevronDownIcon size={12} color="currentColor" /> : <ChevronRightIcon size={12} color="currentColor" />}
-        </button>
+        </div>
         {editingLabel ? (
           <input
             type="text"
             value={labelDraft}
+            onClick={(e) => e.stopPropagation()}
             onChange={(e) => setLabelDraft(e.target.value)}
             onKeyDown={(e) => {
+              e.stopPropagation()
               if (e.key === 'Enter') handleSaveLabel()
               if (e.key === 'Escape') { setEditingLabel(false); setLabelDraft(session.label || '') }
             }}
@@ -721,7 +909,7 @@ function SessionRow({ session, onChange }) {
           />
         ) : (
           <span
-            onClick={() => { setEditingLabel(true); setLabelDraft(session.label || '') }}
+            onClick={(e) => { e.stopPropagation(); setEditingLabel(true); setLabelDraft(session.label || '') }}
             style={{ flex: 1, cursor: 'text', fontWeight: 600, color: 'var(--text)' }}
             title="Click to rename"
           >
@@ -732,14 +920,14 @@ function SessionRow({ session, onChange }) {
           {fmtTime(session.durationMs)} · {fmtBytes(session.blob?.size || 0)}
         </span>
         <button
-          onClick={() => downloadSession(session)}
-          title="Download .webm"
+          onClick={(e) => { e.stopPropagation(); downloadSession(session) }}
+          title="Download file"
           style={btnStyle('var(--surface)', 'var(--text)')}
         >
           Download
         </button>
         <button
-          onClick={handleDelete}
+          onClick={(e) => { e.stopPropagation(); handleDelete() }}
           title="Delete this recording"
           style={{ background: 'transparent', border: 'none', cursor: 'pointer', padding: 4, color: 'var(--text3)' }}
         >
