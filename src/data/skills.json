@@ -307,7 +307,16 @@
   },
   {
     "category": "Crafting",
-    "name": "Culinary",
+    "name": "Culinary: <specialty 1>",
+    "dev_cost": "3/4",
+    "prof_type": "Normal",
+    "stat_keys": "SD",
+    "description": "Food is a big part of any living creatures’ lives.\nFood gets tastier and better for the health if it is prepared with skill. Vegetables,\nmeats and beverages each have their own specialized crafters harvesting and preparing the\nfare for consumption.",
+    "rmu_canonical_name": "Culinary"
+  },
+  {
+    "category": "Crafting",
+    "name": "Culinary: <specialty 2>",
     "dev_cost": "3/4",
     "prof_type": "Normal",
     "stat_keys": "SD",
@@ -325,7 +334,7 @@
   },
   {
     "category": "Crafting",
-    "name": "Fabric Craft",
+    "name": "Fabric Craft: <specialty 1>",
     "dev_cost": "3/4",
     "prof_type": "Normal",
     "stat_keys": "SD",
@@ -334,7 +343,16 @@
   },
   {
     "category": "Crafting",
-    "name": "Leathercraft",
+    "name": "Fabric Craft: <specialty 2>",
+    "dev_cost": "3/4",
+    "prof_type": "Normal",
+    "stat_keys": "SD",
+    "description": "Humans need clothes to cope with the weather. Cloth is spun from animal or vegetable fibers.\nTo make it into clothes requires some decent work, although many housewives also have some\nskill in the craft.",
+    "rmu_canonical_name": "Fabric Craft"
+  },
+  {
+    "category": "Crafting",
+    "name": "Leathercraft: <specialty 1>",
     "dev_cost": "3/4",
     "prof_type": "Normal",
     "stat_keys": "SD",
@@ -343,7 +361,16 @@
   },
   {
     "category": "Crafting",
-    "name": "Metalcraft",
+    "name": "Leathercraft: <specialty 2>",
+    "dev_cost": "3/4",
+    "prof_type": "Normal",
+    "stat_keys": "SD",
+    "description": "Animal hide may be cured and used for all kinds of purposes. It is tough and weather proof\nand it looks nice. Many items are made from leather.",
+    "rmu_canonical_name": "Leathercraft"
+  },
+  {
+    "category": "Crafting",
+    "name": "Metalcraft: <specialty 1>",
     "dev_cost": "3/4",
     "prof_type": "Normal",
     "stat_keys": "St",
@@ -352,7 +379,16 @@
   },
   {
     "category": "Crafting",
-    "name": "Stonecraft",
+    "name": "Metalcraft: <specialty 2>",
+    "dev_cost": "3/4",
+    "prof_type": "Normal",
+    "stat_keys": "St",
+    "description": "Metals are unearthed and the ore melted down and refined into ingots or billets. Each\nmetal has its own uses and many specializations exist to make metal objects. It can be\nmolded or worked. Sample metals include the hard and tough iron, the semi-precious and\nmalleable copper, precious but soft silver and gold and others.",
+    "rmu_canonical_name": "Metalcraft"
+  },
+  {
+    "category": "Crafting",
+    "name": "Stonecraft: <specialty 1>",
     "dev_cost": "3/4",
     "prof_type": "Normal",
     "stat_keys": "St",
@@ -361,7 +397,25 @@
   },
   {
     "category": "Crafting",
-    "name": "Woodcraft",
+    "name": "Stonecraft: <specialty 2>",
+    "dev_cost": "3/4",
+    "prof_type": "Normal",
+    "stat_keys": "St",
+    "description": "Stone is a hard and resilient material used in building and decoration. It copes well with\nstationary stresses and it has a beautiful appearance. It is found in hills and mountains\nand it must be dressed before it is used in sculptures and buildings. Extracting the best\nstone and working it to useful form is the task of several specialized professions.\nCeramics are an artificially created form of stone.",
+    "rmu_canonical_name": "Stonecraft"
+  },
+  {
+    "category": "Crafting",
+    "name": "Woodcraft: <specialty 1>",
+    "dev_cost": "3/4",
+    "prof_type": "Normal",
+    "stat_keys": "SD",
+    "description": "This material comes from trees. To process this light, strong, easily worked and beautiful\nmaterial from tree to cupboards and boats requires a plethora of crafters. Wood can be\nprocessed to boards, beams and other sizes for more specialized crafters to fashion into\nusable goods.",
+    "rmu_canonical_name": "Woodcraft"
+  },
+  {
+    "category": "Crafting",
+    "name": "Woodcraft: <specialty 2>",
     "dev_cost": "3/4",
     "prof_type": "Normal",
     "stat_keys": "SD",
@@ -893,7 +947,16 @@
   },
   {
     "category": "Science",
-    "name": "Engineering",
+    "name": "Engineering: <specialty 1>",
+    "dev_cost": "2/4",
+    "prof_type": "Normal",
+    "stat_keys": "Re",
+    "description": "Engineering combines aspects of mathematics, physics and invention. It provides a\ntheoretical knowledge of devices and processes, and an understanding of why things work.\nCharacters may use Engineering to determine what a device does, design new devices or\nstreamline systems.\n\nIn more advanced cultures the GM may require the skill be specialized, however in a\nfantasy setting this is not needed (essentially this is basic mechanical and hydraulic\nengineering).\n\nUse the General specialization for most fantasy settings.",
+    "rmu_canonical_name": "Engineering"
+  },
+  {
+    "category": "Science",
+    "name": "Engineering: <specialty 2>",
     "dev_cost": "2/4",
     "prof_type": "Normal",
     "stat_keys": "Re",
