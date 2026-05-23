@@ -17,7 +17,45 @@ import {
   addSessionMarker, removeSessionMarker, downloadSession,
 } from '../store/audioStorage.js'
 import { useCharacter } from '../store/CharacterContext.jsx'
-import { ChevronDownIcon, ChevronRightIcon, XIcon, TrashIcon, PencilIcon } from './Icons.jsx'
+import { ChevronDownIcon, ChevronRightIcon, XIcon, TrashIcon, PencilIcon, GearIcon } from './Icons.jsx'
+
+// Persisted across app reloads — encoding settings are environment-specific,
+// not per-character, so they live in localStorage.
+const SETTINGS_KEY = 'rm_audio_settings'
+function loadSettings() {
+  try {
+    const raw = localStorage.getItem(SETTINGS_KEY)
+    if (!raw) return {}
+    return JSON.parse(raw)
+  } catch { return {} }
+}
+function saveSettings(s) {
+  try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(s)) } catch {}
+}
+
+// Codec choices the user can pick from — filtered at runtime to those the browser supports.
+const CODEC_CHOICES = [
+  { mime: 'audio/webm;codecs=opus', label: 'Opus (webm)' },
+  { mime: 'audio/ogg;codecs=opus',  label: 'Opus (ogg)'  },
+  { mime: 'audio/webm',             label: 'webm default' },
+  { mime: 'audio/mp4',              label: 'AAC (mp4)'   },
+]
+const BITRATE_CHOICES = [
+  { value:  64000, label:  '64 kbps' },
+  { value:  96000, label:  '96 kbps' },
+  { value: 128000, label: '128 kbps' },
+  { value: 192000, label: '192 kbps' },
+  { value: 256000, label: '256 kbps (default)' },
+  { value: 320000, label: '320 kbps' },
+]
+
+function shortCodecLabel(mime) {
+  if (!mime) return 'browser default'
+  if (mime.includes('opus')) return 'Opus'
+  if (mime.includes('mp4'))  return 'AAC'
+  if (mime.includes('webm')) return 'webm'
+  return mime
+}
 
 function fmtTime(ms) {
   const sec = Math.max(0, Math.floor(ms / 1000))
@@ -41,6 +79,11 @@ export default function AudioRecorder() {
   const [expanded, setExpanded] = useState(true)
   const [bookmarks, setBookmarks] = useState([])   // in-progress markers (pre-save)
   const [bookmarkLabelDraft, setBookmarkLabelDraft] = useState('')
+  const [settingsOpen, setSettingsOpen] = useState(false)
+  const [settings, setSettings] = useState(() => loadSettings())
+  // Active mime/bitrate (settings > recommended default)
+  const activeMime = settings.mime || rec.supportedMime
+  const activeBitRate = settings.bitsPerSecond || rec.defaultBitRate
 
   // Reload sessions list on mount + after each save/delete
   const reload = useCallback(async () => {
@@ -57,7 +100,7 @@ export default function AudioRecorder() {
   // ── Start / Stop wiring ─────────────────────────────────────────────────
   const handleStart = async () => {
     setBookmarks([])
-    await rec.start()
+    await rec.start({ mimeType: activeMime, bitsPerSecond: activeBitRate })
   }
 
   const handleStop = async () => {
@@ -104,6 +147,7 @@ export default function AudioRecorder() {
   return (
     <div style={{
       flexShrink: 0,
+      marginTop: 16,                                       // breathing room above
       borderTop: '1px solid var(--border)',
       background: 'var(--surface)',
     }}>
@@ -129,6 +173,9 @@ export default function AudioRecorder() {
             onStart={handleStart}
             onStop={handleStop}
             onAddBookmark={handleAddBookmark}
+            activeMime={activeMime}
+            activeBitRate={activeBitRate}
+            onOpenSettings={() => setSettingsOpen(true)}
           />
           {sessions.length > 0 && (
             <SessionsList
@@ -137,6 +184,14 @@ export default function AudioRecorder() {
             />
           )}
         </div>
+      )}
+      {settingsOpen && (
+        <SettingsPanel
+          settings={settings}
+          rec={rec}
+          onSave={(next) => { setSettings(next); saveSettings(next); setSettingsOpen(false) }}
+          onClose={() => setSettingsOpen(false)}
+        />
       )}
     </div>
   )
@@ -190,6 +245,7 @@ function RecordingControls({
   rec, active, recording, paused, stopping,
   bookmarks, bookmarkLabelDraft, setBookmarkLabelDraft,
   onStart, onStop, onAddBookmark,
+  activeMime, activeBitRate, onOpenSettings,
 }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -253,46 +309,215 @@ function RecordingControls({
         </div>
       )}
 
-      {/* Quality/info line */}
-      <div style={{ fontSize: 10, color: 'var(--text3)' }}>
+      {/* Quality info line + settings gear */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 10, color: 'var(--text3)' }}>
         {rec.error ? (
           <span style={{ color: 'var(--danger)' }}>Error: {rec.error}</span>
         ) : (
-          <>
-            Encoding: {rec.supportedMime || 'browser default'} · ~{Math.round(rec.defaultBitRate / 1000)} kbps stereo
-            {' · '}On Stop the file is saved to disk AND kept in browser storage for in-app playback.
-          </>
+          <span>
+            Encoding: {shortCodecLabel(activeMime)} · {Math.round(activeBitRate / 1000)} kbps Stereo
+          </span>
         )}
+        <div style={{ flex: 1 }} />
+        <button
+          onClick={onOpenSettings}
+          disabled={active}
+          title={active ? 'Stop recording to change settings' : 'Audio settings'}
+          style={{
+            background: 'transparent', border: 'none', cursor: active ? 'not-allowed' : 'pointer',
+            padding: 2, color: 'var(--text3)',
+            opacity: active ? 0.4 : 1,
+            display: 'flex', alignItems: 'center',
+          }}
+        >
+          <GearIcon size={13} color="currentColor" />
+        </button>
       </div>
     </div>
   )
 }
 
+// Device picker. Browsers hide device LABELS until the page has been granted
+// mic permission. We expose a "Refresh" button + auto-attempt permission on
+// first interaction so the dropdown shows real device names instead of empty
+// "Device abc123" placeholders.
 function DevicePicker({ rec, disabled }) {
+  const [unlocked, setUnlocked] = useState(false)
+  const [busy, setBusy] = useState(false)
+
+  // Devices are "unlocked" (labels populated) once at least one device has a label.
+  useEffect(() => {
+    if (rec.devices.some(d => d.label)) setUnlocked(true)
+  }, [rec.devices])
+
+  async function requestPermissionAndRefresh() {
+    setBusy(true)
+    try {
+      // Briefly grab the mic to unlock device labels, then immediately stop the stream.
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      stream.getTracks().forEach(t => t.stop())
+      await rec.enumerate()
+      setUnlocked(true)
+    } catch (e) {
+      // User denied or no mic — leave device picker showing default option only
+    } finally {
+      setBusy(false)
+    }
+  }
+
   return (
-    <select
-      value={rec.selectedDeviceId || ''}
-      onChange={(e) => rec.setSelectedDeviceId(e.target.value || null)}
-      disabled={disabled}
-      style={{
-        background: 'var(--surface2)',
-        color: 'var(--text)',
-        border: '1px solid var(--border)',
-        borderRadius: 4,
-        padding: '5px 8px',
-        fontSize: 11,
-        maxWidth: 280,
-      }}
-      title="Input device"
-    >
-      <option value="">Default mic</option>
-      {rec.devices.map(d => (
-        <option key={d.deviceId} value={d.deviceId}>
-          {d.label || `Device ${d.deviceId.slice(0, 6)}`}
-        </option>
-      ))}
-    </select>
+    <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+      <select
+        value={rec.selectedDeviceId || ''}
+        onChange={(e) => rec.setSelectedDeviceId(e.target.value || null)}
+        onMouseDown={() => { if (!unlocked && !busy) requestPermissionAndRefresh() }}
+        disabled={disabled}
+        style={{
+          background: 'var(--surface2)',
+          color: 'var(--text)',
+          border: '1px solid var(--border)',
+          borderRadius: 4,
+          padding: '5px 8px',
+          fontSize: 11,
+          maxWidth: 280,
+          minWidth: 160,
+        }}
+        title={unlocked ? 'Input device' : 'Click to grant mic permission and see device names'}
+      >
+        <option value="">Default mic</option>
+        {rec.devices.map(d => (
+          <option key={d.deviceId} value={d.deviceId}>
+            {d.label || (unlocked ? `(unnamed) ${d.deviceId.slice(0, 6)}` : `Device ${d.deviceId.slice(0, 6)}`)}
+          </option>
+        ))}
+      </select>
+      <button
+        onClick={requestPermissionAndRefresh}
+        disabled={disabled || busy}
+        title="Refresh device list (will prompt for mic permission if not yet granted)"
+        style={{
+          background: 'transparent', border: '1px solid var(--border)', borderRadius: 4,
+          padding: '4px 8px', fontSize: 10, fontWeight: 600,
+          color: 'var(--text3)', cursor: 'pointer',
+        }}
+      >
+        {busy ? '…' : 'Refresh'}
+      </button>
+    </div>
   )
+}
+
+// ── Settings panel (codec / bitrate / channels / processing toggles) ──────
+function SettingsPanel({ settings, rec, onSave, onClose }) {
+  const [draft, setDraft] = useState({
+    mime:          settings.mime          ?? rec.supportedMime,
+    bitsPerSecond: settings.bitsPerSecond ?? rec.defaultBitRate,
+  })
+
+  // Filter codecs to those actually supported by the current browser.
+  const supportedCodecs = useMemo(() => {
+    if (typeof MediaRecorder === 'undefined') return []
+    return CODEC_CHOICES.filter(c => MediaRecorder.isTypeSupported(c.mime))
+  }, [])
+
+  return (
+    <div
+      onClick={onClose}
+      style={{
+        position: 'fixed', inset: 0, zIndex: 200,
+        background: 'rgba(0,0,0,0.55)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        padding: 12,
+      }}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          width: '100%', maxWidth: 460,
+          background: 'var(--surface)',
+          border: '1px solid var(--border)',
+          borderRadius: 10,
+          boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+          overflow: 'hidden',
+        }}
+      >
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: '10px 14px', borderBottom: '1px solid var(--border)',
+        }}>
+          <span style={{ fontWeight: 700, fontSize: 13 }}>Audio Settings</span>
+          <button onClick={onClose} style={{
+            background: 'none', border: 'none', cursor: 'pointer', padding: 4, color: 'var(--text3)',
+          }}>
+            <XIcon size={14} color="currentColor" />
+          </button>
+        </div>
+
+        <div style={{ padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 10, fontSize: 12 }}>
+          <SettingRow label="Codec / Container">
+            <select
+              value={draft.mime || ''}
+              onChange={(e) => setDraft(d => ({ ...d, mime: e.target.value }))}
+              style={selectStyle}
+            >
+              {supportedCodecs.map(c => (
+                <option key={c.mime} value={c.mime}>{c.label}</option>
+              ))}
+            </select>
+          </SettingRow>
+
+          <SettingRow label="Bitrate">
+            <select
+              value={draft.bitsPerSecond}
+              onChange={(e) => setDraft(d => ({ ...d, bitsPerSecond: parseInt(e.target.value, 10) }))}
+              style={selectStyle}
+            >
+              {BITRATE_CHOICES.map(b => (
+                <option key={b.value} value={b.value}>{b.label}</option>
+              ))}
+            </select>
+          </SettingRow>
+
+          <div style={{ fontSize: 10, color: 'var(--text3)', marginTop: 4 }}>
+            Channels, sample rate, and processing flags are fixed at 2-channel / 48 kHz / no
+            echo-cancellation, noise-suppression, or AGC — best for preserving game-session ambiance.
+            Recording quality settings only apply to the NEXT session you start.
+          </div>
+        </div>
+
+        <div style={{
+          display: 'flex', gap: 8, justifyContent: 'flex-end',
+          padding: '10px 14px', borderTop: '1px solid var(--border)',
+          background: 'var(--surface2)',
+        }}>
+          <button onClick={onClose} style={btnStyle('var(--surface)', 'var(--text)')}>
+            Cancel
+          </button>
+          <button onClick={() => onSave(draft)} style={btnStyle('var(--accent)', '#fff', true)}>
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function SettingRow({ label, children }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+      <span style={{ width: 130, color: 'var(--text2)', fontWeight: 600 }}>{label}</span>
+      <div style={{ flex: 1 }}>{children}</div>
+    </div>
+  )
+}
+const selectStyle = {
+  width: '100%',
+  background: 'var(--surface2)',
+  color: 'var(--text)',
+  border: '1px solid var(--border)',
+  borderRadius: 4,
+  padding: '5px 8px',
+  fontSize: 12,
 }
 
 // ── Sessions list ───────────────────────────────────────────────────────────
