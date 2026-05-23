@@ -7,6 +7,7 @@ import skillCosts from '../data/skill_costs.json'
 import talentsData from '../data/talents.json'
 import spellListsDb from '../data/spell_lists.json'
 import cultureSkillsData from '../data/culture_skills.json'
+import skillCategoryStats from '../data/skill_category_stats.json'
 import { LockIcon, UnlockIcon, PencilIcon, PlusIcon, XIcon, NoteIcon, StarIcon, ChevronDownIcon, ChevronRightIcon } from '../components/Icons.jsx'
 
 // Full stat names for the override selector
@@ -21,34 +22,9 @@ const STAT_MAP = {
 }
 
 // Category stats are SUMMED with the individual skill stat (not averaged).
-// Verified against RMU's official systems/rmu/module/rmu/skills/skill-category-stats.js.
-const CATEGORY_STATS = {
-  'Animal':             'Ag/Em',
-  'Awareness':          'In/Re',
-  'Battle Expertise':   '-',
-  'Body Discipline':    'Co/SD',
-  'Brawn':              'Co/SD',
-  'Combat Expertise':   '-',
-  'Combat Training':    'Ag/St',
-  'Composition':        'Em/In',
-  'Crafting':           'Ag/Me',
-  'Delving':            'Em/In',
-  'Environmental':      'In/Me',
-  'Gymnastic':          'Ag/Qu',
-  'Lore':               'Me/Me',
-  'Lore: Languages':    'Me/Me',
-  'Magical Expertise':  '-',
-  'Medical':            'In/Me',
-  'Mental Discipline':  'Pr/SD',
-  'Movement':           'Ag/St',
-  'Performance Art':    'Em/Pr',
-  'Power Manipulation': 'RS/RS',
-  'Science':            'Me/Re',
-  'Social':             'Em/In',
-  'Subterfuge':         'Ag/SD',
-  'Technical':          'In/Re',
-  'Vocation':           'Em/Me',
-}
+// Sourced from src/data/skill_category_stats.json which mirrors RMU's official
+// systems/rmu/module/rmu/skills/skill-category-stats.js — single source of truth.
+const CATEGORY_STATS = skillCategoryStats
 
 function hasPlaceholder(name) { return /<[^>]+>/.test(name) }
 

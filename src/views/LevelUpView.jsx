@@ -63,14 +63,34 @@ function rankCostDelta(from, to, costs) {
   return newCost - oldCost
 }
 
+// Map a spell list's section (Base/Open/Closed/Arcane/Restricted/Magical Ritual/Evil)
+// to the skill_costs.json bucket. RMU collapses Base+Open into "Base/Open" since they
+// share a cost row per profession. Returns null for unknown sections.
+function spellSectionToCostBucket(section) {
+  const s = (section || '').toLowerCase()
+  if (!s) return null
+  if (s.includes('magical ritual') || s.includes('ritual'))   return 'Magical Ritual'
+  if (s.includes('arcane'))                                   return 'Arcane'
+  if (s.includes('restricted') || s.includes('evil'))         return 'Restricted'
+  if (s.includes('closed'))                                   return 'Closed'
+  if (s.includes('base') || s.includes('open'))               return 'Base/Open'
+  return null
+}
+
+// Per-profession spell-list cost (1st rank / 2nd rank per level).
+// Returns { first, second } parsed from skill_costs.json's "X/Y" entries.
+// Falls back to the old hardcoded defaults if no per-profession entry exists.
 function getSpellCostForChar(listName, list, profession) {
-  // Base list = 4 DP, Open = 6 DP, Closed = 8 DP, Evil = 12 DP
-  const section = list.section?.toLowerCase() || ''
-  if (section.includes('base'))   return 4
-  if (section.includes('open'))   return 6
-  if (section.includes('closed')) return 8
-  if (section.includes('evil'))   return 12
-  return 6
+  const bucket = spellSectionToCostBucket(list?.section)
+  const costStr = bucket ? skillCosts[bucket]?.[profession] : null
+  if (costStr) return parseSkillCosts(costStr)
+  // Fallback defaults (legacy approximation):
+  const s = (list?.section || '').toLowerCase()
+  if (s.includes('base'))     return { first: 4, second: 8  }
+  if (s.includes('open'))     return { first: 6, second: 12 }
+  if (s.includes('closed'))   return { first: 8, second: 16 }
+  if (s.includes('evil'))     return { first: 12, second: 24 }
+  return { first: 6, second: 12 }
 }
 
 // ── Racial bonus DP helpers ───────────────────────────────────────────────────
@@ -152,10 +172,12 @@ function reducer(state, action) {
     }
     case 'SPELL_BUY': {
       const oldRanks = state.spellBuys[action.name] || 0
-      const cost     = action.cost
-      const delta    = action.ranks - oldRanks
-      const dpNew    = state.dpSpent + delta * cost
-      if (dpNew < 0 || dpNew > state.dpTotal || action.ranks < 0) return state
+      // Per RMU: 1st rank costs costs.first, 2nd costs costs.second. Cap at 2/level.
+      // Older callers may pass just `cost` (flat per rank); we fall back to that.
+      const costs   = action.costs || (action.cost != null ? { first: action.cost, second: action.cost } : { first: 0, second: 0 })
+      const dpDelta = rankCostDelta(oldRanks, action.ranks, costs)
+      const dpNew   = state.dpSpent + dpDelta
+      if (dpNew < 0 || dpNew > state.dpTotal || action.ranks < 0 || action.ranks > 2) return state
       const spellBuys = { ...state.spellBuys, [action.name]: action.ranks }
       if (action.ranks === 0) delete spellBuys[action.name]
       return { ...state, spellBuys, dpSpent: dpNew }
@@ -560,7 +582,7 @@ function SpellListsSection({ c, lu, dispatch, dpLeft, spellSearch, setSpellSearc
         <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
       </div>
       <InfoBox>
-        Spell list costs: Base (4), Open (6), Closed (8), Evil (12) DP per rank. Max <strong>2 ranks</strong> per list per level. Buy new lists here too — they'll be added to your character on confirm.
+        Spell list costs are per-profession (your Magician pays differently than a Cleric). Max <strong>2 ranks</strong> per list per level — 2nd rank usually costs more than 1st. Buy new lists here too — they'll be added to your character on confirm.
       </InfoBox>
       <div style={{ display: 'flex', gap: 8, marginBottom: 8, flexWrap: 'wrap', alignItems: 'center' }}>
         <input type="text" placeholder="Search spell lists…" value={spellSearch} onChange={e => setSpellSearch(e.target.value)} style={{ flex: 1, minWidth: 140 }} />
@@ -578,10 +600,15 @@ function SpellListsSection({ c, lu, dispatch, dpLeft, spellSearch, setSpellSearc
 
       {filtered.map(([name, list], idx) => {
         const rc       = REALM_COLOR[list.realm] || 'var(--accent)'
-        const cost     = getSpellCostForChar(name, list, c.profession)
+        const costs    = getSpellCostForChar(name, list, c.profession)   // { first, second }
         const curRanks = c.spell_lists?.[name]?.ranks || 0
         const buying   = lu.spellBuys[name] || 0
-        const canAfford = dpLeft >= cost
+        const costForNext = buying === 0 ? costs.first : costs.second
+        const canAfford = dpLeft >= costForNext
+        const totalSpent = buying === 0 ? 0 : (buying === 1 ? costs.first : costs.first + costs.second)
+        const costLabel = costs.first === costs.second
+          ? `${costs.first} DP/rank`
+          : `${costs.first}/${costs.second} DP (1st/2nd)`
 
         return (
           <div key={name} style={{
@@ -597,18 +624,18 @@ function SpellListsSection({ c, lu, dispatch, dpLeft, spellSearch, setSpellSearc
                 <span style={{ fontSize: 10, color: rc }}>{list.realm}</span>
               </div>
               <span style={{ color: 'var(--text3)', fontSize: 10 }}>
-                {curRanks} ranks · {cost} DP/rank · {list.section}
+                {curRanks} ranks · {costLabel} · {list.section}
               </span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-              <button onClick={() => buying > 0 && dispatch({ type: 'SPELL_BUY', name, ranks: buying - 1, cost })}
+              <button onClick={() => buying > 0 && dispatch({ type: 'SPELL_BUY', name, ranks: buying - 1, costs })}
                 style={pmBtn(buying > 0)}><MinusIcon size={12} color="currentColor" /></button>
               <span style={{ width: 20, textAlign: 'center', fontWeight: 700, color: buying > 0 ? 'var(--accent)' : 'var(--text2)' }}>{buying}</span>
-              <button onClick={() => buying < 2 && canAfford && dispatch({ type: 'SPELL_BUY', name, ranks: buying + 1, cost })}
+              <button onClick={() => buying < 2 && canAfford && dispatch({ type: 'SPELL_BUY', name, ranks: buying + 1, costs })}
                 style={pmBtn(buying < 2 && canAfford)}>+</button>
             </div>
             <div style={{ fontSize: 11, color: buying > 0 ? 'var(--warning)' : 'var(--text3)', textAlign: 'right' }}>
-              {buying > 0 ? `−${buying * cost} DP` : ''}
+              {buying > 0 ? `−${totalSpent} DP` : ''}
             </div>
           </div>
         )
@@ -667,10 +694,11 @@ function ReviewStep({ c, lu, onConfirm }) {
       {spellChanges.length > 0 && (
         <Section title={`Spell List Ranks (${spellChanges.length} lists)`}>
           {spellChanges.map(([name, ranks]) => {
-            const list = spellLists[name]
-            const cost = getSpellCostForChar(name, list || {}, c.profession)
-            const cur  = c.spell_lists?.[name]?.ranks || 0
-            return <Row key={name} label={name} value={`+${ranks} rank (${cur} → ${cur + ranks}) · −${ranks * cost} DP`} color="var(--purple)" />
+            const list  = spellLists[name]
+            const costs = getSpellCostForChar(name, list || {}, c.profession)
+            const cur   = c.spell_lists?.[name]?.ranks || 0
+            const dpUsed = rankCostDelta(0, ranks, costs)
+            return <Row key={name} label={name} value={`+${ranks} rank${ranks > 1 ? 's' : ''} (${cur} → ${cur + ranks}) · −${dpUsed} DP`} color="var(--purple)" />
           })}
         </Section>
       )}

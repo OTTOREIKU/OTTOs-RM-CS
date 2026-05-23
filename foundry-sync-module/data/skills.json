@@ -4,427 +4,549 @@
     "name": "Animal Handling: <animal 1>",
     "dev_cost": "3/5",
     "prof_type": "Normal",
-    "stat_keys": "Pr"
+    "stat_keys": "Pr",
+    "description": "Animal Handling involves the care and feeding of animals, as well as training, minor\nhealing, and possibly simple communication depending on the type of animal. This can\ninclude calming down agitated animals, or working them up, herding sheep or guiding a\nhorse, but can be as complicated as teaching the intricate tricks of a circus dog act.",
+    "rmu_canonical_name": "Animal Handling"
   },
   {
     "category": "Animal",
     "name": "Animal Handling: <animal 2>",
     "dev_cost": "3/5",
     "prof_type": "Normal",
-    "stat_keys": "Pr"
+    "stat_keys": "Pr",
+    "description": "Animal Handling involves the care and feeding of animals, as well as training, minor\nhealing, and possibly simple communication depending on the type of animal. This can\ninclude calming down agitated animals, or working them up, herding sheep or guiding a\nhorse, but can be as complicated as teaching the intricate tricks of a circus dog act.",
+    "rmu_canonical_name": "Animal Handling"
   },
   {
     "category": "Animal",
     "name": "Riding: <animal 1>",
     "dev_cost": "3/5",
     "prof_type": "Normal",
-    "stat_keys": "Pr"
+    "stat_keys": "Pr",
+    "description": "Riding includes the ability to stay on the mount safely as well as controlling the mount.\nCharacters who lack any riding skill will struggle just to remain seated on an animal when\nit is moving (an unskilled rider can perform no actions other than perception and\nconversation while his mount is in motion). The animal will need to be led by someone\nelse, or it will go where it pleases, as the unskilled rider has no control.\nHorses are herd animals, however, and if a mounted group is in motion, a horse not being\nled with an unskilled rider will follow the “herd” until spooked or threatened, at which\npoint it will flee (following the group if they all flee, or in the direction away from\nwhat scared it if not). If the mount moves at faster than a walk, an unskilled rider will need\nto at least partially succeed on a riding maneuver (at the usual -25 penalty for 0 ranks)\nevery round to avoid being thrown. For complex riding maneuvers or controlling the mount in\nstressful situations, a riding maneuver is required, with a modifier of half the movement penalty\nas shown in Table 5-3 in Chapter 5. All other Maneuvers and actions (like spell casting or attacks)\nmade while riding are subject to the full penalty due to the pace of the mount (Table 5-3), which may\nbe reduced with the Mounted Combat skill. All maneuvers that require the mount to back up\nare at an additional -20.",
+    "rmu_canonical_name": "Riding"
   },
   {
     "category": "Animal",
     "name": "Riding: <animal 2>",
     "dev_cost": "3/5",
     "prof_type": "Normal",
-    "stat_keys": "Pr"
+    "stat_keys": "Pr",
+    "description": "Riding includes the ability to stay on the mount safely as well as controlling the mount.\nCharacters who lack any riding skill will struggle just to remain seated on an animal when\nit is moving (an unskilled rider can perform no actions other than perception and\nconversation while his mount is in motion). The animal will need to be led by someone\nelse, or it will go where it pleases, as the unskilled rider has no control.\nHorses are herd animals, however, and if a mounted group is in motion, a horse not being\nled with an unskilled rider will follow the “herd” until spooked or threatened, at which\npoint it will flee (following the group if they all flee, or in the direction away from\nwhat scared it if not). If the mount moves at faster than a walk, an unskilled rider will need\nto at least partially succeed on a riding maneuver (at the usual -25 penalty for 0 ranks)\nevery round to avoid being thrown. For complex riding maneuvers or controlling the mount in\nstressful situations, a riding maneuver is required, with a modifier of half the movement penalty\nas shown in Table 5-3 in Chapter 5. All other Maneuvers and actions (like spell casting or attacks)\nmade while riding are subject to the full penalty due to the pace of the mount (Table 5-3), which may\nbe reduced with the Mounted Combat skill. All maneuvers that require the mount to back up\nare at an additional -20.",
+    "rmu_canonical_name": "Riding"
   },
   {
     "category": "Awareness",
     "name": "Perception",
     "dev_cost": "4/6",
     "prof_type": "Normal",
-    "stat_keys": "SD"
+    "stat_keys": "SD",
+    "description": "Perception is used for noticing details about the environment, and affects how well one\ninterprets the information. It is used to find hidden objects, to notice imperfections in\nwalls that may hide a secret door, to notice triggers for traps, and to sense potential\nambushes.\nPerception includes all the senses, although if a particular sense is required there may\nbe a modifier due to a character’s superior (or inferior) sense.\nIf a character states that he is watching or examining an area, situation, or place, the\nGM should make an Absolute Maneuver roll using the character’s Perception skill to\ndetermine if the character notices or detects anything. The GM may keep this roll secret,\nrevealing only what the character has observed. A heavy penalty should be assessed (if a\nroll is allowed at all) in situations where the players do not know what their characters\nare looking for or do not specify that their characters are looking for something in\nparticular (likewise, looking for ceiling traps makes it difficult to see pit traps,\netc.).\nPerception is often used as a conflicting skill against other skills like Stalking.",
+    "rmu_canonical_name": "Perception"
   },
   {
     "category": "Awareness",
     "name": "Tracking",
     "dev_cost": "4/6",
     "prof_type": "Normal",
-    "stat_keys": "SD"
+    "stat_keys": "SD",
+    "description": "This skill provides a bonus for tracking maneuvers and is used to read the tracks and\nsigns left behind by creatures and to follow a trail left by someone or something such as\nfootprints, broken branches, crushed grass, hanging pieces of cloth, etc. While similar to\nPerception, Tracking involves looking for specific details of how beings affect their\nenvironment.\nA target that is leaving a marked trail is easier to track. The most common cause of an\nobvious trail is uncontrolled bleeding (+50 to track a bleeding foe, +100 if the foe is\nbleeding more than 5 points per round), but GMs will have to use their judgment in other cases.\nTracking can also be used to obscure your trail. If used this way, apply it as opposed\nconflicting skill against the follower’s Tracking skill. So a result of 120 would make it\nharder to track you (-20) while a result of 80 would make it easier to track you (+20).\nCovering tracks is more difficult when moving quickly, so pace penalties are x2 when using\ntracking to conceal your trail while you move.",
+    "rmu_canonical_name": "Tracking"
   },
   {
     "category": "Battle Expertise",
     "name": "Maneuvering in Armor",
     "dev_cost": "7/10",
     "prof_type": "Normal",
-    "stat_keys": "-"
+    "stat_keys": "-",
+    "description": "Reduces the maneuver penalty for armor worn, but has no effect on the encumbrance penalty\nfor armor worn (Section 7.2).",
+    "rmu_canonical_name": "Maneuvering in Armor"
   },
   {
     "category": "Battle Expertise",
     "name": "Mounted Combat",
     "dev_cost": "7/10",
     "prof_type": "Normal",
-    "stat_keys": "-"
+    "stat_keys": "-",
+    "description": "Reduces penalties to maneuvers while riding an animal or beast (Section 9.7).",
+    "rmu_canonical_name": "Mounted Combat"
   },
   {
     "category": "Battle Expertise",
     "name": "Protect",
     "dev_cost": "7/10",
     "prof_type": "Normal",
-    "stat_keys": "-"
+    "stat_keys": "-",
+    "description": "Reduces penalties for extending your DB to protect an ally (Section 9.7).",
+    "rmu_canonical_name": "Protect"
   },
   {
     "category": "Battle Expertise",
     "name": "Restricted Quarters",
     "dev_cost": "7/10",
     "prof_type": "Normal",
-    "stat_keys": "-"
+    "stat_keys": "-",
+    "description": "Reduces penalties when fighting in restricted quarters (Section 9.5).",
+    "rmu_canonical_name": "Restricted Quarters"
   },
   {
     "category": "Battle Expertise",
     "name": "Subduing",
     "dev_cost": "7/10",
     "prof_type": "Normal",
-    "stat_keys": "-"
+    "stat_keys": "-",
+    "description": "Reduces penalties when trying to subdue an opponent (Section 9.7).",
+    "rmu_canonical_name": "Subduing"
   },
   {
     "category": "Body Discipline",
     "name": "Adrenal Defense",
     "dev_cost": "6/8",
     "prof_type": "Normal",
-    "stat_keys": "Ag"
+    "stat_keys": "Ag",
+    "description": "Adrenal Defense is the complete integration of dodging into fluid natural movements. With\na successful maneuver the character may perform partial dodging as an instantaneous action\n(0 AP), or full dodging with concentration. Adrenal Defense is easier to maintain than\nother adrenal maneuvers, so the duration is doubled. On an Absolute Success, double\nbenefits indicates the character may perform full dodging as an instantaneous action\nduring the first round. An Absolute Failure means the character is unable to dodge at all\nthe following round (in addition to the table result).",
+    "rmu_canonical_name": "Adrenal Defense"
   },
   {
     "category": "Body Discipline",
     "name": "Adrenal Focus",
     "dev_cost": "6/8",
     "prof_type": "Normal",
-    "stat_keys": "SD"
+    "stat_keys": "SD",
+    "description": "Adrenal Focus can be used to achieve feats of superhuman effort through concentration and\nself-discipline.\nWith a successful maneuver the character gets a +25 bonus to any Brawn, Gymnastic, or\nMovement maneuvers (+50 on an Absolute Success).",
+    "rmu_canonical_name": "Adrenal Focus"
   },
   {
     "category": "Body Discipline",
     "name": "Adrenal Speed",
     "dev_cost": "6/8",
     "prof_type": "Normal",
-    "stat_keys": "Qu"
+    "stat_keys": "Qu",
+    "description": "With a successful maneuver the character gains 2 additional Action Points (4 AP on an\nAbsolute Success).\nAn Absolute Failure means the character loses his first 2 Action Points the following\nround (in addition to the table result).",
+    "rmu_canonical_name": "Adrenal Speed"
   },
   {
     "category": "Body Discipline",
     "name": "Adrenal Strength",
     "dev_cost": "6/8",
     "prof_type": "Normal",
-    "stat_keys": "St"
+    "stat_keys": "St",
+    "description": "With a successful maneuver the character’s attacks are treated as 1 size larger, and the\ncharacter’s weight is treated as x4 for purposes of feats of strength (2 sizes and x8 on\nan Absolute Success). There is no effect for a Partial Success, while an Absolute Failure\nresults in -1 attack size for the following round (in addition to the table result), and\ncharacter’s weight is treated as 1/4 for purposes of feats of strength.",
+    "rmu_canonical_name": "Adrenal Strength"
   },
   {
     "category": "Brawn",
     "name": "Body Development",
     "dev_cost": "6/8",
     "prof_type": "Professional",
-    "stat_keys": "Co"
+    "stat_keys": "Co",
+    "description": "Body Development covers how well-developed and trained a character’s physical body is,\nwith higher Body Development allowing the character to take damage without being knocked\nunconscious and to push his body to more extreme levels of exertion or endurance.\nThe character’s Body Development skill bonus is added to his base hits (determined by\nrace) to get his total hits. For Small characters, multiply this total by 0.75.\nFor Big characters, multiply it by 1.5. For characters who are sizes other than Small,\nMedium, and Big, see Table 9-4a.\nThe Body Development bonus is also used when making Endurance rolls (Section 5.5).\nA character will die when he reaches negative hits in excess of his Body Development bonus\n(so a character with +67 body development bonus will die at -68 hits).",
+    "rmu_canonical_name": "Body Development"
   },
   {
     "category": "Brawn",
     "name": "Fortitude",
     "dev_cost": "6/8",
     "prof_type": "Normal",
-    "stat_keys": "SD"
+    "stat_keys": "SD",
+    "description": "The character has trained to temporarily block sensations of pain and discomfort, which\ncan be used to temporarily reduce penalties from fatigue, pain, or injury. With a\nsuccessful maneuver all penalties due to fatigue, hit loss, injuries, and Stun are halved.\nAlthough the penalty for Stun may be reduced, the character is still considered Stunned\nfor purposes of attacks against them and for concentration.\nA Fortitude maneuver is an instantaneous action. The benefits of the maneuver, if\nsuccessful, are received during the same round, and will continue for one additional round\nfor every full 20 the maneuver succeeded by (e.g., a total of 1 round on 101-120, 2 rounds\non 121-140). On an Absolute Success, no fatigue, hit loss, injury, or stun penalties are\nsuffered during the first round. All injury penalties apply to every Fortitude maneuver,\neven after successful use of Fortitude.\nThe Adrenal maneuvers table (Table 3-4) is used for Fortitude maneuvers, and an Absolute\nFailure results in an additional Fatigue penalty of -20.\nExample: Niles is having a rough day. He climbed a cliff to get into the mountain\nfortress, taking a guard by surprise but not without having a few of his ribs broken. Now\na second guard has come around the corner and shot him with a crossbow. Niles has lost\nenough hits to accrue a -10 penalty, he has a -5 fatigue penalty, his broken ribs are\nanother -15, and he’s lightly stunned for one round (-25). It’s times like this that he\nstarts to contemplate teamwork. Well, too late now. Niles tries a Fortitude maneuver. His\nskill is +79, but he has a total penalty of -55. If he succeeded, the penalties would be\nreduced to -27 for the round. But a roll of 26 gives him a total of 50, failure. Hopefully\nthe guards will just take him prisoner. Then he can have a nice nap and contemplate\nsticking with the party next time.",
+    "rmu_canonical_name": "Fortitude"
   },
   {
     "category": "Brawn",
     "name": "Weight Training",
     "dev_cost": "6/8",
     "prof_type": "Normal",
-    "stat_keys": "St"
+    "stat_keys": "St",
+    "description": "Weight Training aids in using one’s muscles to the most advantage with the least chance of\nbecoming injured. This covers the proper ways to get a solid grip on objects, the right\nway to apply strength to lift or move something, and the correct ways to position your\nbody when moving to keep applying force without hurting yourself. This skill is used as\nthe bonus for strength-based feats (Section 5.2).",
+    "rmu_canonical_name": "Weight Training"
   },
   {
     "category": "Combat Expertise",
     "name": "Blind Fighting",
     "dev_cost": "7/10",
     "prof_type": "Normal",
-    "stat_keys": "-"
+    "stat_keys": "-",
+    "description": "Reduces penalties to maneuvers while blind (or in darkness) or in low light (Section 15.7).",
+    "rmu_canonical_name": "Blind Fighting"
   },
   {
     "category": "Combat Expertise",
     "name": "Disarm",
     "dev_cost": "7/10",
     "prof_type": "Normal",
-    "stat_keys": "-"
+    "stat_keys": "-",
+    "description": "Reduces the penalties associated with disarming an opponent (Section 9.7).",
+    "rmu_canonical_name": "Disarm"
   },
   {
     "category": "Combat Expertise",
     "name": "Footwork",
     "dev_cost": "7/10",
     "prof_type": "Normal",
-    "stat_keys": "-"
+    "stat_keys": "-",
+    "description": "Reduces penalties associated with movement while making melee attacks (including charging) (Section 8.2).",
+    "rmu_canonical_name": "Footwork"
   },
   {
     "category": "Combat Expertise",
     "name": "Multiple Attacks",
     "dev_cost": "7/10",
     "prof_type": "Normal",
-    "stat_keys": "-"
+    "stat_keys": "-",
+    "description": "Reduces penalties associated with making simultaneous melee attacks in a single round,\neither against a single foe or multiple opponents (see Katas in Section 9.7).",
+    "rmu_canonical_name": "Multiple Attacks"
   },
   {
     "category": "Combat Expertise",
     "name": "Reverse Strike",
     "dev_cost": "7/10",
     "prof_type": "Normal",
-    "stat_keys": "-"
+    "stat_keys": "-",
+    "description": "Reduces the penalty for attacking a target to one’s flank or rear, or lowers an opponent’s\nbonuses when attacking your flank or rear (Section 9.5).",
+    "rmu_canonical_name": "Reverse Strike"
   },
   {
     "category": "Combat Training",
     "name": "Melee: <weapon 1>",
     "dev_cost": "5/7",
     "prof_type": "Professional",
-    "stat_keys": "St"
+    "stat_keys": "St",
+    "description": "Weapons used in hand to hand combat (broad-sword, spear, war hammer, two-handed sword, etc.).\nSkill bonus is based on developed specialization.",
+    "rmu_canonical_name": "Melee Weapons"
   },
   {
     "category": "Combat Training",
     "name": "Melee: <weapon 2>",
     "dev_cost": "5/7",
     "prof_type": "Normal",
-    "stat_keys": "St"
+    "stat_keys": "St",
+    "description": "Weapons used in hand to hand combat (broad-sword, spear, war hammer, two-handed sword, etc.).\nSkill bonus is based on developed specialization.",
+    "rmu_canonical_name": "Melee Weapons"
   },
   {
     "category": "Combat Training",
     "name": "Melee: <weapon 3>",
     "dev_cost": "5/7",
     "prof_type": "Normal",
-    "stat_keys": "St"
+    "stat_keys": "St",
+    "description": "Weapons used in hand to hand combat (broad-sword, spear, war hammer, two-handed sword, etc.).\nSkill bonus is based on developed specialization.",
+    "rmu_canonical_name": "Melee Weapons"
   },
   {
     "category": "Combat Training",
     "name": "Unarmed: <weapon 1>",
     "dev_cost": "9/12",
     "prof_type": "Normal",
-    "stat_keys": "St"
+    "stat_keys": "St",
+    "description": "Unarmed and natural melee attacks (e.g. martial arts, bites). The stat used depends\non the specific melee attack (Section 7.1).",
+    "rmu_canonical_name": "Unarmed"
   },
   {
     "category": "Combat Training",
     "name": "Unarmed: <weapon 2>",
     "dev_cost": "9/12",
     "prof_type": "Normal",
-    "stat_keys": "St"
+    "stat_keys": "St",
+    "description": "Unarmed and natural melee attacks (e.g. martial arts, bites). The stat used depends\non the specific melee attack (Section 7.1).",
+    "rmu_canonical_name": "Unarmed"
   },
   {
     "category": "Combat Training",
     "name": "Ranged: <weapon 1>",
     "dev_cost": "15/20",
     "prof_type": "Normal",
-    "stat_keys": "Ag"
+    "stat_keys": "Ag",
+    "description": "Muscle powered thrown weapons as well as mechanical devices that fire low velocity projectiles.\nSkill bonus is based on developed specialization.",
+    "rmu_canonical_name": "Ranged Weapons"
   },
   {
     "category": "Combat Training",
     "name": "Ranged: <weapon 2>",
     "dev_cost": "15/20",
     "prof_type": "Normal",
-    "stat_keys": "Ag"
+    "stat_keys": "Ag",
+    "description": "Muscle powered thrown weapons as well as mechanical devices that fire low velocity projectiles.\nSkill bonus is based on developed specialization.",
+    "rmu_canonical_name": "Ranged Weapons"
   },
   {
     "category": "Combat Training",
     "name": "Shield",
     "dev_cost": "6/8",
     "prof_type": "Normal",
-    "stat_keys": "St"
+    "stat_keys": "St",
+    "description": "The shield skill allows a trained combatant to gain more defensive benefit from a shield, either in melee\nor against ranged attacks (Section 9.6). This skill is also used to make Shield Bash attacks\n(but Multiple Attacks skill may also be needed to do so while also attacking with a weapon,\nsee Katas in Section 9.7 for details).",
+    "rmu_canonical_name": "Shield"
   },
   {
     "category": "Composition",
     "name": "Illusion Crafting",
     "dev_cost": "2/4",
     "prof_type": "Normal",
-    "stat_keys": "Pr"
+    "stat_keys": "Pr",
+    "description": "The crafting of illusions is a fine art and the work of an artist compels where the\nefforts of a hack may barely pass as concealment. Illusions are often used to deceive, and\nIllusion Crafting may be used to ensure verisimilitude or even to imitate real creatures,\nitems, or individuals. However, illusions may also be used to entertain or to subtly or\novertly support other types of performances. A speech may benefit from greater acoustic\nresonance or timely illumination and shadow, while illusions may cover shabby props and\nsets on a performing stage.",
+    "rmu_canonical_name": "Illusion Crafting"
   },
   {
     "category": "Composition",
     "name": "Musical Composition",
     "dev_cost": "2/4",
     "prof_type": "Normal",
-    "stat_keys": "Pr"
+    "stat_keys": "Pr",
+    "description": "While Musical skill is used to perform a known piece of music, Musical Composition is used\nto create new works and adapt old ones. A composer may simply be earning a living, but\nmusic can also be used to tell stories, to influence the emotions, and to persuade, and a\ncatchy tune may spread farther than a single public speech.",
+    "rmu_canonical_name": "Musical Composition"
   },
   {
     "category": "Composition",
     "name": "Writing",
     "dev_cost": "2/4",
     "prof_type": "Normal",
-    "stat_keys": "Re"
+    "stat_keys": "Re",
+    "description": "The written word holds civilization together.\nWith written records, knowledge can be transmitted great distances and preserved over time\non scales that far surpass what is possible with an oral tradition.\nWritten compositions may be used to inform, to teach, to inspire, or to entertain. A\nskilled writer may imply rather than needing to state outright, encouraging a reader to\ndraw the right conclusions, or they may sow confusion and doubt. If the objective is to\npersuade the reader, Writing may be used in place of the Influence skill.",
+    "rmu_canonical_name": "Writing"
   },
   {
     "category": "Crafting",
     "name": "Culinary",
     "dev_cost": "3/4",
     "prof_type": "Normal",
-    "stat_keys": "SD"
+    "stat_keys": "SD",
+    "description": "Food is a big part of any living creatures’ lives.\nFood gets tastier and better for the health if it is prepared with skill. Vegetables,\nmeats and beverages each have their own specialized crafters harvesting and preparing the\nfare for consumption.",
+    "rmu_canonical_name": "Culinary"
   },
   {
     "category": "Crafting",
     "name": "Drawing/Painting",
     "dev_cost": "3/4",
     "prof_type": "Normal",
-    "stat_keys": "In"
+    "stat_keys": "In",
+    "description": "Drawing and painting are used to create visual\nart ranging from realistic representations to vague\nabstraction. The artist uses lines, shading, shapes, color\nand texture to create illustrations or pictures. Fine\nwork may require a pencil, pen, paintbrush, or similar\ntool, but this skill can be crudely performed with any\nusable surface and nothing else but a pigment of some\nsort and the character’s finger.",
+    "rmu_canonical_name": "Drawing/Painting"
   },
   {
     "category": "Crafting",
     "name": "Fabric Craft",
     "dev_cost": "3/4",
     "prof_type": "Normal",
-    "stat_keys": "SD"
+    "stat_keys": "SD",
+    "description": "Humans need clothes to cope with the weather. Cloth is spun from animal or vegetable fibers.\nTo make it into clothes requires some decent work, although many housewives also have some\nskill in the craft.",
+    "rmu_canonical_name": "Fabric Craft"
   },
   {
     "category": "Crafting",
     "name": "Leathercraft",
     "dev_cost": "3/4",
     "prof_type": "Normal",
-    "stat_keys": "SD"
+    "stat_keys": "SD",
+    "description": "Animal hide may be cured and used for all kinds of purposes. It is tough and weather proof\nand it looks nice. Many items are made from leather.",
+    "rmu_canonical_name": "Leathercraft"
   },
   {
     "category": "Crafting",
     "name": "Metalcraft",
     "dev_cost": "3/4",
     "prof_type": "Normal",
-    "stat_keys": "St"
+    "stat_keys": "St",
+    "description": "Metals are unearthed and the ore melted down and refined into ingots or billets. Each\nmetal has its own uses and many specializations exist to make metal objects. It can be\nmolded or worked. Sample metals include the hard and tough iron, the semi-precious and\nmalleable copper, precious but soft silver and gold and others.",
+    "rmu_canonical_name": "Metalcraft"
   },
   {
     "category": "Crafting",
     "name": "Stonecraft",
     "dev_cost": "3/4",
     "prof_type": "Normal",
-    "stat_keys": "St"
+    "stat_keys": "St",
+    "description": "Stone is a hard and resilient material used in building and decoration. It copes well with\nstationary stresses and it has a beautiful appearance. It is found in hills and mountains\nand it must be dressed before it is used in sculptures and buildings. Extracting the best\nstone and working it to useful form is the task of several specialized professions.\nCeramics are an artificially created form of stone.",
+    "rmu_canonical_name": "Stonecraft"
   },
   {
     "category": "Crafting",
     "name": "Woodcraft",
     "dev_cost": "3/4",
     "prof_type": "Normal",
-    "stat_keys": "SD"
+    "stat_keys": "SD",
+    "description": "This material comes from trees. To process this light, strong, easily worked and beautiful\nmaterial from tree to cupboards and boats requires a plethora of crafters. Wood can be\nprocessed to boards, beams and other sizes for more specialized crafters to fashion into\nusable goods.",
+    "rmu_canonical_name": "Woodcraft"
   },
   {
     "category": "Delving",
     "name": "Attunement",
     "dev_cost": "1/2",
     "prof_type": "Normal",
-    "stat_keys": "Pr"
+    "stat_keys": "Pr",
+    "description": "Some items require attunement prior to using some or all of their abilities (as opposed to\na magical sword with a +10 OB, where you would normally get the bonus even if you were\nunaware of it). Attunement may also be used as a method of identifying items with respect\nto magical powers. The attunement process involves the formation of a sympathetic bond\nbetween the auras of the attuning individual and item.\nNormally, only one individual can be attuned to an item at a time, though an individual\nmay be attuned to any number of items.\nThe process of attunement normally requires three minutes to attempt. If the Attunement\nmaneuver is attempted more quickly, it is done at a penalty. For one minute, the penalty\nis -10. For half a minute, the penalty is -25. Attempting to attune to an item in a single\nround is -50. In any case, attunement must occur before the round in which an item is to\nbe used.\nWhile the process of attunement must be done by the character who will be using the item\n(if the attunement is to allow use, rather than for identification), a character may aid\nanother character with Attunement by explaining the power(s) and also through the use of\nthe Complementary Skill rule (adding his own ranks in Attunement), although only one such\nperson is allowed to aid the person attempting the attunement.\nOnce the character is attuned to an item, spell abilities may be used, making a modified\nSpell-casting Roll (SCR), as described in Spell Law. Attunement and the use of magical\nitems is covered in more detail in Treasure Law.",
+    "rmu_canonical_name": "Attunement"
   },
   {
     "category": "Delving",
     "name": "Runes",
     "dev_cost": "1/2",
     "prof_type": "Normal",
-    "stat_keys": "Pr"
+    "stat_keys": "Pr",
+    "description": "Using the Rune Mastery or Sacred Runes spell list, spells can be stored in the form of\n“runes” for later use by anyone with the skill to do so. These runes are stored in special\nRune Paper (or less often, some equivalent) enchanted to hold a rune. Casting a spell from\na rune requires a successful Runes maneuver to decipher the rune before casting is\nattempted.\nThe level of effect for a rune is the level of the spell inscribed. This level of effect\nmay be increased by using a higher-level Rune spell than is necessary for the spell (e.g.,\na Sleep V spell inscribed using a Rune VI spell would be resisted as a sixth level spell).\nIf the spell is an elemental attack, the reader’s appropriate Directed Spell OB is used.\nThe procedure for casting a spell from a rune is similar to casting a spell normally,\nexcept that the spell-caster may add ranks in the Runes skill as well as any ranks in the\nlist from which the spell comes. Other details of the procedure are explained in Spell\nLaw.\nUsing the rune requires the normal amount of time to cast the spell. Normally, one would\nattempt to decipher the rune in advance, in order to have it identified and usable. This\ntakes three minutes without penalty.\nTo rush the process, one could attempt it in one minute at -10 to the Runes maneuver.\nAttempting to decipher the rune in a single round would result in a -25 penalty.\nAttempting to decipher the rune simultaneously with casting the spell from it would give a\n-50 penalty to the Runes roll and a -20 penalty to the casting. It may also prove\nunhelpful if the stored spell is not what was expected. Using the rune requires the normal\namount of time to cast the spell. Normally, one would attempt to decipher the rune in\nadvance, in order to have it identified and usable. This takes three minutes without\npenalty. To rush the process, one could attempt it in one minute at -10 to the Runes\nmaneuver. Attempting to decipher the rune in a single round would result in a -25 penalty.\nAttempting to decipher the rune simultaneously with casting the spell from it would give a\n-50 penalty to the Runes roll and a -20 penalty to the casting. It may also prove\nunhelpful if the stored spell is not what was expected.",
+    "rmu_canonical_name": "Runes"
   },
   {
     "category": "Environmental",
     "name": "Navigation",
     "dev_cost": "4/6",
     "prof_type": "Normal",
-    "stat_keys": "Re"
+    "stat_keys": "Re",
+    "description": "Navigation is used to determine proper directions and distances when using or creating a\nmap in conjunction with some directional aid, such as a compass or the stars. This\nincludes the concept of orienteering, and it is applicable on land or water. Getting\naround by way of familiar landmarks uses the Region Lore skill instead.",
+    "rmu_canonical_name": "Navigation"
   },
   {
     "category": "Environmental",
     "name": "Piloting: <vehicle 1>",
     "dev_cost": "4/6",
     "prof_type": "Normal",
-    "stat_keys": "Ag"
+    "stat_keys": "Ag",
+    "description": "Piloting is the operation of a vehicle such as a wagon, cart, sleigh, blimp, etc. For\nanimal drawn vehicles, the driver should also have Animal Handling to be able to control\nthe animal. Driving involves an understanding of the controls, braking, and performance\nacross various terrain, etc.\nThe Piloting maneuver may be modified by the speed of the vehicle, the angle of a turn (if\nany), and the approximate size and maneuverability of the vehicle as shown in Table 3-11.\nAnimal powered vehicles are, in general, not particularly maneuverable, and the GM\nassigned difficulty should reflect as much. For example, it is not possible to make right\nangle turns with such a vehicle. When the horses turn, the rear of the cart continues\nmoving straight ahead until it is pulled into the curve.",
+    "rmu_canonical_name": "Piloting"
   },
   {
     "category": "Environmental",
     "name": "Piloting: <vehicle 2>",
     "dev_cost": "4/6",
     "prof_type": "Normal",
-    "stat_keys": "Ag"
+    "stat_keys": "Ag",
+    "description": "Piloting is the operation of a vehicle such as a wagon, cart, sleigh, blimp, etc. For\nanimal drawn vehicles, the driver should also have Animal Handling to be able to control\nthe animal. Driving involves an understanding of the controls, braking, and performance\nacross various terrain, etc.\nThe Piloting maneuver may be modified by the speed of the vehicle, the angle of a turn (if\nany), and the approximate size and maneuverability of the vehicle as shown in Table 3-11.\nAnimal powered vehicles are, in general, not particularly maneuverable, and the GM\nassigned difficulty should reflect as much. For example, it is not possible to make right\nangle turns with such a vehicle. When the horses turn, the rear of the cart continues\nmoving straight ahead until it is pulled into the curve.",
+    "rmu_canonical_name": "Piloting"
   },
   {
     "category": "Environmental",
     "name": "Survival: <biome 1>",
     "dev_cost": "4/6",
     "prof_type": "Normal",
-    "stat_keys": "Re"
+    "stat_keys": "Re",
+    "description": "Survival includes the skills necessary for living in a specific hostile environment and\nincludes locating potable water, foraging for edible plants, and catching small animals\nthrough gathering, fishing and hunting.\nIt also includes the observation and awareness of dangerous weather patterns, finding\nshelter and suitable camp sites, starting fires, and improvising clothing or equipment.\nThe Urban specialization of this skill focuses on gathering food and other materials from\npeople’s discards and trash rather than nature, but is otherwise the same.",
+    "rmu_canonical_name": "Survival"
   },
   {
     "category": "Environmental",
     "name": "Survival: <biome 2>",
     "dev_cost": "4/6",
     "prof_type": "Normal",
-    "stat_keys": "Re"
+    "stat_keys": "Re",
+    "description": "Survival includes the skills necessary for living in a specific hostile environment and\nincludes locating potable water, foraging for edible plants, and catching small animals\nthrough gathering, fishing and hunting.\nIt also includes the observation and awareness of dangerous weather patterns, finding\nshelter and suitable camp sites, starting fires, and improvising clothing or equipment.\nThe Urban specialization of this skill focuses on gathering food and other materials from\npeople’s discards and trash rather than nature, but is otherwise the same.",
+    "rmu_canonical_name": "Survival"
   },
   {
     "category": "Gymnastic",
     "name": "Acrobatics",
     "dev_cost": "4/6",
     "prof_type": "Normal",
-    "stat_keys": "St"
+    "stat_keys": "St",
+    "description": "Acrobatics includes tumbling, horizontal dives, rolling, swinging on objects, and other\ngeneral gymnastic maneuvers. Acrobatics can be used to attempt to control a fall. Any\ncritical suffered due to the fall is increased one severity on an Absolute Failure,\ndecreased by one severity on a Success, and decreased by two severities on an Absolute\nSuccess.\nThe difficulty of an Acrobatics maneuver is determined by the amount of movement and the\ntiming of the maneuver. Rotations and somersaults make the maneuver even more difficult.",
+    "rmu_canonical_name": "Acrobatics"
   },
   {
     "category": "Gymnastic",
     "name": "Contortions",
     "dev_cost": "4/6",
     "prof_type": "Normal",
-    "stat_keys": "SD"
+    "stat_keys": "SD",
+    "description": "Contortions is the manipulation of one’s body in order to move through small openings or\nescape from bonds. The difficulty is based on the size of the opening relative to the\ncharacter or the material of the bonds and how well they have been secured. This skill can\nalso be used to slip free of grapple attacks, as described in “Grapples” in section 9.8.\nAn attempt to slip out of a grapple or bonds can be made every round, until the character\nescapes or an absolute failure is rolled, in which case the character has tightened the\ngrapple or bonds to the point where he cannot escape them without assistance. (The\ncharacter may still attempt to incapacitate a grappling foe or break free of their bonds\nin a feat of strength).\nSlipping bonds is a full 4 AP action (Section 8.1), while every AP less than 4 imposes a\ncumulative -25 to the action with a minimum of 1 AP at -75.\nAttempting to slip bonds or a grapple without being obvious to someone watching by making\nsmall motions imposes a -50 penalty, and allows the character to make a Stalking or Duping\nconflicting maneuver vs the observer’s Perception to keep their struggles unnoticed\n(Difficulty level and modifiers based on how closely the observer is watching, light\nlevel, and any other modifiers the GM deems appropriate).",
+    "rmu_canonical_name": "Contortions"
   },
   {
     "category": "Gymnastic",
     "name": "Jumping",
     "dev_cost": "4/6",
     "prof_type": "Normal",
-    "stat_keys": "St"
+    "stat_keys": "St",
+    "description": "Jumping includes both running and standing jumps. Every character has a base jump distance\ndepending on the type of jump. Stride is the character’s stride modifier, expressed in\ninches (e.g., halflings use a stride modifier of -5\").\n\n    Running long base jump = 50\" + stride\n    Standing long base jump = (50\" + stride) / 2\n    Running high base jump = (50\" + stride) / 5\n    Standing high base jump = (50\" + stride) / 10\n\nThe difficulty modifier to jump a specific distance is +40, minus -20 for each full\nincrement of the character’s applicable base jump distance.\n\nIf the maneuver fails, but how far the character actually did jump is important, then\nconsult the Percentage Maneuver table to determine the distance jumped.\n\nExample: Arkose, a goblin (with a stride modifier of -6), has a running long base jump of\n44\". He has a bonus of +40 jumping up to 44\", +20 up to 88\", +0 up to 132\", -20 up to\n176\", etc.",
+    "rmu_canonical_name": "Jumping"
   },
   {
     "category": "Lore",
     "name": "Creature Lore: <creature>",
     "dev_cost": "1/3",
     "prof_type": "Normal",
-    "stat_keys": "Re"
+    "stat_keys": "Re",
+    "description": "Creature Lore includes recognition, knowledge of habitat and diet as well as any powers\nand abilities of a specific type of creature. Higher ranks will cover knowledge of any\ncultures, psychology, and other details.\nNote that lore regarding normal animals is covered by Survival for an appropriate biome.\nCreature Lore is appropriate for magical creatures that do not organize themselves into\ncities or tribes (for those that do, Racial Lore may be more appropriate).",
+    "rmu_canonical_name": "Creature Lore"
   },
   {
     "category": "Lore",
     "name": "Historic Lore: <topic>",
     "dev_cost": "1/3",
     "prof_type": "Normal",
-    "stat_keys": "Re"
+    "stat_keys": "Re",
+    "description": "Knowledge of the recorded events of history, the broader the character purchases this lore\nskill in terms of geography and era the less specific the information will be, while the\nnarrower the era covered the more specific. So the lore skill “History of the Northern\nContinent” will apply to many situations, but offer limited, broad information, while\n“History of the Shulin Kai during the Third Imperial Era” will offer more specific and\ndetailed information, but only relating to the area and era specified, with limited\nusefulness covering other periods or adjacent areas. The GM should take into account the\nfact that history often contains partial truths or falsehoods, so it may require an\nAbsolute Success to recall a detail known to few, while the majority believes the “story”\nthat is generally held to be true.",
+    "rmu_canonical_name": "Historic Lore"
   },
   {
     "category": "Lore",
     "name": "Materials Lore: <material>",
     "dev_cost": "1/3",
     "prof_type": "Normal",
-    "stat_keys": "Re"
+    "stat_keys": "Re",
+    "description": "Knowledge of a specific type of material such as metal includes identification of the raw\nmaterial, as well as knowledge of sources and methods of working (crafting uses the\nseparate Crafting skill). Materials Lore may also include information on famous magical,\nhistoric, legendary or cursed types of materials and items made from those materials.",
+    "rmu_canonical_name": "Materials Lore"
   },
   {
     "category": "Lore",
     "name": "Racial Lore: <race 1>",
     "dev_cost": "1/3",
     "prof_type": "Normal",
-    "stat_keys": "Re"
+    "stat_keys": "Re",
+    "description": "Racial Lore includes recognition, knowledge of habitat and diet as well as any powers and\nabilities of a specific type of race. Higher ranks will cover knowledge of any cultures,\npsychology, and other details.",
+    "rmu_canonical_name": "Racial Lore"
   },
   {
     "category": "Lore",
     "name": "Racial Lore: <race 2>",
     "dev_cost": "1/3",
     "prof_type": "Normal",
-    "stat_keys": "Re"
+    "stat_keys": "Re",
+    "description": "Racial Lore includes recognition, knowledge of habitat and diet as well as any powers and\nabilities of a specific type of race. Higher ranks will cover knowledge of any cultures,\npsychology, and other details.",
+    "rmu_canonical_name": "Racial Lore"
   },
   {
     "category": "Lore",
     "name": "Region Lore: <own region>",
     "dev_cost": "1/3",
     "prof_type": "Normal",
-    "stat_keys": "Re"
+    "stat_keys": "Re",
+    "description": "This skill provides knowledge about the geography of a region, as well as a basic overview\nof local cultures, flora, fauna, and a limited history. The region size may vary but\nshould be no more than 100,000 square miles (about 300 x 300 miles, roughly the size of\nthe state of Colorado or the nation of Italy).",
+    "rmu_canonical_name": "Region Lore"
   },
   {
     "category": "Lore",
     "name": "Region Lore: <other region>",
     "dev_cost": "1/3",
     "prof_type": "Normal",
-    "stat_keys": "Re"
+    "stat_keys": "Re",
+    "description": "This skill provides knowledge about the geography of a region, as well as a basic overview\nof local cultures, flora, fauna, and a limited history. The region size may vary but\nshould be no more than 100,000 square miles (about 300 x 300 miles, roughly the size of\nthe state of Colorado or the nation of Italy).",
+    "rmu_canonical_name": "Region Lore"
   },
   {
     "category": "Lore",
     "name": "Religion/Philosophy: <topic>",
     "dev_cost": "1/3",
     "prof_type": "Normal",
-    "stat_keys": "Re"
+    "stat_keys": "Re",
+    "description": "This skill can be taken generally, in which\ncase it will cover the basics of all the religions and\nphilosophies the character is familiar with, or it can\nbe taken specifically about a single religion, in which\ncase it will offer more specifics and details. This skill\nwill touch on elements of history, but mostly relate\nto points of theory, dogma or belief, along with some\ndetails of structure of organized religions or\nphilosophical societies.",
+    "rmu_canonical_name": "Religion/Philosophy Lore"
   },
   {
     "category": "Lore",
     "name": "Spell Lore",
     "dev_cost": "1/3",
     "prof_type": "Normal",
-    "stat_keys": "In"
+    "stat_keys": "In",
+    "description": "Spell Lore allows a character to recognize spells that have been cast against him, or\nwritten spells (recognition only, it cannot be used in place of Runes).\nThis may also provide information on expected duration or area of effect for active\nspells.",
+    "rmu_canonical_name": "Spell Lore"
   },
   {
     "category": "Lore",
     "name": "Spell Lore: <topic>",
     "dev_cost": "1/3",
     "prof_type": "Normal",
-    "stat_keys": "In"
+    "stat_keys": "In",
+    "description": "Spell Lore allows a character to recognize spells that have been cast against him, or\nwritten spells (recognition only, it cannot be used in place of Runes).\nThis may also provide information on expected duration or area of effect for active\nspells.",
+    "rmu_canonical_name": "Spell Lore"
   },
   {
     "category": "Lore",
@@ -459,384 +581,494 @@
     "name": "Spoken: <language 1>",
     "dev_cost": "1/3",
     "prof_type": "Normal",
-    "stat_keys": "Re"
+    "stat_keys": "Re",
+    "description": "The ability to communicate with or to understand any language is determined by the\nlanguage skill. This skill must be specialized as written, spoken, or signaled versions of\na language. Non-spoken communications including codes, sign language, flag signals, or the\nlike are considered languages for skill purposes.\nTable 3-13c indicates the fluency in spoken and written languages given the ranks. Most\nlanguage skills are considered proficient with 4-6 ranks, although some simple languages\nor codes may only require a few ranks to master (Morse code). Ranks beyond 10 delve into\nthe variations of a language over time or by region. Scholars of languages would be able\nto recognize or recite important speeches or famous written works.\nExample: A person with 10 ranks of English and a +50 skill bonus would have knowledge of\nregional dialects of English from across the globe, but additional ranks may be helpful in\nunderstanding something as old as Chaucer.\nIn some situations, even when a character has basic fluency in a language, stress or\nrushing may lead to confusion (tense diplomacy, fast talking, strong accents, dialects,\netc.). The skill bonus may be used to determine if communication is successful, by\ntreating it as a Percentage Maneuver and a difficulty based on the situation. The GM can\ngarble the words to reflect the percentage of success. Each new phrase should be treated\nthe same way, but if someone keeps repeating the same exact words, further PM rolls will\nadd up as normal.\nExample: The angry Sindonese customs official pushes his way through the 10 soldiers\npointing crossbows at Captain Rolf, and quickly and angrily demands “Do you have\npermission to dock at the imperial wharf?!?” The GM has Captain Rolf make a PM in his\nSindonese Language skill at Hard, as the official is shouting, moving his head a lot and\ntalking quickly, making it hard to understand. The result is 60%, so considering, the GM\ntells Captain Rolf “The angry man in the uniform shouts at you while waving his finger all\naround at you, the ship and the dock, you think he said ‘Do you have letters to deliver at\nthe Dragon’s harbor?!?”. Captain Rolf has no idea what the official means and asks\n“What…?” Hopefully the official repeats himself.",
+    "rmu_canonical_name": "Spoken"
   },
   {
     "category": "Lore: Languages",
     "name": "Written: <language 1>",
     "dev_cost": "1/3",
     "prof_type": "Normal",
-    "stat_keys": "Re"
+    "stat_keys": "Re",
+    "description": "The ability to communicate with or to understand any language is determined by the\nlanguage skill. This skill must be specialized as written, spoken, or signaled versions of\na language. Non-spoken communications including codes, sign language, flag signals, or the\nlike are considered languages for skill purposes.\nTable 3-13c indicates the fluency in spoken and written languages given the ranks. Most\nlanguage skills are considered proficient with 4-6 ranks, although some simple languages\nor codes may only require a few ranks to master (Morse code). Ranks beyond 10 delve into\nthe variations of a language over time or by region. Scholars of languages would be able\nto recognize or recite important speeches or famous written works.\nExample: A person with 10 ranks of English and a +50 skill bonus would have knowledge of\nregional dialects of English from across the globe, but additional ranks may be helpful in\nunderstanding something as old as Chaucer.\nIn some situations, even when a character has basic fluency in a language, stress or\nrushing may lead to confusion (tense diplomacy, fast talking, strong accents, dialects,\netc.). The skill bonus may be used to determine if communication is successful, by\ntreating it as a Percentage Maneuver and a difficulty based on the situation. The GM can\ngarble the words to reflect the percentage of success. Each new phrase should be treated\nthe same way, but if someone keeps repeating the same exact words, further PM rolls will\nadd up as normal.\nExample: The angry Sindonese customs official pushes his way through the 10 soldiers\npointing crossbows at Captain Rolf, and quickly and angrily demands “Do you have\npermission to dock at the imperial wharf?!?” The GM has Captain Rolf make a PM in his\nSindonese Language skill at Hard, as the official is shouting, moving his head a lot and\ntalking quickly, making it hard to understand. The result is 60%, so considering, the GM\ntells Captain Rolf “The angry man in the uniform shouts at you while waving his finger all\naround at you, the ship and the dock, you think he said ‘Do you have letters to deliver at\nthe Dragon’s harbor?!?”. Captain Rolf has no idea what the official means and asks\n“What…?” Hopefully the official repeats himself.",
+    "rmu_canonical_name": "Written"
   },
   {
     "category": "Lore: Languages",
     "name": "Spoken: <language 2>",
     "dev_cost": "1/3",
     "prof_type": "Normal",
-    "stat_keys": "Re"
+    "stat_keys": "Re",
+    "description": "The ability to communicate with or to understand any language is determined by the\nlanguage skill. This skill must be specialized as written, spoken, or signaled versions of\na language. Non-spoken communications including codes, sign language, flag signals, or the\nlike are considered languages for skill purposes.\nTable 3-13c indicates the fluency in spoken and written languages given the ranks. Most\nlanguage skills are considered proficient with 4-6 ranks, although some simple languages\nor codes may only require a few ranks to master (Morse code). Ranks beyond 10 delve into\nthe variations of a language over time or by region. Scholars of languages would be able\nto recognize or recite important speeches or famous written works.\nExample: A person with 10 ranks of English and a +50 skill bonus would have knowledge of\nregional dialects of English from across the globe, but additional ranks may be helpful in\nunderstanding something as old as Chaucer.\nIn some situations, even when a character has basic fluency in a language, stress or\nrushing may lead to confusion (tense diplomacy, fast talking, strong accents, dialects,\netc.). The skill bonus may be used to determine if communication is successful, by\ntreating it as a Percentage Maneuver and a difficulty based on the situation. The GM can\ngarble the words to reflect the percentage of success. Each new phrase should be treated\nthe same way, but if someone keeps repeating the same exact words, further PM rolls will\nadd up as normal.\nExample: The angry Sindonese customs official pushes his way through the 10 soldiers\npointing crossbows at Captain Rolf, and quickly and angrily demands “Do you have\npermission to dock at the imperial wharf?!?” The GM has Captain Rolf make a PM in his\nSindonese Language skill at Hard, as the official is shouting, moving his head a lot and\ntalking quickly, making it hard to understand. The result is 60%, so considering, the GM\ntells Captain Rolf “The angry man in the uniform shouts at you while waving his finger all\naround at you, the ship and the dock, you think he said ‘Do you have letters to deliver at\nthe Dragon’s harbor?!?”. Captain Rolf has no idea what the official means and asks\n“What…?” Hopefully the official repeats himself.",
+    "rmu_canonical_name": "Spoken"
   },
   {
     "category": "Lore: Languages",
     "name": "Written: <language 2>",
     "dev_cost": "1/3",
     "prof_type": "Normal",
-    "stat_keys": "Re"
+    "stat_keys": "Re",
+    "description": "The ability to communicate with or to understand any language is determined by the\nlanguage skill. This skill must be specialized as written, spoken, or signaled versions of\na language. Non-spoken communications including codes, sign language, flag signals, or the\nlike are considered languages for skill purposes.\nTable 3-13c indicates the fluency in spoken and written languages given the ranks. Most\nlanguage skills are considered proficient with 4-6 ranks, although some simple languages\nor codes may only require a few ranks to master (Morse code). Ranks beyond 10 delve into\nthe variations of a language over time or by region. Scholars of languages would be able\nto recognize or recite important speeches or famous written works.\nExample: A person with 10 ranks of English and a +50 skill bonus would have knowledge of\nregional dialects of English from across the globe, but additional ranks may be helpful in\nunderstanding something as old as Chaucer.\nIn some situations, even when a character has basic fluency in a language, stress or\nrushing may lead to confusion (tense diplomacy, fast talking, strong accents, dialects,\netc.). The skill bonus may be used to determine if communication is successful, by\ntreating it as a Percentage Maneuver and a difficulty based on the situation. The GM can\ngarble the words to reflect the percentage of success. Each new phrase should be treated\nthe same way, but if someone keeps repeating the same exact words, further PM rolls will\nadd up as normal.\nExample: The angry Sindonese customs official pushes his way through the 10 soldiers\npointing crossbows at Captain Rolf, and quickly and angrily demands “Do you have\npermission to dock at the imperial wharf?!?” The GM has Captain Rolf make a PM in his\nSindonese Language skill at Hard, as the official is shouting, moving his head a lot and\ntalking quickly, making it hard to understand. The result is 60%, so considering, the GM\ntells Captain Rolf “The angry man in the uniform shouts at you while waving his finger all\naround at you, the ship and the dock, you think he said ‘Do you have letters to deliver at\nthe Dragon’s harbor?!?”. Captain Rolf has no idea what the official means and asks\n“What…?” Hopefully the official repeats himself.",
+    "rmu_canonical_name": "Written"
   },
   {
     "category": "Lore: Languages",
     "name": "Signaled: <language 1>",
     "dev_cost": "1/3",
     "prof_type": "Normal",
-    "stat_keys": "Re"
+    "stat_keys": "Re",
+    "description": "The ability to communicate with or to understand any language is determined by the\nlanguage skill. This skill must be specialized as written, spoken, or signaled versions of\na language. Non-spoken communications including codes, sign language, flag signals, or the\nlike are considered languages for skill purposes.\nTable 3-13c indicates the fluency in spoken and written languages given the ranks. Most\nlanguage skills are considered proficient with 4-6 ranks, although some simple languages\nor codes may only require a few ranks to master (Morse code). Ranks beyond 10 delve into\nthe variations of a language over time or by region. Scholars of languages would be able\nto recognize or recite important speeches or famous written works.\nExample: A person with 10 ranks of English and a +50 skill bonus would have knowledge of\nregional dialects of English from across the globe, but additional ranks may be helpful in\nunderstanding something as old as Chaucer.\nIn some situations, even when a character has basic fluency in a language, stress or\nrushing may lead to confusion (tense diplomacy, fast talking, strong accents, dialects,\netc.). The skill bonus may be used to determine if communication is successful, by\ntreating it as a Percentage Maneuver and a difficulty based on the situation. The GM can\ngarble the words to reflect the percentage of success. Each new phrase should be treated\nthe same way, but if someone keeps repeating the same exact words, further PM rolls will\nadd up as normal.\nExample: The angry Sindonese customs official pushes his way through the 10 soldiers\npointing crossbows at Captain Rolf, and quickly and angrily demands “Do you have\npermission to dock at the imperial wharf?!?” The GM has Captain Rolf make a PM in his\nSindonese Language skill at Hard, as the official is shouting, moving his head a lot and\ntalking quickly, making it hard to understand. The result is 60%, so considering, the GM\ntells Captain Rolf “The angry man in the uniform shouts at you while waving his finger all\naround at you, the ship and the dock, you think he said ‘Do you have letters to deliver at\nthe Dragon’s harbor?!?”. Captain Rolf has no idea what the official means and asks\n“What…?” Hopefully the official repeats himself.",
+    "rmu_canonical_name": "Signaled"
   },
   {
     "category": "Lore: Languages",
     "name": "Signaled: <language 2>",
     "dev_cost": "1/3",
     "prof_type": "Normal",
-    "stat_keys": "Re"
+    "stat_keys": "Re",
+    "description": "The ability to communicate with or to understand any language is determined by the\nlanguage skill. This skill must be specialized as written, spoken, or signaled versions of\na language. Non-spoken communications including codes, sign language, flag signals, or the\nlike are considered languages for skill purposes.\nTable 3-13c indicates the fluency in spoken and written languages given the ranks. Most\nlanguage skills are considered proficient with 4-6 ranks, although some simple languages\nor codes may only require a few ranks to master (Morse code). Ranks beyond 10 delve into\nthe variations of a language over time or by region. Scholars of languages would be able\nto recognize or recite important speeches or famous written works.\nExample: A person with 10 ranks of English and a +50 skill bonus would have knowledge of\nregional dialects of English from across the globe, but additional ranks may be helpful in\nunderstanding something as old as Chaucer.\nIn some situations, even when a character has basic fluency in a language, stress or\nrushing may lead to confusion (tense diplomacy, fast talking, strong accents, dialects,\netc.). The skill bonus may be used to determine if communication is successful, by\ntreating it as a Percentage Maneuver and a difficulty based on the situation. The GM can\ngarble the words to reflect the percentage of success. Each new phrase should be treated\nthe same way, but if someone keeps repeating the same exact words, further PM rolls will\nadd up as normal.\nExample: The angry Sindonese customs official pushes his way through the 10 soldiers\npointing crossbows at Captain Rolf, and quickly and angrily demands “Do you have\npermission to dock at the imperial wharf?!?” The GM has Captain Rolf make a PM in his\nSindonese Language skill at Hard, as the official is shouting, moving his head a lot and\ntalking quickly, making it hard to understand. The result is 60%, so considering, the GM\ntells Captain Rolf “The angry man in the uniform shouts at you while waving his finger all\naround at you, the ship and the dock, you think he said ‘Do you have letters to deliver at\nthe Dragon’s harbor?!?”. Captain Rolf has no idea what the official means and asks\n“What…?” Hopefully the official repeats himself.",
+    "rmu_canonical_name": "Signaled"
   },
   {
     "category": "Lore: Languages",
     "name": "Lip Reading: <language 1>",
     "dev_cost": "1/3",
     "prof_type": "Normal",
-    "stat_keys": "Re"
+    "stat_keys": "Re",
+    "description": "The ability to communicate with or to understand any language is determined by the\nlanguage skill. This skill must be specialized as written, spoken, or signaled versions of\na language. Non-spoken communications including codes, sign language, flag signals, or the\nlike are considered languages for skill purposes.\nTable 3-13c indicates the fluency in spoken and written languages given the ranks. Most\nlanguage skills are considered proficient with 4-6 ranks, although some simple languages\nor codes may only require a few ranks to master (Morse code). Ranks beyond 10 delve into\nthe variations of a language over time or by region. Scholars of languages would be able\nto recognize or recite important speeches or famous written works.\nExample: A person with 10 ranks of English and a +50 skill bonus would have knowledge of\nregional dialects of English from across the globe, but additional ranks may be helpful in\nunderstanding something as old as Chaucer.\nIn some situations, even when a character has basic fluency in a language, stress or\nrushing may lead to confusion (tense diplomacy, fast talking, strong accents, dialects,\netc.). The skill bonus may be used to determine if communication is successful, by\ntreating it as a Percentage Maneuver and a difficulty based on the situation. The GM can\ngarble the words to reflect the percentage of success. Each new phrase should be treated\nthe same way, but if someone keeps repeating the same exact words, further PM rolls will\nadd up as normal.\nExample: The angry Sindonese customs official pushes his way through the 10 soldiers\npointing crossbows at Captain Rolf, and quickly and angrily demands “Do you have\npermission to dock at the imperial wharf?!?” The GM has Captain Rolf make a PM in his\nSindonese Language skill at Hard, as the official is shouting, moving his head a lot and\ntalking quickly, making it hard to understand. The result is 60%, so considering, the GM\ntells Captain Rolf “The angry man in the uniform shouts at you while waving his finger all\naround at you, the ship and the dock, you think he said ‘Do you have letters to deliver at\nthe Dragon’s harbor?!?”. Captain Rolf has no idea what the official means and asks\n“What…?” Hopefully the official repeats himself.",
+    "rmu_canonical_name": "Lip Reading"
   },
   {
     "category": "Lore: Languages",
     "name": "Lip Reading: <language 2>",
     "dev_cost": "1/3",
     "prof_type": "Normal",
-    "stat_keys": "Re"
+    "stat_keys": "Re",
+    "description": "The ability to communicate with or to understand any language is determined by the\nlanguage skill. This skill must be specialized as written, spoken, or signaled versions of\na language. Non-spoken communications including codes, sign language, flag signals, or the\nlike are considered languages for skill purposes.\nTable 3-13c indicates the fluency in spoken and written languages given the ranks. Most\nlanguage skills are considered proficient with 4-6 ranks, although some simple languages\nor codes may only require a few ranks to master (Morse code). Ranks beyond 10 delve into\nthe variations of a language over time or by region. Scholars of languages would be able\nto recognize or recite important speeches or famous written works.\nExample: A person with 10 ranks of English and a +50 skill bonus would have knowledge of\nregional dialects of English from across the globe, but additional ranks may be helpful in\nunderstanding something as old as Chaucer.\nIn some situations, even when a character has basic fluency in a language, stress or\nrushing may lead to confusion (tense diplomacy, fast talking, strong accents, dialects,\netc.). The skill bonus may be used to determine if communication is successful, by\ntreating it as a Percentage Maneuver and a difficulty based on the situation. The GM can\ngarble the words to reflect the percentage of success. Each new phrase should be treated\nthe same way, but if someone keeps repeating the same exact words, further PM rolls will\nadd up as normal.\nExample: The angry Sindonese customs official pushes his way through the 10 soldiers\npointing crossbows at Captain Rolf, and quickly and angrily demands “Do you have\npermission to dock at the imperial wharf?!?” The GM has Captain Rolf make a PM in his\nSindonese Language skill at Hard, as the official is shouting, moving his head a lot and\ntalking quickly, making it hard to understand. The result is 60%, so considering, the GM\ntells Captain Rolf “The angry man in the uniform shouts at you while waving his finger all\naround at you, the ship and the dock, you think he said ‘Do you have letters to deliver at\nthe Dragon’s harbor?!?”. Captain Rolf has no idea what the official means and asks\n“What…?” Hopefully the official repeats himself.",
+    "rmu_canonical_name": "Lip Reading"
   },
   {
     "category": "Magical Expertise",
     "name": "Grace: <spell list 1>",
     "dev_cost": "1/2",
     "prof_type": "Normal",
-    "stat_keys": "-"
+    "stat_keys": "-",
+    "description": "Reduces penalties for casting spells of a higher level than the caster.",
+    "rmu_canonical_name": "Grace"
   },
   {
     "category": "Magical Expertise",
     "name": "Grace: <spell list 2>",
     "dev_cost": "1/2",
     "prof_type": "Normal",
-    "stat_keys": "-"
+    "stat_keys": "-",
+    "description": "Reduces penalties for casting spells of a higher level than the caster.",
+    "rmu_canonical_name": "Grace"
   },
   {
     "category": "Magical Expertise",
     "name": "Grace: <spell list 3>",
     "dev_cost": "1/2",
     "prof_type": "Normal",
-    "stat_keys": "-"
+    "stat_keys": "-",
+    "description": "Reduces penalties for casting spells of a higher level than the caster.",
+    "rmu_canonical_name": "Grace"
   },
   {
     "category": "Magical Expertise",
     "name": "Spell Trickery: <spell list 1>",
     "dev_cost": "1/2",
     "prof_type": "Normal",
-    "stat_keys": "-"
+    "stat_keys": "-",
+    "description": "Reduces penalties to spellcasting due to attempts to hide or modify its visual effect (if\nthe visual spells optional rule is used) or hand and voice usage. This skill must be\nspecialized in a specific list.",
+    "rmu_canonical_name": "Spell Trickery"
   },
   {
     "category": "Magical Expertise",
     "name": "Spell Trickery: <spell list 2>",
     "dev_cost": "1/2",
     "prof_type": "Normal",
-    "stat_keys": "-"
+    "stat_keys": "-",
+    "description": "Reduces penalties to spellcasting due to attempts to hide or modify its visual effect (if\nthe visual spells optional rule is used) or hand and voice usage. This skill must be\nspecialized in a specific list.",
+    "rmu_canonical_name": "Spell Trickery"
   },
   {
     "category": "Magical Expertise",
     "name": "Transcendence",
     "dev_cost": "1/2",
     "prof_type": "Normal",
-    "stat_keys": "-"
+    "stat_keys": "-",
+    "description": "Reduces the spell-casting penalties associated with armor.",
+    "rmu_canonical_name": "Transcendence"
   },
   {
     "category": "Medical",
     "name": "Herbalism",
     "dev_cost": "3/4",
     "prof_type": "Normal",
-    "stat_keys": "Re"
+    "stat_keys": "Re",
+    "description": "Herbalism includes knowledge of effects and doses, preparation, and application of herbs\nand medicines.\nSearching for herbs should use Survival skill for the appropriate biome, although\nHerbalism may be used as a Complementary skill. Detailed rules on herbs appear in Treasure\nLaw. In higher tech societies, this skill could be replaced with Pharmacology.",
+    "rmu_canonical_name": "Herbalism"
   },
   {
     "category": "Medical",
     "name": "Medicine",
     "dev_cost": "3/4",
     "prof_type": "Normal",
-    "stat_keys": "Re"
+    "stat_keys": "Re",
+    "description": "This skill provides a bonus for treating injuries and overt symptoms of illness. This\nskill includes the use of simple medical aids/herbs, setting broken bones, stopping\nbleeding, etc. For detailed use of this skill see the rules on injuries and healing\n(Section 13.1).",
+    "rmu_canonical_name": "Medicine"
   },
   {
     "category": "Medical",
     "name": "Poison Mastery",
     "dev_cost": "3/4",
     "prof_type": "Normal",
-    "stat_keys": "Re"
+    "stat_keys": "Re",
+    "description": "Poison Mastery includes knowledge of effects and doses, preparation and application of\nhealth-destroying chemicals or diseases. This skill also covers the preparation and\napplication of antidotes to those toxins.",
+    "rmu_canonical_name": "Poison Mastery"
   },
   {
     "category": "Mental Discipline",
     "name": "Control Lycanthropy",
     "dev_cost": "2/4",
     "prof_type": "Normal",
-    "stat_keys": "SD"
+    "stat_keys": "SD",
+    "description": "The infectious shape changing inflicted by lycanthropy is provoked by instinct and emotion\nand controlled through discipline and calm. The emotional urge to give in to the inner\nanimal rises and falls with the lunar cycle, being hardest to resist at the full moon.\nEach time the character goes to sleep on a full moon, any time the player (or GM) has the\ncharacter displaying real rage, and any time the GM feels the character is being put under\nextreme emotional stress, an Absolute Maneuver should be rolled against this skill (at -25\nif 0 ranks) to see if the character transforms into his bestial form. If this happens, the\nlycanthrope (under the control of the GM) will hunt, kill and feed, violently attacking\nanyone who interferes. Once its hunger is sated, it will find a place to hide and sleep.\nDuring this sleep, it will transform back into “human” form and awaken back in control of\nhimself with no memory of the transformation or what he did while in bestial form.\nA lycanthrope can attempt to change into bestial form while maintaining control at an\nadditional -25 to the maneuver, and transform from controlled beast to “human” form at an\nadditional -50 to the maneuver.\nFailure at either type of change will result in the lycanthrope slipping into uncontrolled\nstate per the paragraph above.\nPhysical stress and trauma (injury and fatigue penalties) make it harder to control\nlycanthropy and should be applied as penalties to the maneuver; it is up to the GM to\nassess any mental or emotional stresses that may be worthy of penalties as well.\nMeditation, sedative herbs or drugs, or magical effects that give bonuses to calm or\nself-discipline can all give bonuses to control checks of this skill.",
+    "rmu_canonical_name": "Control Lycanthropy"
   },
   {
     "category": "Mental Discipline",
     "name": "Meditation",
     "dev_cost": "2/4",
     "prof_type": "Normal",
-    "stat_keys": "SD"
+    "stat_keys": "SD",
+    "description": "Meditation can be used to enter and exploit a mental trance which the character can use to\nhelp solve difficult problems or perform mental maneuvers.\nTo use this skill, the character must meditate for 5 minutes. With a successful maneuver\nthe character gets a +25 the following round to all mental actions (attuning to a magical\nitem, casting a spell, using a lore skill, etc.).",
+    "rmu_canonical_name": "Meditation"
   },
   {
     "category": "Mental Discipline",
     "name": "Mental Focus",
     "dev_cost": "2/4",
     "prof_type": "Normal",
-    "stat_keys": "SD"
+    "stat_keys": "SD",
+    "description": "Mental Focus is used to maintain concentration for extended periods of time (Section 5.5),\nwhile stunned, or when concentrating on two things at once (Section 8.1). A GM may also\nrequire a Mental Focus roll in extremely stressful, chaotic, or confusing situations.",
+    "rmu_canonical_name": "Mental Focus"
   },
   {
     "category": "Movement",
     "name": "Climbing",
     "dev_cost": "4/6",
     "prof_type": "Normal",
-    "stat_keys": "Co"
+    "stat_keys": "Co",
+    "description": "Climbing includes maneuvers from climbing a ladder to scaling a cliff. Climbing speed is\n1/4 of the character’s normal Base Movement Rate (BMR).\nThis base rate is adjusted by pace as normal. However, climbing faster than a ‘Jog’ (x2)\nis not allowed unless there are plenty of obvious hand and footholds (such as a ladder or\ntree), or if the character has claws or is otherwise physically specialized for climbing\nmovement.",
+    "rmu_canonical_name": "Climbing"
   },
   {
     "category": "Movement",
     "name": "Flying",
     "dev_cost": "4/6",
     "prof_type": "Normal",
-    "stat_keys": "Co"
+    "stat_keys": "Co",
+    "description": "As with other Movement skills, the speed of flight depends on a base movement rate\n(usually defined according to the means of flight) and a selected pace. However, while\nflying, a Sprint is “Diving” pace, a speed achievable only by rapidly descending, and Dash\nis “Power Diving” pace, a speed achievable only by flying as hard as possible while\nrapidly descending.\nFlying creatures can glide at up to a running pace at half the normal movement penalties.\nUnless the conditions are ideal, in the form of strong thermals or updrafts, every round\nof continued gliding will require a successful maneuver at a cumulative -10 per round.",
+    "rmu_canonical_name": "Flying"
   },
   {
     "category": "Movement",
     "name": "Running",
     "dev_cost": "4/6",
     "prof_type": "Normal",
-    "stat_keys": "Co"
+    "stat_keys": "Co",
+    "description": "The main movement skill for ground-based races, Running is the skill used for moving at\nany pace (Creep through Dash) on foot. It includes all ground movement regardless of\nspeed, and is also used for evasive dodging on foot (see Section 9.6), although in some\ncases Acrobatics may be used in its place.",
+    "rmu_canonical_name": "Running"
   },
   {
     "category": "Movement",
     "name": "Swimming",
     "dev_cost": "4/6",
     "prof_type": "Normal",
-    "stat_keys": "Co"
+    "stat_keys": "Co",
+    "description": "For non-native swimmers, the Base Movement Rate of swimming maneuvers is 1/4 of the\ncharacter’s normal BMR, which is adjusted by pace as normal.\nArmor and encumbering equipment are especially detrimental in water and as such any Armor\nor Encumbrance penalties are multiplied by 3 (before the Battle Expertise: Maneuvering in\nArmor skill is applied) while swimming.",
+    "rmu_canonical_name": "Swimming"
   },
   {
     "category": "Performance Art",
     "name": "Acting",
     "dev_cost": "2/4",
     "prof_type": "Normal",
-    "stat_keys": "Me"
+    "stat_keys": "Me",
+    "description": "Acting is the skill of feigning emotions, as well as using both voice and body language to\ncreate a persona (either an original or mimicry of someone else).\nIt also includes some ability to interpret a text or performance in terms of character\nmotivations.",
+    "rmu_canonical_name": "Acting"
   },
   {
     "category": "Performance Art",
     "name": "Music: <instrument 1>",
     "dev_cost": "2/4",
     "prof_type": "Normal",
-    "stat_keys": "Me"
+    "stat_keys": "Me",
+    "description": "The Music skill includes the actual performance of playing music (sheet music or\nimprovisation) on a specific instrument or singing.",
+    "rmu_canonical_name": "Music"
   },
   {
     "category": "Performance Art",
     "name": "Music: <instrument 2>",
     "dev_cost": "2/4",
     "prof_type": "Normal",
-    "stat_keys": "Me"
+    "stat_keys": "Me",
+    "description": "The Music skill includes the actual performance of playing music (sheet music or\nimprovisation) on a specific instrument or singing.",
+    "rmu_canonical_name": "Music"
   },
   {
     "category": "Performance Art",
     "name": "Stage Magic",
     "dev_cost": "2/4",
     "prof_type": "Normal",
-    "stat_keys": "Ag"
+    "stat_keys": "Ag",
+    "description": "Stage magic is the act of performing carefully choreographed tricks, usually using props.\nThis includes small-scale magic such as card tricks and large-scale tricks such as\n‘cutting’ a person in half.",
+    "rmu_canonical_name": "Stage Magic"
   },
   {
     "category": "Power Manipulation",
     "name": "Channeling",
     "dev_cost": "2/3",
     "prof_type": "Normal",
-    "stat_keys": "SD"
+    "stat_keys": "SD",
+    "description": "This skill can be used to transmit Power Points from one person to a willing target, or to\nan item made to store power. The sender must know the exact location of the target, either\nby seeing him, via some magical means, or by prearranged appointment (e.g., “Stand in\nfront of the altar of the moon at exactly midnight, and I will send the power to you.”).\nTo transmit Power Points the character must declare how many points he is sending, then\nmake a Medium (+0) Percentage Maneuver with modifiers according to Table 3-19a. The\nresulting number is the percentage of Power Points that were successfully transmitted (the\nrest are wasted). Any result over 100 is treated as a bonus to the recipient’s roll. A\nnegative result will drain an equal amount of Power Points from the sender beyond the\ntotal loss of the points they attempted to transmit (down to 0, any loss beyond that can\nbe ignored).\nTo receive Power Points, the recipient also makes a Medium (0) Percentage Maneuver, but\nwithout any of the modifiers from Table 3-19a. A numbered result is the percentage of the\ntransmitted Power Points actually gained (maximum of 100% of the Power Points sent). This\ncan allow the recipient to end up with more Power Points than he normally has; however, he\nwill lose 1 PP every hour until the remaining amount is no more than his normal maximum.",
+    "rmu_canonical_name": "Channeling"
   },
   {
     "category": "Power Manipulation",
     "name": "Directed Spells: <type 1>",
     "dev_cost": "2/3",
     "prof_type": "Normal",
-    "stat_keys": "Ag"
+    "stat_keys": "Ag",
+    "description": "Directed spells are types of magical attacks that are directed or aimed at a target\n(Section 9.2). This skill provides the offensive bonus (OB) for such attacks, but does not\ncreate the attack itself, which must be created by casting an applicable spell.",
+    "rmu_canonical_name": "Directed Spell"
   },
   {
     "category": "Power Manipulation",
     "name": "Directed Spells: <type 2>",
     "dev_cost": "2/3",
     "prof_type": "Normal",
-    "stat_keys": "Ag"
+    "stat_keys": "Ag",
+    "description": "Directed spells are types of magical attacks that are directed or aimed at a target\n(Section 9.2). This skill provides the offensive bonus (OB) for such attacks, but does not\ncreate the attack itself, which must be created by casting an applicable spell.",
+    "rmu_canonical_name": "Directed Spell"
   },
   {
     "category": "Power Manipulation",
     "name": "Power Development",
     "dev_cost": "2/3",
     "prof_type": "Normal",
-    "stat_keys": "Co"
+    "stat_keys": "Co",
+    "description": "The total bonus for this skill determines the number of Power Points that a character will\nhave available for spell casting. Each character has a single pool of Power Points (PP),\neven if that character has access to multiple realms.\nPower Points are recovered through rest. For each 2 hours of sleep the character will\nregain 10% of their Power Point total, for up to a full night of sleep (8 hours per day).\nCharacters who require more or less sleep will recover Power Points proportionally faster\nor slower but only to the limit of a full night. For example, a character who only\nrequires 4 hours of sleep per night will recover 10% per hour but only up to the limit of\n4 hours. The rate of recovery may vary according to the campaign’s Power Level (Section\n12.1).\nA fully rested caster has considerable power available, but if they expend that power\ncompletely it will take more than a night before they have recovered.",
+    "rmu_canonical_name": "Power Development"
   },
   {
     "category": "Power Manipulation",
     "name": "Power Projection",
     "dev_cost": "2/3",
     "prof_type": "Normal",
-    "stat_keys": "SD"
+    "stat_keys": "SD",
+    "description": "A form of magical dueling, Power Projection is used between two opponents. Its use creates\na visible construct of magical energy between the opponents (e.g., a ball of power or a\nstrand of light connecting the two) that is held up until one of the participants fails.\nThe opponents, who must be within 30' of each other, enter into combat rounds and must\nimmediately begin rolling initiative each round. Each participant on their initiative must\nexpend 1 PP each round and make a Routine Absolute Maneuver using this skill each round,\nresolved using Table 3-19b. Neither participant may perform any action other than\nconversation and casual perception while engaged in a Power Projection duel. Starting with\nthe second round, the maneuver is subject to a cumulative -20 each round it is held\nactive. If one of the participants cannot (running out of PP) or will not (unwilling)\ncontribute any additional PP, moves out of 30' or is stunned, treat that as a failure\nresult on Table 3-19b. As soon as one participant loses control of the projection by any\nof the criteria above, or from failing a check, and the penalties of failure have been\nresolved, treat the contest as completed.\nThe other participant in the power projection duel has won, and is untouched and unharmed\nby the effects of the loser’s failure without needing to make any additional rolls.",
+    "rmu_canonical_name": "Power Projection"
   },
   {
     "category": "Science",
     "name": "Architecture",
     "dev_cost": "2/4",
     "prof_type": "Normal",
-    "stat_keys": "Re"
+    "stat_keys": "Re",
+    "description": "Architecture is the science of building construction, a specialized engineering skill that\nincludes some artistic training as well. Someone with basic Crafting skills may build a\ncabin like other cabins he has known, but to plan out a large and/or complicated structure\nthat will endure, or an effective new design, requires an architect. Large-scale traps and\nmechanisms like elevators built into a structure are also part of architecture.",
+    "rmu_canonical_name": "Architecture"
   },
   {
     "category": "Science",
     "name": "Astronomy",
     "dev_cost": "2/4",
     "prof_type": "Normal",
-    "stat_keys": "Re"
+    "stat_keys": "Re",
+    "description": "The oldest physical science to be well developed, and a driving force in the development\nof mathematics, astronomy includes not only identification of various celestial objects,\nbut the prediction of their movements. Depending on the setting, it may include varying\ndegrees of understanding of what those bodies actually are (and their true nature in the\nsetting may differ from their nature in reality).",
+    "rmu_canonical_name": "Astronomy"
   },
   {
     "category": "Science",
     "name": "Engineering",
     "dev_cost": "2/4",
     "prof_type": "Normal",
-    "stat_keys": "Re"
+    "stat_keys": "Re",
+    "description": "Engineering combines aspects of mathematics, physics and invention. It provides a\ntheoretical knowledge of devices and processes, and an understanding of why things work.\nCharacters may use Engineering to determine what a device does, design new devices or\nstreamline systems.\n\nIn more advanced cultures the GM may require the skill be specialized, however in a\nfantasy setting this is not needed (essentially this is basic mechanical and hydraulic\nengineering).\n\nUse the General specialization for most fantasy settings.",
+    "rmu_canonical_name": "Engineering"
   },
   {
     "category": "Science",
     "name": "Mathematics",
     "dev_cost": "2/4",
     "prof_type": "Normal",
-    "stat_keys": "Re"
+    "stat_keys": "Re",
+    "description": "In the simplest form, mathematics involves counting and the basic operations of addition,\nsubtraction, multiplication and division. At higher levels of difficulty, it can be used\nto measure and account for more and more facets of tangible things. Higher levels of\ndifficulty allow for more complicated manipulations, and the manipulation of more abstract\nqualities and quantities. The application of many other sciences will depend on adequate\nmathematical skill to carry out the necessary calculations.",
+    "rmu_canonical_name": "Mathematics"
   },
   {
     "category": "Social",
     "name": "Influence: Charm",
     "dev_cost": "3/4",
     "prof_type": "Normal",
-    "stat_keys": "Pr"
+    "stat_keys": "Pr",
+    "description": "Influence skills provide a bonus to maneuvers that attempt to shift people’s opinions in a direction the\ncharacter desires. The GM determines how much of a shift in opinion the attempt is and sets a difficulty. If\nthe maneuver is successful, the character convinces the target to change his opinion. The context of the attempt\nwill determine the difficulty of the maneuver (e.g., it is far easier to influence the Captain of the Guard at a\ncocktail party than just after he has found a rebel hiding under the hay in your cart). Failure might cause trouble,\nbut absolute failure should result in a very negative or even hostile response. A wary target will get a Social\nAwareness maneuver to resist an Influence attempt (see Conflicting Skills, Chapter 3).",
+    "rmu_canonical_name": "Influence"
   },
   {
     "category": "Social",
     "name": "Influence: Intimidation",
     "dev_cost": "3/4",
     "prof_type": "Normal",
-    "stat_keys": "Pr"
+    "stat_keys": "Pr",
+    "description": "Influence skills provide a bonus to maneuvers that attempt to shift people’s opinions in a direction the\ncharacter desires. The GM determines how much of a shift in opinion the attempt is and sets a difficulty. If\nthe maneuver is successful, the character convinces the target to change his opinion. The context of the attempt\nwill determine the difficulty of the maneuver (e.g., it is far easier to influence the Captain of the Guard at a\ncocktail party than just after he has found a rebel hiding under the hay in your cart). Failure might cause trouble,\nbut absolute failure should result in a very negative or even hostile response. A wary target will get a Social\nAwareness maneuver to resist an Influence attempt (see Conflicting Skills, Chapter 3).",
+    "rmu_canonical_name": "Influence"
   },
   {
     "category": "Social",
     "name": "Influence: Duping",
     "dev_cost": "3/4",
     "prof_type": "Normal",
-    "stat_keys": "Pr"
+    "stat_keys": "Pr",
+    "description": "Influence skills provide a bonus to maneuvers that attempt to shift people’s opinions in a direction the\ncharacter desires. The GM determines how much of a shift in opinion the attempt is and sets a difficulty. If\nthe maneuver is successful, the character convinces the target to change his opinion. The context of the attempt\nwill determine the difficulty of the maneuver (e.g., it is far easier to influence the Captain of the Guard at a\ncocktail party than just after he has found a rebel hiding under the hay in your cart). Failure might cause trouble,\nbut absolute failure should result in a very negative or even hostile response. A wary target will get a Social\nAwareness maneuver to resist an Influence attempt (see Conflicting Skills, Chapter 3).",
+    "rmu_canonical_name": "Influence"
   },
   {
     "category": "Social",
     "name": "Leadership",
     "dev_cost": "3/4",
     "prof_type": "Normal",
-    "stat_keys": "Pr"
+    "stat_keys": "Pr",
+    "description": "Leadership is used to inspire those loyal to you to follow your instructions or to\neffectively organize a group. This skill cannot be used on those not already loyal to you,\nbut for those who view you as their leader, this skill can be used to rally or inspire\nthem. Any instruction or command given that might be resisted or questioned (i.e., one\nthat requires a morale check; see Section 14.3) is modified by your Leadership bonus.\nAlso, all combatants who consider you their leader get a bonus equal to your ranks in\nleadership to any RRs vs. Fear/Terror as long as they are aware that you are present. The\nleader may also make a maneuver to rally followers affected by a failed fear check\n(Section 14.3).\nLeadership also provides a benefit when coordinating multiple individuals in a task. See\nComplementary Skills at the beginning of this chapter for details.",
+    "rmu_canonical_name": "Leadership"
   },
   {
     "category": "Social",
     "name": "Social Awareness",
     "dev_cost": "3/4",
     "prof_type": "Normal",
-    "stat_keys": "Em"
+    "stat_keys": "Em",
+    "description": "This skill develops awareness of the motives and social maneuvers of those around you. You\ncan make maneuvers using this skill to study other people and try to understand them,\ndetermine if they are lying, or otherwise infer their motives. If someone is using this\nskill (i.e., not relaxed with his guard down) when targeted with an Influence skill\nmaneuver (see above) then he can make a conflicting maneuver to notice the Influence\nattempt.",
+    "rmu_canonical_name": "Social Awareness"
   },
   {
     "category": "Social",
     "name": "Trading",
     "dev_cost": "3/4",
     "prof_type": "Normal",
-    "stat_keys": "Pr"
+    "stat_keys": "Pr",
+    "description": "Trading is used to negotiate, haggle, and strike bargains. Characters who are good at this\nskill will be able to figure out a deal that works for both parties, if a deal is\npossible. In some cases this may be resolved as an opposed Absolute Maneuver. For\nhaggling, resolve as an opposed Percentage Maneuver with the buyer as the active party.\nThe final price is 200% - result, giving a price from 50% to 200%.\nThe difficulty is based on how the deal the player is offering would look to the target.\nIf the deal seems safe and very favorable for the target it should be easy to convince\nhim, while if the deal seems to shortchange the target or put him in trouble or danger it\nwill be more difficult, or perhaps impossible.",
+    "rmu_canonical_name": "Trading"
   },
   {
     "category": "Subterfuge",
     "name": "Ambush: <attack 1>",
     "dev_cost": "6/8",
     "prof_type": "Normal",
-    "stat_keys": "In"
+    "stat_keys": "In",
+    "description": "Ambush is the ability to make a very precise attack and can only occur when the opponent\nis completely unaware of the character’s attack. In such a situation, the ambushing\ncharacter makes an attack roll as normal (with a bonus for surprise and frequently for a\nrear or flank attack). If a critical is obtained, the character may modify his roll on the\nappropriate Critical Strike Table. The roll can be adjusted up or down by any number up to\nthe character’s ranks in the Ambush skill. A separate Ambush maneuver is not required.\nAmbush may be used against a foe already in a melee situation if the foe is unaware of the\nattack, but because position is relatively unpredictable in a general melee situation,\nAmbush skill rank is halved in this case.\nIf the target is killed or knocked unconscious from the attack, the Ambush skill can also\nbe used to make the attack silent. An Absolute Maneuver roll is made and if successful\nthen the attack and target do not make any noise (unless the GM determines the type of\nattack cannot be made silently). The difficulty of the maneuver should be based on how\nloud the attack made is, and how close any observers are.\nSpecializations are on combat training specializations or directed spell specializations.",
+    "rmu_canonical_name": "Ambush"
   },
   {
     "category": "Subterfuge",
     "name": "Ambush: <attack 2>",
     "dev_cost": "6/8",
     "prof_type": "Normal",
-    "stat_keys": "In"
+    "stat_keys": "In",
+    "description": "Ambush is the ability to make a very precise attack and can only occur when the opponent\nis completely unaware of the character’s attack. In such a situation, the ambushing\ncharacter makes an attack roll as normal (with a bonus for surprise and frequently for a\nrear or flank attack). If a critical is obtained, the character may modify his roll on the\nappropriate Critical Strike Table. The roll can be adjusted up or down by any number up to\nthe character’s ranks in the Ambush skill. A separate Ambush maneuver is not required.\nAmbush may be used against a foe already in a melee situation if the foe is unaware of the\nattack, but because position is relatively unpredictable in a general melee situation,\nAmbush skill rank is halved in this case.\nIf the target is killed or knocked unconscious from the attack, the Ambush skill can also\nbe used to make the attack silent. An Absolute Maneuver roll is made and if successful\nthen the attack and target do not make any noise (unless the GM determines the type of\nattack cannot be made silently). The difficulty of the maneuver should be based on how\nloud the attack made is, and how close any observers are.\nSpecializations are on combat training specializations or directed spell specializations.",
+    "rmu_canonical_name": "Ambush"
   },
   {
     "category": "Subterfuge",
     "name": "Concealment",
     "dev_cost": "6/8",
     "prof_type": "Normal",
-    "stat_keys": "In"
+    "stat_keys": "In",
+    "description": "Concealment is the skill to hide items or groups of items of any size (e.g., building,\ncampsite), or even people using the environment, taking advantage of lighting, and using\ncamouflage where appropriate. For an individual character trying to remain unseen either\nmoving or stationary, use the Stalking skill.",
+    "rmu_canonical_name": "Concealment"
   },
   {
     "category": "Subterfuge",
     "name": "Stalking",
     "dev_cost": "6/8",
     "prof_type": "Normal",
-    "stat_keys": "In"
+    "stat_keys": "In",
+    "description": "Stalking is the ability to move in silence and unseen, using camouflage and shadows to\nconceal your presence. The difficulty of the maneuver using this skill is determined\nmainly by the surroundings. It will be easier in a dark, shadowy area with a lot of cover,\nbut more difficult in brightly lit areas without cover.\nSimilarly, moving across a smooth surface with lots of ambient noise makes it easier to\nnot be heard. Stalking is opposed by Perception skill.",
+    "rmu_canonical_name": "Stalking"
   },
   {
     "category": "Subterfuge",
     "name": "Trickery",
     "dev_cost": "6/8",
     "prof_type": "Normal",
-    "stat_keys": "In"
+    "stat_keys": "In",
+    "description": "Practitioners of this skill have trained their hands in the art of misdirection to perform\nacts that may almost seem magical to the untrained eye, but are not.\nTrickery includes any sleight of hand such as might be used in cheating at cards or other\ngames of chance, or picking pockets.",
+    "rmu_canonical_name": "Trickery"
   },
   {
     "category": "Technical",
     "name": "Locks",
     "dev_cost": "5/7",
     "prof_type": "Normal",
-    "stat_keys": "Ag"
+    "stat_keys": "Ag",
+    "description": "This skill includes manipulating and picking locks without a key, maintaining locks,\nchanging user adjustable locks, and the design of locks (actually manufacturing a lock\nwould require an appropriate Crafting skill). Some suggested difficulties for locks:\nsimple shackle lock (Easy), Combination or tumbler lock (Hard to Extremely Hard), Double\nkey tumbler/ dual combination lock (Sheer Folly). Special tools or circumstances may\nfurther modify the complexity. For instance, a lock made of special materials, a broken,\njammed or seized lock, or any other circumstance beyond normal may increase or decrease\nthe difficulty of a given task.",
+    "rmu_canonical_name": "Locks"
   },
   {
     "category": "Technical",
     "name": "Mechanics: <op/repair 1>",
     "dev_cost": "5/7",
     "prof_type": "Normal",
-    "stat_keys": "Me"
+    "stat_keys": "Me",
+    "description": "This skill relates to the operation or repair and construction of technology. In most\nfantasy environments, mechanics will be a singular skill covering all possible mechanical\nand hydraulic (pumps) devices.\nAt higher tech levels, this skill should become more and more specialized.\nOperation covers the proper use of technological constructs, getting the maximum possible\nresults out of them, and avoiding overstressing them to the point of breakage. Mechanics\ncan be used to operate parts of a vehicle as long as it is not in motion, but in motion\nthe vehicle will require the Piloting skill.\nRepair and Construction allows a character to assemble technological constructs from parts\nor to identify jams or replace damaged parts. Construction or repair of broken parts\nrequires an appropriate crafting skill, and crafting new, original devices requires the\nEngineering (Science category) skill.",
+    "rmu_canonical_name": "Mechanics"
   },
   {
     "category": "Technical",
     "name": "Mechanics: <op/repair 2>",
     "dev_cost": "5/7",
     "prof_type": "Normal",
-    "stat_keys": "Me"
+    "stat_keys": "Me",
+    "description": "This skill relates to the operation or repair and construction of technology. In most\nfantasy environments, mechanics will be a singular skill covering all possible mechanical\nand hydraulic (pumps) devices.\nAt higher tech levels, this skill should become more and more specialized.\nOperation covers the proper use of technological constructs, getting the maximum possible\nresults out of them, and avoiding overstressing them to the point of breakage. Mechanics\ncan be used to operate parts of a vehicle as long as it is not in motion, but in motion\nthe vehicle will require the Piloting skill.\nRepair and Construction allows a character to assemble technological constructs from parts\nor to identify jams or replace damaged parts. Construction or repair of broken parts\nrequires an appropriate crafting skill, and crafting new, original devices requires the\nEngineering (Science category) skill.",
+    "rmu_canonical_name": "Mechanics"
   },
   {
     "category": "Technical",
     "name": "Traps",
     "dev_cost": "5/7",
     "prof_type": "Normal",
-    "stat_keys": "Ag"
+    "stat_keys": "Ag",
+    "description": "This skill is used for setting up, maintaining, or disarming devices intended either to\nharm or capture the creature who sets it off, or to set off an alarm.\nSome suggested difficulties for traps: snare trap, bells on a string alarm (Easy),\ntripwire (Medium), pressure plate (Hard to Extremely Hard), vibration, air pressure,\nmagical or light triggers (Sheer Folly or harder).\nSpecial tools or circumstances may further modify the complexity. For instance, a trap\nwith extra triggers designed to set it off if tampered with, well concealed or covered\nparts, or extra useless parts to make it more confusing could all increase the difficulty\nof disarming the trap.\nThis skill can also be used on a discovered trap to assess it, and figure out ways to\navoid it without disarming it (e.g., “The pressure plates take 100 pounds of pressure to\ntrigger the trap, so if we lie down and drag ourselves across the floor we shouldn’t set\nthem off”). This may be more or less difficult than disarming the trap, depending on the\nspecifics of the triggering mechanism.",
+    "rmu_canonical_name": "Traps"
   },
   {
     "category": "Vocation",
     "name": "Administration: <vocation>",
     "dev_cost": "3/4",
     "prof_type": "Normal",
-    "stat_keys": "Re"
+    "stat_keys": "Re",
+    "description": "This skill includes vocations that deal with managing, administration, and organizing. It\ncovers the procedures and practices of the vocation, and may be used both to manage\nrecords and to make use of those records. It also includes some knowledge of the practices\nand procedures of those being managed or served, for example a Quartermaster will\nnecessarily have some knowledge of military procedure (although not to the same extent\nthey understand military supply logistics and requisition procedures), and a Librarian\nwill know how libraries are organized but also have some familiarity with how scholars\nmake efficient use of the library. Some administrative vocations may require other skills\nand in many circumstances these may be usable as Complementary skills (e.g., Mathematics\nmay often be applicable as a Complementary skill to Bookkeeper, and Trading may likewise\nassist Quartermaster or vice versa).",
+    "rmu_canonical_name": "Administration"
   },
   {
     "category": "Vocation",
     "name": "Service: <vocation>",
     "dev_cost": "3/4",
     "prof_type": "Normal",
-    "stat_keys": "Pr"
+    "stat_keys": "Pr",
+    "description": "Vocations that primarily deal with interaction and providing services to others are part\nof the Service skill. Interacting with customers and clients is a critical part of these\nvocations, and those with the skill know how to present and conduct themselves in the\ncourse of business as well as how to find clients.\nMany service vocations will require other skills (e.g., an Innkeeper may know Trading or\nCulinary, a Guide will need Region Lore, a Researcher will need Lore or Science skills).\nSuch skills will often be usable as Complementary skills, e.g. Bodyguard may be used as\nComplementary to Perception while protecting a client.",
+    "rmu_canonical_name": "Service"
   },
   {
     "category": "Vocation",
     "name": "Trade: <vocation>",
     "dev_cost": "3/4",
     "prof_type": "Normal",
-    "stat_keys": "Re"
+    "stat_keys": "Re",
+    "description": "This skill includes vocations that are more focused on a specific set of trade related\nskills. Business and trade is an important part of many vocations, including finding\ncustomers and suppliers as well as presenting ones goods in the best light. In other\ncases, the vocation may represent work as part of a group or unit, and the skill\nrepresents understanding how the group is coordinated and how to give and receive orders\nand instructions. Many trades require other skills and these may often be applicable as\nComplementary skills, e.g., a Farmer may use Survival to predict the best weather for\nsowing and harvesting, or a craftsman will typically require a specific craft skill in\naddition to this skill to represent their business knowledge. In other cases different\nskills are needed for different aspects of the occupation, e.g., the Thief vocation may\nassist in identifying marks and targets as well as selling purloined goods, but without\nStalking and Locks (or at least a little talent with a cudgel) the knowledge will be of\nlittle use.",
+    "rmu_canonical_name": "Trade"
   }
 ]

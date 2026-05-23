@@ -1,7 +1,76 @@
 // Derived stat calculations for Rolemaster Unified
-import statBonuses from '../data/stat_bonuses.json'
-import racesData   from '../data/races.json'
-import talentsData from '../data/talents.json'
+import statBonuses        from '../data/stat_bonuses.json'
+import racesData          from '../data/races.json'
+import talentsData        from '../data/talents.json'
+import skillCategoryStats from '../data/skill_category_stats.json'
+import skillsData         from '../data/skills.json'
+
+// ── Stat key utilities ─────────────────────────────────────────────────────
+//
+// Stat keys use 2-letter abbreviations matching RMU (Ag, Co, Em, …) plus 'RS'
+// (= realm stat, resolved via char.realm) and '-' (no contribution).
+
+const STAT_ABBR_TO_FULL = {
+  Ag: 'Agility', Co: 'Constitution', Em: 'Empathy', In: 'Intuition',
+  Me: 'Memory',  Pr: 'Presence',     Qu: 'Quickness', Re: 'Reasoning',
+  SD: 'Self Discipline', St: 'Strength',
+}
+
+// Maps a realm name to its primary stat (per CoreLaw Table 3-0a footnote).
+function realmToStatAbbr(realm) {
+  const r = (realm || '').toLowerCase()
+  if (r.includes('channel')) return 'In'
+  if (r.includes('essence')) return 'Em'
+  if (r.includes('mental'))  return 'Pr'
+  return null
+}
+
+// Sum of stat bonuses for a slash-separated key string like "Ag/Em" or "RS/RS".
+// '-' or empty returns 0. Each abbr looks up the character's stat bonus via
+// getTotalStatBonus (which includes racial + special offsets).
+export function sumStatBonuses(char, statKeys) {
+  if (!statKeys || statKeys === '-') return 0
+  const rsAbbr = realmToStatAbbr(char?.realm)
+  return statKeys.split('/').reduce((sum, raw) => {
+    const k = raw.trim()
+    const abbr = k === 'RS' ? rsAbbr : k
+    if (!abbr) return sum
+    const full = STAT_ABBR_TO_FULL[abbr]
+    const stat = full && char?.stats?.[full]
+    return stat ? sum + getTotalStatBonus(stat) : sum
+  }, 0)
+}
+
+// The category-stat contribution for a given skill category.
+// (Skill category stats are SUMMED with the skill's own stat per RMU.)
+export function getCategoryStatBonus(char, category) {
+  return sumStatBonuses(char, skillCategoryStats[category] || '-')
+}
+
+// Find the skill template by exact name. Returns null if not found.
+export function findSkillTemplate(name) {
+  return skillsData.find(s => s.name === name) || null
+}
+
+// Full RMU skill bonus = rankBonus + skill.stat + category stats + item + talent +
+//   prof (min(ranks,30)) + autoTalent + knack. Excludes fatigue penalty.
+// `skillData` is the character's per-skill state ({ ranks, culture_ranks, item_bonus, talent_bonus, proficient, … }).
+// Returns 0 if neither template nor skillData provided.
+export function getSkillBonus(char, template, skillData, displayName) {
+  if (!template && !skillData) return 0
+  const ranks         = (skillData?.ranks ?? 0) + (skillData?.culture_ranks ?? 0)
+  const rb            = rankBonus(ranks)
+  const catB          = template?.category ? getCategoryStatBonus(char, template.category) : 0
+  const skillStatB    = sumStatBonuses(char, template?.stat_keys || '-')
+  const item          = skillData?.item_bonus   ?? 0
+  const talent        = skillData?.talent_bonus ?? 0
+  const isProf        = skillData?.proficient !== undefined
+    ? !!skillData.proficient
+    : (template?.prof_type === 'Professional' || template?.prof_type === 'Knack')
+  const profBonus     = isProf ? Math.min(ranks, 30) : 0
+  const knackBonus    = displayName ? getKnackBonus(char, displayName) : 0
+  return rb + catB + skillStatB + item + talent + profBonus + knackBonus
+}
 
 // Aggregate all non-skill talent bonuses from a character's talent list.
 // Returns: { spellcasting, db, hits, initiative, endurance, rr: { [realm]: bonus } }
@@ -106,34 +175,53 @@ export function rankBonus(ranks) {
   return 100 + (ranks - 30)
 }
 
-const OB_STATS = {
-  melee:   ['Agility', 'Strength'],
-  ranged:  ['Agility', 'Quickness'],
-  unarmed: ['Agility', 'Strength'],
-}
-
+// Weapon OB = full skill bonus (rb + skill.stat + categoryStats + bonuses)
+// + the weapon's magical/quality bonus.
+//
+// Per RMU, weapon attacks use the corresponding Combat Training skill
+// (e.g. "Melee: Blade"), whose bonus already includes 2×Ag + St for melee.
+// This replaces an older approximation that averaged Ag/St only.
+//
+// Untrained weapons inherit the -25 rank bonus penalty automatically (no
+// special case here — rankBonus(0) returns -25 for category-stat skills).
 export function getWeaponOB(char, weapon) {
-  const stats = OB_STATS[weapon.ob_type || 'melee'] || OB_STATS.melee
-  const statBonus = Math.round(stats.reduce((sum, s) => {
-    const st = char.stats?.[s]
-    return sum + (st ? getTotalStatBonus(st) : 0)
-  }, 0) / stats.length)
-
   const skillName = weapon.skill_name || ''
-  // Exact key match (e.g. legacy flat skill like "Blade")
-  let charSkill = char.skills?.[skillName] || null
-  // Fallback: scan template slots whose label matches (Combat Training template skills like "Melee: <weapon 1>")
-  if (!charSkill || (!(charSkill.ranks ?? 0) && !(charSkill.culture_ranks ?? 0))) {
-    const found = Object.entries(char.skills || {}).find(
-      ([key, data]) => data.label === skillName && key !== skillName
-    )
-    if (found) charSkill = found[1]
-  }
-  charSkill = charSkill || {}
-  const ranks = (charSkill.ranks ?? 0) + (charSkill.culture_ranks ?? 0)
-  const rb = ranks > 0 ? rankBonus(ranks) : 0
 
-  return statBonus + rb + (weapon.item_bonus ?? 0)
+  // Find the character's skill entry, falling back to label match for
+  // placeholder skills like "Melee: <weapon 1>" with label "Blade".
+  let skillKey = null
+  let charSkillData = char.skills?.[skillName] || null
+  if (charSkillData) {
+    skillKey = skillName
+  } else {
+    const found = Object.entries(char.skills || {}).find(
+      ([key, data]) => data?.label === skillName && key !== skillName
+    )
+    if (found) {
+      skillKey = found[0]
+      charSkillData = found[1]
+    }
+  }
+
+  // Find the template (for category + skill.stat lookup)
+  const template = skillKey ? findSkillTemplate(skillKey) : null
+
+  // If we have no template at all (weapon points at a skill we don't know),
+  // fall back to legacy approximation so the weapon still shows *something*.
+  if (!template) {
+    const charSkill = charSkillData || {}
+    const ranks = (charSkill.ranks ?? 0) + (charSkill.culture_ranks ?? 0)
+    return rankBonus(ranks) + (weapon.item_bonus ?? 0)
+  }
+
+  // Resolved display name (used for knack matching, e.g. "Melee: Blade")
+  const label = charSkillData?.label || ''
+  const displayName = label
+    ? (skillKey.includes('<') ? skillKey.replace(/<[^>]+>/, label) : `${skillKey}: ${label}`)
+    : skillKey
+
+  return getSkillBonus(char, template, charSkillData || {}, displayName)
+    + (weapon.item_bonus ?? 0)
 }
 
 // Returns +5 if skillDisplayName is in the character's knack list, else 0.

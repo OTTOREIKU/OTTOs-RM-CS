@@ -10,6 +10,7 @@ import races from '../data/races.json'
 import professions from '../data/professions.json'
 import cultures from '../data/cultures.json'
 import cultureSkillsData from '../data/culture_skills.json'
+import skillCategoryStats from '../data/skill_category_stats.json'
 import armorData from '../data/armor.json'
 import weaponsDb from '../data/weapons.json'
 import spellListsDb from '../data/spell_lists.json'
@@ -39,14 +40,8 @@ function displaySkillName(templateName, label) {
   if (/<[^>]+>/.test(templateName)) return templateName.replace(/<[^>]+>/, label)
   return `${templateName}: ${label}`
 }
-const SKILL_CATEGORY_STATS = {
-  'Animal':'Ag/Em','Awareness':'In/Re','Battle Expertise':'-','Body Discipline':'Co/SD',
-  'Brawn':'Co/SD','Combat Expertise':'-','Combat Training':'Ag/St','Composition':'Em/In','Crafting':'Ag/Me',
-  'Delving':'Em/In','Environmental':'In/Me','Gymnastic':'Ag/Qu','Lore':'Me/Me',
-  'Lore: Languages':'Me/Me','Magical Expertise':'-','Medical':'In/Me','Mental Discipline':'Pr/SD',
-  'Movement':'Ag/St','Performance Art':'Em/Pr','Power Manipulation':'RS/RS','Science':'Me/Re',
-  'Social':'Em/In','Subterfuge':'Ag/SD','Technical':'In/Re','Vocation':'Em/Me',
-}
+// Mirrors RMU's official SkillCategoryStats — sourced from shared data file.
+const SKILL_CATEGORY_STATS = skillCategoryStats
 const SKILL_STAT_MAP = { Ag:'Agility',Co:'Constitution',Em:'Empathy',In:'Intuition',Me:'Memory',Pr:'Presence',Qu:'Quickness',Re:'Reasoning',SD:'Self Discipline',St:'Strength' }
 function getSkillStatBonus(c, statKeys) {
   if (!statKeys || statKeys === '-') return 0
