@@ -1,24 +1,25 @@
 import React, { useState, useMemo, useRef } from 'react'
 import { XIcon } from './Icons.jsx'
-import { generateFoundryScript, generateTalentInjectionScript, analyzeSync } from '../utils/foundryExport.js'
+import { generateFoundryScript, generateInjectionScript, analyzeSync } from '../utils/foundryExport.js'
 
 // Three ways to get a character into Foundry:
 //  1. Module    — download/copy JSON for the RMU Character+ Sync module (DM installs it once)
-//  2. Console   — paste a console script that pushes stats/skills/spell ranks (no install; you own the actor)
-//  3. Talents   — paste a console script that injects talents, bypassing the sheet's "level up first" lock
+//  2. Console   — paste a console script that pushes stats/skills/spell ranks + knacks (no install; you own the actor)
+//  3. Inject    — paste a console script that adds talents/weapons/equipment from compendium (bypasses the "level up first" lock)
 //
 // Tabs 2 & 3 need no module — they work for any player on a character they own.
 
 export default function FoundryExportModal({ char, onClose }) {
-  const [tab, setTab] = useState('module')   // 'module' | 'console' | 'talents'
+  const [tab, setTab] = useState('module')   // 'module' | 'console' | 'inject'
   const [copied, setCopied] = useState('')
   const textRef = useRef(null)
 
   const payload = useMemo(() => ({ _version: 1, _type: 'single', character: char }), [char])
   const jsonStr = useMemo(() => JSON.stringify(payload, null, 2), [payload])
   const pushScript = useMemo(() => generateFoundryScript(char), [char])
-  const talentScript = useMemo(() => generateTalentInjectionScript(char), [char])
+  const injectScript = useMemo(() => generateInjectionScript(char), [char])
   const analysis = useMemo(() => analyzeSync(char), [char])
+  const injectCount = analysis.talentInjects.length + analysis.weaponInjects.length + analysis.equipmentInjects.length
 
   const safe = s => (s || '').replace(/[^a-z0-9]/gi, '_').replace(/_+/g, '_').replace(/^_|_$/g, '')
   const filename = `${safe(char.name) || 'Character'}_${safe(char.race) || 'Unknown'}_${safe(char.profession) || 'Unknown'}_${char.level ?? 1}_foundry.json`
@@ -59,7 +60,7 @@ export default function FoundryExportModal({ char, onClose }) {
           <div style={{ display: 'flex', gap: 2 }}>
             <TabBtn active={tab === 'module'} onClick={() => setTab('module')} label="Module (JSON)" sub="DM installs once" />
             <TabBtn active={tab === 'console'} onClick={() => setTab('console')} label="Console Push" sub="no install" />
-            <TabBtn active={tab === 'talents'} onClick={() => setTab('talents')} label="Inject Talents" sub="bypass lock" />
+            <TabBtn active={tab === 'inject'} onClick={() => setTab('inject')} label="Inject Items" sub="talents·gear" />
           </div>
         </div>
 
@@ -85,16 +86,16 @@ export default function FoundryExportModal({ char, onClose }) {
         {/* ── Console Push ── */}
         {tab === 'console' && (
           <>
-            <Instructions title="Push ranks via the browser console — no module, works on a character you own">
+            <Instructions title="Push values via the browser console — no module, works on a character you own">
               <ol style={olStyle}>
                 <li>Open your character's sheet (or select its token) in Foundry.</li>
                 <li>Press <strong>F12</strong> → <strong>Console</strong> tab. If warned, type <code style={codeStyle}>allow pasting</code> ↵</li>
                 <li>Click <strong>Copy script</strong>, paste into the console, press Enter.</li>
               </ol>
-              <Note>Shows a current→new diff in the console, applies, then re-reads to verify. Never deletes or replaces anything.</Note>
+              <Note>Updates stats, health, level, skill &amp; spell ranks, and knacks. Shows a current→new diff in the console, applies, then re-reads to verify. Never deletes or replaces anything.</Note>
             </Instructions>
             <PreflightSummary
-              willSync={analysis.skillUpdates.length + analysis.spellUpdates.length}
+              willSync={analysis.skillUpdates.length + analysis.spellUpdates.length + analysis.knackUpdates.length}
               cannotSync={analysis.cannotSync}
             />
             <div style={{ padding: '8px 16px' }}>
@@ -104,30 +105,30 @@ export default function FoundryExportModal({ char, onClose }) {
           </>
         )}
 
-        {/* ── Inject Talents ── */}
-        {tab === 'talents' && (
+        {/* ── Inject Items (talents · weapons · equipment) ── */}
+        {tab === 'inject' && (
           <>
-            <Instructions title="Inject talents — bypasses the RMU sheet's “level up first” edit lock">
+            <Instructions title="Inject items — adds talents, weapons & equipment from any compendium">
               <ol style={olStyle}>
                 <li>Open your character's sheet (or select its token).</li>
                 <li>Press <strong>F12</strong> → <strong>Console</strong>. If warned, type <code style={codeStyle}>allow pasting</code> ↵</li>
                 <li>Copy the script, paste, Enter. Then <strong>reload the world (F5)</strong> so talent effects recompute.</li>
               </ol>
-              <Note>Pulls the real talent items from the rmu.core compendium. Talents already on your character are skipped.</Note>
+              <Note>Searches every installed compendium (core + module/PDF packs), so non-core content is found. Talents bypass the “level up first” lock. Items already on your character are skipped.</Note>
             </Instructions>
-            <PreflightSummary
-              willSync={analysis.talentInjects.length}
-              willSyncLabel="talent(s) ready to inject"
-              cannotSync={analysis.unknownTalents}
-              cannotLabel="can't inject (non-core / PDF)"
+            <InjectSummary
+              talents={analysis.talentInjects.length}
+              weapons={analysis.weaponInjects.length}
+              equipment={analysis.equipmentInjects.length}
+              unknownTalents={analysis.unknownTalents}
             />
             <div style={{ padding: '8px 16px' }}>
-              <button onClick={() => copy(talentScript, 'talent')} style={primaryBtn}
-                disabled={analysis.talentInjects.length === 0}>
-                {copied === 'talent' ? '✓ Copied' : (analysis.talentInjects.length === 0 ? 'No injectable talents' : 'Copy script')}
+              <button onClick={() => copy(injectScript, 'inject')} style={primaryBtn}
+                disabled={injectCount === 0}>
+                {copied === 'inject' ? '✓ Copied' : (injectCount === 0 ? 'Nothing to inject' : 'Copy script')}
               </button>
             </div>
-            <ScriptBox value={talentScript} label="Talent injection script" textRef={textRef} />
+            <ScriptBox value={injectScript} label="Item injection script" textRef={textRef} />
           </>
         )}
       </div>
@@ -177,6 +178,40 @@ function PreflightSummary({ willSync, willSyncLabel = 'item(s) will sync', canno
           </ul>
         </div>
       )}
+    </div>
+  )
+}
+function InjectSummary({ talents, weapons, equipment, unknownTalents = [] }) {
+  const total = talents + weapons + equipment
+  const chip = (n, label) => (
+    <span style={{ fontSize: 11, color: n > 0 ? 'var(--text)' : 'var(--text3)' }}>
+      <strong style={{ color: n > 0 ? 'var(--success)' : 'var(--text3)' }}>{n}</strong> {label}
+    </span>
+  )
+  return (
+    <div style={{ padding: '10px 16px', borderBottom: '1px solid var(--border)' }}>
+      <div style={{ display: 'flex', gap: 14, alignItems: 'center', flexWrap: 'wrap' }}>
+        <div style={{ fontSize: 12, color: total > 0 ? 'var(--success)' : 'var(--text3)', fontWeight: 600 }}>
+          {total} item(s) to inject
+        </div>
+        <span style={{ color: 'var(--border2)' }}>·</span>
+        {chip(talents, 'talents')}
+        {chip(weapons, 'weapons')}
+        {chip(equipment, 'equipment')}
+      </div>
+      {unknownTalents.length > 0 && (
+        <div style={{ marginTop: 6 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--danger)', marginBottom: 3 }}>
+            {unknownTalents.length} talent(s) can’t be resolved:
+          </div>
+          <ul style={{ margin: 0, paddingLeft: 16, fontSize: 11, color: 'var(--text2)', lineHeight: 1.5 }}>
+            {unknownTalents.map((c, i) => (<li key={i}><strong>{c.display}</strong> — {c.reason}</li>))}
+          </ul>
+        </div>
+      )}
+      <div style={{ marginTop: 6, fontSize: 10.5, color: 'var(--text3)', fontStyle: 'italic' }}>
+        Weapons/equipment with no compendium match are reported in the console; inventory items fall back to a plain item.
+      </div>
     </div>
   )
 }
