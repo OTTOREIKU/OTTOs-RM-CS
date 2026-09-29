@@ -4,7 +4,7 @@ import { ChevronDownIcon, ChevronUpIcon, XIcon, CheckIcon, DiamondIcon, EyeOpenI
 import FoundryExportModal from '../components/FoundryExportModal.jsx'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { STATS } from '../store/characters.js'
-import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getRRBreakdown, getBaseHits, getEndurance, getPowerPoints, getWeightAllowance, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getConditionPenalty, getConditionInitiativePenalty, getEnduranceConditionModifier, getKnackBonus, rmuSkillName, getWeaponSkillRanks, getBMR, getFatigueRecoveryCap, restFatiguePenalty, getRaceEntry, getRaceStatBonuses, getArmorPenalties, getEncumbrance, getMovementPenalty } from '../utils/calc.js'
+import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getRRBreakdown, getBaseHits, getEndurance, getPowerPoints, getWeightAllowance, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getConditionPenalty, getConditionInitiativePenalty, getEnduranceConditionModifier, getKnackBonus, rmuSkillName, getWeaponSkillRanks, getBMR, getFatigueRecoveryCap, restFatiguePenalty, getRaceEntry, getRaceStatBonuses, getArmorPenalties, getEncumbrance, getMovementPenalty, getDefense, SHIELD_DB } from '../utils/calc.js'
 import { HitsBox, InjuriesPanel, StatusStrip } from '../components/HealthPanel.jsx'
 import { ActiveEffectsPanel, FamiliarPanel, familiarName } from '../components/ActiveEffects.jsx'
 import { QuickRollsPanel, ManeuverModal } from '../components/RollModals.jsx'
@@ -32,7 +32,6 @@ const ARMOR_TYPES = [
   '9 – Brigandine','10 – Plate',
 ]
 const SHIELD_OPTIONS = ['None', 'Target Shield', 'Normal Shield', 'Full Shield', 'Wall Shield']
-const SHIELD_DB = { 'Target Shield': 15, 'Normal Shield': 20, 'Full Shield': 25, 'Wall Shield': 30 }
 const ARMOR_SECTION_MAP = { torso: 'torso', head: 'helmet', arms: 'vambraces', legs: 'greaves' }
 const ARMOR_PART_LABELS = { torso: 'Torso', head: 'Head', arms: 'Arms', legs: 'Legs' }
 
@@ -141,6 +140,52 @@ function TInput({ value, onChange, placeholder }) {
 function NInput({ value, onChange, min, max, style }) {
   return <input type="number" value={value ?? ''} onChange={e => onChange(e.target.value === '' ? null : Number(e.target.value))} min={min} max={max} style={{ width: '100%', ...style }} />
 }
+/** Dodge / block / parry / cover choices that feed getDefense(). */
+function DefenseControls({ c, defense, updateCharacter }) {
+  const d = c.defense || {}
+  const set = patch => {
+    const next = { ...d, dodge: defense.dodgeMode, block: defense.blockMode, ...patch }
+    // Only one of dodge/block can be partial/full; passive dodge + passive block don't combine
+    if (patch.dodge && patch.dodge !== 'none' && patch.dodge !== 'passive' && next.block !== 'none') next.block = 'passive'
+    if (patch.block && patch.block !== 'none' && patch.block !== 'passive' && next.dodge !== 'none') next.dodge = 'passive'
+    updateCharacter({ defense: next })
+  }
+  const lbl = { fontSize: 10, color: 'var(--text3)', marginBottom: 3 }
+  const MODES = [['none', 'None'], ['passive', 'Passive'], ['partial', 'Partial (C)'], ['full', 'Full (4 AP)']]
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: 8, marginTop: 12 }}>
+      <div title="Running: passive +1/rank (max 50); partial ½ skill; full whole skill. Armor/encumbrance reduce it; halved vs ranged; none vs area attacks.">
+        <div style={lbl}>Dodge (Running {defense.rRanks}r)</div>
+        <select value={defense.dodgeMode} onChange={e => set({ dodge: e.target.value })} style={{ width: '100%' }}>
+          {MODES.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+        </select>
+      </div>
+      <div title="Shield: passive shield + ranks (max 50); partial ½ Shield skill + shield; full Shield skill + shield. Each extra attacker needs a Shield maneuver.">
+        <div style={lbl}>Block (Shield {defense.sRanks}r)</div>
+        <select value={defense.blockMode} disabled={!defense.hasShield} onChange={e => set({ block: e.target.value })} style={{ width: '100%' }}>
+          {MODES.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+        </select>
+      </div>
+      <div title="Move OB into DB against one melee foe's attacks. Take the same amount off your OB.">
+        <div style={lbl}>Parry (OB → DB)</div>
+        <input type="number" min={0} value={d.parry || ''} placeholder="0" onChange={e => set({ parry: Math.max(0, Number(e.target.value) || 0) })} style={{ width: '100%' }} />
+      </div>
+      <div title="Melee +10/+20/+50, ranged +20/+40/+100; hard cover doubles.">
+        <div style={lbl}>Cover</div>
+        <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+          <select value={d.cover || 'none'} onChange={e => set({ cover: e.target.value })} style={{ flex: 1, minWidth: 0 }}>
+            {[['none', 'None'], ['partial', 'Partial'], ['half', 'Half'], ['full', 'Full']].map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+          </select>
+          <label style={{ fontSize: 10, color: 'var(--text3)', display: 'flex', alignItems: 'center', gap: 2 }}>
+            <input type="checkbox" checked={!!d.hardCover} onChange={e => set({ hardCover: e.target.checked })} style={{ width: 'auto' }} />hard
+          </label>
+        </div>
+      </div>
+      {d.parry > 0 && <div style={{ gridColumn: '1 / -1', fontSize: 11, color: '#f97316' }}>Parrying {d.parry}: take {d.parry} off your melee OB this round.</div>}
+    </div>
+  )
+}
+
 /** Reference list of a race's innate talents (hover for the rule text). */
 function RacialTalentsNote({ race }) {
   const talents = (race?.racial_talents || []).filter(t => t.name && t.name !== 'None')
@@ -999,15 +1044,9 @@ export default function CharacterSheet() {
   const weapons     = c.weapons || []
   const armorParts  = c.armor_parts || {}
   const shield      = armorParts.shield || {}
-  const shieldDB    = SHIELD_DB[shield.type] ?? 0
-  // Sum per-part magical/special DB bonuses from armor pieces (torso/head/arms/legs).
-  // These come from magical armor (e.g., +5 plate breastplate) and stack with shield + Qu DB.
-  const armorPartDB = ['torso','head','arms','legs'].reduce((sum, part) => sum + (armorParts[part]?.db ?? 0), 0)
-  // Flat-footed: no Quickness DB and no shield; surprised: no shield (Core Law 9.6)
-  const flatfooted  = !!c.conditions?.flatfooted
-  const noShield    = flatfooted || !!c.conditions?.surprised
-  const quDB        = db - getTalentBonuses(c).db
-  const totalDB     = db - (flatfooted ? quDB : 0) + (noShield ? 0 : shieldDB + (shield.db ?? 0)) + armorPartDB
+  // Full DB incl. dodge/block/parry/cover, flat-footed/surprised (utils/calc.js getDefense)
+  const defense     = getDefense(c)
+  const totalDB     = defense.total
 
   function getArmorPenalty(part) {
     const section = ARMOR_SECTION_MAP[part]
@@ -1334,11 +1373,16 @@ export default function CharacterSheet() {
           </table>
         </div>
 
+        {/* Defense choices (Core Law 9.6) */}
+        <DefenseControls c={c} defense={defense} updateCharacter={updateCharacter} />
+
         {/* DB breakdown */}
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(100px,1fr))', gap:8, marginTop:12 }}>
           <StatCard label="Qu DB"     value={fmt(db)}      color={db > 0 ? 'var(--success)' : 'var(--text)'} sub="Qu bonus ×3" showDetail={showArmorDetail} />
-          <StatCard label="Shield DB" value={shieldDB > 0 ? `+${shieldDB}` : '—'} color="var(--accent)" />
-          <StatCard label="Total DB"  value={fmt(totalDB)} color={totalDB > 0 ? 'var(--success)' : 'var(--text)'} />
+          <StatCard label={defense.blockMode === 'none' ? 'Shield DB' : 'Shield + Block'} value={defense.parts.shield ? fmt(defense.parts.shield) : '—'} color="var(--accent)" />
+          <StatCard label="Dodge" value={defense.parts.dodge ? fmt(defense.parts.dodge) : '—'} color="var(--accent)" sub={defense.dodgeMode !== 'none' ? `${defense.dodgeMode} · Running` : undefined} />
+          <StatCard label="Total DB"  value={fmt(totalDB)} color={totalDB > 0 ? 'var(--success)' : 'var(--text)'} sub="vs melee" />
+          <StatCard label="vs Ranged" value={fmt(defense.vsRanged)} color={defense.vsRanged > 0 ? 'var(--success)' : 'var(--text)'} sub="dodge ½, ranged cover" />
           <StatCard label="Initiative" value={fmt(ini)} color="var(--accent)" />
           {talentB.at > 0 && (
             <StatCard label="Natural Armor" value={`+${talentB.at} AT`} color="var(--success)" sub="no encumbrance" />
@@ -1480,7 +1524,7 @@ export default function CharacterSheet() {
       }>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(110px,1fr))', gap: 8 }}>
           <StatCard label="Def Bonus" value={fmt(totalDB)} color={totalDB > 0 ? 'var(--success)' : 'var(--text)'}
-            sub={['Qu×3', talentB.db && `${talentB.db} talent`, (shieldDB + (shield.db ?? 0)) && 'shield', armorPartDB && 'armor'].filter(Boolean).join(' + ')} showDetail={showDetail} />
+            sub={['Qu×3', defense.parts.talent && 'talent', defense.parts.shield && 'shield', defense.parts.dodge && 'dodge', defense.parts.parry && 'parry', defense.parts.cover && 'cover', (defense.parts.armor || defense.parts.magic) && 'magic'].filter(Boolean).join(' + ')} showDetail={showDetail} />
           <StatCard label="Initiative" value={fmt(ini)} color={ini > 0 ? 'var(--accent)' : ini < 0 ? 'var(--danger)' : 'var(--text)'}
             sub={iniPenalty < 0
               ? `Qu${talentB.initiative ? ` + ${talentB.initiative}T` : ''} ${iniPenalty} condition`

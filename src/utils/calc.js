@@ -740,6 +740,73 @@ export function getMovementPenalty(char, category, skillName) {
   return { armor, enc, total: armor + enc }
 }
 
+// ── Defense (Core Law 9.6; RMU db/db.js) ────────────────────────────────────
+
+export const SHIELD_DB = { 'Target Shield': 15, 'Normal Shield': 20, 'Full Shield': 25, 'Wall Shield': 30 }
+const COVER = { none: [0, 0], partial: [10, 20], half: [20, 40], full: [50, 100] }   // [melee, ranged]
+
+/**
+ * Full DB with the character's chosen defense (char.defense):
+ *   dodge / block: 'none' | 'passive' | 'partial' | 'full'
+ *   parry: OB moved to DB vs melee;  cover: 'none'|'partial'|'half'|'full', hardCover
+ * Dodge uses Running; block uses Shield. Passive dodge and passive block don't
+ * combine (the better one counts). Armor/encumbrance reduce dodge; injury
+ * penalties reduce partial/full dodge and block. Dodge is halved vs ranged.
+ * Returns { total, vsRanged, parts: { qu, talent, shield, dodge, parry, cover, coverRanged, armor, magic }, … }.
+ */
+export function getDefense(char) {
+  const d     = char.defense || {}
+  const cond  = char.conditions || {}
+  const flat  = !!cond.flatfooted
+  const shieldItem = char.armor_parts?.shield || {}
+  const hasShield  = !!shieldItem.type && !flat && !cond.surprised
+  const dodgeMode  = d.dodge ?? (shieldItem.type ? 'none' : 'passive')
+  const blockMode  = hasShield ? (d.block ?? 'passive') : 'none'
+  const injury     = getConditionPenalty(char).total
+  const qu     = flat ? 0 : (char.stats?.Quickness ? getTotalStatBonus(char.stats.Quickness) : 0) * 3
+  const talent = getTalentBonuses(char).db
+
+  // Block (Shield skill)
+  const shieldBase = hasShield ? (SHIELD_DB[shieldItem.type] ?? 0) + (shieldItem.db ?? 0) : 0
+  const sData  = char.skills?.Shield
+  const sRanks = (sData?.ranks ?? 0) + (sData?.culture_ranks ?? 0)
+  const sBonus = sRanks > 0 ? namedSkillBonus(char, 'Shield') : 0
+  let shield = shieldBase
+  if (blockMode === 'passive') shield = Math.min(50, shieldBase + sRanks)
+  if (blockMode === 'partial') shield = shieldBase + Math.max(0, Math.ceil(sBonus / 2) + injury)
+  if (blockMode === 'full')    shield = shieldBase + Math.max(0, sBonus + injury)
+
+  // Dodge (Running)
+  const rData  = char.skills?.Running
+  const rRanks = (rData?.ranks ?? 0) + (rData?.culture_ranks ?? 0)
+  const rBonus = rRanks > 0 ? namedSkillBonus(char, 'Running') : 0
+  const armorEnc = getArmorPenalties(char).maneuver + getEncumbrance(char).penalty
+  let dodge = 0
+  if (!flat) {
+    if (dodgeMode === 'passive') dodge = Math.max(0, Math.min(50, rRanks) + armorEnc)
+    if (dodgeMode === 'partial') dodge = Math.max(0, Math.ceil(rBonus / 2) + armorEnc + injury)
+    if (dodgeMode === 'full')    dodge = Math.max(0, rBonus + armorEnc + injury)
+  }
+  // Passive dodge + passive block don't combine: keep the better
+  if (dodgeMode === 'passive' && blockMode === 'passive') {
+    if (dodge > shield - shieldBase) { shield = shieldBase } else { dodge = 0 }
+  }
+
+  const parry = Math.max(0, Number(d.parry) || 0)
+  const [cm, cr] = COVER[d.cover || 'none'] || [0, 0]
+  const hard = d.hardCover ? 2 : 1
+  const armor = ['torso', 'head', 'arms', 'legs'].reduce((s, p) => s + (char.armor_parts?.[p]?.db ?? 0), 0)
+  const magic = (char.magic_items || []).reduce((s, m) => s + (Number(m.db) || 0), 0)
+
+  const common = qu + talent + shield + armor + magic
+  return {
+    total:    common + dodge + parry + cm * hard,
+    vsRanged: common + Math.floor(dodge / 2) + cr * hard,
+    parts: { qu, talent, shield, dodge, parry, cover: cm * hard, coverRanged: cr * hard, armor, magic },
+    dodgeMode, blockMode, hasShield, rRanks, sRanks,
+  }
+}
+
 export function getWeightAllowance(char) {
   const st = char.stats?.Strength
   const stBonus = st ? getTotalStatBonus(st) : 0

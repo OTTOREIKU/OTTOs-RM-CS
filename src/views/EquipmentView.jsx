@@ -974,6 +974,9 @@ export default function EquipmentView() {
       <ArmorCard activeChar={activeChar} updateArmorPart={updateArmorPart} />
 
       <Card title="Magic Items">
+        <div style={{ fontSize: 11, color: 'var(--text3)', marginBottom: 8 }}>
+          DB bonuses here count toward your DB. For an OB bonus on a weapon, put it in that weapon's Item Bonus (so it isn't counted twice).
+        </div>
         {magicItems.length === 0 && (
           <div style={{ color:'var(--text3)', fontSize:12, textAlign:'center', padding:'8px 0' }}>No magic items</div>
         )}
