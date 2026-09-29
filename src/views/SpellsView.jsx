@@ -2,12 +2,15 @@ import React, { useState, useMemo, useEffect } from 'react'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { useScrollRestore } from '../hooks/persist.js'
 import { ChevronDownIcon, ChevronUpIcon, ChevronRightIcon, InfoIcon } from '../components/Icons.jsx'
-import { rankBonus, getTotalStatBonus, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getFatiguePenalty } from '../utils/calc.js'
+import { rankBonus, getTotalStatBonus, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getConditionPenalty } from '../utils/calc.js'
 import spellLists from '../data/spell_lists.json'
 import spellDescs from '../data/spell_descriptions.json'
 import { REALM_COLORS } from '../store/theme.js'
+import CastModal from '../components/CastModal.jsx'
+import { isSpellKnown, getRawOvercastPenalty } from '../utils/casting.js'
 
 const SPELL_GRID   = '36px 1fr 80px 90px 64px 32px'   // desktop
+const SPELL_GRID_CAST = SPELL_GRID + ' 48px'           // desktop + Cast column
 const SPELL_GRID_M = '28px 1fr 58px 78px 42px 28px'   // mobile: tighter fixed cols → ~128px for name
 
 // Spell type codes from CoreLaw
@@ -20,7 +23,7 @@ const SPELL_TYPES = [
   { code: 'b',  label: '+ Ball',               desc: 'Suffix: area-of-effect (e.g. Shock Ball)' },
   { code: 'd',  label: '+ Directed',           desc: 'Suffix: targeted — requires an attack roll' },
   { code: 'm',  label: '+ Maintained',         desc: 'Suffix: requires active concentration (dur: C)' },
-  { code: 's',  label: '+ Self / Touch',       desc: 'Suffix: range limited to self or touch' },
+  { code: 's',  label: '+ Subconscious',       desc: 'Suffix: subconscious — ignores injury penalties and hand gestures' },
 ]
 
 const REALMS = ['All', 'Channeling', 'Essence', 'Mentalism', 'Hybrid']
@@ -36,10 +39,11 @@ function isConcentration(dur) {
 function hasRange(spell)        { const r = spell.range;    return !!(r && r !== '—' && r !== '-' && r.toLowerCase() !== 'self' && r.toLowerCase() !== 'touch') }
 function hasAoE(spell)          { const a = spell.aoe;     return !!(a && a !== '—' && a !== '-') }
 function hasNonCDuration(spell) { const d = spell.duration; return !!(d && d !== '—' && d !== '-' && !isConcentration(d)) }
-function isTouchSelf(spell)     { return !!(spell.type?.includes('s')) }
+function isTouchSelf(spell)     { const r = (spell.range || '').toLowerCase(); return r === 'self' || r === 'touch' }
 
 export default function SpellsView() {
-  const { activeChar } = useCharacter()
+  const { activeChar, updateCharacter } = useCharacter()
+  const [castTarget, setCastTarget] = useState(null)   // { listName, spell }
   useScrollRestore('rm_scroll_spells')
   const [realm, setRealm]           = useState('All')
   const [search, setSearch]         = useState('')
@@ -61,7 +65,8 @@ export default function SpellsView() {
 
   const c = activeChar
   const query = search.toLowerCase()
-  const spellGrid = isMobile ? SPELL_GRID_M : SPELL_GRID
+  const showCastCol = !!c && !isMobile
+  const spellGrid = isMobile ? SPELL_GRID_M : showCastCol ? SPELL_GRID_CAST : SPELL_GRID
 
   // Subconscious Discipline: 0 = not taken, 1 = Tier I (½ linger), 2 = Tier II (full linger)
   const sdTier = useMemo(() => {
@@ -98,10 +103,10 @@ export default function SpellsView() {
     c ? Object.entries(spellLists).filter(([name]) => (c.spell_lists?.[name]?.ranks ?? 0) > 0) : [],
   [c])
 
-  const fatiguePen = c ? getFatiguePenalty(c) : 0
+  const condPen = c ? getConditionPenalty(c).total : 0
   function ranks(name)  { return c?.spell_lists?.[name]?.ranks ?? 0 }
-  function scr(name)    { return c ? getSpellCastingBonus(c, name) + fatiguePen : null }
-  function mastery(name){ return c ? getSpellMasteryBonus(c, name) + fatiguePen : null }
+  function scr(name)    { return c ? getSpellCastingBonus(c, name) + condPen : null }
+  function mastery(name){ return c ? getSpellMasteryBonus(c, name) + condPen : null }
 
   const display = tab === 'myspells' ? myLists : filteredLists
 
@@ -225,6 +230,11 @@ export default function SpellsView() {
               {c && r === 0 && (
                 <span style={{ fontSize: 10, color: 'var(--text3)', flexShrink: 0 }}>no ranks</span>
               )}
+              {c && r > 0 && !isMobile && (
+                <span style={{ fontSize: 10, color: 'var(--text3)', flexShrink: 0 }} title="You know every spell up to a level equal to your ranks in the list">
+                  knows 1–{r}
+                </span>
+              )}
               {isOpen ? <ChevronUpIcon size={12} color="var(--text3)" /> : <ChevronDownIcon size={12} color="var(--text3)" />}
             </div>
 
@@ -232,7 +242,7 @@ export default function SpellsView() {
             {isOpen && (
               <>
                 <div style={{ display: 'grid', gridTemplateColumns: spellGrid, padding: '4px 14px', borderTop: '1px solid var(--border)', background: 'var(--surface2)' }}>
-                  {['Lvl','Spell','AoE','Duration','Range','Type'].map(h => (
+                  {['Lvl','Spell','AoE','Duration','Range','Type', ...(showCastCol ? [''] : [])].map(h => (
                     <span key={h} style={{ fontSize: 9, fontWeight: 600, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>{h}</span>
                   ))}
                 </div>
@@ -347,7 +357,12 @@ export default function SpellsView() {
                   const spKey = `${listName}-${spell.level}`
                   const open  = openSpell === spKey
                   const desc  = spellDescs[listName]?.[String(spell.level)]
-                  const hasDetail = !!(desc || spell.notes)
+                  const known     = !!c && isSpellKnown(c, listName, spell.level)
+                  const overcast  = known && getRawOvercastPenalty(c, spell.level) < 0
+                  const unknownDim = !!c && r > 0 && !known
+                  const canCast   = known
+                  const expandable = !!(desc || spell.notes) || (canCast && !showCastCol)
+                  const hasDetail = expandable
                   return (
                     <div key={spKey}>
                       <div onClick={() => hasDetail ? setOpenSpell(open ? null : spKey) : null}
@@ -357,8 +372,18 @@ export default function SpellsView() {
                           background: i % 2 === 0 ? 'var(--surface)' : 'var(--surface2)',
                           cursor: hasDetail ? 'pointer' : 'default',
                           borderLeft: '2px solid ' + (hasDetail ? rc + '60' : 'transparent'),
-                        }}>
-                        <span style={{ color: rc, fontWeight: 700 }}>{spell.level}</span>
+                          opacity: unknownDim ? 0.45 : 1,
+                        }}
+                        title={unknownDim ? `Not known yet — needs ${spell.level} ranks in ${listName}` : undefined}>
+                        <span style={{ color: rc, fontWeight: 700, display: 'flex', flexDirection: 'column', lineHeight: 1.15 }}>
+                          {spell.level}
+                          {overcast && (
+                            <span style={{ fontSize: 8, fontWeight: 800, color: '#f97316' }}
+                              title={`Overcast: level ${spell.level} is above your level ${c.level ?? 1} — ${getRawOvercastPenalty(c, spell.level)} to SCR`}>
+                              OC
+                            </span>
+                          )}
+                        </span>
                         <span style={{ display: 'flex', alignItems: 'center', gap: 3 }}>{spell.name}{hasDetail && <InfoIcon size={9} color="var(--text3)" />}</span>
                         <span style={{ color: 'var(--text2)', fontSize: 11, display: 'flex', alignItems: 'center', gap: 3, flexWrap: 'nowrap' }}>
                           {spell.aoe || '—'}
@@ -400,11 +425,20 @@ export default function SpellsView() {
                           )}
                         </span>
                         <span style={{ fontSize: 10, color: rc, background: rc + '18', padding: '1px 4px', borderRadius: 3, textAlign: 'center' }}>{spell.type || '—'}</span>
+                        {showCastCol && (canCast ? (
+                          <button onClick={e => { e.stopPropagation(); setCastTarget({ listName, spell }) }}
+                            style={castBtn(overcast)}>Cast</button>
+                        ) : <span />)}
                       </div>
                       {open && hasDetail && (
                         <div style={{ padding: '8px 14px 8px 50px', background: rc + '0d', borderLeft: '3px solid ' + rc, fontSize: 12, lineHeight: 1.6, color: 'var(--text2)' }}>
                           {desc && <p style={{ margin: '0 0 4px 0' }}>{desc}</p>}
                           {spell.notes && <p style={{ margin: 0, color: 'var(--text3)', fontStyle: 'italic' }}>{spell.notes}</p>}
+                          {canCast && !showCastCol && (
+                            <button onClick={() => setCastTarget({ listName, spell })} style={{ ...castBtn(overcast), marginTop: 6, padding: '5px 14px' }}>
+                              Cast{overcast ? ' (overcast)' : ''}
+                            </button>
+                          )}
                         </div>
                       )}
                     </div>
@@ -416,6 +450,11 @@ export default function SpellsView() {
         )
       })}
 
+      {castTarget && c && (
+        <CastModal char={c} listName={castTarget.listName} spell={castTarget.spell}
+          updateCharacter={updateCharacter} onClose={() => setCastTarget(null)} />
+      )}
+
       {display.length === 0 && (
         <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text3)', fontSize: 13 }}>
           No spell lists match your search.
@@ -423,6 +462,14 @@ export default function SpellsView() {
       )}
     </div>
   )
+}
+
+function castBtn(overcast) {
+  const color = overcast ? '#f97316' : 'var(--purple)'
+  return {
+    background: 'transparent', color, border: `1px solid ${color}`, borderRadius: 5,
+    fontSize: 10, fontWeight: 700, padding: '1px 6px', cursor: 'pointer', alignSelf: 'center',
+  }
 }
 
 function TabBtn({ active, onClick, children }) {

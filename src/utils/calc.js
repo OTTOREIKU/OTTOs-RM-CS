@@ -236,6 +236,8 @@ export function getKnackBonus(char, skillDisplayName) {
   if (listData) {
     const category = listData.category || 'Base'
     if (knacks.includes(`Spellcasting: ${category}`)) return 5
+    // Lists store "Magic Ritual"; the knack picker offers RMU's "Magical Ritual".
+    if (category === 'Magic Ritual' && knacks.includes('Spellcasting: Magical Ritual')) return 5
   }
   return 0
 }
@@ -320,9 +322,20 @@ function _compBonus(char, sl) {
   return comp.type === 'secondary' ? Math.floor(rawRanks / 2) : rawRanks
 }
 
+// SCR modifier by spell list type (RMU spells/prepare.js calculateSCRListModifier).
+// Magic Ritual lists aren't cast with an SCR, so they get no modifier.
+const SCR_LIST_TYPE_MOD = { Base: 5, Open: 0, Closed: -5, Arcane: -10, Restricted: -10, 'Magic Ritual': 0 }
+
+export function getSCRListTypeModifier(char, listName) {
+  const category = char.spell_lists?.[listName]?.category || 'Base'
+  return SCR_LIST_TYPE_MOD[category] ?? 0
+}
+
 /**
  * Spellcasting Roll (SCR) modifier — what you add to d100OE when casting.
- * Formula (CoreLaw p.109): raw ranks + realm stat (×1) + talent bonus + complementary
+ * Formula (CoreLaw p.109 + RMU): raw ranks + realm stat (×1) + list type
+ * modifier + talent bonus + complementary + knack. Excludes situational
+ * modifiers (overcasting, armor, condition) — see utils/casting.js.
  */
 export function getSpellCastingBonus(char, listName) {
   const sl            = char.spell_lists?.[listName] || {}
@@ -332,7 +345,21 @@ export function getSpellCastingBonus(char, listName) {
   const namedTalent   = getNamedTalentBonus(char, listName)
   const compB         = _compBonus(char, sl)
   const knackB        = getKnackBonus(char, listName)
-  return rawRanks + _realmStatBonus(char) + talentSpell + customTalent + namedTalent + compB + knackB
+  const listTypeB     = getSCRListTypeModifier(char, listName)
+  return rawRanks + _realmStatBonus(char) + listTypeB + talentSpell + customTalent + namedTalent + compB + knackB
+}
+
+/** Itemized pieces of getSpellCastingBonus, for the Cast dialog. Sums to the same total. */
+export function getSpellCastingBreakdown(char, listName) {
+  const sl = char.spell_lists?.[listName] || {}
+  return {
+    ranks:    sl.ranks ?? 0,
+    realmStat: _realmStatBonus(char),
+    listType: getSCRListTypeModifier(char, listName),
+    talents:  getTalentBonuses(char).spellcasting + (sl.talent_bonus ?? 0) + getNamedTalentBonus(char, listName),
+    complementary: _compBonus(char, sl),
+    knack:    getKnackBonus(char, listName),
+  }
 }
 
 /**
@@ -424,6 +451,100 @@ export function getEndurance(char) {
 /** Total active penalty from fatigue (penalty + overflow injury). Always ≤ 0. */
 export function getFatiguePenalty(char) {
   return (char.fatigue?.penalty ?? 0) + (char.fatigue?.injury ?? 0)
+}
+
+// ── Hits, injuries & stun (Core Law ch.13; RMU injury/hit-loss-penalty.js) ──
+//
+// "Concussion hits" in RMU are the character's Hits. State lives on the char:
+//   hits_current: number | null   (null = at full hits)
+//   injuries:     [{ id, label, penalty (≤0), bleed (hits/rd ≥0) }]
+//   stun:         [r25, r50, r75]  rounds remaining at each stun severity
+
+/** Full Body Development skill bonus (the value that sets the death threshold). */
+export function getBodyDevBonus(char) {
+  const co = char.stats?.Constitution
+  const sd = char.stats?.['Self Discipline']
+  const coBonus = co ? getTotalStatBonus(co) : 0
+  const sdBonus = sd ? getTotalStatBonus(sd) : 0
+  const bdSkill = char.skills?.['Body Development'] || {}
+  const bdRanks = (bdSkill.ranks ?? 0) + (bdSkill.culture_ranks ?? 0)
+  const profB   = bdSkill.proficient ? Math.min(bdRanks, 30) : 0
+  return rankBonus(bdRanks) + 2 * coBonus + sdBonus
+    + (bdSkill.item_bonus ?? 0) + (bdSkill.talent_bonus ?? 0) + profB
+}
+
+export function getHitsMax(char) {
+  return char.hits_max ?? getBaseHits(char)
+}
+
+export function getHitsCurrent(char) {
+  return char.hits_current ?? getHitsMax(char)
+}
+
+/** RMU hit-loss penalty: 0 up to 25% lost, −10 to 50%, −20 to 75%, −30 beyond (and at ≤0 hits). */
+export function getHitLossPenalty(char) {
+  const max = getHitsMax(char)
+  const cur = getHitsCurrent(char)
+  if (cur <= 0) return -30
+  if (!max) return 0
+  const pct = Math.round(((max - cur) * 100) / max)
+  if (pct <= 25) return 0
+  if (pct <= 50) return -10
+  if (pct <= 75) return -20
+  return -30
+}
+
+/** Sum of per-injury penalties. Always ≤ 0. */
+export function getInjuryPenalty(char) {
+  return (char.injuries || []).reduce((sum, inj) => sum + Math.min(0, Number(inj.penalty) || 0), 0)
+}
+
+/** Stun penalty — only the worst active tier applies: −25 / −50 / −75. */
+export function getStunPenalty(char) {
+  const s = char.stun || [0, 0, 0]
+  for (let i = 2; i >= 0; i--) if ((s[i] ?? 0) > 0) return (i + 1) * -25
+  return 0
+}
+
+/**
+ * Hits lost per round from bleeding. Slow/Rapid Bleeder talents adjust each
+ * bleeding wound (never below 0 per wound).
+ */
+export function getBleedPerRound(char) {
+  const perWound = getTalentBonuses(char).bleed
+  return (char.injuries || []).reduce((sum, inj) => {
+    const b = Number(inj.bleed) || 0
+    return b > 0 ? sum + Math.max(0, b + perWound) : sum
+  }, 0)
+}
+
+/**
+ * Every penalty that applies to skills, OB and spellcasting from the
+ * character's condition. `total` is always ≤ 0.
+ */
+export function getConditionPenalty(char) {
+  const hitLoss = getHitLossPenalty(char)
+  const injury  = getInjuryPenalty(char)
+  const stun    = getStunPenalty(char)
+  const fatigue = getFatiguePenalty(char)
+  return { hitLoss, injury, stun, fatigue, total: hitLoss + injury + stun + fatigue }
+}
+
+/** Initiative loses 1 per full −10 of condition penalty (RMU rounds the /10). */
+export function getConditionInitiativePenalty(char) {
+  return Math.round(getConditionPenalty(char).total / 10)
+}
+
+/**
+ * Unconscious at 0 or fewer hits. Dead once negative hits exceed the Body
+ * Development bonus (+67 BD dies at −68).
+ */
+export function getHealthStatus(char) {
+  const cur    = getHitsCurrent(char)
+  const deathAt = -(Math.max(0, getBodyDevBonus(char)) + 1)
+  if (cur <= deathAt) return { status: 'dead', deathAt }
+  if (cur <= 0)       return { status: 'unconscious', deathAt }
+  return { status: 'ok', deathAt }
 }
 
 /**

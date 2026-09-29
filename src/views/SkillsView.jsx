@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { useScrollRestore } from '../hooks/persist.js'
-import { rankBonus, getTotalStatBonus, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getNamedTalentBonus, getFatiguePenalty, getKnackBonus } from '../utils/calc.js'
+import { rankBonus, getTotalStatBonus, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getNamedTalentBonus, getConditionPenalty, getKnackBonus } from '../utils/calc.js'
 import skillsData from '../data/skills.json'
 import skillCosts from '../data/skill_costs.json'
 import talentsData from '../data/talents.json'
@@ -205,8 +205,8 @@ function SkillRow({
   const profBonus = isProf ? Math.min(totalRanks, 30) : 0
   const knackBonus   = getKnackBonus(c, resolvedSkillName)
   const total        = rb + combinedStatB + item + talent + autoBonus + profBonus + knackBonus
-  const fatiguePen   = getFatiguePenalty(c)
-  const displayTotal = total + fatiguePen
+  const condPen   = getConditionPenalty(c).total
+  const displayTotal = total + condPen
   const isSpec  = hasPlaceholder(skill.name)
   const editing     = !!editMode[rowKey]
   const noteOpen    = !!notesOpen[rowKey]
@@ -618,19 +618,19 @@ export default function SkillsView() {
     addOpen, setAddOpen, addCustomSkill, updateSkill, updateCustomSkill, removeCustomSkill,
   }
 
-  const fatiguePen = getFatiguePenalty(c)
+  const condPen = getConditionPenalty(c).total
 
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '16px 12px' }}>
-      {fatiguePen < 0 && (
+      {condPen < 0 && (
         <div style={{
           background: 'color-mix(in srgb, var(--warning) 12%, transparent)',
           border: '1px solid color-mix(in srgb, var(--warning) 40%, transparent)',
           borderRadius: 8, padding: '7px 12px', marginBottom: 10,
           display: 'flex', gap: 10, alignItems: 'center', fontSize: 11,
         }}>
-          <span style={{ fontWeight: 700, color: 'var(--warning)', flexShrink: 0 }}>Fatigue: {fatiguePen}</span>
-          <span style={{ color: 'var(--text3)' }}>All skill bonuses are reduced. Manage in Sheet tab.</span>
+          <span style={{ fontWeight: 700, color: 'var(--warning)', flexShrink: 0 }}>Condition: {condPen}</span>
+          <span style={{ color: 'var(--text3)' }}>Hit loss, injuries, stun and fatigue reduce all skill bonuses. Manage in the Sheet tab.</span>
         </div>
       )}
       <div style={{ display: 'flex', gap: 8, marginBottom: 12, flexWrap: 'wrap', alignItems: 'center' }}>
@@ -1018,9 +1018,9 @@ function SpellListRow({ list, char, updateSpellList, removeSpellList, sub, unloc
   const isProf = !!list.proficient
   const comp   = list.complementary || null   // { skill, type }
 
-  const fatiguePen = char ? getFatiguePenalty(char) : 0
-  const scrVal     = char ? getSpellCastingBonus(char, list.name) + fatiguePen : null
-  const masteryVal = char ? getSpellMasteryBonus(char, list.name) + fatiguePen : null
+  const condPen = char ? getConditionPenalty(char).total : 0
+  const scrVal     = char ? getSpellCastingBonus(char, list.name) + condPen : null
+  const masteryVal = char ? getSpellMasteryBonus(char, list.name) + condPen : null
 
   function upd(patch) { updateSpellList(list.name, { ...patch, category: sub }) }
 

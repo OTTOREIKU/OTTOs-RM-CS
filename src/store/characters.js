@@ -104,8 +104,10 @@ export function makeBlankCharacter(id) {
     // Notes
     notes: '',
 
-    // Injuries / conditions
+    // Injuries / conditions — [{ id, label, penalty (≤0), bleed (hits/rd) }]
     injuries: [],
+    // Stun rounds remaining at each severity: [−25, −50, −75]
+    stun: [0, 0, 0],
 
     // Fatigue tracking (CoreLaw §5.5)
     fatigue: {

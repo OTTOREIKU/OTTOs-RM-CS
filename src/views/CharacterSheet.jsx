@@ -4,7 +4,8 @@ import { ChevronDownIcon, ChevronUpIcon, XIcon, CheckIcon, DiamondIcon, EyeOpenI
 import FoundryExportModal from '../components/FoundryExportModal.jsx'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { STATS } from '../store/characters.js'
-import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getRRBreakdown, getBaseHits, getEndurance, getPowerPoints, getWeightAllowance, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getFatiguePenalty, getEnduranceConditionModifier, getKnackBonus } from '../utils/calc.js'
+import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getRRBreakdown, getBaseHits, getEndurance, getPowerPoints, getWeightAllowance, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getConditionPenalty, getConditionInitiativePenalty, getEnduranceConditionModifier, getKnackBonus } from '../utils/calc.js'
+import { HitsBox, InjuriesPanel } from '../components/HealthPanel.jsx'
 import { REALM_COLORS, SPELL_SECTION_COLORS, RR_COLORS } from '../store/theme.js'
 import races from '../data/races.json'
 import professions from '../data/professions.json'
@@ -894,8 +895,8 @@ export default function CharacterSheet() {
 
   const db           = getDefensiveBonus(c)
   const baseIni      = getInitiativeBonus(c)
-  const fatiguePen   = getFatiguePenalty(c)            // 0 or negative
-  const iniPenalty   = Math.trunc(fatiguePen / 10)     // -1 per -10 total penalty
+  const condPen      = getConditionPenalty(c).total   // hit loss + injuries + stun + fatigue, ≤ 0
+  const iniPenalty   = getConditionInitiativePenalty(c) // −1 per −10 condition penalty
   const ini          = baseIni + iniPenalty
   const realmStat = REALM_STAT[c.realm]
   const rrBonuses = getResistanceBonuses(c)
@@ -1060,7 +1061,7 @@ export default function CharacterSheet() {
             sub={talentB.db ? `Qu×3 + ${talentB.db} talent` : 'Qu×3'} showDetail={showDetail} />
           <StatCard label="Initiative" value={fmt(ini)} color={ini > 0 ? 'var(--accent)' : ini < 0 ? 'var(--danger)' : 'var(--text)'}
             sub={iniPenalty < 0
-              ? `Qu${talentB.initiative ? ` + ${talentB.initiative}T` : ''} ${iniPenalty} fatigue`
+              ? `Qu${talentB.initiative ? ` + ${talentB.initiative}T` : ''} ${iniPenalty} condition`
               : talentB.initiative ? `Qu + ${talentB.initiative} talent` : 'Qu bonus'}
             showDetail={showDetail} />
           <EditStat label="Endurance" field="endurance" char={c} onUpdate={updateCharacter} autoValue={autoEndurance}
@@ -1076,47 +1077,10 @@ export default function CharacterSheet() {
         </div>
       </Card>
 
-      {/* HP / PP combat panel */}
-      <Card title="Hit Points & Power Points">
-        <div style={{ display: 'grid', gridTemplateColumns: effPPMax != null ? '1fr 1fr' : '1fr', gap: 12 }}>
-          {/* HP */}
-          <div style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 10, padding: '14px 16px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
-              <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--danger)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Hit Points</div>
-              {talentB.bleed !== 0 && (
-                <span style={{ fontSize: 9, fontWeight: 700, padding: '1px 6px', borderRadius: 10,
-                  background: talentB.bleed < 0 ? 'var(--success)' : 'var(--danger)', color: '#fff' }}
-                  title={talentB.bleed < 0 ? 'Slow Bleeder: bleeding reduced' : 'Rapid Bleeder: bleeding increased'}>
-                  {talentB.bleed > 0 ? '+' : ''}{talentB.bleed}/rnd bleed
-                </span>
-              )}
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 10, color: 'var(--text3)', marginBottom: 3 }}>Current</div>
-                <input type="number"
-                  value={c.hits_current ?? ''}
-                  placeholder={String(effHitsMax ?? '—')}
-                  onChange={e => updateCharacter({ hits_current: e.target.value === '' ? null : Number(e.target.value) })}
-                  style={{ width: '100%', fontSize: 28, fontWeight: 800, textAlign: 'center', padding: '4px 2px',
-                    color: (c.hits_current != null && effHitsMax && c.hits_current / effHitsMax < 0.3) ? 'var(--danger)' : 'var(--text)',
-                    background: 'transparent', border: 'none', boxShadow: 'none' }} />
-              </div>
-              <div style={{ fontSize: 22, color: 'var(--text3)', fontWeight: 300, alignSelf: 'center', paddingTop: 16 }}>/</div>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 10, color: 'var(--text3)', marginBottom: 3 }}>Max</div>
-                <input type="number"
-                  value={c.hits_max ?? ''}
-                  placeholder={String(autoHitsMax ?? '—')}
-                  onChange={e => updateCharacter({ hits_max: e.target.value === '' ? null : Number(e.target.value) })}
-                  style={{ width: '100%', fontSize: 22, fontWeight: 700, textAlign: 'center', padding: '4px 2px',
-                    color: c.hits_max != null ? 'var(--text)' : 'var(--text3)',
-                    background: 'transparent', border: 'none', boxShadow: 'none' }} />
-                {c.hits_max == null && <div style={{ fontSize: 8, color: 'var(--accent)', textAlign: 'center', letterSpacing: '0.06em' }}>AUTO</div>}
-                {c.hits_max != null && <div style={{ fontSize: 8, color: 'var(--text3)', textAlign: 'center', marginTop: 1 }}>BD ranks × Co</div>}
-              </div>
-            </div>
-          </div>
+      {/* Hits / PP combat panel */}
+      <Card title="Hits, Injuries & Power Points">
+        <div style={{ display: 'grid', gridTemplateColumns: effPPMax != null ? 'repeat(auto-fit, minmax(240px, 1fr))' : '1fr', gap: 12 }}>
+          <HitsBox c={c} updateCharacter={updateCharacter} autoHitsMax={autoHitsMax} bleedTalent={talentB.bleed} />
 
           {/* PP — only shown if character has a realm */}
           {effPPMax != null && (
@@ -1149,6 +1113,7 @@ export default function CharacterSheet() {
             </div>
           )}
         </div>
+        <InjuriesPanel c={c} updateCharacter={updateCharacter} />
       </Card>
 
       {/* Statistics table */}
@@ -1252,7 +1217,7 @@ export default function CharacterSheet() {
         )}
         <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
           {weapons.map(w => {
-            const ob = getWeaponOB(c, w)
+            const ob = getWeaponOB(c, w) + condPen
             const skillRanks = (c.skills?.[w.skill_name]?.ranks) ?? 0
             const baseFumble = w.fumble ?? 3
             const effFumble = Math.max(1, baseFumble - Math.floor(skillRanks / 5))
