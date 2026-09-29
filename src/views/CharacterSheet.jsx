@@ -4,7 +4,7 @@ import { ChevronDownIcon, ChevronUpIcon, XIcon, CheckIcon, DiamondIcon, EyeOpenI
 import FoundryExportModal from '../components/FoundryExportModal.jsx'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { STATS } from '../store/characters.js'
-import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getRRBreakdown, getBaseHits, getEndurance, getPowerPoints, getWeightAllowance, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getConditionPenalty, getConditionInitiativePenalty, getEnduranceConditionModifier, getKnackBonus, rmuSkillName } from '../utils/calc.js'
+import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getRRBreakdown, getBaseHits, getEndurance, getPowerPoints, getWeightAllowance, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getConditionPenalty, getConditionInitiativePenalty, getEnduranceConditionModifier, getKnackBonus, rmuSkillName, getWeaponSkillRanks, getBMR } from '../utils/calc.js'
 import { HitsBox, InjuriesPanel } from '../components/HealthPanel.jsx'
 import { REALM_COLORS, SPELL_SECTION_COLORS, RR_COLORS } from '../store/theme.js'
 import races from '../data/races.json'
@@ -72,14 +72,15 @@ function computeSkillTotal(c, template, skillData, talentBonusMap) {
   return rb + catStatB + skillStatB + item + talent + autoBonus + profBonus + knackBonus
 }
 
-const BMR_BASE = 10  // meters per round for Medium size
+// Core Law Table 5-3. Moving while acting costs the penalty; moving instead of
+// acting costs the AP. Max load = heaviest load (% body weight) that allows the pace.
 const PACE_TABLE = [
-  { label: 'Creep',  mult: 0.25, man_pen: 30,  ap: 1 },
-  { label: 'Walk',   mult: 0.5,  man_pen: 0,   ap: 1 },
-  { label: 'Jog',    mult: 1,    man_pen: -10, ap: 2 },
-  { label: 'Run',    mult: 1.5,  man_pen: -20, ap: 3 },
-  { label: 'Sprint', mult: 2,    man_pen: -30, ap: 4 },
-  { label: 'Dash',   mult: 3,    man_pen: -50, ap: 'All' },
+  { label: 'Creep',  mult: 0.5, man_pen: 0,   ap: '—',      maxLoad: null },
+  { label: 'Walk',   mult: 1,   man_pen: -25, ap: 1,        maxLoad: 90 },
+  { label: 'Jog',    mult: 2,   man_pen: -50, ap: 2,        maxLoad: 60 },
+  { label: 'Run',    mult: 3,   man_pen: -75, ap: 3,        maxLoad: 45 },
+  { label: 'Sprint', mult: 4,   man_pen: null, ap: 4,       maxLoad: 30 },
+  { label: 'Dash',   mult: 5,   man_pen: null, ap: '4 + instant', maxLoad: 15 },
 ]
 const STAT_ABBR = {
   Agility:'Ag', Constitution:'Co', Empathy:'Em', Intuition:'In',
@@ -992,7 +993,7 @@ export default function CharacterSheet() {
     }
   }, { man: 0, rang: 0, perc: 0, wt: 0 })
 
-  const bmr = BMR_BASE + talentB.stride
+  const bmr = getBMR(c)   // feet per round
   function fmt(n) { return n >= 0 ? `+${n}` : String(n) }
 
   return (
@@ -1066,8 +1067,8 @@ export default function CharacterSheet() {
         </button>
       }>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(110px,1fr))', gap: 8 }}>
-          <StatCard label="Def Bonus" value={fmt(db)} color={db > 0 ? 'var(--success)' : 'var(--text)'}
-            sub={talentB.db ? `Qu×3 + ${talentB.db} talent` : 'Qu×3'} showDetail={showDetail} />
+          <StatCard label="Def Bonus" value={fmt(totalDB)} color={totalDB > 0 ? 'var(--success)' : 'var(--text)'}
+            sub={['Qu×3', talentB.db && `${talentB.db} talent`, (shieldDB + (shield.db ?? 0)) && 'shield', armorPartDB && 'armor'].filter(Boolean).join(' + ')} showDetail={showDetail} />
           <StatCard label="Initiative" value={fmt(ini)} color={ini > 0 ? 'var(--accent)' : ini < 0 ? 'var(--danger)' : 'var(--text)'}
             sub={iniPenalty < 0
               ? `Qu${talentB.initiative ? ` + ${talentB.initiative}T` : ''} ${iniPenalty} condition`
@@ -1189,7 +1190,7 @@ export default function CharacterSheet() {
         <FatigueCard
           c={c}
           updateCharacter={updateCharacter}
-          autoEndurance={autoEndurance}
+          autoEndurance={c.endurance ?? autoEndurance}
           armorManPenalty={armorTotals.man}
         />
       </Card>
@@ -1227,7 +1228,7 @@ export default function CharacterSheet() {
         <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
           {weapons.map(w => {
             const ob = getWeaponOB(c, w) + condPen
-            const skillRanks = (c.skills?.[w.skill_name]?.ranks) ?? 0
+            const skillRanks = getWeaponSkillRanks(c, w)
             const baseFumble = w.fumble ?? 3
             const effFumble = Math.max(1, baseFumble - Math.floor(skillRanks / 5))
             const fumbleReduced = effFumble < baseFumble
@@ -1514,7 +1515,7 @@ export default function CharacterSheet() {
         {(
           <>
             <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(110px,1fr))', gap:8, marginBottom:12 }}>
-              <StatCard label="BMR (m/rnd)" value={bmr} color="var(--accent)" sub={talentB.stride ? `${talentB.stride > 0 ? '+' : ''}${talentB.stride} stride talent` : undefined} />
+              <StatCard label="BMR (ft/rnd)" value={bmr} color="var(--accent)" sub={`20' + ½ Qu${talentB.stride ? ` ${talentB.stride > 0 ? '+' : ''}${talentB.stride} stride` : ''}`} />
               <StatCard label="Armor Man." value={armorTotals.man || '—'} color={armorTotals.man < 0 ? 'var(--danger)' : 'var(--text3)'} />
               <StatCard label="Armor Rang." value={armorTotals.rang || '—'} color={armorTotals.rang < 0 ? 'var(--danger)' : 'var(--text3)'} />
               <StatCard label="Armor Perc." value={armorTotals.perc || '—'} color={armorTotals.perc < 0 ? 'var(--danger)' : 'var(--text3)'} />
@@ -1523,7 +1524,7 @@ export default function CharacterSheet() {
               <table style={{ width:'100%', borderCollapse:'collapse', fontSize:11 }}>
                 <thead>
                   <tr style={{ background:'var(--surface2)' }}>
-                    {['Pace','Metres/Rnd','Man. Pen','AP Cost'].map(h => (
+                    {['Pace','Ft/Rnd','Ft/Phase','Penalty','or AP','Max Load'].map(h => (
                       <th key={h} style={{ padding:'5px 8px', fontSize:10, fontWeight:600, color:'var(--text3)', textAlign:'center', textTransform:'uppercase', letterSpacing:'0.07em', borderBottom:'1px solid var(--border)' }}>{h}</th>
                     ))}
                   </tr>
@@ -1533,10 +1534,12 @@ export default function CharacterSheet() {
                     <tr key={p.label} style={{ borderBottom:'1px solid var(--border)', background: i%2===0 ? 'transparent' : 'var(--surface2)' }}>
                       <td style={{ padding:'4px 8px', fontWeight:600, fontSize:12 }}>{p.label}</td>
                       <td style={{ padding:'4px 8px', textAlign:'center', fontSize:12, color:'var(--accent)', fontWeight:700 }}>{Math.round(bmr * p.mult)}</td>
-                      <td style={{ padding:'4px 8px', textAlign:'center', fontSize:12, color: p.man_pen < 0 ? 'var(--danger)' : p.man_pen > 0 ? 'var(--success)' : 'var(--text3)', fontWeight: p.man_pen !== 0 ? 600 : 400 }}>
-                        {p.man_pen > 0 ? `+${p.man_pen}` : p.man_pen === 0 ? '—' : p.man_pen}
+                      <td style={{ padding:'4px 8px', textAlign:'center', fontSize:12, color:'var(--text2)' }}>{Math.round(bmr * p.mult / 4)}</td>
+                      <td style={{ padding:'4px 8px', textAlign:'center', fontSize:12, color: p.man_pen < 0 ? 'var(--danger)' : 'var(--text3)', fontWeight: p.man_pen ? 600 : 400 }}>
+                        {p.man_pen == null ? 'n/a' : p.man_pen === 0 ? '—' : p.man_pen}
                       </td>
                       <td style={{ padding:'4px 8px', textAlign:'center', fontSize:12, color:'var(--text2)' }}>{p.ap}</td>
+                      <td style={{ padding:'4px 8px', textAlign:'center', fontSize:12, color:'var(--text3)' }}>{p.maxLoad == null ? '—' : `≤${p.maxLoad}%`}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -1573,13 +1576,14 @@ function StarredSkillsPanel({ c }) {
     return map
   }, [c.talents])
 
+  const condPen = getConditionPenalty(c).total
   const starred = useMemo(() => {
     const result = []
     for (const [skillName, skillData] of Object.entries(c.skills || {})) {
       if (!skillData.starred) continue
       const template = skillsDataMap[skillName]
       if (!template) continue
-      const total = computeSkillTotal(c, template, skillData, talentBonusMap)
+      const total = computeSkillTotal(c, template, skillData, talentBonusMap) + condPen
       const ranks = (skillData.ranks ?? 0) + (skillData.culture_ranks ?? 0)
       result.push({ name: displaySkillName(skillName, skillData.label), total, ranks, notes: skillData.notes })
     }
@@ -1587,12 +1591,12 @@ function StarredSkillsPanel({ c }) {
       if (!cs.starred) continue
       const template = skillsDataMap[cs.template_name]
       const name = displaySkillName(cs.template_name, cs.label)
-      const total = computeSkillTotal(c, template, cs, talentBonusMap)
+      const total = computeSkillTotal(c, template, cs, talentBonusMap) + condPen
       const ranks = (cs.ranks ?? 0) + (cs.culture_ranks ?? 0)
       result.push({ name, total, ranks, notes: cs.notes })
     }
     return result.sort((a, b) => a.name.localeCompare(b.name))
-  }, [c.skills, c.custom_skills, c.talents, c.stats, c.realm, talentBonusMap])
+  }, [c.skills, c.custom_skills, c.talents, c.stats, c.realm, talentBonusMap, condPen])
 
   if (!starred.length) return null
 
@@ -1664,8 +1668,9 @@ function SpellListsPanel({ c }) {
               </div>
               {subLists.map(([name, data]) => {
                 const ranks = typeof data === 'number' ? data : (data?.ranks ?? 0)
-                const scr     = getSpellCastingBonus(c, name)
-                const mastery = getSpellMasteryBonus(c, name)
+                const condPen = getConditionPenalty(c).total
+                const scr     = getSpellCastingBonus(c, name) + condPen
+                const mastery = getSpellMasteryBonus(c, name) + condPen
                 return (
                   <div key={name} style={{ display: 'grid', gridTemplateColumns: '1fr 36px 54px 60px',
                     gap: 3, padding: '4px 6px', fontSize: 12, alignItems: 'center',

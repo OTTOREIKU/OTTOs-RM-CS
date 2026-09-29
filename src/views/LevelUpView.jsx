@@ -44,7 +44,7 @@ function getCTGroup(skillName) {
 
 function getSkillCostsForChar(skill, profession, char) {
   if (skill.category === 'Combat Training') {
-    const group = getCTGroup(skill.name)
+    const group = getCTGroup(skill.ctName || skill.name)
     if (group) {
       const tier    = char?.combat_training_groups?.[group] ?? 1
       const costStr = skillCosts[`Combat Training ${tier}`]?.[profession]
@@ -53,6 +53,56 @@ function getSkillCostsForChar(skill, profession, char) {
   }
   const costStr = skillCosts[skill.category]?.[profession] || skill.dev_cost
   return parseSkillCosts(costStr)
+}
+
+// Custom skills store only template_name + label — cost comes from the template.
+function customSkillDef(cs) {
+  const tpl = skillsData.find(s => s.name === cs.template_name) || {}
+  const base = (cs.template_name || '').replace(/:?\s*<[^>]+>/, '')
+  return {
+    name:        cs.id,                        // key for skillBuys
+    displayName: cs.label ? `${base}: ${cs.label}` : cs.template_name,
+    category:    tpl.category,
+    dev_cost:    tpl.dev_cost,
+    ctName:      cs.template_name,
+    _isCustom:   true,
+    _curRanks:   cs.ranks || 0,
+  }
+}
+
+// Stat gain die by current temporary value (Core Law Table 2-5b; RMU stat-gain.js).
+const STAT_GAIN_DICE = [
+  { min: 1,  max: 6,  sides: 3,  minus: 1, label: 'd3−1' },
+  { min: 7,  max: 8,  sides: 3,  minus: 0, label: 'd3' },
+  { min: 9,  max: 18, sides: 6,  minus: 0, label: 'd6' },
+  { min: 19, max: 81, sides: 10, minus: 0, label: 'd10' },
+  { min: 82, max: 90, sides: 6,  minus: 0, label: 'd6' },
+  { min: 91, max: 92, sides: 3,  minus: 0, label: 'd3' },
+  { min: 93, max: 99, sides: 3,  minus: 1, label: 'd3−1' },
+]
+function statGainDie(temp) {
+  return STAT_GAIN_DICE.find(d => temp >= d.min && temp <= d.max) || null   // null = 100 or invalid
+}
+const FREE_STAT_ROLLS = 2
+const EXTRA_STAT_ROLL_DP = 4
+const statRollDP = n => Math.max(0, n - FREE_STAT_ROLLS) * EXTRA_STAT_ROLL_DP
+
+// Per-stat totals from this level's rolls: { [stat]: gain }.
+function statRollGains(rolls) {
+  const out = {}
+  for (const r of rolls || []) if (r.stat && r.result != null) out[r.stat] = (out[r.stat] || 0) + r.result
+  return out
+}
+
+// List type for a list bought for the first time here: the profession's own base
+// lists are Base; other professions' base lists and Evil lists are Restricted.
+function defaultListCategory(list, profession) {
+  const sec = (list?.section || '').toLowerCase()
+  if (sec.startsWith('open'))   return 'Open'
+  if (sec.startsWith('closed')) return 'Closed'
+  if (sec.includes('evil'))     return 'Restricted'
+  if (sec.includes('base'))     return profession && sec.startsWith(profession.toLowerCase()) ? 'Base' : 'Restricted'
+  return 'Base'
 }
 
 // Net DP change when moving from `from` ranks to `to` ranks purchased this level.
@@ -133,10 +183,9 @@ function initLevelUp(char) {
   const dp = 60 + bonusAvailable  // CoreLaw p.75+85: 60 base + racial bonus pool (≤25/level)
   return {
     step: 0,
-    statGains:        Object.fromEntries(STATS.map(s => [s, 0])),
-    potGains:         Object.fromEntries(STATS.map(s => [s, 0])),
-    statPoints:       10,  // RMU: 10 temp stat points per level
-    potPoints:        1,   // 1 potential point per level
+    // Core Law 2.5: two stat gain rolls per level (same or different stats),
+    // extra rolls 4 DP each. [{ stat, result }] — result null until rolled.
+    statRolls:        [],
     dpTotal:          dp,
     dpSpent:          0,
     bonusDP:          bonusAvailable,   // racial bonus DP included this level
@@ -149,19 +198,20 @@ function initLevelUp(char) {
 
 function reducer(state, action) {
   switch (action.type) {
-    case 'STAT_GAIN': {
-      const cur = state.statGains[action.stat] || 0
-      const delta = action.value - cur
-      const newPoints = state.statPoints - delta
-      if (newPoints < 0 || action.value < 0) return state
-      return { ...state, statGains: { ...state.statGains, [action.stat]: action.value }, statPoints: newPoints }
+    case 'ADD_STAT_ROLL': {
+      const rolls = state.statRolls || []
+      const dpNew = state.dpSpent + statRollDP(rolls.length + 1) - statRollDP(rolls.length)
+      if (dpNew > state.dpTotal) return state
+      return { ...state, statRolls: [...rolls, { stat: action.stat, result: null }], dpSpent: dpNew }
     }
-    case 'POT_GAIN': {
-      const cur = state.potGains[action.stat] || 0
-      const delta = action.value - cur
-      const newPoints = state.potPoints - delta
-      if (newPoints < 0 || action.value < 0) return state
-      return { ...state, potGains: { ...state.potGains, [action.stat]: action.value }, potPoints: newPoints }
+    case 'SET_STAT_ROLL': {
+      const rolls = (state.statRolls || []).map((r, i) => i === action.index ? { ...r, ...action.patch } : r)
+      return { ...state, statRolls: rolls }
+    }
+    case 'REMOVE_STAT_ROLL': {
+      const rolls = state.statRolls || []
+      const dpNew = state.dpSpent - (statRollDP(rolls.length) - statRollDP(rolls.length - 1))
+      return { ...state, statRolls: rolls.filter((_, i) => i !== action.index), dpSpent: dpNew }
     }
     case 'SKILL_BUY': {
       const oldRanks = state.skillBuys[action.name] || 0
@@ -203,7 +253,9 @@ export default function LevelUpView() {
 
   const [lu, dispatch] = useReducer(reducer, null, () => {
     if (!c) return initLevelUp({ profession: 'Fighter' })
-    return loadCachedLU(c) ?? initLevelUp(c)
+    const cached = loadCachedLU(c)
+    if (cached && !cached.statRolls) return { ...cached, statRolls: [] }   // cache saved before stat rolls existed
+    return cached ?? initLevelUp(c)
   })
   const [skillSearch, setSkillSearch] = useState('')
   const [spellSearch, setSpellSearch] = useState('')
@@ -225,8 +277,7 @@ export default function LevelUpView() {
   const dpColor = dpPct > 0.5 ? 'var(--success)' : dpPct > 0.2 ? 'var(--warning)' : 'var(--danger)'
   const step    = lu.step
   const hasAllocations = lu.dpSpent > 0 || Object.keys(lu.skillBuys).length > 0 ||
-    Object.keys(lu.spellBuys).length > 0 || Object.values(lu.statGains).some(v => v > 0) ||
-    Object.values(lu.potGains).some(v => v > 0)
+    Object.keys(lu.spellBuys).length > 0 || (lu.statRolls || []).length > 0
 
   function confirmBonusEdit() {
     dispatch({ type: 'SET_BONUS_DP', value: bonusInput })
@@ -240,15 +291,11 @@ export default function LevelUpView() {
     const newPool   = Math.max(0, (lu.poolRemaining ?? 0) - bonusUsed)
     updateCharacter({ level: (c.level || 1) + 1, race_dp_pool_remaining: newPool })
 
-    // 2. Apply stat gains
-    STATS.forEach(stat => {
-      const sg = lu.statGains[stat] || 0
-      const pg = lu.potGains[stat] || 0
-      if (sg || pg) {
-        const cur = c.stats[stat] || { temp: 50, potential: 50, racial: 0, special: 0 }
-        updateStat(stat, 'temp',      Math.min(100, (cur.temp || 0) + sg))
-        updateStat(stat, 'potential', Math.min(100, (cur.potential || 0) + pg))
-      }
+    // 2. Apply stat gains — rolled gains, never above potential (potential doesn't change)
+    Object.entries(statRollGains(lu.statRolls)).forEach(([stat, gain]) => {
+      const cur = c.stats[stat] || { temp: 50, potential: 50, racial: 0, special: 0 }
+      const cap = Math.min(100, cur.potential ?? 100)
+      updateStat(stat, 'temp', Math.min(cap, (cur.temp || 0) + gain))
     })
 
     // 3. Apply skill rank purchases
@@ -264,8 +311,11 @@ export default function LevelUpView() {
 
     // 4. Apply spell list rank purchases
     Object.entries(lu.spellBuys).forEach(([name, newRanks]) => {
-      const curRanks = c.spell_lists?.[name]?.ranks || 0
-      updateSpellList(name, curRanks + newRanks)
+      const existing = c.spell_lists?.[name]
+      const curRanks = existing?.ranks || 0
+      updateSpellList(name, existing?.category
+        ? curRanks + newRanks
+        : { ranks: curRanks + newRanks, category: defaultListCategory(spellLists[name], c.profession) })
     })
 
     clearCachedLU(c)
@@ -363,65 +413,7 @@ export default function LevelUpView() {
 
       {/* ── Step 0: Stats ── */}
       {step === 0 && (
-        <div>
-          <InfoBox>
-            You receive <strong>10 temp stat points</strong> and <strong>1 potential point</strong> to distribute this level.
-            Temp stats cap at 100; Potential stats also cap at 100.
-          </InfoBox>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-            <span style={{ fontSize: 12, color: 'var(--text2)' }}>Temp points remaining:</span>
-            <PointsBadge n={lu.statPoints} />
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-            <span style={{ fontSize: 12, color: 'var(--text2)' }}>Potential points remaining:</span>
-            <PointsBadge n={lu.potPoints} color="var(--purple)" />
-          </div>
-
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-            <thead>
-              <tr>
-                {['Stat','Current','Temp +','New Temp','Pot +','New Pot','New Bonus'].map((h, i) => (
-                  <th key={i} style={{ fontSize: 10, fontWeight: 600, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.07em', padding: '6px', textAlign: i > 0 ? 'center' : 'left', borderBottom: '1px solid var(--border)' }}>{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {STATS.map(stat => {
-                const s      = c.stats[stat] || { temp: 50, potential: 50, racial: 0, special: 0 }
-                const sg     = lu.statGains[stat] || 0
-                const pg     = lu.potGains[stat] || 0
-                const newT   = Math.min(100, (s.temp || 0) + sg)
-                const newP   = Math.min(100, (s.potential || 0) + pg)
-                const curB   = getTotalStatBonus(s)
-                const newB   = getTotalStatBonus({ ...s, temp: newT })
-                const isR    = stat === REALM_STAT[c.realm]
-                return (
-                  <tr key={stat} style={{ borderBottom: '1px solid var(--border)' }}>
-                    <td style={{ padding: '5px 6px', fontWeight: isR ? 700 : 400, color: isR ? 'var(--accent)' : 'var(--text)', fontSize: 13 }}>{stat}</td>
-                    <td style={{ padding: '5px 6px', textAlign: 'center', color: 'var(--text2)', fontSize: 13 }}>{s.temp}</td>
-                    <td style={{ padding: '3px 4px' }}>
-                      <input type="number" min={0} max={lu.statPoints + sg} value={sg || ''}
-                        onChange={e => dispatch({ type: 'STAT_GAIN', stat, value: Number(e.target.value) || 0 })}
-                        placeholder="0" style={{ width: 48, padding: '3px 2px' }} />
-                    </td>
-                    <td style={{ padding: '5px 6px', textAlign: 'center', fontWeight: 600, color: sg > 0 ? 'var(--success)' : 'var(--text)', fontSize: 13 }}>{newT}</td>
-                    <td style={{ padding: '3px 4px' }}>
-                      <input type="number" min={0} max={lu.potPoints + pg} value={pg || ''}
-                        onChange={e => dispatch({ type: 'POT_GAIN', stat, value: Number(e.target.value) || 0 })}
-                        placeholder="0" style={{ width: 48, padding: '3px 2px' }} />
-                    </td>
-                    <td style={{ padding: '5px 6px', textAlign: 'center', fontWeight: 600, color: pg > 0 ? 'var(--purple)' : 'var(--text)', fontSize: 13 }}>{newP}</td>
-                    <td style={{ padding: '5px 6px', textAlign: 'center', fontWeight: 700, fontSize: 13,
-                      color: newB > curB ? 'var(--success)' : newB < curB ? 'var(--danger)' : 'var(--text2)' }}>
-                      {newB >= 0 ? `+${newB}` : newB}
-                      {newB !== curB && <span style={{ fontSize: 10, color: 'var(--success)' }}> ({newB > curB ? '+' : ''}{newB - curB})</span>}
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
+        <StatRollStep c={c} lu={lu} dispatch={dispatch} dpLeft={dpLeft} />
       )}
 
       {/* ── Step 1: Skills & Spells ── */}
@@ -449,6 +441,95 @@ export default function LevelUpView() {
   )
 }
 
+// ── Stat step: stat gain rolls (Core Law 2.5) ─────────────────────────────────
+function StatRollStep({ c, lu, dispatch, dpLeft }) {
+  const [pick, setPick] = useState(REALM_STAT[c.realm] || STATS[0])
+  const rolls = lu.statRolls || []
+  const nextCost = rolls.length >= FREE_STAT_ROLLS ? EXTRA_STAT_ROLL_DP : 0
+
+  // Temp value before each roll — a second roll on the same stat uses the raised value.
+  const running = {}
+  const rows = rolls.map((r, i) => {
+    const s    = c.stats[r.stat] || { temp: 50, potential: 50 }
+    const temp = running[r.stat] ?? (s.temp || 0)
+    const cap  = Math.min(100, s.potential ?? 100)
+    const die  = statGainDie(temp)
+    const gain = r.result == null ? 0 : Math.min(r.result, Math.max(0, cap - temp))
+    running[r.stat] = temp + gain
+    // An earlier roll on the same stat must land first — it decides this roll's die.
+    const waiting = rolls.slice(0, i).some(p => p.stat === r.stat && p.result == null)
+    return { ...r, i, temp, cap, die, gain, waiting }
+  })
+
+  function roll(row) {
+    if (!row.die || row.waiting) return
+    const v = Math.max(0, Math.floor(Math.random() * row.die.sides) + 1 - row.die.minus)
+    dispatch({ type: 'SET_STAT_ROLL', index: row.i, patch: { result: v } })
+  }
+
+  return (
+    <div>
+      <InfoBox>
+        Pick <strong>two stats</strong> (or one stat twice) for a stat gain roll. The die depends on the stat's current
+        value (d10 for 19–81); the result is added but <strong>can't go above potential</strong>. Extra rolls cost
+        <strong> {EXTRA_STAT_ROLL_DP} DP</strong> each. Roll here, or type in your own roll.
+      </InfoBox>
+
+      <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 12, flexWrap: 'wrap' }}>
+        <select value={pick} onChange={e => setPick(e.target.value)} style={{ flex: 1, minWidth: 140 }}>
+          {STATS.map(st => {
+            const s = c.stats[st] || {}
+            const atCap = (s.temp || 0) >= Math.min(100, s.potential ?? 100)
+            return <option key={st} value={st}>{st} ({s.temp}/{s.potential}){atCap ? ' — at potential' : ''}</option>
+          })}
+        </select>
+        <button disabled={nextCost > dpLeft}
+          onClick={() => dispatch({ type: 'ADD_STAT_ROLL', stat: pick })}
+          style={{ ...navBtn(true), opacity: nextCost > dpLeft ? 0.5 : 1 }}>
+          Add roll{nextCost ? ` (−${nextCost} DP)` : ' (free)'}
+        </button>
+      </div>
+
+      {rows.length === 0 && (
+        <div style={{ fontSize: 12, color: 'var(--text3)', textAlign: 'center', padding: 12 }}>No stat gain rolls yet.</div>
+      )}
+      {rows.map(row => {
+        const s = c.stats[row.stat] || {}
+        const newT = row.temp + row.gain
+        const curB = getTotalStatBonus({ ...s, temp: row.temp })
+        const newB = getTotalStatBonus({ ...s, temp: newT })
+        return (
+          <div key={row.i} style={{ display: 'grid', gridTemplateColumns: '1fr 56px 64px 1fr 24px', gap: 8, alignItems: 'center',
+            padding: '8px 10px', marginBottom: 6, background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 8 }}>
+            <div style={{ fontSize: 13 }}>
+              <div style={{ fontWeight: 700 }}>{row.stat}</div>
+              <div style={{ fontSize: 10, color: 'var(--text3)' }}>
+                {row.i < FREE_STAT_ROLLS ? 'free roll' : `${EXTRA_STAT_ROLL_DP} DP`} · {row.temp}/{row.cap}
+              </div>
+            </div>
+            <button disabled={!row.die || row.waiting} onClick={() => roll(row)} title={row.waiting ? 'Roll the earlier one first' : 'Roll the die'}
+              style={{ ...pmBtn(!!row.die && !row.waiting), width: 'auto', padding: '4px 6px', fontSize: 11 }}>
+              {row.die ? row.die.label : 'max'}
+            </button>
+            <input type="number" min={0} value={row.result ?? ''} placeholder="roll"
+              onChange={e => dispatch({ type: 'SET_STAT_ROLL', index: row.i, patch: { result: e.target.value === '' ? null : Math.max(0, Number(e.target.value) || 0) } })}
+              style={{ width: '100%', textAlign: 'center', padding: '3px 2px' }} />
+            <div style={{ fontSize: 12, color: row.gain > 0 ? 'var(--success)' : 'var(--text3)' }}>
+              {row.result == null ? 'not rolled' : <>
+                {row.temp} → <strong>{newT}</strong>
+                {row.result > row.gain && <span style={{ color: 'var(--text3)' }}> (capped)</span>}
+                {newB !== curB && <span> · bonus {newB >= 0 ? '+' : ''}{newB}</span>}
+              </>}
+            </div>
+            <button onClick={() => dispatch({ type: 'REMOVE_STAT_ROLL', index: row.i })} title="Remove roll"
+              style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text3)', fontSize: 14 }}>×</button>
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
 // ── Skill step ────────────────────────────────────────────────────────────────
 function SkillStep({ c, lu, dispatch, skillSearch, setSkillSearch, dpLeft,
                      spellSearch, setSpellSearch, spellRealm, setSpellRealm }) {
@@ -458,23 +539,19 @@ function SkillStep({ c, lu, dispatch, skillSearch, setSkillSearch, dpLeft,
     for (const sk of skillsData) {
       const cat = sk.category || 'Other'
       if (!map[cat]) map[cat] = []
-      map[cat].push(sk)
+      // Slot skills show the character's label ("Spell Trickery: Dark Summons")
+      const label = c.skills?.[sk.name]?.label
+      map[cat].push(label && /<[^>]+>/.test(sk.name) ? { ...sk, displayName: sk.name.replace(/<[^>]+>/, label) } : sk)
     }
     // Include custom skills (placeholder skills the user has personalised or added)
     for (const cs of (c.custom_skills || [])) {
-      const cat = cs.category || 'Other'
+      const def = customSkillDef(cs)
+      const cat = def.category || 'Other'
       if (!map[cat]) map[cat] = []
-      map[cat].push({
-        name:        cs.id,                         // key for skillBuys
-        displayName: cs.label || cs.template_name,  // human-readable label
-        category:    cs.category,
-        dev_cost:    cs.dev_cost,
-        _isCustom:   true,
-        _curRanks:   cs.ranks || 0,
-      })
+      map[cat].push(def)
     }
     return map
-  }, [c.custom_skills])
+  }, [c.custom_skills, c.skills])
 
   const [expanded, setExpanded] = useState({})
 
@@ -602,7 +679,7 @@ function SpellListsSection({ c, lu, dispatch, dpLeft, spellSearch, setSpellSearc
 
       {filtered.map(([name, list], idx) => {
         const rc       = REALM_COLOR[list.realm] || 'var(--accent)'
-        const costs    = getSpellCostForChar(name, list, c.profession, c.spell_lists?.[name]?.category)   // { first, second }
+        const costs    = getSpellCostForChar(name, list, c.profession, c.spell_lists?.[name]?.category || defaultListCategory(list, c.profession))   // { first, second }
         const curRanks = c.spell_lists?.[name]?.ranks || 0
         const buying   = lu.spellBuys[name] || 0
         const costForNext = buying === 0 ? costs.first : costs.second
@@ -648,7 +725,9 @@ function SpellListsSection({ c, lu, dispatch, dpLeft, spellSearch, setSpellSearc
 
 // ── Review step ───────────────────────────────────────────────────────────────
 function ReviewStep({ c, lu, onConfirm }) {
-  const statChanges  = STATS.filter(s => (lu.statGains[s] || 0) > 0 || (lu.potGains[s] || 0) > 0)
+  const gains        = statRollGains(lu.statRolls)
+  const statChanges  = STATS.filter(s => gains[s] > 0)
+  const unrolled     = (lu.statRolls || []).filter(r => r.result == null).length
   const skillChanges = Object.entries(lu.skillBuys).filter(([, r]) => r > 0)
   const spellChanges = Object.entries(lu.spellBuys).filter(([, r]) => r > 0)
   const dpLeft = lu.dpTotal - lu.dpSpent
@@ -668,12 +747,13 @@ function ReviewStep({ c, lu, onConfirm }) {
       {statChanges.length > 0 && (
         <Section title="Stat Changes">
           {statChanges.map(stat => {
-            const s  = c.stats[stat] || {}
-            const sg = lu.statGains[stat] || 0
-            const pg = lu.potGains[stat] || 0
+            const s   = c.stats[stat] || {}
+            const cap = Math.min(100, s.potential ?? 100)
+            const raw = (s.temp || 0) + gains[stat]
+            const nt  = Math.min(cap, raw)
             return (
               <Row key={stat} label={stat}
-                value={[sg > 0 && `Temp +${sg} (${s.temp} → ${Math.min(100, (s.temp||0)+sg)})`, pg > 0 && `Pot +${pg}`].filter(Boolean).join(' · ')}
+                value={`+${nt - (s.temp || 0)} (${s.temp} → ${nt})${raw > cap ? ' · capped at potential' : ''}`}
                 color="var(--success)" />
             )
           })}
@@ -684,8 +764,9 @@ function ReviewStep({ c, lu, onConfirm }) {
         <Section title={`Skill Ranks (${skillChanges.length} skills)`}>
           {skillChanges.map(([name, ranks]) => {
             const cs          = c.custom_skills?.find(cs => cs.id === name)
-            const displayName = cs ? (cs.label || cs.template_name) : name
-            const skillDef    = cs ? { category: cs.category, dev_cost: cs.dev_cost } : (skillsData.find(s => s.name === name) || {})
+            const skillDef    = cs ? customSkillDef(cs) : (skillsData.find(s => s.name === name) || {})
+            const slotLabel   = c.skills?.[name]?.label
+            const displayName = cs ? skillDef.displayName : (slotLabel && /<[^>]+>/.test(name) ? name.replace(/<[^>]+>/, slotLabel) : name)
             const costs       = getSkillCostsForChar(skillDef, c.profession, c)
             const cur         = cs ? (cs.ranks || 0) : (c.skills?.[name]?.ranks || 0)
             return <Row key={name} label={displayName} value={`+${ranks} rank${ranks > 1 ? 's' : ''} (${cur} → ${cur + ranks}) · −${rankCostDelta(0, ranks, costs)} DP`} color="var(--accent)" />
@@ -697,7 +778,7 @@ function ReviewStep({ c, lu, onConfirm }) {
         <Section title={`Spell List Ranks (${spellChanges.length} lists)`}>
           {spellChanges.map(([name, ranks]) => {
             const list  = spellLists[name]
-            const costs = getSpellCostForChar(name, list || {}, c.profession, c.spell_lists?.[name]?.category)
+            const costs = getSpellCostForChar(name, list || {}, c.profession, c.spell_lists?.[name]?.category || defaultListCategory(list, c.profession))
             const cur   = c.spell_lists?.[name]?.ranks || 0
             const dpUsed = rankCostDelta(0, ranks, costs)
             return <Row key={name} label={name} value={`+${ranks} rank${ranks > 1 ? 's' : ''} (${cur} → ${cur + ranks}) · −${dpUsed} DP`} color="var(--purple)" />
@@ -705,8 +786,12 @@ function ReviewStep({ c, lu, onConfirm }) {
         </Section>
       )}
 
+      {unrolled > 0 && (
+        <InfoBox>{unrolled} stat gain roll{unrolled > 1 ? 's are' : ' is'} not rolled yet — go back to Stats.</InfoBox>
+      )}
+
       {statChanges.length === 0 && skillChanges.length === 0 && spellChanges.length === 0 && (
-        <InfoBox>No changes recorded yet. Go back and allocate your stat points and DP.</InfoBox>
+        <InfoBox>No changes recorded yet. Go back and roll your stat gains and spend your DP.</InfoBox>
       )}
     </div>
   )

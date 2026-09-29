@@ -184,24 +184,35 @@ export function rankBonus(ranks) {
 //
 // Untrained weapons inherit the -25 rank bonus penalty automatically (no
 // special case here — rankBonus(0) returns -25 for category-stat skills).
-export function getWeaponOB(char, weapon) {
-  const skillName = weapon.skill_name || ''
+/**
+ * The character's skill entry behind a weapon: by key, else by label for
+ * placeholder slots like "Melee: <weapon 1>" labelled "Blade".
+ * Returns { skillKey, charSkillData } (both null when not found).
+ */
+export function resolveWeaponSkill(char, weapon) {
+  const skillName = weapon?.skill_name || ''
+  if (char.skills?.[skillName]) return { skillKey: skillName, charSkillData: char.skills[skillName] }
+  const found = Object.entries(char.skills || {}).find(
+    ([key, data]) => data?.label === skillName && key !== skillName
+  )
+  return found ? { skillKey: found[0], charSkillData: found[1] } : { skillKey: null, charSkillData: null }
+}
 
-  // Find the character's skill entry, falling back to label match for
-  // placeholder skills like "Melee: <weapon 1>" with label "Blade".
-  let skillKey = null
-  let charSkillData = char.skills?.[skillName] || null
-  if (charSkillData) {
-    skillKey = skillName
-  } else {
-    const found = Object.entries(char.skills || {}).find(
-      ([key, data]) => data?.label === skillName && key !== skillName
-    )
-    if (found) {
-      skillKey = found[0]
-      charSkillData = found[1]
-    }
-  }
+/** Total ranks (incl. culture) in the weapon's skill — used for fumble reduction. */
+export function getWeaponSkillRanks(char, weapon) {
+  const { charSkillData } = resolveWeaponSkill(char, weapon)
+  return (charSkillData?.ranks ?? 0) + (charSkillData?.culture_ranks ?? 0)
+}
+
+/** Two-handed melee weapons get +10 OB (Core Law Table 9-5). */
+export function isTwoHandedMelee(weapon) {
+  if ((weapon?.ob_type || 'melee') !== 'melee') return false
+  return weapon?.handed === '2H' || /\(2H\)|two[- ]hand/i.test(weapon?.name || '')
+}
+
+export function getWeaponOB(char, weapon) {
+  const { skillKey, charSkillData } = resolveWeaponSkill(char, weapon)
+  const twoHanded = isTwoHandedMelee(weapon) ? 10 : 0
 
   // Find the template (for category + skill.stat lookup)
   const template = skillKey ? findSkillTemplate(skillKey) : null
@@ -211,7 +222,7 @@ export function getWeaponOB(char, weapon) {
   if (!template) {
     const charSkill = charSkillData || {}
     const ranks = (charSkill.ranks ?? 0) + (charSkill.culture_ranks ?? 0)
-    return rankBonus(ranks) + (weapon.item_bonus ?? 0)
+    return rankBonus(ranks) + (weapon.item_bonus ?? 0) + twoHanded
   }
 
   // Resolved display name (used for knack matching, e.g. "Melee: Blade")
@@ -221,7 +232,17 @@ export function getWeaponOB(char, weapon) {
     : skillKey
 
   return getSkillBonus(char, template, charSkillData || {}, displayName)
-    + (weapon.item_bonus ?? 0)
+    + (weapon.item_bonus ?? 0) + twoHanded
+}
+
+/**
+ * Base Movement Rate in feet per round (Core Law 5.3 / 2.7; RMU movement.js):
+ * 20' + ½ Quickness bonus (round up) + racial stride + stride talents.
+ */
+export function getBMR(char) {
+  const qu = char.stats?.Quickness ? getTotalStatBonus(char.stats.Quickness) : 0
+  const race = racesData.find(r => r.name === char.race)
+  return 20 + Math.ceil(qu / 2) + (race?.frame?.stride ?? 0) + getTalentBonuses(char).stride
 }
 
 // App skill base → RMU skill name, the unit that professional bonuses and knacks

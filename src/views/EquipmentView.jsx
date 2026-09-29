@@ -6,7 +6,7 @@ import skillsData from '../data/skills.json'
 import weaponsData from '../data/weapons.json'
 import armorData from '../data/armor.json'
 import equipmentData from '../data/equipment.json'
-import { getWeaponOB, getConditionPenalty } from '../utils/calc.js'
+import { getWeaponOB, getConditionPenalty, getWeaponSkillRanks } from '../utils/calc.js'
 import { XIcon, ChevronDownIcon, ChevronRightIcon, ArrowDownIcon, PencilIcon } from '../components/Icons.jsx'
 
 const LOCATIONS = ['Carried', 'Pack', 'Belt', 'Worn', 'Stored', 'Mount']
@@ -200,7 +200,7 @@ function WeaponsCard({ activeChar, addWeapon, updateWeapon, removeWeapon }) {
         {weapons.map(w => {
           const isOpen = expanded === w.id
           const ob = getWeaponOB(activeChar, w) + getConditionPenalty(activeChar).total
-          const skillRanks = (activeChar.skills?.[w.skill_name]?.ranks) ?? 0
+          const skillRanks = getWeaponSkillRanks(activeChar, w)
           const effFumble = Math.max(1, (w.fumble ?? 3) - Math.floor(skillRanks / 5))
           const fumbleReduced = effFumble < (w.fumble ?? 3)
           const skillColor = W_SKILL_COLOR[w.skill_name] ?? 'var(--text3)'
