@@ -35,25 +35,32 @@ const SEV_META = {
   G: { label:'G – Extreme+',   color:'#b91c1c' },
   H: { label:'H – Extreme++',  color:'#991b1b' },
   I: { label:'I – Extreme+++', color:'#7f1d1d' },
+  J: { label:'J – Extreme++++',color:'#6b1414' },
+  Z: { label:'Z – Below A',    color:'#4ade80' },
+  Y: { label:'Y – Below A',    color:'#4ade80' },
+  X: { label:'X – Below A',    color:'#4ade80' },
+  W: { label:'W – Below A',    color:'#4ade80' },
 }
 const CRIT_KEYS   = Object.keys(critTables)
 const AT_LABELS   = ['AT 1','AT 2','AT 3','AT 4','AT 5','AT 6','AT 7','AT 8','AT 9','AT 10']
 
 // Grouped attack tables for select dropdowns
 const WEAPON_GROUPS = [
-  { label: 'Weapons',          keys: ['Arming Sword','Battle Axe','Bola','Bow, Long','Bow, Short','Broadsword','Club','Crossbow','Dagger','Falchion','Fighting Stick','Flail','Mace','Rapier','Rock','Scimitar','Shield','Sling','Spear','War Hammer','Whip'] },
+  { label: 'Weapons',          keys: ['Arming Sword','Battle Axe','Bola','Bow, Long','Bow, Short','Broadsword','Club','Crossbow','Dagger','Falchion','Fighting Stick','Flail','Lariat','Mace','Rapier','Rock','Scimitar','Shield','Sling','Spear','War Hammer','Whip','Whip, Grapple','Unarmed Strikes','Unarmed Sweeps'] },
   { label: 'Creature Attacks', keys: ['Beak','Bite','Claw','Crush','Grapple','Horn','Ram','Stinger','Trample'] },
-  { label: 'Spell Attacks',    keys: ['Ball, Cold','Ball, Fire','Ball, Lightning','Bolt, Fire','Bolt, Ice','Bolt, Lightning','Bolt, Water'] },
+  { label: 'Spell Attacks',    keys: ['Ball, Cold','Ball, Earth','Ball, Fire','Ball, Lightning','Ball, Water','Bolt, Acid','Bolt, Earth','Bolt, Fire','Bolt, Ice','Bolt, Light','Bolt, Lightning','Bolt, Water'] },
 ]
 const WEAPON_KEYS = WEAPON_GROUPS.flatMap(g => g.keys)
 
+// RMU crit-type letters (critical-codes.js). Severity letters are A–J/W–Z, so
+// crit types avoid them where they can: Acid = Z, Cold = O, Strikes = T, etc.
+// C (Ball, Water) is kept as Cold; E is a legacy alias for Electricity.
 const CRIT_CODE_MAP = {
   S:'Slash', K:'Krush', P:'Puncture', U:'Unbalancing',
   G:'Grapple', C:'Cold', O:'Cold', H:'Heat', E:'Electricity', L:'Electricity',
-  I:'Impact', T:'Strike', Su:'Subdual', Sw:'Sweeps',
+  I:'Impact', T:'Strike', W:'Sweeps', Z:'Acid', M:'Steam', Y:'Holy', N:'Subdual',
 }
 
-// Severities beyond E (F, G, H, I…) are treated as E for crit table lookups
 function parseAtCell(val) {
   if (!val) return null
   const m = val.match(/^(\d+)([A-Z])([A-Z])$/)
@@ -63,30 +70,47 @@ function parseAtCell(val) {
   return null
 }
 
-const MAPPED_SEVS = new Set(['A','B','C','D','E'])
-function findCritRow(type, sev, roll) {
-  const mappedSev = MAPPED_SEVS.has(sev) ? sev : 'E'
-  const rows = critTables[type]?.[mappedSev] ?? []
+// Crit severities (RMU criticals.js calcAdjustedCriticalSeverity; Core Law 9.8):
+// above E the attack adds secondary crits on the same table, all resolved with
+// the same crit roll (F = E+A, G = E+B, H = E+C, I = E+C+A, J = E+C+B);
+// below A (Z, Y, X, W) roll the A table and step down 1–4 results.
+const SEV_EXPAND  = { F: ['E','A'], G: ['E','B'], H: ['E','C'], I: ['E','C','A'], J: ['E','C','B'] }
+const SEV_BELOW_A = { Z: 1, Y: 2, X: 3, W: 4 }
+
+/** Every crit an attack severity produces: [{ sev, row }] (primary first). */
+function findCritRows(type, sev, roll) {
   const r = parseInt(roll, 10)
-  if (isNaN(r) || r < 1 || r > 100) return null
-  return rows.find(row => r >= row.min && r <= row.max) ?? null
+  if (!sev || isNaN(r) || r < 1 || r > 100) return []
+  const sevs = SEV_EXPAND[sev] || (SEV_BELOW_A[sev] ? ['A'] : [sev])
+  return sevs.map((s, i) => {
+    const rows = [...(critTables[type]?.[s] ?? [])].sort((a, b) => a.min - b.min)
+    let idx = rows.findIndex(row => r >= row.min && r <= row.max)
+    if (i === 0 && SEV_BELOW_A[sev] && idx >= 0) idx = Math.max(0, idx - SEV_BELOW_A[sev])
+    return { sev: s, row: idx >= 0 ? rows[idx] : null }
+  })
 }
 
-// Simulate an open-ended d100 roll
-// High OE: 96–100 chains (roll again, add) — no limit
-// Low OE: 01–05 on first die only (roll once more, subtract) — does NOT chain
-function rollOEd100() {
-  const rolls = []
-  let r = Math.ceil(Math.random() * 100)
-  rolls.push(r)
-  if (r <= 5) {
-    // Low open-ended: one extra roll, stored as negative
-    rolls.push(-(Math.ceil(Math.random() * 100)))
-    return rolls
-  }
-  while (r >= 96) {
-    r = Math.ceil(Math.random() * 100)
-    rolls.push(r)
+/** "1 rd [−75] + 2 rd [−25]" including a row's extra stuns. */
+function stunText(row, short = false) {
+  const parts = []
+  if (row?.stun_rounds > 0) parts.push({ rounds: row.stun_rounds, penalty: row.stun_penalty })
+  for (const s of row?.stun_extra || []) parts.push(s)
+  return parts.map(p => short ? `${p.rounds}rd [-${p.penalty || '?'}]` : `${p.rounds} rd [−${p.penalty || '?'}]`).join(' + ')
+}
+
+// Open-ended d100 (Core Law 5.1): 96–00 rolls again and adds, repeating;
+// 01–05 rolls again and subtracts, repeating while the extra roll is 96–00.
+// Attack rolls are open-ended UPWARD only (low results are fumbles instead).
+function rollOEd100({ upwardOnly = false } = {}) {
+  const d = () => Math.ceil(Math.random() * 100)
+  const first = d()
+  const rolls = [first]
+  if (first >= 96) {
+    let r
+    do { r = d(); rolls.push(r) } while (r >= 96)
+  } else if (first <= 5 && !upwardOnly) {
+    let r
+    do { r = d(); rolls.push(-r) } while (r >= 96)
   }
   return rolls  // sum for total; rolls[0] is the unmodified die
 }
@@ -563,7 +587,7 @@ export default function ReferenceView() {
                             {!isShield && <td style={{ padding:'4px 6px', textAlign:'center', fontWeight:700, color:'var(--accent)', fontSize:11 }}>{a.at ?? '—'}</td>}
                             <td style={{ padding:'4px 6px', fontWeight:600, fontSize:11, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{a.name}</td>
                             <td style={{ padding:'4px 6px', textAlign:'center', fontSize:11, color:'var(--text2)' }}>{a.cost_medium != null ? a.cost_medium : '—'}</td>
-                            <td style={{ padding:'4px 6px', textAlign:'center', fontSize:11, color:'var(--text2)' }}>{a.weight_pct != null ? `${a.weight_pct}%` : '—'}</td>
+                            <td style={{ padding:'4px 6px', textAlign:'center', fontSize:11, color:'var(--text2)' }}>{a.weight_lbs != null ? `${a.weight_lbs} lb` : a.weight_pct != null ? `${a.weight_pct}%` : '—'}</td>
                             <td style={{ padding:'4px 6px', textAlign:'center', fontSize:11, color:'var(--text2)' }}>{a.str_req || '—'}</td>
                             {!isShield && [a.maneuver_penalty, a.ranged_penalty, a.perception_penalty].map((v, j) => (
                               <td key={j} style={{ padding:'4px 6px', textAlign:'center', fontSize:11, color: v < 0 ? 'var(--danger)' : 'var(--text3)', fontWeight: v < 0 ? 600 : 400 }}>{v ? v : '—'}</td>
@@ -580,8 +604,8 @@ export default function ReferenceView() {
             })
           })()}
           <TableKey entries={[
-            ['AT','Armor Type (1–20)'], ['Wt%','Weight as % of wearer\'s body weight'],
-            ['Str','Strength requirement'], ['Man','Maneuver penalty'],
+            ['AT','Armor Type (1–10)'], ['Wt%','Weight as % of wearer\'s body weight (shields: pounds)'],
+            ['Str','Item Strength — durability added to breakage rolls (not a wearer requirement)'], ['Man','Maneuver penalty'],
             ['Rang','Ranged attack penalty'], ['Perc','Perception penalty'],
             ['Difficulty','Crafting difficulty rating'], ['Time','Craft time'],
           ]} />
@@ -838,9 +862,9 @@ function WeaponsPanel() {
       <TableKey entries={[
         ['Type','OB type: melee / ranged / thrown / unarmed'],
         ['Fumble','Base fumble number (reduced by 1 per 5 ranks; min 1)'],
-        ['Str Req','Minimum Strength stat for effective use'],
+        ['Str Req','Item Strength — durability used in breakage checks (not a wielder requirement)'],
         ['Size','Weapon size modifier vs. Medium target (+1, 0, −1, etc.)'],
-        ['Length','Reach category (T=Touch, S=Short, M=Medium, L=Long, R=Reach)'],
+        ['Length','Weapon length in feet (melee range = half your height + weapon length)'],
         ['Wt (lbs)','Weight in pounds'],
       ]} />
     </div>
@@ -855,13 +879,13 @@ const SPELL_BASE_TYPES = [
   { code: 'F', label: 'Force',        color: '#f59e0b', desc: 'Physical manipulation, movement, or force effect.' },
   { code: 'E', label: 'Elemental',    color: '#22c55e', desc: 'Involves an elemental force (fire, ice, shadow, lightning, etc.).' },
   { code: 'I', label: 'Information',  color: '#4c8bf5', desc: 'Detection, divination, or sensing. Often range: self.' },
-  { code: 'A', label: 'Attack',       color: '#ef4444', desc: 'Special offensive effect (see spell description for details).' },
+  { code: 'A', label: 'Alchemical',   color: '#ef4444', desc: 'Alchemical spell — failures use the Treasure Law alchemical tables.' },
 ]
 const SPELL_SUFFIXES = [
   { code: 'b', label: 'Ball',        desc: 'Area-of-effect — hits everything in a radius (e.g. "20\'R").' },
   { code: 'd', label: 'Directed',    desc: 'Targeted attack — caster must make an attack roll to hit.' },
-  { code: 'm', label: 'Maintained',  desc: 'Requires active concentration (duration shown as "C"). Ends if disrupted.' },
-  { code: 's', label: 'Self / Touch',desc: 'Range limited to self or touch only.' },
+  { code: 'm', label: 'Mental',      desc: 'Mind-affecting; mindless targets are immune.' },
+  { code: 's', label: 'Subconscious',desc: 'Can be cast subconsciously; ignores injury and encumbrance penalties.' },
 ]
 const SPELL_TYPE_EXAMPLES = [
   { code: 'U',  example: 'Stun Relief, Haste'         },
@@ -1032,7 +1056,7 @@ function CritTablesPanel({ critType, setCritType, critSev, setCritSev, critRoll,
       <TableKey entries={[
         ['A','Minor crit — bruises, minor cuts'], ['B','Light crit — small wounds'],
         ['C','Moderate crit — notable injury'], ['D','Serious crit — significant wound'],
-        ['E','Severe crit — life-threatening'], ['F','Extreme crit (treated as E)'],
+        ['E','Severe crit — life-threatening'], ['F–J','Beyond E: an E crit plus secondary crits on the same roll (F = E+A, G = E+B, H = E+C, I = E+C+A, J = E+C+B)'],
         ['S','Slash'], ['K','Krush (blunt)'], ['P','Puncture'], ['U','Unbalancing'],
         ['G','Grapple'], ['C*','Cold'], ['H','Heat'], ['E*','Electricity'], ['I','Impact'], ['T','Strike'],
       ]} />
@@ -1171,11 +1195,12 @@ function AttackTablesPanel({ atWeapon, setAtWeapon, atRoll, setAtRoll, atAT, set
         </div>
         <TableKey entries={[
           ['AT 1–10','Armor Type column (click to highlight)'],
-          ['Roll','Open-ended d100 result (pre-modifiers)'],
+          ['Roll','Final modified attack roll (d100 open-ended upward + OB − DB)'],
           ['25BS','Example result: 25 hits + B-severity Slash crit'],
-          ['A–F','Crit severity: A=Minor, B=Light, C=Moderate, D=Serious, E=Severe, F=Extreme'],
+          ['A–E','Crit severity: A=Minor … E=Severe. F–J add secondary crits (F = E+A … J = E+C+B); Z is below A (A table, one result lower)'],
           ['S/K/P/U/G','Crit type: Slash / Krush / Puncture / Unbalancing / Grapple'],
-          ['C/H/E/I/T','Crit type: Cold / Heat / Electricity / Impact / Strike'],
+          ['O/C/H/L/I/T','Crit type: Cold / Cold / Heat / Electricity / Impact / Strikes'],
+          ['W/Z/M/Y/N','Crit type: Sweeps / Acid / Steam / Holy / Subdual'],
         ]} />
       </div>
     </div>
@@ -1223,9 +1248,13 @@ function CombatCalcPanel({
 
   const activeCritType = calcCritType ?? (atkCell?.critType ?? null)
   const activeCritSev  = calcCritSev  ?? (atkCell?.severity ?? null)
-  const critResult     = activeCritType && activeCritSev && calcCritRoll
-    ? findCritRow(activeCritType, activeCritSev, calcCritRoll)
-    : null
+  const critRows       = activeCritType && activeCritSev && calcCritRoll
+    ? findCritRows(activeCritType, activeCritSev, calcCritRoll)
+    : []
+  const critResult     = critRows[0]?.row ?? null
+  const extraCrits     = critRows.slice(1).filter(c => c.row)
+  const allCrits       = critRows.map(c => c.row).filter(Boolean)
+  const critSum = f => allCrits.reduce((s, r) => s + (Number(r[f]) || 0), 0)
   const sevColor = activeCritSev ? SEV_META[activeCritSev]?.color ?? 'var(--accent)' : 'var(--accent)'
 
   const fumbleResult = isFumble ? findFumbleResult(calcWeapon, calcFumbleRoll) : null
@@ -1233,7 +1262,7 @@ function CombatCalcPanel({
   const oeTotal = oeRolls ? oeRolls.reduce((a, b) => a + b, 0) : null
 
   function doOERoll() {
-    const rolls = rollOEd100()
+    const rolls = rollOEd100({ upwardOnly: true })
     setOeRolls(rolls)
     const ob  = parseInt(obVal,  10)
     const db  = parseInt(dbVal,  10)
@@ -1341,7 +1370,7 @@ function CombatCalcPanel({
             {diceOpen && (
               <div style={{ marginTop: 8, padding: '10px 12px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 8 }}>
                 <div style={{ fontSize: 11, color: 'var(--text3)', marginBottom: 8 }}>
-                  Rolls OE d100: 96–100 chains high (add), 01–05 on first die subtracts once (low OE).
+                  Rolls d100 open-ended upward: 96–100 rolls again and adds (repeating). Attacks are never open-ended low — a low unmodified roll is checked for a fumble instead.
                 </div>
                 <button onClick={doOERoll} style={{
                   background: 'var(--surface2)', color: 'var(--text2)',
@@ -1497,16 +1526,16 @@ function CombatCalcPanel({
                 ? <span style={{ color: 'var(--text3)', fontWeight: 400, marginLeft: 6 }}>(auto from attack)</span>
                 : null}
             </SectionLabel>
-            <div style={{ display: 'flex', gap: 6 }}>
-              {['A','B','C','D','E'].map(k => {
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+              {['Z','A','B','C','D','E','F','G','H','I','J'].map(k => {
                 const s      = SEV_META[k]
                 const active = activeCritSev === k
                 const isAuto = !calcCritSev && atkCell?.severity === k
                 return (
                   <button key={k} onClick={() => setCalcCritSev(calcCritSev === k ? null : k)} style={{
-                    flex: 1, maxWidth: 52,
+                    flex: 1, minWidth: 30, maxWidth: 52,
                     background: active ? s.color : 'var(--surface2)',
-                    color:      active ? (k === 'B' ? '#111' : '#fff') : 'var(--text2)',
+                    color:      active ? (['B','Z'].includes(k) ? '#111' : '#fff') : 'var(--text2)',
                     border: '1px solid ' + (active ? s.color : isAuto ? s.color + '88' : 'var(--border)'),
                     borderRadius: 8, padding: '8px 4px', cursor: 'pointer', fontWeight: active ? 800 : 500, fontSize: 14,
                   }}>{k}</button>
@@ -1531,8 +1560,21 @@ function CombatCalcPanel({
           {critResult && activeCritType && activeCritSev && (
             <div style={{ marginTop: 12 }}>
               <CritResultCard hit={critResult} critType={activeCritType}
-                critSev={activeCritSev === 'F' ? 'E' : activeCritSev}
+                critSev={critRows[0]?.sev || activeCritSev}
                 critRoll={calcCritRoll} sevColor={sevColor} />
+              {SEV_BELOW_A[activeCritSev] && (
+                <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 6 }}>
+                  Severity {activeCritSev} is below A: A table, {SEV_BELOW_A[activeCritSev]} result{SEV_BELOW_A[activeCritSev] > 1 ? 's' : ''} lower.
+                </div>
+              )}
+              {extraCrits.map(({ sev, row }) => (
+                <div key={sev} style={{ marginTop: 10 }}>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text2)', marginBottom: 4 }}>
+                    + secondary {sev} critical (severity {activeCritSev} = {SEV_EXPAND[activeCritSev].join(' + ')}, same roll)
+                  </div>
+                  <CritResultCard hit={row} critType={activeCritType} critSev={sev} critRoll={calcCritRoll} sevColor={SEV_META[sev]?.color ?? sevColor} />
+                </div>
+              ))}
             </div>
           )}
           {activeCritType && activeCritSev && calcCritRoll && !critResult && (
@@ -1550,29 +1592,34 @@ function CombatCalcPanel({
             Total Result
           </div>
           <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-            <StatPill label="Total Hits" value={`+${atkCell.hits + critResult.hits}`} color="#ef4444" />
-            {critResult.hpr > 0 && <StatPill label="Bleed/Rd" value={`${critResult.hpr}/rd`} color="#f97316" />}
-            {critResult.stun_rounds > 0 && (
-              <StatPill label={`Stun [−${critResult.stun_penalty || '?'}]`} value={`${critResult.stun_rounds} rd`} color="#eab308" />
+            <StatPill label="Total Hits" value={`+${atkCell.hits + critSum('hits')}`} color="#ef4444" />
+            {critSum('hpr') > 0 && <StatPill label="Bleed/Rd" value={`${critSum('hpr')}/rd`} color="#f97316" />}
+            {allCrits.some(r => r.stun_rounds > 0 || r.stun_extra?.length) && (
+              <StatPill label="Stun" value={allCrits.map(r => stunText(r)).filter(Boolean).join(' + ')} color="#eab308" />
             )}
-            {critResult.injury_penalty > 0 && <StatPill label="Injury" value={`−${critResult.injury_penalty}`} color="#f97316" />}
-            {critResult.fatigue_penalty > 0 && <StatPill label="Fatigue" value={`−${critResult.fatigue_penalty}`} color="#a78bfa" />}
-            {critResult.knockback > 0 && <StatPill label="Knockback" value={`${critResult.knockback}'`} color="#60a5fa" />}
+            {critSum('injury_penalty') > 0 && <StatPill label="Injury" value={`−${critSum('injury_penalty')}`} color="#f97316" />}
+            {critSum('fatigue_penalty') > 0 && <StatPill label="Fatigue" value={`−${critSum('fatigue_penalty')}`} color="#a78bfa" />}
+            {critSum('knockback') > 0 && <StatPill label="Knockback" value={`${critSum('knockback')}'`} color="#60a5fa" />}
             {critResult.location && critResult.location !== 'Body' && (
               <StatPill label="Location" value={critResult.location} color="var(--text2)" />
             )}
-            {critResult.stagger  && <CondBadge label="Stagger" color="#f97316" />}
-            {critResult.prone    && <CondBadge label="Prone"   color="#ef4444" />}
+            {allCrits.some(r => r.stagger) && <CondBadge label="Stagger" color="#f97316" />}
+            {allCrits.some(r => r.prone)   && <CondBadge label="Prone"   color="#ef4444" />}
             {critResult.breakage && (
               <CondBadge label={`Breakage${critResult.breakage_mod ? ` (${critResult.breakage_mod > 0 ? '+' : ''}${critResult.breakage_mod})` : ''}`} color="#eab308" />
             )}
           </div>
-          {critResult.instant_death && (
+          {allCrits.some(r => r.instant_death) && (
             <div style={{ marginTop: 10, fontSize: 16, fontWeight: 800, color: '#ef4444' }}>INSTANT DEATH</div>
           )}
-          {!critResult.instant_death && (
-            <p style={{ marginTop: 10, fontSize: 13, color: 'var(--text)', lineHeight: 1.6 }}>{critResult.result}</p>
+          {!allCrits.some(r => r.instant_death) && allCrits.some(r => r.dying_rounds) && (
+            <div style={{ marginTop: 10, fontSize: 15, fontWeight: 800, color: '#ef4444' }}>
+              DIES IN {Math.min(...allCrits.filter(r => r.dying_rounds).map(r => r.dying_rounds))} ROUNDS
+            </div>
           )}
+          {!allCrits.some(r => r.instant_death) && allCrits.map((r, i) => (
+            <p key={i} style={{ marginTop: 10, fontSize: 13, color: 'var(--text)', lineHeight: 1.6 }}>{r.result}</p>
+          ))}
         </div>
       )}
     </div>
@@ -1711,7 +1758,7 @@ function CombatGuidePanel() {
               <ul style={{ margin:0, padding:'0 0 0 16px', fontSize:12, color:'var(--text2)', lineHeight:1.8 }}>
                 <li>Only triggered if the <strong style={{color:'var(--text)'}}>first die roll</strong> is <strong style={{color:'var(--danger)'}}>01–05</strong> (on maneuvers/RRs, not attacks).</li>
                 <li>Roll the d100 again and <strong style={{color:'var(--danger)'}}>subtract</strong> that result from the running total.</li>
-                <li>Keep rolling and subtracting as long as each new roll is <em>not</em> 96–100.</li>
+                <li>Keep rolling and subtracting only while each new roll <em>is</em> 96–100.</li>
                 <li>Stop when a non-OE result is rolled; that value is subtracted and the chain ends.</li>
                 <li>Results can go arbitrarily negative.</li>
               </ul>
@@ -1737,7 +1784,7 @@ function CombatGuidePanel() {
                 <li>If the <strong style={{color:'var(--text)'}}>unmodified</strong> d100 is ≤ the fumble number, it is a Fumble.</li>
                 <li>Fumble range is <strong style={{color:'#22c55e'}}>reduced by 1</strong> for every <strong style={{color:'var(--text)'}}>5 ranks</strong> in the weapon skill.</li>
                 <li>The minimum fumble range is always <strong style={{color:'var(--text)'}}>1</strong> (never zero).</li>
-                <li>Apply OB modifiers to a fumble roll to determine the result from the Fumble table.</li>
+                <li>Roll a plain d100 (01–100) on the Fumble table — no OB or other modifiers.</li>
                 <li>e.g. Flail (fumble 10), 15 ranks → fumble range = 10 − 3 = <strong style={{color:'var(--text)'}}>7</strong>.</li>
               </ul>
             </div>
@@ -1777,11 +1824,11 @@ function CombatGuidePanel() {
                   <td style={{ padding: '4px 8px', fontWeight: 600, fontSize: 11 }}>{row.size}</td>
                   <td style={{ padding: '4px 8px', textAlign: 'center', fontSize: 11 }}>{row.attack_size ?? '—'}</td>
                   <td style={{ padding: '4px 8px', textAlign: 'center', fontSize: 11 }}>{row.hits_multiplier ?? '—'}</td>
-                  <td style={{ padding: '4px 8px', textAlign: 'center', fontSize: 11, color: row.attacker_crit_adj > 0 ? 'var(--success)' : row.attacker_crit_adj < 0 ? 'var(--danger)' : 'var(--text3)' }}>
-                    {row.attacker_crit_adj != null ? (row.attacker_crit_adj > 0 ? `+${row.attacker_crit_adj}` : row.attacker_crit_adj) : '—'}
+                  <td style={{ padding: '4px 8px', textAlign: 'center', fontSize: 11, color: row.attacker_crit_adjustment > 0 ? 'var(--success)' : row.attacker_crit_adjustment < 0 ? 'var(--danger)' : 'var(--text3)' }}>
+                    {row.attacker_crit_adjustment != null ? (row.attacker_crit_adjustment > 0 ? `+${row.attacker_crit_adjustment}` : row.attacker_crit_adjustment) : '—'}
                   </td>
-                  <td style={{ padding: '4px 8px', textAlign: 'center', fontSize: 11, color: row.defender_crit_adj > 0 ? 'var(--success)' : row.defender_crit_adj < 0 ? 'var(--danger)' : 'var(--text3)' }}>
-                    {row.defender_crit_adj != null ? (row.defender_crit_adj > 0 ? `+${row.defender_crit_adj}` : row.defender_crit_adj) : '—'}
+                  <td style={{ padding: '4px 8px', textAlign: 'center', fontSize: 11, color: row.defender_crit_adjustment > 0 ? 'var(--success)' : row.defender_crit_adjustment < 0 ? 'var(--danger)' : 'var(--text3)' }}>
+                    {row.defender_crit_adjustment != null ? (row.defender_crit_adjustment > 0 ? `+${row.defender_crit_adjustment}` : row.defender_crit_adjustment) : '—'}
                   </td>
                 </tr>
               ))}
@@ -1985,8 +2032,8 @@ function CombatGuidePanel() {
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 11 }}>
                 <thead>
                   <tr style={{ background: 'var(--surface2)' }}>
-                    <th style={thStyle}>Injury Type</th>
-                    {combatGuide.recovery?.length > 0 && Object.keys(combatGuide.recovery[0]).filter(k => k !== 'injury_type').map(k => (
+                    <th style={thStyle}>Roll</th>
+                    {combatGuide.recovery?.length > 0 && Object.keys(combatGuide.recovery[0]).filter(k => k !== 'roll_range').map(k => (
                       <th key={k} style={thStyle}>{k.replace(/_/g,' ')}</th>
                     ))}
                   </tr>
@@ -1994,8 +2041,8 @@ function CombatGuidePanel() {
                 <tbody>
                   {combatGuide.recovery?.map((row, i) => (
                     <tr key={i} style={{ borderBottom: '1px solid var(--border)', background: i % 2 === 0 ? 'transparent' : 'var(--surface2)' }}>
-                      <td style={{ padding: '4px 8px', fontWeight: 600, fontSize: 11, whiteSpace: 'nowrap' }}>{row.injury_type}</td>
-                      {Object.entries(row).filter(([k]) => k !== 'injury_type').map(([k, v]) => (
+                      <td style={{ padding: '4px 8px', fontWeight: 600, fontSize: 11, whiteSpace: 'nowrap' }}>{row.roll_range}</td>
+                      {Object.entries(row).filter(([k]) => k !== 'roll_range').map(([k, v]) => (
                         <td key={k} style={{ padding: '4px 8px', textAlign: 'center', fontSize: 11, color: 'var(--text2)' }}>{v ?? '—'}</td>
                       ))}
                     </tr>
@@ -2024,8 +2071,8 @@ const FORMULA_SECTIONS = [
     components: [
       { label: 'Race Base', desc: 'Fixed base hits from your race (e.g. Human = 25, Dwarf = 30)', example: '25' },
       { label: 'Rank Bonus (BD)', desc: 'Body Development skill rank bonus — see Rank Bonus table', example: 'Rank 10 → +50' },
-      { label: '2 × Co Bonus', desc: 'Constitution stat bonus × 2 (BD is an individual Co skill in the Brawn category)', example: 'Co 75 → +10 bonus → +20' },
-      { label: 'SD Bonus', desc: 'Self Discipline bonus (Brawn category stat for BD)', example: 'SD 60 → +5' },
+      { label: '2 × Co Bonus', desc: 'Constitution stat bonus × 2 (BD is an individual Co skill in the Brawn category)', example: 'Co 75 → +4 bonus → +8' },
+      { label: 'SD Bonus', desc: 'Self Discipline bonus (Brawn category stat for BD)', example: 'SD 60 → +2' },
       { label: 'Item Bonus', desc: 'Magic item or other flat bonus applied to Body Development', example: '+10' },
       { label: 'Talent Bonus', desc: 'Talents such as Tough/Fragile add a flat bonus per tier', example: 'Tough T2 → +10' },
       { label: 'Professional', desc: '+1 per rank (max +30) if Body Development is one of your 10 professional skills', example: '8 ranks → +8' },
@@ -2040,8 +2087,8 @@ const FORMULA_SECTIONS = [
     formula: 'Power Development skill bonus = Rank Bonus(PD) + 2×RS Bonus + Co Bonus + Item + Professional + Talent',
     components: [
       { label: 'Rank Bonus (PD)', desc: 'Power Development skill rank bonus', example: 'Rank 8 → +40' },
-      { label: '2 × RS Bonus', desc: 'Realm Stat bonus × 2 (In for Channeling, Em for Essence, Pr for Mentalism). PD is in Power Manipulation (RS/RS) category.', example: 'In 80 → +15 → +30' },
-      { label: 'Co Bonus', desc: 'Constitution bonus (PD individual skill stat)', example: 'Co 60 → +5' },
+      { label: '2 × RS Bonus', desc: 'Realm Stat bonus × 2 (In for Channeling, Em for Essence, Pr for Mentalism). PD is in Power Manipulation (RS/RS) category.', example: 'In 80 → +5 → +10' },
+      { label: 'Co Bonus', desc: 'Constitution bonus (PD individual skill stat)', example: 'Co 60 → +2' },
       { label: 'Item Bonus', desc: 'Flat item bonus to Power Development', example: '+5' },
       { label: 'Talent Bonus', desc: 'Talent contributions to Power Development', example: '—' },
     ],
@@ -2053,7 +2100,7 @@ const FORMULA_SECTIONS = [
     color: '#84cc16',
     formula: 'Rank Bonus(BD) + 2×Co Bonus + SD Bonus + Item + Talent + Racial Endurance',
     components: [
-      { label: 'BD Skill Bonus', desc: 'Full Body Development skill total (same calculation as Base Hits, minus the racial base_hits)', example: 'Rank 10, Co +10, SD +5 → +75' },
+      { label: 'BD Skill Bonus', desc: 'Full Body Development skill total (same calculation as Base Hits, minus the racial base_hits)', example: 'Rank 10, Co +4, SD +2 → +60' },
       { label: 'Racial Endurance', desc: 'Race-specific endurance modifier from race table (separate from base hits)', example: 'Elf → +10, Dwarf → +20' },
     ],
     note: 'Endurance uses the same BD skill bonus as Base Hits, but adds the racial endurance modifier instead of the racial base hits. CoreLaw p.76.',
@@ -2064,7 +2111,7 @@ const FORMULA_SECTIONS = [
     color: '#22c55e',
     formula: 'Qu × 3 + Shield/Block + Dodge + Parry + Cover + Armor/Magic DB + Talent',
     components: [
-      { label: 'Quickness Bonus × 3', desc: 'Your Qu stat bonus multiplied by 3 (lost when flat-footed)', example: 'Qu 75 → +10 bonus → +30 DB' },
+      { label: 'Quickness Bonus × 3', desc: 'Your Qu stat bonus multiplied by 3 (lost when flat-footed)', example: 'Qu 75 → +4 bonus → +12 DB' },
       { label: 'Shield / Block', desc: 'Target +15, Normal +20, Full +25, Wall +30. Block (Shield skill): passive shield + ranks (max 50), partial ½ skill, full skill', example: 'Normal Shield → +20' },
       { label: 'Dodge', desc: 'Running skill: passive +1/rank (max 50), partial ½ skill, full skill; armor/encumbrance reduce it; halved vs ranged', example: '6 ranks → +6 passive' },
       { label: 'Parry', desc: 'OB you move into DB against one melee foe', example: 'Parry 20 → +20 DB, −20 OB' },
@@ -2079,7 +2126,7 @@ const FORMULA_SECTIONS = [
     color: '#f59e0b',
     formula: '2d10 + Quickness Bonus + Talent Initiative − 1 per full −10 of penalties',
     components: [
-      { label: 'Quickness Bonus', desc: 'Your Qu stat bonus', example: 'Qu 80 → +15' },
+      { label: 'Quickness Bonus', desc: 'Your Qu stat bonus', example: 'Qu 80 → +5' },
       { label: 'Talent Initiative', desc: 'Fast Attack talent: +5 initiative per tier', example: 'T2 → +10' },
     ],
     note: 'Rolled on 2d10 every round (Core Law 8.3). Penalties = hit loss, injuries, stun, fatigue, grapple and encumbrance.',
@@ -2090,7 +2137,7 @@ const FORMULA_SECTIONS = [
     color: '#60a5fa',
     formula: 'Stat Bonus + Level × 2 + Race + 10 (own realm) + Special + Talent',
     components: [
-      { label: 'Stat Bonus', desc: 'Channeling → In, Essence → Em, Mentalism → Pr, Physical → Co, Fear → SD', example: 'In 70 → +7 for Channeling RR' },
+      { label: 'Stat Bonus', desc: 'Channeling → In, Essence → Em, Mentalism → Pr, Physical → Co, Fear → SD', example: 'In 70 → +3 for Channeling RR' },
       { label: 'Level × 2', desc: 'Your character level × 2', example: 'Level 5 → +10' },
       { label: 'Special Bonus', desc: 'Per-type override field on the sheet (racial, item, etc.)', example: '+10 racial' },
       { label: 'Talent Bonus', desc: 'Magical/Physical Resistance, Iron Will talents', example: 'Iron Will T2 → +10 Mentalism RR' },
@@ -2104,7 +2151,7 @@ const FORMULA_SECTIONS = [
     formula: 'List Ranks (raw) + Realm Stat + List Type + Talent (+ complementary)',
     components: [
       { label: 'List Ranks (raw)', desc: 'Raw number of ranks in the spell list — NOT the rank bonus table. 10 ranks = +10, not +50.', example: '10 ranks → +10' },
-      { label: 'Realm Stat (×1)', desc: 'Single realm stat bonus: Channeling → In, Essence → Em, Mentalism → Pr', example: 'Em 85 → +20' },
+      { label: 'Realm Stat (×1)', desc: 'Single realm stat bonus: Channeling → In, Essence → Em, Mentalism → Pr', example: 'Em 85 → +6' },
       { label: 'List Type', desc: 'Own Base List +5 · Open List 0 · Closed List −5 · Other −10', example: 'Base List → +5' },
       { label: 'Talent Bonus', desc: 'Eloquence +5/tier, Mumbler −5/tier', example: 'Eloquence T1 → +5' },
       { label: 'Overcasting', desc: '−20 per spell level above your caster level (Grace offsets it)', example: 'Lvl 6 spell at lvl 4 → −40' },
@@ -2142,8 +2189,8 @@ const FORMULA_SECTIONS = [
     formula: 'WA% = 15 + (2 × Strength Bonus)   ·   WA(lbs) = WA% × Body Weight / 100',
     components: [
       { label: 'Base 15%', desc: 'Every character can carry at least 15% of their body weight without penalty', example: '150 lb character → 22.5 lbs base' },
-      { label: '2 × Strength Bonus', desc: 'Strength stat bonus × 2, added to the percentage', example: 'St 80 → +15 bonus → +30% capacity' },
-      { label: 'WA in lbs', desc: 'WA% × body weight (from Identity card) ÷ 100', example: 'WA 45%, 150 lbs → 67 lbs' },
+      { label: '2 × Strength Bonus', desc: 'Strength stat bonus × 2, added to the percentage', example: 'St 80 → +5 bonus → +10% (WA 25%)' },
+      { label: 'WA in lbs', desc: 'WA% × body weight (from Identity card) ÷ 100', example: 'WA 25%, 150 lbs → 37 lbs' },
     ],
     note: 'Encumbrance: −1 per 1% of body weight carried over your allowance (Core Law: −5 per 5%). It hits physical maneuvers, dodge, casting and initiative — not OB. Set your body weight in Identity; the Pace card shows your load.',
   },
@@ -2416,12 +2463,17 @@ function CritResultCard({ hit, critType, critSev, critRoll, sevColor }) {
           </div>
         ) : (
           <>
+            {hit.dying_rounds > 0 && (
+              <div style={{ fontSize: 15, fontWeight: 800, color: '#ef4444', letterSpacing: '0.04em', marginBottom: 8 }}>
+                DIES IN {hit.dying_rounds} ROUND{hit.dying_rounds === 1 ? '' : 'S'}
+              </div>
+            )}
             <div style={{ display: 'flex', gap: 12, marginBottom: 10, flexWrap: 'wrap' }}>
               <StatPill label="Hits" value={hit.hits > 0 ? `+${hit.hits}` : '—'} color={hit.hits > 0 ? '#ef4444' : 'var(--text3)'} />
               <StatPill label="Bleed/Rd" value={hit.hpr > 0 ? `${hit.hpr}/rd` : '—'} color={hit.hpr > 0 ? '#f97316' : 'var(--text3)'} />
               <StatPill
-                label={hit.stun_rounds > 0 && hit.stun_penalty ? `Stun [-${hit.stun_penalty}]` : 'Stun'}
-                value={hit.stun_rounds > 0 ? `${hit.stun_rounds} rd` : '—'}
+                label="Stun"
+                value={stunText(hit) || '—'}
                 color={hit.stun_rounds > 0 ? '#eab308' : 'var(--text3)'}
               />
               {hit.injury_penalty > 0 && <StatPill label="Injury" value={`-${hit.injury_penalty}`} color="#f97316" />}
@@ -2478,12 +2530,13 @@ function CritTableGrid({ rows, hit, sevColor }) {
             </span>
             <span style={{ fontSize: 12, fontWeight: 700, color: r.instant_death ? '#ef4444' : r.hits > 0 ? '#ef4444' : 'var(--text3)' }}>
               {r.instant_death ? 'Dead' : r.hits > 0 ? `+${r.hits}` : '—'}
+              {r.dying_rounds > 0 && <span style={{ display: 'block', fontSize: 9, color: '#ef4444' }}>dies {r.dying_rounds} rd</span>}
             </span>
             <span style={{ fontSize: 12, color: r.hpr > 0 ? '#f97316' : 'var(--text3)' }}>
               {r.hpr > 0 ? `${r.hpr}/rd` : '—'}
             </span>
             <span style={{ fontSize: 11, color: r.stun_rounds > 0 ? '#eab308' : 'var(--text3)' }}>
-              {r.stun_rounds > 0 ? `${r.stun_rounds}rd [-${r.stun_penalty}]` : '—'}
+              {stunText(r, true) || '—'}
             </span>
             <span style={{ fontSize: 11, color: 'var(--text3)', fontStyle: 'italic' }}>
               {r.location ?? '—'}

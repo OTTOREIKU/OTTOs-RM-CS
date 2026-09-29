@@ -19,10 +19,10 @@ const SPELL_TYPES = [
   { code: 'F',  label: 'Force',                desc: 'Physical manipulation or movement' },
   { code: 'E',  label: 'Elemental',            desc: 'Involves elemental forces (fire, shadow, etc.)' },
   { code: 'I',  label: 'Information',          desc: 'Detection, divination, sensing' },
-  { code: 'A',  label: 'Attack',               desc: 'Special offensive effect' },
+  { code: 'A',  label: 'Alchemical',           desc: 'Alchemical spell (failures use alchemical tables)' },
   { code: 'b',  label: '+ Ball',               desc: 'Suffix: area-of-effect (e.g. Shock Ball)' },
   { code: 'd',  label: '+ Directed',           desc: 'Suffix: targeted — requires an attack roll' },
-  { code: 'm',  label: '+ Maintained',         desc: 'Suffix: requires active concentration (dur: C)' },
+  { code: 'm',  label: '+ Mental',             desc: 'Suffix: mind-affecting; mindless targets are immune' },
   { code: 's',  label: '+ Subconscious',       desc: 'Suffix: subconscious — ignores injury penalties and hand gestures' },
 ]
 
