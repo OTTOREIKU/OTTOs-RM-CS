@@ -17,16 +17,6 @@
     "vite-plugin-pwa": "^1.2.0"
   },
   "dependencies": {
-    "@tiptap/extension-color": "^3.22.5",
-    "@tiptap/extension-highlight": "^3.22.5",
-    "@tiptap/extension-placeholder": "^3.22.5",
-    "@tiptap/extension-task-item": "^3.22.5",
-    "@tiptap/extension-task-list": "^3.22.5",
-    "@tiptap/extension-text-style": "^3.22.5",
-    "@tiptap/extension-underline": "^3.22.5",
-    "@tiptap/react": "^3.22.5",
-    "@tiptap/starter-kit": "^3.22.5",
-    "fix-webm-duration": "^1.0.6",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "react-resizable-panels": "^2.1.7",

@@ -11,7 +11,7 @@ import {
 } from '../store/fileSync.js'
 import {
   SwordsIcon, ChevronDownIcon, XIcon, SaveIcon,
-  UserIcon, BarChartIcon, ZapIcon, PackageIcon, BookOpenIcon, TrendingUpIcon, BookIcon, LayoutIcon,
+  UserIcon, BarChartIcon, ZapIcon, PackageIcon, TrendingUpIcon, BookIcon, LayoutIcon,
 } from './Icons.jsx'
 import { loadNavPos } from '../store/theme.js'
 import { useConfirm } from './ConfirmModal.jsx'
@@ -21,7 +21,6 @@ const NAV = [
   { to: '/skills',    label: 'Skills',   Icon: BarChartIcon   },
   { to: '/spells',    label: 'Spells',   Icon: ZapIcon        },
   { to: '/gear',      label: 'Gear',     Icon: PackageIcon    },
-  { to: '/notebook',  label: 'Notes',    Icon: BookOpenIcon   },
   { to: '/levelup',   label: 'Level Up', Icon: TrendingUpIcon },
   { to: '/reference', label: 'Ref',      Icon: BookIcon       },
   { to: '/workspace', label: 'Tiled',    Icon: LayoutIcon     },
@@ -68,8 +67,7 @@ export default function Shell({ children }) {
     const handle = await pickAndLinkFile()
     if (!handle) return
     const chars = (() => { try { return JSON.parse(localStorage.getItem('rm_characters') || '{}') } catch { return {} } })()
-    const nb    = (() => { try { return JSON.parse(localStorage.getItem('rm_notebook') || 'null') } catch { return null } })()
-    await writeToHandle(handle, { _version: 1, _type: 'backup', characters: chars, notebook: nb, _saved_at: new Date().toISOString() })
+    await writeToHandle(handle, { _version: 1, _type: 'backup', characters: chars, _saved_at: new Date().toISOString() })
     setBackupFile({ name: handle.name, hasPermission: true })
     setBackupMenuOpen(false)
   }, [])

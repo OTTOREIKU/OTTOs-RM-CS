@@ -1,5 +1,5 @@
 // Reusable in-app confirmation dialog. Matches the app's UI tokens and the
-// existing NotebookView confirm-dialog visual pattern.
+// app's modal visual pattern.
 //
 // Two ways to use:
 //

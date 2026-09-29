@@ -21,7 +21,6 @@ import ReferenceView from './views/ReferenceView.jsx'
 import LevelUpView from './views/LevelUpView.jsx'
 import WelcomeView from './views/WelcomeView.jsx'
 import EquipmentView from './views/EquipmentView.jsx'
-import NotebookView from './views/NotebookView.jsx'
 import WorkspaceView from './views/WorkspaceView.jsx'
 
 export default function App() {
@@ -148,7 +147,6 @@ export default function App() {
           <Route path="/levelup"   element={activeChar ? <LevelUpView />  : <WelcomeView />} />
           <Route path="/reference" element={<ReferenceView />} />
           <Route path="/gear"      element={activeChar ? <EquipmentView /> : <WelcomeView />} />
-          <Route path="/notebook"  element={<NotebookView />} />
           <Route path="/workspace" element={activeChar ? <WorkspaceView /> : <WelcomeView />} />
           <Route path="*"          element={<Navigate to="/" replace />} />
         </Routes>

@@ -5,7 +5,7 @@
 //
 //   - `rows` is the vertical split (top→bottom)
 //   - each row holds horizontal panes
-//   - `view` is a route name: 'sheet' | 'skills' | 'spells' | 'gear' | 'notebook' | 'levelup' | 'reference'
+//   - `view` is a route name: 'sheet' | 'skills' | 'spells' | 'gear' | 'levelup' | 'reference'
 //   - `size` is % share within its container
 //
 // Layout changes persist back to the character via updateCharacter.
@@ -20,7 +20,6 @@ import CharacterSheet from './CharacterSheet.jsx'
 import SkillsView     from './SkillsView.jsx'
 import SpellsView     from './SpellsView.jsx'
 import EquipmentView  from './EquipmentView.jsx'
-import NotebookView   from './NotebookView.jsx'
 import LevelUpView    from './LevelUpView.jsx'
 import ReferenceView  from './ReferenceView.jsx'
 import WelcomeView    from './WelcomeView.jsx'
@@ -31,7 +30,6 @@ const VIEWS = {
   skills:    { label: 'Skills',    component: SkillsView,     requiresChar: true  },
   spells:    { label: 'Spells',    component: SpellsView,     requiresChar: false },
   gear:      { label: 'Gear',      component: EquipmentView,  requiresChar: true  },
-  notebook:  { label: 'Notes',     component: NotebookView,   requiresChar: false },
   levelup:   { label: 'Level Up',  component: LevelUpView,    requiresChar: true  },
   reference: { label: 'Reference', component: ReferenceView,  requiresChar: false },
 }

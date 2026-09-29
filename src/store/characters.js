@@ -10,9 +10,7 @@ import {
 function buildBackupPayload() {
   const EXPORT_V = 1
   const chars = loadCharacters()
-  let nb = null
-  try { nb = JSON.parse(localStorage.getItem(NB_KEY)) } catch {}
-  return { _version: EXPORT_V, _type: 'backup', characters: chars, notebook: nb, _saved_at: new Date().toISOString() }
+  return { _version: EXPORT_V, _type: 'backup', characters: chars, _saved_at: new Date().toISOString() }
 }
 
 const STORAGE_KEY = 'rm_characters'
@@ -134,7 +132,7 @@ export function makeBlankCharacter(id) {
     // Otherwise: { rows: [{ size, panes: [{ view, size }] }] }
     //   - `rows` is the vertical split (top→bottom). Each row contains horizontal panes.
     //   - `view` is one of the route paths without the leading slash: 'sheet', 'skills',
-    //     'spells', 'gear', 'notebook', 'levelup', 'reference'.
+    //     'spells', 'gear', 'levelup', 'reference'.
     //   - `size` is the % share within its container.
     workspace_layout: null,
 
@@ -405,7 +403,6 @@ export function removeSpellList(id, listName) {
 // ── Export / Import ────────────────────────────────────────────────────────────
 
 const EXPORT_VERSION = 1
-const NB_KEY = 'rm_notebook'
 
 function triggerDownload(filename, jsonStr) {
   const blob = new Blob([jsonStr], { type: 'application/json' })
@@ -484,68 +481,12 @@ export function importCharactersFromFile(file, mode = 'merge') {
           applyTheme(theme || loadTheme(), display || loadDisplaySettings())
         }
 
-        // Merge notebook if present
-        if (payload.notebook) {
-          try {
-            const raw = localStorage.getItem(NB_KEY)
-            const existing = raw ? JSON.parse(raw) : { folders: {}, notes: {} }
-            const nb = payload.notebook
-            if (mode === 'merge') {
-              Object.keys(nb.folders || {}).forEach(k => { if (!existing.folders[k]) existing.folders[k] = nb.folders[k] })
-              Object.keys(nb.notes   || {}).forEach(k => { if (!existing.notes[k])   existing.notes[k]   = nb.notes[k]   })
-            } else {
-              Object.assign(existing.folders, nb.folders || {})
-              Object.assign(existing.notes,   nb.notes   || {})
-            }
-            localStorage.setItem(NB_KEY, JSON.stringify(existing))
-          } catch {}
-        }
         // Switch to first imported character if none active
         const activeId = loadActiveId()
         if (!activeId || !chars[activeId]) {
           const firstId = incomingList[0]?.id
           if (firstId && chars[firstId]) saveActiveId(firstId)
         }
-        resolve({ imported, skipped })
-      } catch (err) {
-        reject(new Error('Invalid file: ' + err.message))
-      }
-    }
-    reader.onerror = () => reject(new Error('Could not read file'))
-    reader.readAsText(file)
-  })
-}
-
-/**
- * Import ONLY the notebook from a file — accepts notebook-only exports
- * OR full character/backup exports that contain a notebook field.
- * Returns { imported: number, skipped: number } for notes.
- */
-export function importNotebookFromFile(file, mode = 'merge') {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onload = e => {
-      try {
-        const payload = JSON.parse(e.target.result)
-        // Accept notebook-only JSON  {folders,notes}  OR any payload with a .notebook field
-        const nb = payload.notebook ?? (payload.folders && payload.notes ? payload : null)
-        if (!nb || (!nb.folders && !nb.notes)) {
-          reject(new Error('No notebook data found in file')); return
-        }
-        const raw      = localStorage.getItem(NB_KEY)
-        const existing = raw ? JSON.parse(raw) : { folders: {}, notes: {} }
-        const incoming = { folders: nb.folders || {}, notes: nb.notes || {} }
-        let imported = 0, skipped = 0
-        if (mode === 'merge') {
-          Object.keys(incoming.folders).forEach(k => { if (!existing.folders[k]) existing.folders[k] = incoming.folders[k] })
-          Object.keys(incoming.notes).forEach(k => {
-            if (!existing.notes[k]) { existing.notes[k] = incoming.notes[k]; imported++ } else { skipped++ }
-          })
-        } else {
-          Object.assign(existing.folders, incoming.folders)
-          Object.keys(incoming.notes).forEach(k => { existing.notes[k] = incoming.notes[k]; imported++ })
-        }
-        localStorage.setItem(NB_KEY, JSON.stringify(existing))
         resolve({ imported, skipped })
       } catch (err) {
         reject(new Error('Invalid file: ' + err.message))
