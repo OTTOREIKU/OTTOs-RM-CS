@@ -79,9 +79,11 @@ function spellSectionToCostBucket(section) {
 
 // Per-profession spell-list cost (1st rank / 2nd rank per level).
 // Returns { first, second } parsed from skill_costs.json's "X/Y" entries.
+// The character's own list type (char.spell_lists[name].category, set in Skills)
+// wins over the book section — a custom profession's base lists cost as Base.
 // Falls back to the old hardcoded defaults if no per-profession entry exists.
-function getSpellCostForChar(listName, list, profession) {
-  const bucket = spellSectionToCostBucket(list?.section)
+function getSpellCostForChar(listName, list, profession, category) {
+  const bucket = spellSectionToCostBucket(category) || spellSectionToCostBucket(list?.section)
   const costStr = bucket ? skillCosts[bucket]?.[profession] : null
   if (costStr) return parseSkillCosts(costStr)
   // Fallback defaults (legacy approximation):
@@ -600,7 +602,7 @@ function SpellListsSection({ c, lu, dispatch, dpLeft, spellSearch, setSpellSearc
 
       {filtered.map(([name, list], idx) => {
         const rc       = REALM_COLOR[list.realm] || 'var(--accent)'
-        const costs    = getSpellCostForChar(name, list, c.profession)   // { first, second }
+        const costs    = getSpellCostForChar(name, list, c.profession, c.spell_lists?.[name]?.category)   // { first, second }
         const curRanks = c.spell_lists?.[name]?.ranks || 0
         const buying   = lu.spellBuys[name] || 0
         const costForNext = buying === 0 ? costs.first : costs.second
@@ -695,7 +697,7 @@ function ReviewStep({ c, lu, onConfirm }) {
         <Section title={`Spell List Ranks (${spellChanges.length} lists)`}>
           {spellChanges.map(([name, ranks]) => {
             const list  = spellLists[name]
-            const costs = getSpellCostForChar(name, list || {}, c.profession)
+            const costs = getSpellCostForChar(name, list || {}, c.profession, c.spell_lists?.[name]?.category)
             const cur   = c.spell_lists?.[name]?.ranks || 0
             const dpUsed = rankCostDelta(0, ranks, costs)
             return <Row key={name} label={name} value={`+${ranks} rank${ranks > 1 ? 's' : ''} (${cur} → ${cur + ranks}) · −${dpUsed} DP`} color="var(--purple)" />

@@ -1125,6 +1125,17 @@ function SpellListRow({ list, char, updateSpellList, removeSpellList, sub, unloc
   const extraPanel = unlocked && showExtra && (
     <div style={{ padding: '6px 14px 8px', background: 'var(--surface2)',
       borderTop: '1px dashed var(--border)', display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
+      {/* List type — sets the SCR list modifier and the level-up DP cost.
+          Custom professions: set your own base lists to Base. */}
+      <label style={{ fontSize: 11, color: 'var(--text3)', display: 'flex', alignItems: 'center', gap: 4 }}
+        title="Sets the SCR list modifier (Base +5, Open 0, Closed −5, Arcane/Restricted −10) and the DP cost at level up. For a custom profession, set its own lists to Base.">
+        List type:
+        <select value={sub} onChange={e => updateSpellList(list.name, { category: e.target.value })}
+          style={{ fontSize: 11, background: 'var(--surface)', border: '1px solid var(--border2)',
+            borderRadius: 4, padding: '2px 4px', color: 'var(--text)' }}>
+          {SPELL_SUBSECTIONS.map(s => <option key={s} value={s}>{s}</option>)}
+        </select>
+      </label>
       {/* Complementary skill */}
       <label style={{ fontSize: 11, color: 'var(--text3)', display: 'flex', alignItems: 'center', gap: 4 }}>
         Comp. skill:
