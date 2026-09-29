@@ -45,6 +45,67 @@ function setHits(c, updateCharacter, next) {
   updateCharacter({ hits_current: clamped >= max ? null : clamped })
 }
 
+// ── Status strip (top of the Sheet) ──────────────────────────────────────────
+
+function Pill({ label, value, color, title }) {
+  return (
+    <div title={title} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 8,
+      padding: '6px 8px', textAlign: 'center', minWidth: 0 }}>
+      <div style={{ fontSize: 16, fontWeight: 800, color: color || 'var(--text)', whiteSpace: 'nowrap' }}>{value}</div>
+      <div style={{ fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>{label}</div>
+    </div>
+  )
+}
+
+function Badge({ children, color }) {
+  return (
+    <span style={{ fontSize: 10, fontWeight: 800, padding: '2px 7px', borderRadius: 10, background: color, color: '#fff', letterSpacing: '0.04em' }}>
+      {children}
+    </span>
+  )
+}
+
+/** At-a-glance combat numbers. `ppMax` null = no realm. */
+export function StatusStrip({ c, db, initiative, bmr, ppMax }) {
+  const max  = getHitsMax(c)
+  const cur  = getHitsCurrent(c)
+  const cond = getConditionPenalty(c)
+  const bleed = getBleedPerRound(c)
+  const { status } = getHealthStatus(c)
+  const stun = c.stun || [0, 0, 0]
+  const worstStun = [2, 1, 0].find(i => stun[i] > 0)
+  const conds = c.conditions || {}
+  const activeSpells = (c.active_effects || []).filter(e => e.remaining == null || e.remaining > 0).length
+  const fmt = n => (n > 0 ? `+${n}` : `${n}`)
+  const hitsColor = cur <= 0 ? 'var(--danger)' : getHitLossPenalty(c) < 0 ? '#f97316' : 'var(--text)'
+  const badges = [
+    status === 'dead' && <Badge key="dead" color="var(--danger)">DEAD</Badge>,
+    status === 'unconscious' && <Badge key="unc" color="#f97316">UNCONSCIOUS</Badge>,
+    worstStun != null && <Badge key="stun" color="#ca8a04">STUNNED {-(worstStun + 1) * 25} · {stun[worstStun]} rnd</Badge>,
+    bleed > 0 && <Badge key="bleed" color="var(--danger)">BLEEDING {bleed}/rnd</Badge>,
+    conds.prone && <Badge key="prone" color="#f97316">PRONE</Badge>,
+    conds.staggered && <Badge key="stag" color="#f97316">STAGGERED</Badge>,
+    conds.surprised && <Badge key="surp" color="#f97316">SURPRISED</Badge>,
+    conds.flatfooted && <Badge key="flat" color="#f97316">FLAT-FOOTED</Badge>,
+    conds.grapple > 0 && <Badge key="grap" color="#f97316">GRAPPLED {conds.grapple}%</Badge>,
+    activeSpells > 0 && <Badge key="spells" color="var(--purple)">{activeSpells} ACTIVE SPELL{activeSpells > 1 ? 'S' : ''}</Badge>,
+  ].filter(Boolean)
+  return (
+    <div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(84px, 1fr))', gap: 6 }}>
+        <Pill label="Hits" value={`${cur}/${max}`} color={hitsColor} />
+        {ppMax != null && <Pill label="Power Pts" value={`${c.power_points_current ?? ppMax}/${ppMax}`} color="var(--purple)" />}
+        <Pill label="Penalty" value={cond.total < 0 ? cond.total : '—'} color={cond.total < 0 ? 'var(--danger)' : 'var(--text3)'}
+          title="Hit loss + injuries + stun + fatigue + grapple — applies to skills, OB and casting" />
+        <Pill label="Initiative" value={fmt(initiative)} color="var(--accent)" />
+        <Pill label="DB" value={fmt(db)} />
+        <Pill label="Move" value={`${bmr}'`} title="Base movement rate, feet per round" />
+      </div>
+      {badges.length > 0 && <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap', marginTop: 6 }}>{badges}</div>}
+    </div>
+  )
+}
+
 // ── Hits box (sits beside Power Points) ─────────────────────────────────────
 
 export function HitsBox({ c, updateCharacter, autoHitsMax, bleedTalent }) {

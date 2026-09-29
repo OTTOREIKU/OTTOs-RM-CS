@@ -5,7 +5,7 @@ import FoundryExportModal from '../components/FoundryExportModal.jsx'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { STATS } from '../store/characters.js'
 import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getRRBreakdown, getBaseHits, getEndurance, getPowerPoints, getWeightAllowance, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getConditionPenalty, getConditionInitiativePenalty, getEnduranceConditionModifier, getKnackBonus, rmuSkillName, getWeaponSkillRanks, getBMR, getFatigueRecoveryCap, restFatiguePenalty } from '../utils/calc.js'
-import { HitsBox, InjuriesPanel } from '../components/HealthPanel.jsx'
+import { HitsBox, InjuriesPanel, StatusStrip } from '../components/HealthPanel.jsx'
 import { ActiveEffectsPanel, FamiliarPanel, familiarName } from '../components/ActiveEffects.jsx'
 import { QuickRollsPanel, ManeuverModal } from '../components/RollModals.jsx'
 import { REALM_COLORS, SPELL_SECTION_COLORS, RR_COLORS } from '../store/theme.js'
@@ -884,7 +884,8 @@ function FatigueCard({ c, updateCharacter, autoEndurance, armorManPenalty }) {
 export default function CharacterSheet() {
   const { activeChar, updateCharacter, updateStat, updateSkill, addWeapon, updateWeapon, removeWeapon } = useCharacter()
   const [wBrowse,    setWBrowse]   = useState(false)
-  const [identityOpen,    setIdentityOpen]    = usePersistentOpen('rm_panel_identity',    true)
+  const [identityOpen,    setIdentityOpen]    = usePersistentOpen('rm_panel_identity_v2', false)
+  const [statsOpen,       setStatsOpen]       = usePersistentOpen('rm_panel_stats',       false)
   const [paceOpen,        setPaceOpen]        = usePersistentOpen('rm_panel_pace',         false)
   const [weaponsOpen,     setWeaponsOpen]     = usePersistentOpen('rm_panel_weapons',      true)
   const [armorOpen,       setArmorOpen]       = usePersistentOpen('rm_panel_armor',        true)
@@ -894,6 +895,11 @@ export default function CharacterSheet() {
   useScrollRestore('rm_scroll_sheet')
   const c = activeChar
   if (!c) return null
+  // A character still being built (placeholder name, or no ranks bought yet)
+  // gets Identity + Statistics first; afterwards they move to the bottom.
+  const creating = !c.name?.trim() || c.name === 'New Character'
+    || (!Object.values(c.skills || {}).some(v => (v?.ranks ?? 0) > 0)
+        && !Object.values(c.spell_lists || {}).some(v => (v?.ranks ?? 0) > 0))
 
   const db           = getDefensiveBonus(c)
   const baseIni      = getInitiativeBonus(c)
@@ -997,93 +1003,10 @@ export default function CharacterSheet() {
   return (
     <div style={{ maxWidth: 680, margin: '0 auto', padding: '16px 12px', display: 'flex', flexDirection: 'column', gap: 12 }}>
 
-      {/* Identity card */}
-      <Card title="Identity" onToggle={setIdentityOpen} isOpen={identityOpen}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 10 }}>
-          <FieldRow label="Name"><TInput value={c.name} onChange={v => updateCharacter({ name: v })} /></FieldRow>
-          <FieldRow label="Player"><TInput value={c.player} onChange={v => updateCharacter({ player: v })} /></FieldRow>
-          <FieldRow label="Level"><NInput value={c.level} onChange={v => updateCharacter({ level: v })} min={1} max={100} /></FieldRow>
-          <FieldRow label="Race"><SInput value={c.race} onChange={v => updateCharacter({ race: v })} options={races.map(r => r.name)} /></FieldRow>
-          <FieldRow label="Profession"><SInput value={c.profession} onChange={v => updateCharacter({ profession: v })} options={professions} /></FieldRow>
-          <FieldRow label="Realm"><SInput value={c.realm} onChange={v => updateCharacter({ realm: v })} options={REALMS} /></FieldRow>
-          <FieldRow label="Culture"><SInput value={c.culture} onChange={v => updateCharacter({ culture: v })} options={cultures} /></FieldRow>
-          <FieldRow label="Size">
-            <div style={{ display:'flex', alignItems:'center', gap:6 }}>
-              <div style={{ flex:1 }}><SInput value={c.size} onChange={v => updateCharacter({ size: v })} options={SIZES} /></div>
-              {(talentB.size !== 0 || talentB.sizeHits !== 0) && (
-                <div style={{ display:'flex', flexDirection:'column', gap:2 }}>
-                  {talentB.size !== 0 && (
-                    <span style={{ fontSize:9, fontWeight:700, padding:'1px 5px', borderRadius:4,
-                      background: talentB.size > 0 ? 'var(--success)' : 'var(--danger)', color:'#fff', whiteSpace:'nowrap' }}
-                      title="Increased/Decreased Size talent">
-                      {talentB.size > 0 ? '+' : ''}{talentB.size} size
-                    </span>
-                  )}
-                  {talentB.sizeHits !== 0 && (
-                    <span style={{ fontSize:9, fontWeight:700, padding:'1px 5px', borderRadius:4,
-                      background:'var(--danger)', color:'#fff', whiteSpace:'nowrap' }}
-                      title="Light-boned: hits treated as smaller size">
-                      {talentB.sizeHits} hits sz
-                    </span>
-                  )}
-                </div>
-              )}
-            </div>
-          </FieldRow>
-          <FieldRow label="Gender"><TInput value={c.gender} onChange={v => updateCharacter({ gender: v })} /></FieldRow>
-          <FieldRow label="Age"><NInput value={c.age} onChange={v => updateCharacter({ age: v })} min={1} /></FieldRow>
-          <FieldRow label="Fate Points"><NInput value={c.fate_points} onChange={v => updateCharacter({ fate_points: v })} min={0} /></FieldRow>
-        </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 10, marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--border)' }}>
-          <FieldRow label="Hometown"><TInput value={c.hometown} onChange={v => updateCharacter({ hometown: v })} /></FieldRow>
-          <FieldRow label="Nationality"><TInput value={c.nationality} onChange={v => updateCharacter({ nationality: v })} /></FieldRow>
-          <FieldRow label="Hair"><TInput value={c.hair_color} onChange={v => updateCharacter({ hair_color: v })} /></FieldRow>
-          <FieldRow label="Eyes"><TInput value={c.eye_color} onChange={v => updateCharacter({ eye_color: v })} /></FieldRow>
-          <FieldRow label="Skin"><TInput value={c.skin_color} onChange={v => updateCharacter({ skin_color: v })} /></FieldRow>
-          <FieldRow label="Weight (lb)"><NInput value={c.weight} onChange={v => updateCharacter({ weight: v })} /></FieldRow>
-          <FieldRow label="Height (ft)"><NInput value={c.height_ft} onChange={v => updateCharacter({ height_ft: v })} /></FieldRow>
-          <FieldRow label="Height (in)"><NInput value={c.height_in} onChange={v => updateCharacter({ height_in: v })} /></FieldRow>
-        </div>
-        {c.culture && (
-          <CultureGrantsPanel
-            culture={c.culture}
-            char={c}
-            updateCharacter={updateCharacter}
-            updateSkill={updateSkill}
-          />
-        )}
-        <KnacksSubPanel char={c} updateCharacter={updateCharacter} allSkillNames={allSkillNames} />
-        <ProfessionalSkillsSubPanel char={c} updateCharacter={updateCharacter} updateSkill={updateSkill} />
-        <CTGroupsSubPanel char={c} updateCharacter={updateCharacter} />
-      </Card>
-
-      {/* Derived stats row */}
-      <Card title="Derived Stats" action={
-        <button onClick={toggleDetail}
-          style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text3)', display: 'flex', alignItems: 'center', padding: 4 }}>
-          {showDetail ? <EyeOpenIcon size={14} color="currentColor" /> : <EyeClosedIcon size={14} color="currentColor" />}
-        </button>
-      }>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(110px,1fr))', gap: 8 }}>
-          <StatCard label="Def Bonus" value={fmt(totalDB)} color={totalDB > 0 ? 'var(--success)' : 'var(--text)'}
-            sub={['Qu×3', talentB.db && `${talentB.db} talent`, (shieldDB + (shield.db ?? 0)) && 'shield', armorPartDB && 'armor'].filter(Boolean).join(' + ')} showDetail={showDetail} />
-          <StatCard label="Initiative" value={fmt(ini)} color={ini > 0 ? 'var(--accent)' : ini < 0 ? 'var(--danger)' : 'var(--text)'}
-            sub={iniPenalty < 0
-              ? `Qu${talentB.initiative ? ` + ${talentB.initiative}T` : ''} ${iniPenalty} condition`
-              : talentB.initiative ? `Qu + ${talentB.initiative} talent` : 'Qu bonus'}
-            showDetail={showDetail} />
-          <EditStat label="Endurance" field="endurance" char={c} onUpdate={updateCharacter} autoValue={autoEndurance}
-            sub={talentB.endurance ? `BD + ${talentB.endurance > 0 ? '+' : ''}${talentB.endurance} talent + race` : 'BD + race'} showDetail={showDetail} />
-          <StatCard
-            label="Carry Weight"
-            value={wa.lbs != null ? `${wa.lbs} lbs` : '—'}
-            color={wa.pct > 15 ? 'var(--success)' : wa.pct < 15 ? 'var(--danger)' : 'var(--text)'}
-            sub={wa.lbs != null ? `${wa.pct}%${wa.carryBonus ? ` (+${wa.carryBonus}% talent)` : ''}` : 'set weight'}
-            showDetail={showDetail}
-          />
-          <EditStat label="Experience" field="experience" char={c} onUpdate={updateCharacter} showDetail={showDetail} />
-        </div>
-      </Card>
+      {/* At-a-glance combat status */}
+      <div style={{ order: -3 }}>
+        <StatusStrip c={c} db={totalDB} initiative={ini} bmr={bmr} ppMax={effPPMax} />
+      </div>
 
       {/* Hits / PP combat panel */}
       <Card title="Hits, Injuries & Power Points">
@@ -1115,7 +1038,7 @@ export default function CharacterSheet() {
                       color: c.power_points_max != null ? 'var(--text)' : 'var(--text3)',
                       background: 'transparent', border: 'none', boxShadow: 'none' }} />
                   {c.power_points_max == null && <div style={{ fontSize: 8, color: 'var(--accent)', textAlign: 'center', letterSpacing: '0.06em' }}>AUTO</div>}
-                  {c.power_points_max != null && <div style={{ fontSize: 8, color: 'var(--text3)', textAlign: 'center', marginTop: 1 }}>PD ranks × RS</div>}
+                  {c.power_points_max != null && <div style={{ fontSize: 8, color: 'var(--text3)', textAlign: 'center', marginTop: 1 }}>manual · auto {autoPPMax ?? '—'}</div>}
                 </div>
               </div>
             </div>
@@ -1139,74 +1062,11 @@ export default function CharacterSheet() {
         <QuickRollsPanel c={c} />
       </Card>
 
-      {/* Statistics table */}
-      <Card title="Statistics">
-        <div style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
-            <thead>
-              <tr>
-                {['Stat','','Temp','Potential','Racial','Special','Bonus'].map((h, i) => (
-                  <th key={i} style={{ padding: '6px 6px', textAlign: i < 2 ? 'left' : 'center', fontSize: 10, fontWeight: 600, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.07em', borderBottom: '1px solid var(--border)', whiteSpace: 'nowrap' }}>{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {STATS.map((stat, i) => {
-                const s = c.stats[stat] || { temp: 50, potential: 50, racial: 0, special: 0 }
-                const bonus = getTotalStatBonus(s)
-                const isRealm = stat === realmStat
-                const bonusColor = bonus > 0 ? 'var(--success)' : bonus < 0 ? 'var(--danger)' : 'var(--text3)'
-                return (
-                  <tr key={stat} style={{ borderBottom: '1px solid var(--border)' }}>
-                    <td style={{ padding: '5px 6px', fontWeight: isRealm ? 700 : 400, color: isRealm ? 'var(--accent)' : 'var(--text)', whiteSpace: 'nowrap' }}>{stat}</td>
-                    <td style={{ padding: '5px 2px', fontSize: 10, color: 'var(--text3)', fontWeight: 600 }}>{STAT_ABBR[stat]}{isRealm ? <> <DiamondIcon size={7} color="var(--accent)" /></> : ''}</td>
-                    <td style={{ padding: '3px 4px' }}>
-                      <input type="number" value={s.temp ?? ''} min={1} max={100}
-                        onChange={e => updateStat(stat, 'temp', Number(e.target.value))}
-                        style={{ width: 52, textAlign: 'center', padding: '3px 2px' }} />
-                    </td>
-                    <td style={{ padding: '3px 4px' }}>
-                      <input type="number" value={s.potential ?? ''} min={1} max={100}
-                        onChange={e => updateStat(stat, 'potential', Number(e.target.value))}
-                        style={{ width: 52, textAlign: 'center', padding: '3px 2px' }} />
-                    </td>
-                    <td style={{ padding: '3px 4px' }}>
-                      <input type="number" value={s.racial ?? 0}
-                        onChange={e => updateStat(stat, 'racial', Number(e.target.value))}
-                        style={{ width: 44, textAlign: 'center', padding: '3px 2px' }} />
-                    </td>
-                    <td style={{ padding: '3px 4px' }}>
-                      <input type="number" value={s.special ?? 0}
-                        onChange={e => updateStat(stat, 'special', Number(e.target.value))}
-                        style={{ width: 44, textAlign: 'center', padding: '3px 2px' }} />
-                    </td>
-                    <td style={{ padding: '5px 6px', textAlign: 'center', fontWeight: 700, color: bonusColor, fontSize: 14 }}>
-                      {fmt(bonus)}
-                      {talentB.stat[stat] ? (
-                        <span style={{ display: 'inline-block', fontSize: 9, fontWeight: 700, marginLeft: 3, padding: '1px 4px', borderRadius: 3,
-                          background: talentB.stat[stat] > 0 ? 'var(--success)' : 'var(--danger)', color: '#fff', verticalAlign: 'middle' }}>
-                          {talentB.stat[stat] > 0 ? `+${talentB.stat[stat]}` : talentB.stat[stat]}T
-                        </span>
-                      ) : null}
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
-        <p style={{ fontSize: 10, color: 'var(--text3)', marginTop: 8, display: 'flex', alignItems: 'center', gap: 4 }}><DiamondIcon size={7} color="var(--accent)" /> Realm stat · Bonus = stat bonus + racial + special</p>
-      </Card>
+      {/* Spell Lists */}
+      <SpellListsPanel c={c} />
 
-      {/* Fatigue & Endurance */}
-      <Card title="Fatigue & Endurance" onToggle={setFatigueOpen} isOpen={fatigueOpen}>
-        <FatigueCard
-          c={c}
-          updateCharacter={updateCharacter}
-          autoEndurance={c.endurance ?? autoEndurance}
-          armorManPenalty={armorTotals.man}
-        />
-      </Card>
+      {/* Starred Skills */}
+      <StarredSkillsPanel c={c} />
 
       {/* Weapons */}
       <Card title="Weapons & Attacks" onToggle={setWeaponsOpen} isOpen={weaponsOpen} action={weaponsOpen ? (
@@ -1517,11 +1377,15 @@ export default function CharacterSheet() {
         </div>
       </Card>
 
-      {/* Starred Skills */}
-      <StarredSkillsPanel c={c} />
-
-      {/* Spell Lists */}
-      <SpellListsPanel c={c} />
+      {/* Fatigue & Endurance */}
+      <Card title="Fatigue & Endurance" onToggle={setFatigueOpen} isOpen={fatigueOpen}>
+        <FatigueCard
+          c={c}
+          updateCharacter={updateCharacter}
+          autoEndurance={c.endurance ?? autoEndurance}
+          armorManPenalty={armorTotals.man}
+        />
+      </Card>
 
       {/* Pace & Encumbrance */}
       <Card title="Pace & Encumbrance" onToggle={setPaceOpen} isOpen={paceOpen}>
@@ -1561,6 +1425,159 @@ export default function CharacterSheet() {
           </>
         )}
       </Card>
+
+      {/* Derived stats row */}
+      <Card title="Derived Stats" action={
+        <button onClick={toggleDetail}
+          style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text3)', display: 'flex', alignItems: 'center', padding: 4 }}>
+          {showDetail ? <EyeOpenIcon size={14} color="currentColor" /> : <EyeClosedIcon size={14} color="currentColor" />}
+        </button>
+      }>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(110px,1fr))', gap: 8 }}>
+          <StatCard label="Def Bonus" value={fmt(totalDB)} color={totalDB > 0 ? 'var(--success)' : 'var(--text)'}
+            sub={['Qu×3', talentB.db && `${talentB.db} talent`, (shieldDB + (shield.db ?? 0)) && 'shield', armorPartDB && 'armor'].filter(Boolean).join(' + ')} showDetail={showDetail} />
+          <StatCard label="Initiative" value={fmt(ini)} color={ini > 0 ? 'var(--accent)' : ini < 0 ? 'var(--danger)' : 'var(--text)'}
+            sub={iniPenalty < 0
+              ? `Qu${talentB.initiative ? ` + ${talentB.initiative}T` : ''} ${iniPenalty} condition`
+              : talentB.initiative ? `Qu + ${talentB.initiative} talent` : 'Qu bonus'}
+            showDetail={showDetail} />
+          <EditStat label="Endurance" field="endurance" char={c} onUpdate={updateCharacter} autoValue={autoEndurance}
+            sub={talentB.endurance ? `BD + ${talentB.endurance > 0 ? '+' : ''}${talentB.endurance} talent + race` : 'BD + race'} showDetail={showDetail} />
+          <StatCard
+            label="Carry Weight"
+            value={wa.lbs != null ? `${wa.lbs} lbs` : '—'}
+            color={wa.pct > 15 ? 'var(--success)' : wa.pct < 15 ? 'var(--danger)' : 'var(--text)'}
+            sub={wa.lbs != null ? `${wa.pct}%${wa.carryBonus ? ` (+${wa.carryBonus}% talent)` : ''}` : 'set weight'}
+            showDetail={showDetail}
+          />
+          <EditStat label="Experience" field="experience" char={c} onUpdate={updateCharacter} showDetail={showDetail} />
+        </div>
+      </Card>
+
+      {/* Reference cards: first while creating a character, last afterwards */}
+      <div style={{ order: creating ? -2 : 0, display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <div style={{ order: creating ? 0 : 1, display: 'flex', flexDirection: 'column', gap: 12 }}>
+      {/* Identity card */}
+      <Card title="Identity" onToggle={setIdentityOpen} isOpen={creating || identityOpen}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 10 }}>
+          <FieldRow label="Name"><TInput value={c.name} onChange={v => updateCharacter({ name: v })} /></FieldRow>
+          <FieldRow label="Player"><TInput value={c.player} onChange={v => updateCharacter({ player: v })} /></FieldRow>
+          <FieldRow label="Level"><NInput value={c.level} onChange={v => updateCharacter({ level: v })} min={1} max={100} /></FieldRow>
+          <FieldRow label="Race"><SInput value={c.race} onChange={v => updateCharacter({ race: v })} options={races.map(r => r.name)} /></FieldRow>
+          <FieldRow label="Profession"><SInput value={c.profession} onChange={v => updateCharacter({ profession: v })} options={professions} /></FieldRow>
+          <FieldRow label="Realm"><SInput value={c.realm} onChange={v => updateCharacter({ realm: v })} options={REALMS} /></FieldRow>
+          <FieldRow label="Culture"><SInput value={c.culture} onChange={v => updateCharacter({ culture: v })} options={cultures} /></FieldRow>
+          <FieldRow label="Size">
+            <div style={{ display:'flex', alignItems:'center', gap:6 }}>
+              <div style={{ flex:1 }}><SInput value={c.size} onChange={v => updateCharacter({ size: v })} options={SIZES} /></div>
+              {(talentB.size !== 0 || talentB.sizeHits !== 0) && (
+                <div style={{ display:'flex', flexDirection:'column', gap:2 }}>
+                  {talentB.size !== 0 && (
+                    <span style={{ fontSize:9, fontWeight:700, padding:'1px 5px', borderRadius:4,
+                      background: talentB.size > 0 ? 'var(--success)' : 'var(--danger)', color:'#fff', whiteSpace:'nowrap' }}
+                      title="Increased/Decreased Size talent">
+                      {talentB.size > 0 ? '+' : ''}{talentB.size} size
+                    </span>
+                  )}
+                  {talentB.sizeHits !== 0 && (
+                    <span style={{ fontSize:9, fontWeight:700, padding:'1px 5px', borderRadius:4,
+                      background:'var(--danger)', color:'#fff', whiteSpace:'nowrap' }}
+                      title="Light-boned: hits treated as smaller size">
+                      {talentB.sizeHits} hits sz
+                    </span>
+                  )}
+                </div>
+              )}
+            </div>
+          </FieldRow>
+          <FieldRow label="Gender"><TInput value={c.gender} onChange={v => updateCharacter({ gender: v })} /></FieldRow>
+          <FieldRow label="Age"><NInput value={c.age} onChange={v => updateCharacter({ age: v })} min={1} /></FieldRow>
+          <FieldRow label="Fate Points"><NInput value={c.fate_points} onChange={v => updateCharacter({ fate_points: v })} min={0} /></FieldRow>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 10, marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--border)' }}>
+          <FieldRow label="Hometown"><TInput value={c.hometown} onChange={v => updateCharacter({ hometown: v })} /></FieldRow>
+          <FieldRow label="Nationality"><TInput value={c.nationality} onChange={v => updateCharacter({ nationality: v })} /></FieldRow>
+          <FieldRow label="Hair"><TInput value={c.hair_color} onChange={v => updateCharacter({ hair_color: v })} /></FieldRow>
+          <FieldRow label="Eyes"><TInput value={c.eye_color} onChange={v => updateCharacter({ eye_color: v })} /></FieldRow>
+          <FieldRow label="Skin"><TInput value={c.skin_color} onChange={v => updateCharacter({ skin_color: v })} /></FieldRow>
+          <FieldRow label="Weight (lb)"><NInput value={c.weight} onChange={v => updateCharacter({ weight: v })} /></FieldRow>
+          <FieldRow label="Height (ft)"><NInput value={c.height_ft} onChange={v => updateCharacter({ height_ft: v })} /></FieldRow>
+          <FieldRow label="Height (in)"><NInput value={c.height_in} onChange={v => updateCharacter({ height_in: v })} /></FieldRow>
+        </div>
+        {c.culture && (
+          <CultureGrantsPanel
+            culture={c.culture}
+            char={c}
+            updateCharacter={updateCharacter}
+            updateSkill={updateSkill}
+          />
+        )}
+        <KnacksSubPanel char={c} updateCharacter={updateCharacter} allSkillNames={allSkillNames} />
+        <ProfessionalSkillsSubPanel char={c} updateCharacter={updateCharacter} updateSkill={updateSkill} />
+        <CTGroupsSubPanel char={c} updateCharacter={updateCharacter} />
+      </Card>
+        </div>
+        <div style={{ order: creating ? 1 : 0, display: 'flex', flexDirection: 'column', gap: 12 }}>
+      {/* Statistics table */}
+      <Card title="Statistics" onToggle={setStatsOpen} isOpen={creating || statsOpen}>
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+            <thead>
+              <tr>
+                {['Stat','','Temp','Potential','Racial','Special','Bonus'].map((h, i) => (
+                  <th key={i} style={{ padding: '6px 6px', textAlign: i < 2 ? 'left' : 'center', fontSize: 10, fontWeight: 600, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.07em', borderBottom: '1px solid var(--border)', whiteSpace: 'nowrap' }}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {STATS.map((stat, i) => {
+                const s = c.stats[stat] || { temp: 50, potential: 50, racial: 0, special: 0 }
+                const bonus = getTotalStatBonus(s)
+                const isRealm = stat === realmStat
+                const bonusColor = bonus > 0 ? 'var(--success)' : bonus < 0 ? 'var(--danger)' : 'var(--text3)'
+                return (
+                  <tr key={stat} style={{ borderBottom: '1px solid var(--border)' }}>
+                    <td style={{ padding: '5px 6px', fontWeight: isRealm ? 700 : 400, color: isRealm ? 'var(--accent)' : 'var(--text)', whiteSpace: 'nowrap' }}>{stat}</td>
+                    <td style={{ padding: '5px 2px', fontSize: 10, color: 'var(--text3)', fontWeight: 600 }}>{STAT_ABBR[stat]}{isRealm ? <> <DiamondIcon size={7} color="var(--accent)" /></> : ''}</td>
+                    <td style={{ padding: '3px 4px' }}>
+                      <input type="number" value={s.temp ?? ''} min={1} max={100}
+                        onChange={e => updateStat(stat, 'temp', Number(e.target.value))}
+                        style={{ width: 52, textAlign: 'center', padding: '3px 2px' }} />
+                    </td>
+                    <td style={{ padding: '3px 4px' }}>
+                      <input type="number" value={s.potential ?? ''} min={1} max={100}
+                        onChange={e => updateStat(stat, 'potential', Number(e.target.value))}
+                        style={{ width: 52, textAlign: 'center', padding: '3px 2px' }} />
+                    </td>
+                    <td style={{ padding: '3px 4px' }}>
+                      <input type="number" value={s.racial ?? 0}
+                        onChange={e => updateStat(stat, 'racial', Number(e.target.value))}
+                        style={{ width: 44, textAlign: 'center', padding: '3px 2px' }} />
+                    </td>
+                    <td style={{ padding: '3px 4px' }}>
+                      <input type="number" value={s.special ?? 0}
+                        onChange={e => updateStat(stat, 'special', Number(e.target.value))}
+                        style={{ width: 44, textAlign: 'center', padding: '3px 2px' }} />
+                    </td>
+                    <td style={{ padding: '5px 6px', textAlign: 'center', fontWeight: 700, color: bonusColor, fontSize: 14 }}>
+                      {fmt(bonus)}
+                      {talentB.stat[stat] ? (
+                        <span style={{ display: 'inline-block', fontSize: 9, fontWeight: 700, marginLeft: 3, padding: '1px 4px', borderRadius: 3,
+                          background: talentB.stat[stat] > 0 ? 'var(--success)' : 'var(--danger)', color: '#fff', verticalAlign: 'middle' }}>
+                          {talentB.stat[stat] > 0 ? `+${talentB.stat[stat]}` : talentB.stat[stat]}T
+                        </span>
+                      ) : null}
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+        <p style={{ fontSize: 10, color: 'var(--text3)', marginTop: 8, display: 'flex', alignItems: 'center', gap: 4 }}><DiamondIcon size={7} color="var(--accent)" /> Realm stat · Bonus = stat bonus + racial + special</p>
+      </Card>
+        </div>
+      </div>
 
     </div>
   )
