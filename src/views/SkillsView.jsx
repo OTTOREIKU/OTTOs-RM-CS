@@ -717,11 +717,11 @@ export default function SkillsView() {
           const label = c.skills?.[sk.name]?.label
           const disp  = displayName(sk.name, label).toLowerCase()
           const matchSearch = !query || disp.includes(query) || cat.toLowerCase().includes(query)
-          const hasRanks = (c.skills?.[sk.name]?.ranks ?? 0) > 0
+          const hasRanks = ((c.skills?.[sk.name]?.ranks ?? 0) + (c.skills?.[sk.name]?.culture_ranks ?? 0)) > 0
           return matchSearch && (showZero || hasRanks)
         })
         const filteredCustoms = customs.filter(cs => {
-          if (!showZero && !cs.ranks) return false
+          if (!showZero && !cs.ranks && !cs.culture_ranks) return false
           if (query) {
             const disp = displayName(cs.template_name, cs.label).toLowerCase()
             return disp.includes(query) || cat.toLowerCase().includes(query)

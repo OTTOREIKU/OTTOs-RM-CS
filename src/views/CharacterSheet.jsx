@@ -24,6 +24,8 @@ import talentsData from '../data/talents.json'
 import skillCostsData from '../data/skill_costs.json'
 
 const REALMS   = ['Channeling', 'Essence', 'Mentalism']
+// Every culture with grant data (culture_skills.json has 29; cultures.json only the first 12)
+const CULTURE_NAMES = [...new Set([...cultures, ...cultureSkillsData.map(x => x.name)])]
 // RMU creature sizes (smallest → largest); '' = use the race's size
 const SIZES    = ['Minuscule', 'Diminutive', 'Tiny', 'Small', 'Medium', 'Big', 'Large', 'Huge', 'Gigantic', 'Enormous', 'Immense', 'Behemoth', 'Leviathan']
 const ARMOR_TYPES = [
@@ -1555,7 +1557,7 @@ export default function CharacterSheet() {
           <FieldRow label="Race"><SInput value={c.race} onChange={v => updateCharacter({ race: v, stats: withRaceBonuses(c.stats, races.find(r => r.name === v)) })} options={races.map(r => r.name)} /></FieldRow>
           <FieldRow label="Profession"><SInput value={c.profession} onChange={v => updateCharacter({ profession: v })} options={professions} /></FieldRow>
           <FieldRow label="Realm"><SInput value={c.realm} onChange={v => updateCharacter({ realm: v })} options={REALMS} /></FieldRow>
-          <FieldRow label="Culture"><SInput value={c.culture} onChange={v => updateCharacter({ culture: v })} options={cultures} /></FieldRow>
+          <FieldRow label="Culture"><SInput value={c.culture} onChange={v => updateCharacter({ culture: v })} options={CULTURE_NAMES} /></FieldRow>
           <FieldRow label="Size">
             <div style={{ display:'flex', alignItems:'center', gap:6 }}>
               <div style={{ flex:1 }}>
@@ -1653,7 +1655,9 @@ export default function CharacterSheet() {
                     <td style={{ padding: '3px 4px' }}>
                       <input type="number" value={s.temp ?? ''} min={1} max={100}
                         onChange={e => updateStat(stat, 'temp', Number(e.target.value))}
-                        style={{ width: 52, textAlign: 'center', padding: '3px 2px' }} />
+                        title={(s.temp ?? 0) > (s.potential ?? 100) ? 'Temp is above potential — a stat can never exceed its potential' : undefined}
+                        style={{ width: 52, textAlign: 'center', padding: '3px 2px',
+                          ...((s.temp ?? 0) > (s.potential ?? 100) ? { borderColor: 'var(--danger)', color: 'var(--danger)' } : {}) }} />
                     </td>
                     <td style={{ padding: '3px 4px' }}>
                       <input type="number" value={s.potential ?? ''} min={1} max={100}
