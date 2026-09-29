@@ -4,7 +4,7 @@ import { ChevronDownIcon, ChevronUpIcon, XIcon, CheckIcon, DiamondIcon, EyeOpenI
 import FoundryExportModal from '../components/FoundryExportModal.jsx'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { STATS } from '../store/characters.js'
-import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getRRBreakdown, getBaseHits, getEndurance, getPowerPoints, getWeightAllowance, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getConditionPenalty, getConditionInitiativePenalty, getEnduranceConditionModifier, getKnackBonus, rmuSkillName, getWeaponSkillRanks, getBMR, getFatigueRecoveryCap, restFatiguePenalty, getRaceEntry, getRaceStatBonuses } from '../utils/calc.js'
+import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getRRBreakdown, getBaseHits, getEndurance, getPowerPoints, getWeightAllowance, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getConditionPenalty, getConditionInitiativePenalty, getEnduranceConditionModifier, getKnackBonus, rmuSkillName, getWeaponSkillRanks, getBMR, getFatigueRecoveryCap, restFatiguePenalty, getRaceEntry, getRaceStatBonuses, getArmorPenalties, getEncumbrance, getMovementPenalty } from '../utils/calc.js'
 import { HitsBox, InjuriesPanel, StatusStrip } from '../components/HealthPanel.jsx'
 import { ActiveEffectsPanel, FamiliarPanel, familiarName } from '../components/ActiveEffects.jsx'
 import { QuickRollsPanel, ManeuverModal } from '../components/RollModals.jsx'
@@ -692,7 +692,7 @@ const FATIGUE_INTERVALS = [
   ['Melee / Climbing / Swim','6 rounds'],
 ]
 
-function FatigueCard({ c, updateCharacter, autoEndurance, armorManPenalty }) {
+function FatigueCard({ c, updateCharacter, autoEndurance, armorManPenalty, encPenalty = 0 }) {
   const [rollInput, setRollInput] = useState('')
   const [restMin,   setRestMin  ] = useState('')
   const [condOpen,  setCondOpen ] = useState(false)
@@ -704,7 +704,7 @@ function FatigueCard({ c, updateCharacter, autoEndurance, armorManPenalty }) {
   const total  = pen + inj
 
   const condMod = getEnduranceConditionModifier(c)
-  const rollMod = autoEndurance + armorManPenalty + pen + condMod
+  const rollMod = autoEndurance + armorManPenalty + encPenalty + pen + condMod
 
   const penColor = pen === 0 ? 'var(--text3)' : pen >= -20 ? 'var(--warning)' : 'var(--danger)'
   const fmt = n  => n > 0 ? `+${n}` : String(n)
@@ -815,6 +815,7 @@ function FatigueCard({ c, updateCharacter, autoEndurance, armorManPenalty }) {
           {[
             { label: 'Base Endurance (BD + race)', value: autoEndurance, always: true },
             { label: 'Armor Man. Penalty',         value: armorManPenalty },
+            { label: 'Encumbrance',                value: encPenalty },
             { label: 'Accumulated Fatigue',        value: pen },
             { label: 'Conditions',                 value: condMod, showEdit: true },
           ].map(({ label, value, always, showEdit }) => {
@@ -1414,7 +1415,8 @@ export default function CharacterSheet() {
           c={c}
           updateCharacter={updateCharacter}
           autoEndurance={c.endurance ?? autoEndurance}
-          armorManPenalty={armorTotals.man}
+          armorManPenalty={getArmorPenalties(c).maneuver}
+          encPenalty={getEncumbrance(c).penalty}
         />
       </Card>
 
@@ -1424,7 +1426,19 @@ export default function CharacterSheet() {
           <>
             <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(110px,1fr))', gap:8, marginBottom:12 }}>
               <StatCard label="BMR (ft/rnd)" value={bmr} color="var(--accent)" sub={`20' + ½ Qu${talentB.stride ? ` ${talentB.stride > 0 ? '+' : ''}${talentB.stride} stride` : ''}`} />
-              <StatCard label="Armor Man." value={armorTotals.man || '—'} color={armorTotals.man < 0 ? 'var(--danger)' : 'var(--text3)'} />
+              {(() => {
+                const enc = getEncumbrance(c)
+                const ap  = getArmorPenalties(c)
+                return (<>
+                  <StatCard label="Carried" value={`${enc.carried} lb`} color="var(--text)"
+                    sub={enc.loadPct != null ? `${enc.loadPct}% of body wt` : 'set weight in Identity'} />
+                  <StatCard label="Allowance" value={`${enc.allowancePct}%`} color="var(--text2)" sub="15% + 2×St" />
+                  <StatCard label="Encumbrance" value={enc.penalty || '—'} color={enc.penalty < 0 ? 'var(--danger)' : 'var(--text3)'}
+                    sub={enc.maxPace ? `max pace ${enc.maxPace}` : undefined} />
+                  <StatCard label="Armor Man." value={ap.maneuver || '—'} color={ap.maneuver < 0 ? 'var(--danger)' : 'var(--text3)'}
+                    sub={ap.miaOffset > 0 ? `${ap.maneuverRaw} + ${ap.miaOffset} MiA` : undefined} />
+                </>)
+              })()}
               <StatCard label="Armor Rang." value={armorTotals.rang || '—'} color={armorTotals.rang < 0 ? 'var(--danger)' : 'var(--text3)'} />
               <StatCard label="Armor Perc." value={armorTotals.perc || '—'} color={armorTotals.perc < 0 ? 'var(--danger)' : 'var(--text3)'} />
             </div>
@@ -1667,6 +1681,7 @@ function StarredSkillsPanel({ c }) {
       const template = skillsDataMap[skillName]
       if (!template) continue
       const total = computeSkillTotal(c, template, skillData, talentBonusMap) + condPen
+        + getMovementPenalty(c, template.category, skillName).total
       const ranks = (skillData.ranks ?? 0) + (skillData.culture_ranks ?? 0)
       result.push({ name: displaySkillName(skillName, skillData.label), total, ranks, notes: skillData.notes })
     }
@@ -1675,6 +1690,7 @@ function StarredSkillsPanel({ c }) {
       const template = skillsDataMap[cs.template_name]
       const name = displaySkillName(cs.template_name, cs.label)
       const total = computeSkillTotal(c, template, cs, talentBonusMap) + condPen
+        + getMovementPenalty(c, template?.category, cs.template_name).total
       const ranks = (cs.ranks ?? 0) + (cs.culture_ranks ?? 0)
       result.push({ name, total, ranks, notes: cs.notes })
     }

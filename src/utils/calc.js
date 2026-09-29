@@ -4,6 +4,7 @@ import racesData          from '../data/races.json'
 import talentsData        from '../data/talents.json'
 import skillCategoryStats from '../data/skill_category_stats.json'
 import skillsData         from '../data/skills.json'
+import armorData          from '../data/armor.json'
 
 // ── Stat key utilities ─────────────────────────────────────────────────────
 //
@@ -222,6 +223,8 @@ export function isTwoHandedMelee(weapon) {
 export function getWeaponOB(char, weapon) {
   const { skillKey, charSkillData } = resolveWeaponSkill(char, weapon)
   const twoHanded = isTwoHandedMelee(weapon) ? 10 : 0
+  const isRanged = weapon?.ob_type === 'ranged' || weapon?.ob_type === 'thrown' || /^ranged/i.test(weapon?.skill_name || '')
+  const armorRanged = isRanged ? getArmorPenalties(char).ranged : 0
 
   // Find the template (for category + skill.stat lookup)
   const template = skillKey ? findSkillTemplate(skillKey) : null
@@ -231,7 +234,7 @@ export function getWeaponOB(char, weapon) {
   if (!template) {
     const charSkill = charSkillData || {}
     const ranks = (charSkill.ranks ?? 0) + (charSkill.culture_ranks ?? 0)
-    return rankBonus(ranks) + (weapon.item_bonus ?? 0) + twoHanded
+    return rankBonus(ranks) + (weapon.item_bonus ?? 0) + twoHanded + armorRanged
   }
 
   // Resolved display name (used for knack matching, e.g. "Melee: Blade")
@@ -241,7 +244,7 @@ export function getWeaponOB(char, weapon) {
     : skillKey
 
   return getSkillBonus(char, template, charSkillData || {}, displayName)
-    + (weapon.item_bonus ?? 0) + twoHanded
+    + (weapon.item_bonus ?? 0) + twoHanded + armorRanged
 }
 
 /**
@@ -594,7 +597,7 @@ export function getConditionPenalty(char) {
 
 /** Initiative loses 1 per full −10 of condition penalty (RMU rounds the /10). */
 export function getConditionInitiativePenalty(char) {
-  return Math.round(getConditionPenalty(char).total / 10)
+  return Math.round((getConditionPenalty(char).total + getEncumbrance(char).penalty) / 10)
 }
 
 /**
@@ -643,6 +646,98 @@ export function getEnduranceConditionModifier(char) {
   mod += Math.floor((fc.altitude_ft    || 0) / 2500) * -10
   mod += Math.floor((fc.temp_offset_f  || 0) / 5) * -5
   return mod
+}
+
+// ── Armor penalties & encumbrance (Core Law 5.4 / 6; RMU armor.js, enc.js) ──
+
+const ARMOR_PART_SLOT = { torso: 'torso', head: 'helmet', arms: 'vambraces', legs: 'greaves' }
+
+function armorRow(part, at) {
+  return (armorData[ARMOR_PART_SLOT[part]] || []).find(r => r.at === (at ?? 1)) || null
+}
+
+/** Full skill bonus of a single named skill (0 ranks → no offset). */
+function namedSkillBonus(char, name) {
+  const data = char.skills?.[name]
+  const ranks = (data?.ranks ?? 0) + (data?.culture_ranks ?? 0)
+  return ranks > 0 ? getSkillBonus(char, findSkillTemplate(name), data, name) : 0
+}
+
+/**
+ * Summed armor penalties across worn pieces, plus weight as % of body weight.
+ * `maneuver` is after Maneuvering in Armor (which offsets it up to its full size).
+ */
+export function getArmorPenalties(char) {
+  const parts = char.armor_parts || {}
+  let maneuverRaw = 0, ranged = 0, perception = 0, weightPct = 0
+  for (const part of Object.keys(ARMOR_PART_SLOT)) {
+    const row = armorRow(part, parts[part]?.at)
+    if (!row) continue
+    maneuverRaw += row.maneuver_penalty   || 0
+    ranged      += row.ranged_penalty     || 0
+    perception  += row.perception_penalty || 0
+    weightPct   += row.weight_pct         || 0
+  }
+  const mia = Math.max(0, namedSkillBonus(char, 'Maneuvering in Armor'))
+  const maneuver = Math.min(0, maneuverRaw + mia)
+  return { maneuverRaw, maneuver, miaOffset: maneuver - maneuverRaw, ranged, perception, weightPct }
+}
+
+const NOT_CARRIED = ['Stored', 'Mount']
+
+/** Weight carried in lbs: gear (not Stored/Mount), weapons, magic items, worn armor. */
+export function getCarriedWeight(char) {
+  const body = Number(char.weight) || 0
+  const gear = (char.equipment || []).filter(e => !NOT_CARRIED.includes(e.location))
+    .reduce((s, e) => s + (Number(e.weight) || 0) * (Number(e.qty) || 1), 0)
+  const weapons = (char.weapons || []).reduce((s, w) => s + (Number(w.weight) || 0), 0)
+  const magic   = (char.magic_items || []).reduce((s, m) => s + (Number(m.weight) || 0), 0)
+  const armor   = body * getArmorPenalties(char).weightPct / 100
+  return Math.round((gear + weapons + magic + armor) * 10) / 10
+}
+
+// Heaviest load (% of body weight) that still allows each pace (Core Law Table 5-3).
+const PACE_MAX_LOAD = [['Dash', 15], ['Sprint', 30], ['Run', 45], ['Jog', 60], ['Walk', 90]]
+
+/**
+ * Encumbrance: penalty −1 per 1% of body weight carried over the allowance
+ * (Core Law: −5 per 5%), and the fastest pace the load allows.
+ * Returns nulls when body weight isn't set.
+ */
+export function getEncumbrance(char) {
+  const body = Number(char.weight) || 0
+  const carried = getCarriedWeight(char)
+  const allowancePct = getWeightAllowance(char).pct
+  if (!body) return { body: null, carried, loadPct: null, allowancePct, penalty: 0, maxPace: null }
+  const loadPct = Math.round((carried / body) * 1000) / 10
+  const penalty = Math.min(0, -Math.floor(loadPct - allowancePct))
+  const maxPace = PACE_MAX_LOAD.find(([, max]) => loadPct <= max)?.[0] || 'Creep'
+  return { body, carried, loadPct, allowancePct, penalty, maxPace }
+}
+
+// Categories that are NOT physical maneuvers: no armor/encumbrance penalty
+// (RMU perform-skill-dialog.js), plus Combat Training (Core Law 5.1) and the
+// casting/expertise categories, which have their own rules.
+const NON_PHYSICAL = new Set([
+  'Awareness', 'Composition', 'Crafting', 'Delving', 'Environmental', 'Lore', 'Lore: Languages',
+  'Medical', 'Mental Discipline', 'Performance Art', 'Power Manipulation', 'Science', 'Social',
+  'Vocation', 'Combat Training', 'Spellcasting', 'Magical Expertise',
+])
+
+/**
+ * Armor + encumbrance penalty for a skill maneuver in `category`.
+ * Perception takes the armor perception penalty instead; Fortitude is exempt.
+ */
+export function getMovementPenalty(char, category, skillName) {
+  const base = (skillName || '').split(':')[0].trim()
+  if (base === 'Perception') {
+    const p = getArmorPenalties(char).perception
+    return { armor: p, enc: 0, total: p }
+  }
+  if (NON_PHYSICAL.has(category) || base === 'Fortitude') return { armor: 0, enc: 0, total: 0 }
+  const armor = getArmorPenalties(char).maneuver
+  const enc = getEncumbrance(char).penalty
+  return { armor, enc, total: armor + enc }
 }
 
 export function getWeightAllowance(char) {

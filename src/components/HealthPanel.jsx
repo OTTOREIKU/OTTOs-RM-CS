@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { XIcon, PlusIcon } from './Icons.jsx'
 import {
   getHitsMax, getHitsCurrent, getHitLossPenalty, getConditionPenalty,
-  getBleedPerRound, getHealthStatus,
+  getBleedPerRound, getHealthStatus, getEncumbrance,
 } from '../utils/calc.js'
 import { advanceTime } from '../utils/time.js'
 
@@ -88,6 +88,7 @@ export function StatusStrip({ c, db, initiative, bmr, ppMax }) {
     conds.surprised && <Badge key="surp" color="#f97316">SURPRISED</Badge>,
     conds.flatfooted && <Badge key="flat" color="#f97316">FLAT-FOOTED</Badge>,
     conds.grapple > 0 && <Badge key="grap" color="#f97316">GRAPPLED {conds.grapple}%</Badge>,
+    getEncumbrance(c).penalty < 0 && <Badge key="enc" color="#ca8a04">ENCUMBERED {getEncumbrance(c).penalty}</Badge>,
     activeSpells > 0 && <Badge key="spells" color="var(--purple)">{activeSpells} ACTIVE SPELL{activeSpells > 1 ? 'S' : ''}</Badge>,
   ].filter(Boolean)
   return (

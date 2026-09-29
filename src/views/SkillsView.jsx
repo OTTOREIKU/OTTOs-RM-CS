@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { ManeuverModal } from '../components/RollModals.jsx'
 import { useScrollRestore } from '../hooks/persist.js'
-import { rankBonus, getTotalStatBonus, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getNamedTalentBonus, getConditionPenalty, getKnackBonus } from '../utils/calc.js'
+import { rankBonus, getTotalStatBonus, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getNamedTalentBonus, getConditionPenalty, getKnackBonus, getArmorPenalties, getEncumbrance, getMovementPenalty } from '../utils/calc.js'
 import skillsData from '../data/skills.json'
 import skillCosts from '../data/skill_costs.json'
 import talentsData from '../data/talents.json'
@@ -208,7 +208,8 @@ function SkillRow({
   const knackBonus   = getKnackBonus(c, resolvedSkillName)
   const total        = rb + combinedStatB + item + talent + autoBonus + profBonus + knackBonus
   const condPen   = getConditionPenalty(c).total
-  const displayTotal = total + condPen
+  const movePen   = getMovementPenalty(c, skill.category, skill.name).total
+  const displayTotal = total + condPen + movePen
   const isSpec  = hasPlaceholder(skill.name)
   const editing     = !!editMode[rowKey]
   const noteOpen    = !!notesOpen[rowKey]
@@ -623,6 +624,8 @@ export default function SkillsView() {
   }
 
   const condPen = getConditionPenalty(c).total
+  const armorPen = getArmorPenalties(c)
+  const encPen = getEncumbrance(c).penalty
 
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '16px 12px' }}>
@@ -635,6 +638,19 @@ export default function SkillsView() {
         }}>
           <span style={{ fontWeight: 700, color: 'var(--warning)', flexShrink: 0 }}>Condition: {condPen}</span>
           <span style={{ color: 'var(--text3)' }}>Hit loss, injuries, stun and fatigue reduce all skill bonuses. Manage in the Sheet tab.</span>
+        </div>
+      )}
+      {(armorPen.maneuver < 0 || encPen < 0 || armorPen.perception < 0) && (
+        <div style={{
+          background: 'color-mix(in srgb, var(--warning) 12%, transparent)',
+          border: '1px solid color-mix(in srgb, var(--warning) 40%, transparent)',
+          borderRadius: 8, padding: '7px 12px', marginBottom: 10, fontSize: 11, color: 'var(--text3)',
+        }}>
+          <span style={{ fontWeight: 700, color: 'var(--warning)' }}>
+            {[armorPen.maneuver < 0 && `Armor ${armorPen.maneuver}`, encPen < 0 && `Encumbrance ${encPen}`].filter(Boolean).join(' · ') || 'Armor'}
+          </span>
+          {' '}on physical skills{armorPen.perception < 0 ? ` · Perception ${armorPen.perception} (helmet/armor)` : ''}.
+          {armorPen.miaOffset > 0 && ` Maneuvering in Armor offsets ${armorPen.miaOffset}.`}
         </div>
       )}
       <div style={{ display: 'flex', gap: 8, marginBottom: 12, flexWrap: 'wrap', alignItems: 'center' }}>

@@ -6,7 +6,7 @@
 import armorData from '../data/armor.json'
 import {
   getSpellCastingBonus, getSpellCastingBreakdown, getSpellMasteryBonus, getConditionPenalty,
-  getSkillBonus, findSkillTemplate,
+  getSkillBonus, findSkillTemplate, getEncumbrance,
 } from './calc.js'
 
 // ── Spell helpers ────────────────────────────────────────────────────────────
@@ -193,6 +193,7 @@ export function getCastBreakdown(char, listName, spell, opts) {
     sit('Stun', cond.stun)
     sit('Fatigue', cond.fatigue)
     sit('Grappled', cond.grapple)
+    sit('Encumbrance', getEncumbrance(char).penalty)
   }
 
   const armor = getArmorCastingPenalty(char)
