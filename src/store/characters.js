@@ -45,7 +45,7 @@ export function makeBlankCharacter(id) {
     hair_color: '',
     eye_color: '',
     vision: 'Normal',
-    size: 'Medium',
+    size: '',   // '' = use the race's size
     fate_points: 0,
     healing_multiplier: 1,
     hometown: '',

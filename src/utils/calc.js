@@ -136,6 +136,15 @@ export function getTalentBonuses(char) {
   return result
 }
 
+export function getRaceEntry(char) {
+  return racesData.find(r => r.name === char?.race) || null
+}
+
+/** The race's stat bonuses as { Agility: n, … } (all 0 when unknown). */
+export function getRaceStatBonuses(char) {
+  return getRaceEntry(char)?.stat_bonuses || {}
+}
+
 export function getStatBonus(value) {
   const v = Math.max(1, Math.min(100, Math.round(value || 0)))
   return statBonuses[String(v)] ?? 0
@@ -302,13 +311,15 @@ export function getResistanceBonuses(char) {
   // Realm bonus: +10 to the RR type matching the character's realm
   const realmType = char.realm ? (REALM_RR_TYPE[char.realm] || null) : null
   const talentRR = getTalentBonuses(char).rr
+  const race = getRaceEntry(char)
   const result = {}
   for (const [type, statName] of Object.entries(RR_STATS)) {
     const stat = char.stats?.[statName]
     const statB     = stat ? getTotalStatBonus(stat) : 0
     const special   = char.rr_bonuses?.[type] ?? 0
     const realmBonus = realmType === type ? 10 : 0
-    result[type] = statB + lvlBonus + realmBonus + special + (talentRR[type] ?? 0)
+    const raceB     = race?.[`${type}_rr`] ?? 0      // racial RR modifier (Core Law Table 2-2a)
+    result[type] = statB + lvlBonus + realmBonus + raceB + special + (talentRR[type] ?? 0)
   }
   return result
 }
@@ -323,7 +334,9 @@ export function getRRBreakdown(char, type) {
   const realmType = char.realm ? (REALM_RR_TYPE[char.realm] || null) : null
   const realmBonus = realmType === type ? 10 : 0
   const special   = char.rr_bonuses?.[type] ?? 0
-  return { statB, lvlBonus, realmBonus, special }
+  const raceB     = getRaceEntry(char)?.[`${type}_rr`] ?? 0
+  const talentB   = getTalentBonuses(char).rr[type] ?? 0
+  return { statB, lvlBonus, realmBonus, raceB, talentB, special }
 }
 
 // Per CoreLaw p.109: SCR uses raw rank count, NOT the scaled rank bonus.

@@ -4,7 +4,7 @@ import { ChevronDownIcon, ChevronUpIcon, XIcon, CheckIcon, DiamondIcon, EyeOpenI
 import FoundryExportModal from '../components/FoundryExportModal.jsx'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { STATS } from '../store/characters.js'
-import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getRRBreakdown, getBaseHits, getEndurance, getPowerPoints, getWeightAllowance, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getConditionPenalty, getConditionInitiativePenalty, getEnduranceConditionModifier, getKnackBonus, rmuSkillName, getWeaponSkillRanks, getBMR, getFatigueRecoveryCap, restFatiguePenalty } from '../utils/calc.js'
+import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getRRBreakdown, getBaseHits, getEndurance, getPowerPoints, getWeightAllowance, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getConditionPenalty, getConditionInitiativePenalty, getEnduranceConditionModifier, getKnackBonus, rmuSkillName, getWeaponSkillRanks, getBMR, getFatigueRecoveryCap, restFatiguePenalty, getRaceEntry, getRaceStatBonuses } from '../utils/calc.js'
 import { HitsBox, InjuriesPanel, StatusStrip } from '../components/HealthPanel.jsx'
 import { ActiveEffectsPanel, FamiliarPanel, familiarName } from '../components/ActiveEffects.jsx'
 import { QuickRollsPanel, ManeuverModal } from '../components/RollModals.jsx'
@@ -24,7 +24,8 @@ import talentsData from '../data/talents.json'
 import skillCostsData from '../data/skill_costs.json'
 
 const REALMS   = ['Channeling', 'Essence', 'Mentalism']
-const SIZES    = ['Small', 'Medium', 'Large', 'Huge']
+// RMU creature sizes (smallest → largest); '' = use the race's size
+const SIZES    = ['Minuscule', 'Diminutive', 'Tiny', 'Small', 'Medium', 'Big', 'Large', 'Huge', 'Gigantic', 'Enormous', 'Immense', 'Behemoth', 'Leviathan']
 const ARMOR_TYPES = [
   '1 – None','2 – Heavy Cloth','3 – Soft Leather','4 – Hide Scale',
   '5 – Laminar','6 – Rigid Leather','7 – Metal Scale','8 – Mail',
@@ -140,6 +141,33 @@ function TInput({ value, onChange, placeholder }) {
 function NInput({ value, onChange, min, max, style }) {
   return <input type="number" value={value ?? ''} onChange={e => onChange(e.target.value === '' ? null : Number(e.target.value))} min={min} max={max} style={{ width: '100%', ...style }} />
 }
+/** Reference list of a race's innate talents (hover for the rule text). */
+function RacialTalentsNote({ race }) {
+  const talents = (race?.racial_talents || []).filter(t => t.name && t.name !== 'None')
+  if (!talents.length) return null
+  return (
+    <div style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--border)', fontSize: 11, color: 'var(--text2)' }}>
+      <span style={{ fontWeight: 600, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.08em', fontSize: 11 }}>Racial talents </span>
+      {talents.map((t, i) => (
+        <span key={t.name} title={t.description}>
+          {i > 0 && ' · '}{t.name}{t.tier > 1 ? ` ${['I','II','III','IV','V','VI','VII','VIII','IX','X'][t.tier - 1] || t.tier}` : ''}
+        </span>
+      ))}
+      <div style={{ fontSize: 10, color: 'var(--text3)', marginTop: 2 }}>Reference only. Add any your GM applies under Gear → Talents.</div>
+    </div>
+  )
+}
+
+/** Stats with the Racial column set from a race's stat bonuses. */
+function withRaceBonuses(stats, race) {
+  if (!race?.stat_bonuses) return stats
+  const next = { ...(stats || {}) }
+  for (const [stat, bonus] of Object.entries(race.stat_bonuses)) {
+    next[stat] = { temp: 50, potential: 50, special: 0, ...(next[stat] || {}), racial: bonus }
+  }
+  return next
+}
+
 function SInput({ value, onChange, options }) {
   return (
     <select value={value || ''} onChange={e => onChange(e.target.value)} style={{ width: '100%' }}>
@@ -1336,6 +1364,8 @@ export default function CharacterSheet() {
                 `Stat (${stat}): ${bd.statB >= 0 ? '+' : ''}${bd.statB}`,
                 `Level×2: +${bd.lvlBonus}`,
                 bd.realmBonus ? `Realm bonus: +${bd.realmBonus}` : null,
+                bd.raceB ? `Race: ${bd.raceB >= 0 ? '+' : ''}${bd.raceB}` : null,
+                bd.talentB ? `Talents: ${bd.talentB >= 0 ? '+' : ''}${bd.talentB}` : null,
                 `Special: ${bd.special >= 0 ? '+' : ''}${bd.special}`,
                 `Total: ${total >= 0 ? '+' : ''}${total}`,
               ].filter(Boolean).join('\n')
@@ -1345,6 +1375,7 @@ export default function CharacterSheet() {
                     <div style={{ fontSize:9, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.07em', color }}>{label}</div>
                     <div style={{ display:'flex', alignItems:'center', gap:4 }}>
                       {bd.realmBonus > 0 && <span style={{ fontSize:8, color:'var(--accent)', fontWeight:700 }} title="Realm bonus +10">RM</span>}
+                      {bd.raceB !== 0 && <span style={{ fontSize:8, color: bd.raceB > 0 ? 'var(--success)' : 'var(--danger)', fontWeight:700 }} title={`Race ${bd.raceB > 0 ? '+' : ''}${bd.raceB}`}>RACE {bd.raceB > 0 ? '+' : ''}{bd.raceB}</span>}
                       {showArmorDetail && <div style={{ fontSize:8, color:'var(--text3)' }}>{stat}</div>}
                     </div>
                   </div>
@@ -1463,13 +1494,18 @@ export default function CharacterSheet() {
           <FieldRow label="Name"><TInput value={c.name} onChange={v => updateCharacter({ name: v })} /></FieldRow>
           <FieldRow label="Player"><TInput value={c.player} onChange={v => updateCharacter({ player: v })} /></FieldRow>
           <FieldRow label="Level"><NInput value={c.level} onChange={v => updateCharacter({ level: v })} min={1} max={100} /></FieldRow>
-          <FieldRow label="Race"><SInput value={c.race} onChange={v => updateCharacter({ race: v })} options={races.map(r => r.name)} /></FieldRow>
+          <FieldRow label="Race"><SInput value={c.race} onChange={v => updateCharacter({ race: v, stats: withRaceBonuses(c.stats, races.find(r => r.name === v)) })} options={races.map(r => r.name)} /></FieldRow>
           <FieldRow label="Profession"><SInput value={c.profession} onChange={v => updateCharacter({ profession: v })} options={professions} /></FieldRow>
           <FieldRow label="Realm"><SInput value={c.realm} onChange={v => updateCharacter({ realm: v })} options={REALMS} /></FieldRow>
           <FieldRow label="Culture"><SInput value={c.culture} onChange={v => updateCharacter({ culture: v })} options={cultures} /></FieldRow>
           <FieldRow label="Size">
             <div style={{ display:'flex', alignItems:'center', gap:6 }}>
-              <div style={{ flex:1 }}><SInput value={c.size} onChange={v => updateCharacter({ size: v })} options={SIZES} /></div>
+              <div style={{ flex:1 }}>
+                <select value={c.size || ''} onChange={e => updateCharacter({ size: e.target.value })} style={{ width: '100%' }}>
+                  <option value="">Race ({getRaceEntry(c)?.frame?.size || 'Medium'})</option>
+                  {SIZES.map(s => <option key={s} value={s}>{s}</option>)}
+                </select>
+              </div>
               {(talentB.size !== 0 || talentB.sizeHits !== 0) && (
                 <div style={{ display:'flex', flexDirection:'column', gap:2 }}>
                   {talentB.size !== 0 && (
@@ -1512,6 +1548,7 @@ export default function CharacterSheet() {
             updateSkill={updateSkill}
           />
         )}
+        <RacialTalentsNote race={getRaceEntry(c)} />
         <KnacksSubPanel char={c} updateCharacter={updateCharacter} allSkillNames={allSkillNames} />
         <ProfessionalSkillsSubPanel char={c} updateCharacter={updateCharacter} updateSkill={updateSkill} />
         <CTGroupsSubPanel char={c} updateCharacter={updateCharacter} />
@@ -1520,6 +1557,22 @@ export default function CharacterSheet() {
         <div style={{ order: creating ? 1 : 0, display: 'flex', flexDirection: 'column', gap: 12 }}>
       {/* Statistics table */}
       <Card title="Statistics" onToggle={setStatsOpen} isOpen={creating || statsOpen}>
+        {(() => {
+          const rb = getRaceStatBonuses(c)
+          const off = Object.entries(rb).filter(([stat, v]) => (c.stats?.[stat]?.racial ?? 0) !== v)
+          if (!getRaceEntry(c) || off.length === 0) return null
+          return (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10, padding: '6px 10px', borderRadius: 8,
+              border: '1px solid #f97316', fontSize: 12, color: 'var(--text2)' }}>
+              <span style={{ flex: 1 }}>
+                Racial column differs from {c.race}: {off.map(([stat, v]) => `${STAT_ABBR[stat] || stat} ${v >= 0 ? '+' : ''}${v}`).join(', ')}
+              </span>
+              <button onClick={() => updateCharacter({ stats: withRaceBonuses(c.stats, getRaceEntry(c)) })}
+                style={{ fontSize: 11, fontWeight: 700, padding: '3px 9px', borderRadius: 6, border: '1px solid #f97316',
+                  background: '#f97316', color: '#fff', cursor: 'pointer' }}>Apply race</button>
+            </div>
+          )
+        })()}
         <div style={{ overflowX: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
             <thead>
