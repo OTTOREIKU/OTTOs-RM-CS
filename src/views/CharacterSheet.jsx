@@ -7,6 +7,7 @@ import { STATS } from '../store/characters.js'
 import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getRRBreakdown, getBaseHits, getEndurance, getPowerPoints, getWeightAllowance, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getConditionPenalty, getConditionInitiativePenalty, getEnduranceConditionModifier, getKnackBonus, rmuSkillName, getWeaponSkillRanks, getBMR, getFatigueRecoveryCap, restFatiguePenalty } from '../utils/calc.js'
 import { HitsBox, InjuriesPanel } from '../components/HealthPanel.jsx'
 import { ActiveEffectsPanel, FamiliarPanel, familiarName } from '../components/ActiveEffects.jsx'
+import { QuickRollsPanel, ManeuverModal } from '../components/RollModals.jsx'
 import { REALM_COLORS, SPELL_SECTION_COLORS, RR_COLORS } from '../store/theme.js'
 import races from '../data/races.json'
 import professions from '../data/professions.json'
@@ -1134,6 +1135,10 @@ export default function CharacterSheet() {
         </Card>
       )}
 
+      <Card title="Quick Rolls">
+        <QuickRollsPanel c={c} />
+      </Card>
+
       {/* Statistics table */}
       <Card title="Statistics">
         <div style={{ overflowX: 'auto' }}>
@@ -1606,13 +1611,16 @@ function StarredSkillsPanel({ c }) {
     return result.sort((a, b) => a.name.localeCompare(b.name))
   }, [c.skills, c.custom_skills, c.talents, c.stats, c.realm, talentBonusMap, condPen])
 
+  const [rolling, setRolling] = useState(null)
   if (!starred.length) return null
 
   return (
     <Card title="Starred Skills" onToggle={setOpen} isOpen={open}>
+      {rolling && <ManeuverModal skillName={rolling.name} bonus={rolling.total} onClose={() => setRolling(null)} />}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: 8 }}>
         {starred.map(({ name, total, ranks, notes }) => (
-          <div key={name} style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 8, padding: '8px 10px' }}>
+          <div key={name} onClick={() => setRolling({ name, total })} title="Tap to roll a maneuver"
+            style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 8, padding: '8px 10px', cursor: 'pointer' }}>
             <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text)', marginBottom: 4,
               overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={name}>{name}</div>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>

@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react'
 import { useCharacter } from '../store/CharacterContext.jsx'
+import { ManeuverModal } from '../components/RollModals.jsx'
 import { useScrollRestore } from '../hooks/persist.js'
 import { rankBonus, getTotalStatBonus, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getNamedTalentBonus, getConditionPenalty, getKnackBonus } from '../utils/calc.js'
 import skillsData from '../data/skills.json'
@@ -178,6 +179,7 @@ function SkillRow({
   c, talentBonuses, editMode, setEditMode, notesOpen, setNotesOpen,
   addOpen, setAddOpen, addCustomSkill, updateSkill, updateCustomSkill, removeCustomSkill,
 }) {
+  const [rolling, setRolling] = useState(false)
   const ranks        = cs.ranks ?? 0
   const cultureRanks = cs.culture_ranks ?? 0
   const totalRanks   = ranks + cultureRanks
@@ -274,7 +276,9 @@ function SkillRow({
   )
   const totalCell = (
     <div style={{ textAlign: 'center' }}>
-      <span style={{ fontWeight: 700, fontSize: 13,
+      {rolling && <ManeuverModal skillName={resolvedSkillName} bonus={displayTotal} onClose={() => setRolling(false)} />}
+      <span onClick={() => setRolling(true)} title="Tap to roll a maneuver"
+        style={{ fontWeight: 700, fontSize: 13, cursor: 'pointer', borderBottom: '1px dotted var(--border2)',
         color: displayTotal > 0 ? 'var(--success)' : displayTotal < -10 ? 'var(--danger)' : 'var(--text2)' }}>
         {displayTotal >= 0 ? `+${displayTotal}` : displayTotal}
       </span>
