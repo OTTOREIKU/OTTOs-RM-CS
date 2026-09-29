@@ -47,14 +47,24 @@ function castingRealm(char) {
 // ── Magical Expertise skills ─────────────────────────────────────────────────
 
 /** Full bonus of a per-list Magical Expertise skill (Grace / Spell Trickery) for this list, or 0. */
+// Skill labels are title case ("Dark Summons"); spell list keys are upper case.
+const sameList = (a, b) => (a || '').trim().toLowerCase() === (b || '').trim().toLowerCase()
+
 function listExpertiseBonus(char, base, listName) {
   for (const [key, data] of Object.entries(char?.skills || {})) {
     if (!key.startsWith(base + ':')) continue
     const spec = key.includes('<') ? data?.label : key.slice(base.length + 1).trim()
-    if (spec !== listName) continue
+    if (!sameList(spec, listName)) continue
     const ranks = (data?.ranks ?? 0) + (data?.culture_ranks ?? 0)
     if (ranks <= 0) return 0
     return getSkillBonus(char, findSkillTemplate(key), data, `${base}: ${listName}`)
+  }
+  // Only two slots exist per skill, so a third list lives in custom_skills.
+  for (const cs of char?.custom_skills || []) {
+    if (!cs.template_name?.startsWith(base + ':') || !sameList(cs.label, listName)) continue
+    const ranks = (cs.ranks ?? 0) + (cs.culture_ranks ?? 0)
+    if (ranks <= 0) return 0
+    return getSkillBonus(char, findSkillTemplate(cs.template_name), cs, `${base}: ${listName}`)
   }
   return 0
 }

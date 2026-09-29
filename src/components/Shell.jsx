@@ -114,7 +114,23 @@ export default function Shell({ children }) {
     if (!file) return
     e.target.value = ''
     try {
-      const { imported, skipped } = await importCharactersFromFile(file, 'merge')
+      // If the file holds characters already on this device, ask before replacing them
+      // (otherwise an updated export from another device would be silently skipped).
+      let mode = 'merge'
+      try {
+        const payload = JSON.parse(await file.text())
+        const incoming = payload._type === 'all' ? Object.values(payload.characters || {}) : [payload.character]
+        const existing = incoming.filter(ch => ch?.id && characters[ch.id])
+        if (existing.length) {
+          const names = existing.map(ch => ch.name || 'Unnamed').join(', ')
+          const replace = await confirm(
+            `${names} already exist${existing.length === 1 ? 's' : ''} on this device.\n\nReplace with the version from the file? The current version on this device will be overwritten.`,
+            { title: 'Replace character?', confirmLabel: 'Replace', cancelLabel: 'Keep current', dangerous: true }
+          )
+          if (replace) mode = 'replace'
+        }
+      } catch { /* unreadable here — let the importer report the error */ }
+      const { imported, skipped } = await importCharactersFromFile(file, mode)
       reloadCharacters()
       setImportStatus(`Imported ${imported} character${imported !== 1 ? 's' : ''}${skipped ? `, skipped ${skipped} (already exist)` : ''}.`)
       setTimeout(() => setImportStatus(null), 4000)

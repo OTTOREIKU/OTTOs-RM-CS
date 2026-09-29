@@ -1,5 +1,7 @@
 // Character store — persists to localStorage, supports multiple characters
 import { scheduleBackup } from './fileSync.js'
+import { migrateCharacter } from './migrate.js'
+import skillsData from '../data/skills.json'
 import {
   loadTheme, saveTheme,
   loadDisplaySettings, saveDisplaySettings,
@@ -158,13 +160,26 @@ export function makeBlankCharacter(id) {
   }
 }
 
+const SKILL_TEMPLATE_NAMES = new Set(skillsData.map(s => s.name))
+
 export function loadCharacters() {
+  let chars
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
-    return raw ? JSON.parse(raw) : {}
+    chars = raw ? JSON.parse(raw) : {}
   } catch {
     return {}
   }
+  // Heal entries stored under since-renamed skill names (see store/migrate.js).
+  let changed = false
+  for (const id of Object.keys(chars)) {
+    const res = migrateCharacter(chars[id], SKILL_TEMPLATE_NAMES)
+    if (res.changed) { chars[id] = res.char; changed = true }
+  }
+  if (changed) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(chars)) } catch {}
+  }
+  return chars
 }
 
 export function saveCharacters(characters) {
