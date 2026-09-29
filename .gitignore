@@ -33,3 +33,9 @@ test_*.py
 rmu-extractor/
 rmu-system-dump*/
 rmu-console-extractor/
+
+# Claude project tracking / memory — local only, never on GitHub
+CLAUDE.md
+CLAUDE.local.md
+/memory/
+*.memory.md
