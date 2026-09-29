@@ -192,6 +192,7 @@ export function getCastBreakdown(char, listName, spell, opts) {
     sit('Injuries', cond.injury)
     sit('Stun', cond.stun)
     sit('Fatigue', cond.fatigue)
+    sit('Grappled', cond.grapple)
   }
 
   const armor = getArmorCastingPenalty(char)

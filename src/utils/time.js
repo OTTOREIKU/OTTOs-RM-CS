@@ -5,7 +5,7 @@
 //   active_effects: [{ id, name, list?, level?, target, remaining, total, concentration, notes }]
 // where `target` is 'self', 'familiar', or free text, and `remaining`/`total`
 // are in rounds (null = no fixed end: concentration-only, permanent, or unknown).
-import { getBleedPerRound, getHitsCurrent, getHitsMax } from './calc.js'
+import { getBleedPerRound, getHitsCurrent, getHitsMax, getPowerPoints, restFatiguePenalty } from './calc.js'
 
 export const ROUNDS = { round: 1, minute: 12, hour: 720, day: 17280, week: 120960, month: 518400, year: 6307200 }
 
@@ -117,6 +117,45 @@ export function advanceTime(char, rounds) {
     const next = getHitsCurrent(char) - bleedLoss
     patch.hits_current = next >= getHitsMax(char) ? null : next
   }
-  if (char.conditions?.staggered) patch.conditions = { ...char.conditions, staggered: false }
+  // Stagger, surprise and flat-footedness only last into the next round
+  const cond = char.conditions || {}
+  if (cond.staggered || cond.surprised || cond.flatfooted) {
+    patch.conditions = { ...cond, staggered: false, surprised: false, flatfooted: false }
+  }
   return { patch, bleedLoss, expired }
+}
+
+/**
+ * Rest or sleep for `hours` (Core Law 13.1 / 3.19 / 5.5):
+ *   hits  +10% of max per 2 continuous hours of rest or sleep
+ *   PP    +10% of max per 2 hours of SLEEP, at most 8 hours a day
+ *   fatigue recovers 1 point per minute of rest
+ * Time also passes (effects, stun, bleeding). Returns { patch, ... } for preview.
+ */
+export function planRest(char, hours, sleep) {
+  const h = Math.max(0, Number(hours) || 0)
+  const { patch, bleedLoss, expired } = advanceTime(char, Math.round(h * ROUNDS.hour))
+  const hitsMax  = getHitsMax(char)
+  const hitsAfterBleed = patch.hits_current ?? getHitsCurrent(char)
+  const hitsGain = Math.round(hitsMax * 0.1 * Math.floor(h / 2))
+  const hitsNew  = Math.min(hitsMax, hitsAfterBleed + hitsGain)
+  patch.hits_current = hitsNew >= hitsMax ? null : hitsNew
+
+  const ppMax = getPowerPoints(char) ?? 0
+  let ppGain = 0
+  if (sleep && ppMax > 0) {
+    const ppNow = char.power_points_current ?? ppMax
+    ppGain = Math.min(ppMax - ppNow, Math.round(ppMax * 0.1 * Math.floor(Math.min(h, 8) / 2)))
+    const ppNew = ppNow + ppGain
+    patch.power_points_current = ppNew >= ppMax ? null : ppNew
+  }
+
+  const fatigueBefore = char.fatigue?.penalty ?? 0
+  const fatigueAfter  = restFatiguePenalty(char, Math.round(h * 60))
+  if (fatigueAfter !== fatigueBefore) patch.fatigue = { ...(char.fatigue || {}), penalty: fatigueAfter }
+
+  return {
+    patch, bleedLoss, expired,
+    hitsGain: hitsNew - hitsAfterBleed, ppGain, fatigueGain: fatigueAfter - fatigueBefore,
+  }
 }

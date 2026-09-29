@@ -4,7 +4,7 @@
 import React, { useState } from 'react'
 import { XIcon, PlusIcon } from './Icons.jsx'
 import { useConfirm } from './ConfirmModal.jsx'
-import { ROUNDS, formatRounds, newEffectId, advanceTime } from '../utils/time.js'
+import { ROUNDS, formatRounds, newEffectId, advanceTime, planRest } from '../utils/time.js'
 import { getBleedPerRound } from '../utils/calc.js'
 
 const label10 = { fontSize: 10, color: 'var(--text3)', marginBottom: 3 }
@@ -52,11 +52,54 @@ export function useAdvanceTime(c, updateCharacter) {
   return [advance, confirmEl]
 }
 
+function RestPanel({ c, updateCharacter, onClose }) {
+  const [sleep, setSleep] = useState(true)
+  const [hours, setHours] = useState('8')
+  const plan = planRest(c, hours, sleep)
+  const h = Number(hours) || 0
+  const lines = [
+    plan.hitsGain > 0 && `+${plan.hitsGain} hits`,
+    plan.ppGain > 0 && `+${plan.ppGain} PP`,
+    plan.fatigueGain > 0 && `fatigue ${c.fatigue?.penalty ?? 0} → ${plan.patch.fatigue?.penalty ?? 0}`,
+    plan.expired.length > 0 && `ends: ${plan.expired.map(e => e.name).join(', ')}`,
+  ].filter(Boolean)
+  return (
+    <div style={{ border: '1px dashed var(--border2)', borderRadius: 8, padding: 10, marginBottom: 10 }}>
+      <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap', marginBottom: 8 }}>
+        {[['Sleep', true], ['Rest', false]].map(([lbl, v]) => (
+          <button key={lbl} onClick={() => { setSleep(v); setHours(v ? '8' : '2') }} style={btn('var(--purple)', sleep === v)}>{lbl}</button>
+        ))}
+        <input type="number" min={0} value={hours} onChange={e => setHours(e.target.value)} style={{ width: 60 }} />
+        <span style={{ fontSize: 12, color: 'var(--text3)' }}>hours</span>
+      </div>
+      <div style={{ fontSize: 11, color: 'var(--text3)', marginBottom: 8, lineHeight: 1.5 }}>
+        Hits +10% per 2 h of rest or sleep · PP +10% per 2 h of <b>sleep</b> (up to 8 h a day) · fatigue −1 per minute.
+      </div>
+      {plan.bleedLoss > 0 && (
+        <div style={{ fontSize: 12, color: 'var(--danger)', fontWeight: 700, marginBottom: 6 }}>
+          Still bleeding — {formatRounds(Math.round(h * ROUNDS.hour))} costs {plan.bleedLoss} hits. Treat the wound first.
+        </div>
+      )}
+      <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+        <span style={{ flex: 1, fontSize: 12, color: lines.length ? 'var(--success)' : 'var(--text3)' }}>
+          {h > 0 ? (lines.join(' · ') || 'Nothing to recover') : 'Enter hours'}
+        </span>
+        <button style={btn('var(--text3)')} onClick={onClose}>Cancel</button>
+        <button disabled={h <= 0} style={{ ...btn('var(--purple)', true), opacity: h > 0 ? 1 : 0.5 }}
+          onClick={() => { updateCharacter(plan.patch); onClose() }}>{sleep ? 'Sleep' : 'Rest'}</button>
+      </div>
+    </div>
+  )
+}
+
 function TimeBar({ c, updateCharacter }) {
   const [advance, confirmEl] = useAdvanceTime(c, updateCharacter)
   const [custom, setCustom] = useState('')
   const [unit, setUnit] = useState('minute')
+  const [resting, setResting] = useState(false)
   return (
+    <>
+    {resting && <RestPanel c={c} updateCharacter={updateCharacter} onClose={() => setResting(false)} />}
     <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center', marginBottom: 10 }}>
       {STEPS.map((s, i) => (
         <button key={s.label} style={btn('var(--accent)', i === 0)} onClick={() => advance(s.rounds)}>{s.label}</button>
@@ -70,8 +113,10 @@ function TimeBar({ c, updateCharacter }) {
         <button style={{ ...btn('var(--accent)'), opacity: Number(custom) > 0 ? 1 : 0.5 }} disabled={!(Number(custom) > 0)}
           onClick={() => { advance(Number(custom) * ROUNDS[unit]); setCustom('') }}>Pass</button>
       </span>
+      {!resting && <button style={btn('var(--purple)')} onClick={() => setResting(true)}>Rest / Sleep</button>}
       {confirmEl}
     </div>
+    </>
   )
 }
 

@@ -574,7 +574,9 @@ export function getConditionPenalty(char) {
   const injury  = getInjuryPenalty(char)
   const stun    = getStunPenalty(char)
   const fatigue = getFatiguePenalty(char)
-  return { hitLoss, injury, stun, fatigue, total: hitLoss + injury + stun + fatigue }
+  // Grappled %: a penalty to all actions (Core Law 9.8)
+  const grapple = -Math.min(100, Math.max(0, Number(char.conditions?.grapple) || 0))
+  return { hitLoss, injury, stun, fatigue, grapple, total: hitLoss + injury + stun + fatigue + grapple }
 }
 
 /** Initiative loses 1 per full −10 of condition penalty (RMU rounds the /10). */
@@ -599,6 +601,24 @@ export function getHealthStatus(char) {
  * does NOT include base endurance, armor, or accumulated fatigue; those are added
  * separately so each component can be shown in the UI).
  */
+/**
+ * Fatigue recovery cap while short of food/water: the penalty can't recover
+ * past half the deprivation penalty. null = no cap.
+ */
+export function getFatigueRecoveryCap(char) {
+  const fc = char.fatigue_conditions || {}
+  const dep = (fc.hours_no_water || 0) * 5 + (fc.days_no_food || 0) * 10 + Math.floor((fc.days_half_food || 0) / 3) * 10
+  return dep > 0 ? -(dep / 2) : null
+}
+
+/** Fatigue penalty after resting N minutes (recovers 1 point per minute, Core Law 5.5). */
+export function restFatiguePenalty(char, minutes) {
+  const pen = char.fatigue?.penalty ?? 0
+  const proposed = Math.min(0, pen + Math.max(0, minutes))
+  const cap = getFatigueRecoveryCap(char)
+  return cap !== null ? Math.min(proposed, cap) : proposed
+}
+
 export function getEnduranceConditionModifier(char) {
   const fc = char.fatigue_conditions || {}
   let mod = 0

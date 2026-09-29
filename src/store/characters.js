@@ -114,6 +114,8 @@ export function makeBlankCharacter(id) {
     active_effects: [],
     // Simple familiar card (buff tracker + casting target): { name, notes } or null
     familiar: null,
+    // Combat conditions — grapple is a % penalty to all actions
+    conditions: { prone: false, staggered: false, surprised: false, flatfooted: false, grapple: 0 },
 
     // Fatigue tracking (CoreLaw §5.5)
     fatigue: {

@@ -10,6 +10,14 @@ import { advanceTime } from '../utils/time.js'
 
 const STUN_TIERS = [{ i: 0, label: '−25' }, { i: 1, label: '−50' }, { i: 2, label: '−75' }]
 
+// Core Law 8.1 / 9.5-9.8 reminders for each condition
+const CONDITIONS = [
+  { key: 'prone',      label: 'Prone',       note: 'Stand up: 2 AP (1 AP with Acrobatics). Attacking from prone −50. Foes: melee +30 vs you, ranged −30.' },
+  { key: 'staggered',  label: 'Staggered',   note: 'Lose your next AP. Clears next round.' },
+  { key: 'surprised',  label: 'Surprised',   note: 'Lose your first 2 AP (1 with a Perception roll). No shield DB. Foes +25. Clears next round.' },
+  { key: 'flatfooted', label: 'Flat-footed', note: 'No actions this round. No Quickness DB or shield. Foes +60 in melee. Clears next round.' },
+]
+
 function btn(color, filled = false) {
   return {
     background: filled ? color : 'transparent', color: filled ? '#fff' : color,
@@ -178,8 +186,10 @@ export function InjuriesPanel({ c, updateCharacter }) {
   }
 
   const penaltyParts = [
-    ['Hit loss', cond.hitLoss], ['Injuries', cond.injury], ['Stun', cond.stun], ['Fatigue', cond.fatigue],
+    ['Hit loss', cond.hitLoss], ['Injuries', cond.injury], ['Stun', cond.stun], ['Fatigue', cond.fatigue], ['Grappled', cond.grapple],
   ].filter(([, v]) => v)
+  const conds = c.conditions || {}
+  const setCond = p => updateCharacter({ conditions: { ...conds, ...p } })
 
   return (
     <div style={{ marginTop: 12, background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 10, padding: '12px 14px' }}>
@@ -199,11 +209,33 @@ export function InjuriesPanel({ c, updateCharacter }) {
           <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--danger)' }}>Bleeding {bleed}/rd</span>
         )}
         <span style={{ flex: 1 }} />
-        {(bleed > 0 || stunned) && (
+        {(bleed > 0 || stunned || conds.staggered || conds.surprised || conds.flatfooted) && (
           <button style={btn('var(--accent)', true)} onClick={nextRound}
             title="Apply bleeding, count stun down (worst tier first) and tick active effects">Next round</button>
         )}
       </div>
+
+      {/* Conditions */}
+      <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center', marginBottom: 8 }}>
+        {CONDITIONS.map(k => (
+          <button key={k.key} onClick={() => setCond({ [k.key]: !conds[k.key] })} title={k.note}
+            style={{ ...btn(conds[k.key] ? '#f97316' : 'var(--text3)', !!conds[k.key]), padding: '3px 9px' }}>
+            {k.label}
+          </button>
+        ))}
+        <label style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 11, color: conds.grapple > 0 ? '#f97316' : 'var(--text3)' }}
+          title="Grappled: this % is a penalty to all your actions. Break free: 2-4 AP contested Wrestling or Contortions.">
+          Grappled
+          <input type="number" min={0} max={100} value={conds.grapple || ''} placeholder="0"
+            onChange={e => setCond({ grapple: Math.max(0, Math.min(100, Number(e.target.value) || 0)) })}
+            style={{ width: 52, textAlign: 'center', padding: '2px 4px' }} />%
+        </label>
+      </div>
+      {CONDITIONS.filter(k => conds[k.key]).map(k => (
+        <div key={k.key} style={{ fontSize: 11, color: 'var(--text2)', marginBottom: 4 }}>
+          <b style={{ color: '#f97316' }}>{k.label}:</b> {k.note}
+        </div>
+      ))}
 
       {/* Stun tiers */}
       <div style={{ display: 'flex', gap: 8, alignItems: 'flex-end', marginBottom: 10, flexWrap: 'wrap' }}>

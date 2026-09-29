@@ -4,7 +4,7 @@ import { ChevronDownIcon, ChevronUpIcon, XIcon, CheckIcon, DiamondIcon, EyeOpenI
 import FoundryExportModal from '../components/FoundryExportModal.jsx'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { STATS } from '../store/characters.js'
-import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getRRBreakdown, getBaseHits, getEndurance, getPowerPoints, getWeightAllowance, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getConditionPenalty, getConditionInitiativePenalty, getEnduranceConditionModifier, getKnackBonus, rmuSkillName, getWeaponSkillRanks, getBMR } from '../utils/calc.js'
+import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getRRBreakdown, getBaseHits, getEndurance, getPowerPoints, getWeightAllowance, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getConditionPenalty, getConditionInitiativePenalty, getEnduranceConditionModifier, getKnackBonus, rmuSkillName, getWeaponSkillRanks, getBMR, getFatigueRecoveryCap, restFatiguePenalty } from '../utils/calc.js'
 import { HitsBox, InjuriesPanel } from '../components/HealthPanel.jsx'
 import { ActiveEffectsPanel, FamiliarPanel, familiarName } from '../components/ActiveEffects.jsx'
 import { REALM_COLORS, SPELL_SECTION_COLORS, RR_COLORS } from '../store/theme.js'
@@ -715,21 +715,13 @@ function FatigueCard({ c, updateCharacter, autoEndurance, armorManPenalty }) {
 
   // Recovery
   const restMinsNum = parseInt(restMin, 10) || 0
-  const foodWaterDep = (conds.hours_no_water || 0) * 5
-                     + (conds.days_no_food   || 0) * 10
-                     + Math.floor((conds.days_half_food || 0) / 3) * 10
-  const recoveryCap = foodWaterDep > 0 ? -(foodWaterDep / 2) : null
+  const recoveryCap = getFatigueRecoveryCap(c)
   function applyRest() {
     if (restMinsNum <= 0) return
-    const proposed   = Math.min(0, pen + restMinsNum)
-    const newPenalty = recoveryCap !== null ? Math.min(proposed, recoveryCap) : proposed
-    patchFatigue({ penalty: newPenalty })
+    patchFatigue({ penalty: restFatiguePenalty(c, restMinsNum) })
     setRestMin('')
   }
-  const restPreview = restMinsNum > 0 ? (() => {
-    const proposed = Math.min(0, pen + restMinsNum)
-    return recoveryCap !== null ? Math.min(proposed, recoveryCap) : proposed
-  })() : null
+  const restPreview = restMinsNum > 0 ? restFatiguePenalty(c, restMinsNum) : null
 
   const sb = (color) => ({
     padding: '3px 9px', borderRadius: 5, fontSize: 11, fontWeight: 700,
@@ -975,7 +967,11 @@ export default function CharacterSheet() {
   // Sum per-part magical/special DB bonuses from armor pieces (torso/head/arms/legs).
   // These come from magical armor (e.g., +5 plate breastplate) and stack with shield + Qu DB.
   const armorPartDB = ['torso','head','arms','legs'].reduce((sum, part) => sum + (armorParts[part]?.db ?? 0), 0)
-  const totalDB     = db + shieldDB + (shield.db ?? 0) + armorPartDB
+  // Flat-footed: no Quickness DB and no shield; surprised: no shield (Core Law 9.6)
+  const flatfooted  = !!c.conditions?.flatfooted
+  const noShield    = flatfooted || !!c.conditions?.surprised
+  const quDB        = db - getTalentBonuses(c).db
+  const totalDB     = db - (flatfooted ? quDB : 0) + (noShield ? 0 : shieldDB + (shield.db ?? 0)) + armorPartDB
 
   function getArmorPenalty(part) {
     const section = ARMOR_SECTION_MAP[part]
