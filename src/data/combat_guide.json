@@ -340,7 +340,7 @@
     }
   ],
   "crit_size_adjustments": {
-    "note": "Attacker crit adjustment based on size. Use attacker_crit_adjustment - defender_crit_adjustment to get net offset into the matrix.",
+    "note": "Net crit shift = attacker_crit_adjustment + defender_crit_adjustment (defender values are already signed, e.g. Small defender = +1). Medium attacker vs Small defender = +1 (C → D).",
     "size_table": [
       {
         "size": "Miniscule",
@@ -763,15 +763,33 @@
   "weapon_multi_attack_penalties": {
     "source": "CoreLaw Table 9-7b (Katas)",
     "by_attack_count": [
-      { "attacks": 2, "penalty": -75 },
-      { "attacks": 3, "penalty": -100 },
-      { "attacks": 4, "penalty": -125 },
-      { "attacks": 5, "penalty": -150 }
+      {
+        "attacks": 2,
+        "penalty": -75
+      },
+      {
+        "attacks": 3,
+        "penalty": -100
+      },
+      {
+        "attacks": 4,
+        "penalty": -125
+      },
+      {
+        "attacks": 5,
+        "penalty": -150
+      }
     ],
     "per_additional_foe": -20,
     "modifiers": [
-      { "condition": "Primary weapon is light", "modifier": 10 },
-      { "condition": "Off-hand is a dagger or any natural weapon", "modifier": 20 }
+      {
+        "condition": "Primary weapon is light",
+        "modifier": 10
+      },
+      {
+        "condition": "Off-hand is a dagger or any natural weapon",
+        "modifier": 20
+      }
     ]
   },
   "mount_stats": [

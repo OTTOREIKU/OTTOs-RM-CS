@@ -59,7 +59,7 @@
         "results": [
           "Try spin maneuver — fail. Stunned 2 rounds. [−25][−25]",
           "Furious but poorly-executed strikes avoided easily. −10 Fatigue.",
-          "Stunned 1 round. [−25]",
+          "World too confusing; Dazed 1 round. [−25]",
           "Mount Dazed rest of round and all of next. [−25][−25]",
           "Lost your weapon? Wait, you weren't using one. Spend next round Stunned. [−25]"
         ]
@@ -82,7 +82,7 @@
           "Attack nearest ally (or bystander, or imaginary friend).",
           "Attack nearest ally.",
           "Attack nearest ally.",
-          "Attack nearest ally; if only mount in reach, deal 2d10 hits + 2 rounds Stun to mount.",
+          "Attack nearest ally; if only your mount is in reach and weapon unsuitable, deal 2d10 hits + 2 rounds Stun (−50) to mount.",
           "Attack nearest ally."
         ]
       },
@@ -193,8 +193,8 @@
           "Overthink it; fail to attack this round.",
           "Stone flies off as +0 attack on target; sling goes with it.",
           "Lose control on release; weapon falls halfway to target.",
-          "Energies resist; reroll attack with Size reduced by one.",
-          "Element loses focus; if hold rest of round and all next, may attack round after without recasting."
+          "Element loses focus; bits spray harmlessly. Reroll attack with Size reduced by one.",
+          "Energies resist direction; if you hold rest of round and all next, may attack round after without recasting."
         ]
       },
       {
@@ -204,7 +204,7 @@
           "Spill ammunition on ground.",
           "Partly lose grip; stone skips harmlessly along ground. Retain sling.",
           "Trip over own feet; fall face-down but keep weapon.",
-          "Bolt deflects 90° left.",
+          "Bolt deflects 90° left. Roll a +0 attack on each target along the new path until it hits someone, strikes something solid, or runs out of range.",
           "Ball detonates 90° left; roll +0 attacks on those in zone."
         ]
       },
@@ -216,7 +216,7 @@
           "−5 Fatigue.",
           "Bad grip; smack self in head. Stunned 2 rounds. [−50][−50]",
           "Bolt appears as fist-sized ball of elemental material, floats 10'/round toward target. Resolves as +0 attack on contact.",
-          "Elements become head-sized ball, floats 10'/round; resolves as ball attack on contact."
+          "Elements become head-sized ball, floats 10'/round; on striking anything solid resolve as ball attack centred there (cone: use terminal radius as ball radius)."
         ]
       },
       {
@@ -226,8 +226,8 @@
           "Projectile drives into ground between feet. Breaks.",
           "Sling spins nearly out of control. −10 initiative next round.",
           "Poor release; if anyone within 15' of target, roll +0 attack on closest.",
-          "Bolt launched 90° right of intended path.",
-          "Attack launched 90° right."
+          "Bolt launched 90° right of intended path. Roll a +0 attack on each target along the new path until it hits someone, strikes something solid, or runs out of range.",
+          "Attack launched 90° right. Roll +0 attacks on those in the new attack zone; a ball detonates normally when it hits something or reaches its range limit."
         ]
       },
       {
@@ -236,9 +236,9 @@
         "results": [
           "Bow slips from sweaty hands; falls at feet.",
           "Sure it's the perfect sling — stone is on the ground at feet. Next action −20.",
-          "Very poor throw; weapon ends up 10+1d10' away in random direction.",
-          "Bolt launched straight down.",
-          "Attack launched straight down."
+          "Very poor throw; weapon ends up 10+1d10' away in random direction and must make a breakage check.",
+          "Bolt launched straight down. Roll a +0 attack on each target along the new path until it hits someone, strikes something solid, or runs out of range.",
+          "Attack launched straight down. Roll +0 attacks on those in the new attack zone; a ball detonates normally when it hits something or reaches its range limit."
         ]
       },
       {
@@ -259,8 +259,8 @@
           "Mishandle weapon; Stunned 1 round. [−50]",
           "Stone drops on own foot. 1d5 hits.",
           "Weapon flies 20' beyond max range past target; roll +0 attack if someone there. −10 Fatigue.",
-          "Bolt launched 180° (opposite direction from intended target).",
-          "Attack launched 180° opposite."
+          "Bolt launched 180° (opposite direction from intended target). Roll a +0 attack on each target along the new path until it hits someone, strikes something solid, or runs out of range.",
+          "Attack launched 180° opposite. Roll +0 attacks on those in the new attack zone; a ball detonates normally when it hits something or reaches its range limit."
         ]
       },
       {
@@ -270,8 +270,8 @@
           "Bowstring snaps. Draw another bow or restring.",
           "Too much body; fall before releasing. Dazed 1 round. [−25]",
           "Slip and fall prone just before releasing; Stunned 1 round. [−50]",
-          "Bolt launched 45° left.",
-          "Attack launched 45° left."
+          "Bolt launched 45° left. Roll a +0 attack on each target along the new path until it hits someone, strikes something solid, or runs out of range.",
+          "Attack launched 45° left. Roll +0 attacks on those in the new attack zone; a ball detonates normally when it hits something or reaches its range limit."
         ]
       },
       {
@@ -281,8 +281,8 @@
           "Hold thumb in way of string. Miss + Stunned 2 rounds. [−50][−50]",
           "Clip own head; Stunned 1 round. [−50]",
           "Weapon drops to ground; hits foot for 1d10 hits.",
-          "Bolt launched 45° right.",
-          "Attack launched 45° right."
+          "Bolt launched 45° right. Roll a +0 attack on each target along the new path until it hits someone, strikes something solid, or runs out of range.",
+          "Attack launched 45° right. Roll +0 attacks on those in the new attack zone; a ball detonates normally when it hits something or reaches its range limit."
         ]
       },
       {
@@ -292,8 +292,8 @@
           "Shot goes wild 3d10' from target; +0 attack if someone there.",
           "Clip side of own head; Stunned 2 rounds. [−50][−50]",
           "Poor weak release; weapon goes up 2', comes back and hits you. No damage but Stunned 1 round. [−50]",
-          "Bolt launched 45° above intended.",
-          "Attack launched 45° above."
+          "Bolt launched 45° above intended. Roll a +0 attack on each target along the new path until it hits someone, strikes something solid, or runs out of range.",
+          "Attack launched 45° above. Roll +0 attacks on those in the new attack zone; a ball detonates normally when it hits something or reaches its range limit."
         ]
       },
       {
@@ -303,8 +303,8 @@
           "Slip and fall; prone + Stunned 2 rounds. [−50][−50]",
           "Injure tendon in wrist; −15 injury.",
           "Throw weapon 4d10' behind you; anyone in the way takes +0 attack. Dazed 1 round. [−25]",
-          "Bolt launched 45° below intended.",
-          "Attack launched 45° below."
+          "Bolt launched 45° below intended. Roll a +0 attack on each target along the new path until it hits someone, strikes something solid, or runs out of range.",
+          "Attack launched 45° below. Roll +0 attacks on those in the new attack zone; a ball detonates normally when it hits something or reaches its range limit."
         ]
       },
       {
@@ -314,15 +314,15 @@
           "Breakage check: fail → bow snaps + A-severity Puncture from splinter; pass → string snaps + A-severity Slash critical.",
           "Pull muscle in slinging arm; −20 penalty.",
           "Trip on release; weapon flies as +0 attack on nearest creature. Stunned 2 rounds. [−50][−50]",
-          "Bolt launched straight up.",
-          "Attack launched straight up."
+          "Bolt launched straight up. Roll a +0 attack on each target along the new path until it hits someone, strikes something solid, or runs out of range.",
+          "Attack launched straight up. Roll +0 attacks on those in the new attack zone; a ball detonates normally when it hits something or reaches its range limit."
         ]
       },
       {
         "min": 100,
         "max": 100,
         "results": [
-          "SHOOT SELF IN FOOT. Foot pinned (6 AP to free). Stunned 2 rounds, bleeding 1 hit/round, −30 flesh wound.",
+          "SHOOT SELF IN FOOT (A critical). Foot pinned (6 AP to free). Stunned 2 rounds, bleeding 1 hit/round, −30 flesh wound.",
           "HIT SELF with A-severity Krush critical as sling becomes melee weapon.",
           "WEAPON FLIES STRAIGHT UP; comes down as +50 attack on yourself.",
           "Take A-severity critical of appropriate elemental type.",
@@ -332,10 +332,6 @@
     ]
   },
   "_col_map": {
-    "Short Bow": [
-      "ranged",
-      0
-    ],
     "Crossbow": [
       "ranged",
       0
@@ -426,7 +422,103 @@
     ],
     "Ram": [
       "melee",
+      2
+    ],
+    "Bow, Short": [
+      "ranged",
+      0
+    ],
+    "Arming Sword": [
+      "melee",
+      0
+    ],
+    "Ball, Cold": [
+      "ranged",
       4
+    ],
+    "Ball, Fire": [
+      "ranged",
+      4
+    ],
+    "Ball, Lightning": [
+      "ranged",
+      4
+    ],
+    "Battle Axe": [
+      "melee",
+      0
+    ],
+    "Beak": [
+      "melee",
+      2
+    ],
+    "Bite": [
+      "melee",
+      2
+    ],
+    "Bola": [
+      "ranged",
+      2
+    ],
+    "Bolt, Fire": [
+      "ranged",
+      3
+    ],
+    "Bolt, Ice": [
+      "ranged",
+      3
+    ],
+    "Bolt, Lightning": [
+      "ranged",
+      3
+    ],
+    "Bolt, Water": [
+      "ranged",
+      3
+    ],
+    "Bow, Long": [
+      "ranged",
+      0
+    ],
+    "Bolt, Earth": [
+      "ranged",
+      3
+    ],
+    "Lariat": [
+      "ranged",
+      2
+    ],
+    "Bolt, Light": [
+      "ranged",
+      3
+    ],
+    "Bolt, Acid": [
+      "ranged",
+      3
+    ],
+    "Shield Bash": [
+      "melee",
+      0
+    ],
+    "Unarmed Sweeps": [
+      "melee",
+      4
+    ],
+    "Unarmed Strikes": [
+      "melee",
+      4
+    ],
+    "Ball, Earth": [
+      "ranged",
+      4
+    ],
+    "Ball, Water": [
+      "ranged",
+      4
+    ],
+    "Whip, Grapple": [
+      "melee",
+      2
     ]
   },
   "rmu_fumbles": {
