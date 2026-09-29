@@ -144,6 +144,16 @@ export default function CastModal({ char, listName, spell, updateCharacter, onCl
           </div>
         </div>
 
+        {/* Spell Mastery — separate roll to change the spell as it's cast (e.g. disguise it) */}
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, border: '1px dashed var(--border2)', borderRadius: 8, padding: '6px 12px', marginBottom: 12 }}
+          title="Core Law 3.22: the list's full skill bonus is used for Spell Mastery — changing the spell when it is cast (shape, look, etc.). Includes professional bonus and knacks.">
+          <span style={{ flex: 1, fontSize: 12, color: 'var(--text2)' }}>
+            Spell Mastery <span style={{ color: 'var(--text3)', fontSize: 10 }}>— to disguise or alter the spell
+              {bd.masteryPenalty < 0 ? ` (includes ${bd.masteryPenalty} condition)` : ''}</span>
+          </span>
+          <span style={{ fontSize: 16, fontWeight: 800, color: bd.mastery >= 0 ? 'var(--accent)' : 'var(--danger)' }}>{signed(bd.mastery)}</span>
+        </div>
+
         {/* PP + cast */}
         {!cast ? (
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>

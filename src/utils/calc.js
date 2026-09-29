@@ -64,9 +64,9 @@ export function getSkillBonus(char, template, skillData, displayName) {
   const skillStatB    = sumStatBonuses(char, template?.stat_keys || '-')
   const item          = skillData?.item_bonus   ?? 0
   const talent        = skillData?.talent_bonus ?? 0
-  const isProf        = skillData?.proficient !== undefined
-    ? !!skillData.proficient
-    : (template?.prof_type === 'Professional' || template?.prof_type === 'Knack')
+  // Professional only when the player marked it (Core Law 2.4: 10 chosen skills).
+  // The old prof_type default from the spreadsheet silently granted hidden bonuses.
+  const isProf        = !!skillData?.proficient
   const profBonus     = isProf ? Math.min(ranks, 30) : 0
   const knackBonus    = displayName ? getKnackBonus(char, displayName) : 0
   return rb + catB + skillStatB + item + talent + profBonus + knackBonus
@@ -224,12 +224,35 @@ export function getWeaponOB(char, weapon) {
     + (weapon.item_bonus ?? 0)
 }
 
+// App skill base → RMU skill name, the unit that professional bonuses and knacks
+// attach to (Core Law 2.4: they cover all specializations). RMU's Language skill
+// is specialized as spoken / written / signaled.
+const RMU_SKILL_ALIAS = {
+  'Spoken': 'Language', 'Written': 'Language', 'Signaled': 'Language',
+  'Own Spoken': 'Language', 'Own Written': 'Language',
+  'Melee': 'Melee Weapons', 'Ranged': 'Ranged Weapons', 'Directed Spells': 'Directed Spell',
+}
+
+/** "Spell Trickery: Dark Summons" → "Spell Trickery", "Spoken: Babbel" → "Language". */
+export function rmuSkillName(appName) {
+  const name = appName || ''
+  const i = name.indexOf(':')
+  const base = i > 0 ? name.slice(0, i).trim() : name
+  return RMU_SKILL_ALIAS[base] || base
+}
+
 // Returns +5 if skillDisplayName is in the character's knack list, else 0.
 // Pass the *resolved* display name (e.g. "Melee: Dagger"), same as stored in char.knacks.
 export function getKnackBonus(char, skillDisplayName) {
   const knacks = char.knacks || []
   // Direct match (e.g. "Perception", "Melee: Blade")
   if (knacks.includes(skillDisplayName)) return 5
+  // A knack covers every specialization of its skill (Core Law 2.4):
+  // "Spell Trickery" → "Spell Trickery: Dark Summons", "Influence" → "Influence: Duping".
+  const colon = (skillDisplayName || '').indexOf(':')
+  if (colon > 0 && knacks.includes(skillDisplayName.slice(0, colon).trim())) return 5
+  const rmuName = rmuSkillName(skillDisplayName)
+  if (rmuName !== skillDisplayName && knacks.includes(rmuName)) return 5
   // Category match for spell lists:
   // A knack of "Spellcasting: Closed" applies to all Closed spell lists the character knows.
   const listData = (char.spell_lists || {})[skillDisplayName]
@@ -333,9 +356,11 @@ export function getSCRListTypeModifier(char, listName) {
 
 /**
  * Spellcasting Roll (SCR) modifier — what you add to d100OE when casting.
- * Formula (CoreLaw p.109 + RMU): raw ranks + realm stat (×1) + list type
- * modifier + talent bonus + complementary + knack. Excludes situational
- * modifiers (overcasting, armor, condition) — see utils/casting.js.
+ * Formula (Core Law 3.22 + RMU): raw ranks + realm stat (×1) + list type
+ * modifier + talent bonus + complementary. Knacks and the professional bonus
+ * are NOT part of the SCR — they only raise the full skill bonus used for
+ * Spell Mastery. Excludes situational modifiers (overcasting, armor,
+ * condition) — see utils/casting.js.
  */
 export function getSpellCastingBonus(char, listName) {
   const sl            = char.spell_lists?.[listName] || {}
@@ -344,9 +369,8 @@ export function getSpellCastingBonus(char, listName) {
   const customTalent  = sl.talent_bonus ?? 0
   const namedTalent   = getNamedTalentBonus(char, listName)
   const compB         = _compBonus(char, sl)
-  const knackB        = getKnackBonus(char, listName)
   const listTypeB     = getSCRListTypeModifier(char, listName)
-  return rawRanks + _realmStatBonus(char) + listTypeB + talentSpell + customTalent + namedTalent + compB + knackB
+  return rawRanks + _realmStatBonus(char) + listTypeB + talentSpell + customTalent + namedTalent + compB
 }
 
 /** Itemized pieces of getSpellCastingBonus, for the Cast dialog. Sums to the same total. */
@@ -358,13 +382,16 @@ export function getSpellCastingBreakdown(char, listName) {
     listType: getSCRListTypeModifier(char, listName),
     talents:  getTalentBonuses(char).spellcasting + (sl.talent_bonus ?? 0) + getNamedTalentBonus(char, listName),
     complementary: _compBonus(char, sl),
-    knack:    getKnackBonus(char, listName),
   }
 }
 
 /**
- * Spell Mastery modifier — full skill bonus for shaping/modifying spells.
- * Formula: scaled rank bonus + (realm stat ×2 + Memory) + item + proficient + talent + complementary
+ * Spell Mastery modifier — the list's full skill bonus, rolled to change a
+ * spell as it's cast (reshape it, disguise its look, etc.).
+ * Formula (Core Law 3.22, verified): rank bonus + Spellcasting category
+ * [RS + RS] + list skill stat [Me] + item + professional + knack + talents +
+ * complementary. Eloquence/Mumbler are "Spellcasting roll" talents and apply
+ * to the SCR only (RMU Foundry uses them only in the SCR).
  */
 export function getSpellMasteryBonus(char, listName) {
   const sl           = char.spell_lists?.[listName] || {}
@@ -376,10 +403,9 @@ export function getSpellMasteryBonus(char, listName) {
   const namedTalent  = getNamedTalentBonus(char, listName)
   const rsB          = _realmStatBonus(char)
   const meB          = char.stats?.Memory ? getTotalStatBonus(char.stats.Memory) : 0
-  const talentSpell  = getTalentBonuses(char).spellcasting
   const compB        = _compBonus(char, sl)
   const knackB       = getKnackBonus(char, listName)
-  return rb + rsB * 2 + meB + item + profB + talentSpell + customTalent + namedTalent + compB + knackB
+  return rb + rsB * 2 + meB + item + profB + customTalent + namedTalent + compB + knackB
 }
 
 // RMU CreatureSize.hitMultiplier table from systems/rmu/module/rmu/size.js.

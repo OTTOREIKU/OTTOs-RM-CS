@@ -200,8 +200,8 @@ function SkillRow({
   const autoBonus = talentEntries
     .filter(e => !excludedTalents.includes(e.instId))
     .reduce((sum, e) => sum + e.bonus, 0)
-  const defaultProf = skill.prof_type === 'Professional' || skill.prof_type === 'Knack'
-  const isProf  = cs.proficient !== undefined ? cs.proficient : defaultProf
+  // Professional only when marked (no hidden default from the old spreadsheet prof_type)
+  const isProf  = !!cs.proficient
   const profBonus = isProf ? Math.min(totalRanks, 30) : 0
   const knackBonus   = getKnackBonus(c, resolvedSkillName)
   const total        = rb + combinedStatB + item + talent + autoBonus + profBonus + knackBonus

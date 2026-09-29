@@ -5,7 +5,7 @@
 // modifier tables), xpose/scr.js (PP cost), spell-casting/scr.js (result bands).
 import armorData from '../data/armor.json'
 import {
-  getSpellCastingBonus, getSpellCastingBreakdown, getConditionPenalty,
+  getSpellCastingBonus, getSpellCastingBreakdown, getSpellMasteryBonus, getConditionPenalty,
   getSkillBonus, findSkillTemplate,
 } from './calc.js'
 
@@ -168,7 +168,6 @@ export function getCastBreakdown(char, listName, spell, opts) {
   add(`List type (${char.spell_lists?.[listName]?.category || 'Base'})`, b.listType)
   add('Talents', b.talents)
   add('Complementary skill', b.complementary)
-  add('Knack', b.knack)
   const base = getSpellCastingBonus(char, listName)
 
   // Overcasting (−20/level above caster level), reduced by Grace for this list
@@ -232,6 +231,10 @@ export function getCastBreakdown(char, listName, spell, opts) {
     known: isSpellKnown(char, listName, spell.level),
     overcast: rawOver < 0,
     failureMod,
+    // Spell Mastery (full list bonus) for changing the spell as it's cast —
+    // a separate maneuver roll, so injury/fatigue penalties apply to it.
+    mastery: getSpellMasteryBonus(char, listName) + cond.total,
+    masteryPenalty: cond.total,
   }
 }
 

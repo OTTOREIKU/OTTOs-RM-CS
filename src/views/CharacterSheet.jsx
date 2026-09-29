@@ -4,7 +4,7 @@ import { ChevronDownIcon, ChevronUpIcon, XIcon, CheckIcon, DiamondIcon, EyeOpenI
 import FoundryExportModal from '../components/FoundryExportModal.jsx'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { STATS } from '../store/characters.js'
-import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getRRBreakdown, getBaseHits, getEndurance, getPowerPoints, getWeightAllowance, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getConditionPenalty, getConditionInitiativePenalty, getEnduranceConditionModifier, getKnackBonus } from '../utils/calc.js'
+import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getRRBreakdown, getBaseHits, getEndurance, getPowerPoints, getWeightAllowance, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getConditionPenalty, getConditionInitiativePenalty, getEnduranceConditionModifier, getKnackBonus, rmuSkillName } from '../utils/calc.js'
 import { HitsBox, InjuriesPanel } from '../components/HealthPanel.jsx'
 import { REALM_COLORS, SPELL_SECTION_COLORS, RR_COLORS } from '../store/theme.js'
 import races from '../data/races.json'
@@ -62,7 +62,7 @@ function computeSkillTotal(c, template, skillData, talentBonusMap) {
   const skillStatB = getSkillStatBonus(c, template?.stat_keys)
   const item = skillData.item_bonus ?? 0
   const talent = skillData.talent_bonus ?? 0
-  const isProf = skillData.proficient !== undefined ? !!skillData.proficient : (template?.prof_type === 'Professional' || template?.prof_type === 'Knack')
+  const isProf = !!skillData.proficient
   const profBonus = isProf ? Math.min(ranks, 30) : 0
   const entries = (talentBonusMap[template?.name || ''] || [])
   const excluded = skillData.talent_excluded || []
@@ -326,7 +326,7 @@ function KnacksSubPanel({ char, updateCharacter, allSkillNames }) {
       {open && (
         <div style={{ marginTop: 8 }}>
           <div style={{ fontSize: 11, color: 'var(--text3)', marginBottom: 8 }}>
-            RMU: {KNACK_CAP} knacks per character — each grants a permanent <span style={{ color: 'var(--purple)', fontWeight: 700 }}>+5</span> to a specific skill or Spellcasting category. {overCap && <span style={{ color: 'var(--danger)', fontWeight: 700 }}>You are over the {KNACK_CAP}-knack RMU limit.</span>}
+            RMU: {KNACK_CAP} knacks per character — each grants a permanent <span style={{ color: 'var(--purple)', fontWeight: 700 }}>+5</span> to a skill (all its specializations) or a Spellcasting list type. On spell lists the knack raises Spell Mastery, not the casting roll. {overCap && <span style={{ color: 'var(--danger)', fontWeight: 700 }}>You are over the {KNACK_CAP}-knack RMU limit.</span>}
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
             {Array.from({ length: slotsToRender }).map((_, i) => {
@@ -388,46 +388,59 @@ function ProfessionalSkillsSubPanel({ char, updateCharacter, updateSkill }) {
   const profession = char.profession || ''
   const candidates = professionSkillsData[profession] || []
 
-  // Count all currently-proficient skills (both regular and custom). Each entry tracks
-  // its raw key (for matching against profession candidates, which use bare names) +
-  // its resolved display name (for showing in UI with placeholders filled in).
-  const proficientSkills = []
+  // RMU (Core Law 2.4): a professional skill covers every specialization and counts
+  // once toward the 10. Group entries by base skill ("Spell Trickery: X" → "Spell
+  // Trickery") and spell lists by list type (Base, Closed, …).
+  const baseOf = rmuSkillName
+  const groups = new Map()
+  const group = base => {
+    if (!groups.has(base)) groups.set(base, { base, display: [], skillKeys: [], customIds: [], lists: [], prof: false })
+    return groups.get(base)
+  }
   for (const [name, data] of Object.entries(char.skills || {})) {
-    if (data?.proficient === true) {
-      proficientSkills.push({ rawKey: name, display: displaySkillName(name, data.label || '') })
-    }
+    const g = group(baseOf(name)); g.skillKeys.push(name)
+    if (data?.proficient) { g.prof = true; g.display.push(displaySkillName(name, data.label || '')) }
   }
   for (const cs of (char.custom_skills || [])) {
-    if (cs?.proficient === true) {
-      proficientSkills.push({ rawKey: cs.template_name, display: displaySkillName(cs.template_name, cs.label || '') })
-    }
+    const g = group(baseOf(cs.template_name)); g.customIds.push(cs.id)
+    if (cs?.proficient) { g.prof = true; g.display.push(displaySkillName(cs.template_name, cs.label || '')) }
   }
-  const count = proficientSkills.length
+  for (const [name, sl] of Object.entries(char.spell_lists || {})) {
+    const g = group(sl?.category || 'Base'); g.lists.push(name)
+    if (sl?.proficient) { g.prof = true; g.display.push(name) }
+  }
+  const profGroups = [...groups.values()].filter(g => g.prof)
+  const count = profGroups.length
   const overCap = count > PROF_SKILL_CAP
   const counterColor = overCap ? 'var(--danger)' : (count === PROF_SKILL_CAP ? 'var(--success)' : 'var(--text3)')
 
-  // For each candidate, find the matching skill key in char.skills (handles placeholder slots like "Stonecraft: <specialty 1>")
-  function findCharSkillKey(candidateSkillName) {
-    if (char.skills?.[candidateSkillName] !== undefined) return candidateSkillName
-    // Try first matching placeholder slot
-    const prefix = candidateSkillName + ': '
-    const slotMatch = Object.keys(char.skills || {}).find(k =>
-      k === candidateSkillName || k.startsWith(prefix) || (k.startsWith(candidateSkillName + ':') && k.includes('<'))
-    )
-    return slotMatch || null
-  }
+  // RMU candidate names vs this app's skill keys
+  const CANDIDATE_ALIAS = { 'Magical Ritual': 'Magic Ritual' }   // list type is stored as "Magic Ritual"
+  const groupFor = name => groups.get(CANDIDATE_ALIAS[name] || name) || null
 
+  // Marks or clears every specialization of the skill at once.
   function toggleProf(candidateName) {
-    let key = findCharSkillKey(candidateName)
-    if (!key) {
-      // Skill not in character's skills yet — add a stub entry so the prof flag has somewhere to live
-      key = candidateName
-      const skills = { ...(char.skills || {}), [key]: { ranks: 0, item_bonus: 0, talent_bonus: 0, proficient: true } }
+    const g = groupFor(candidateName)
+    if (!g) {
+      // Skill not on the character yet — add a stub so the flag has somewhere to live
+      const skills = { ...(char.skills || {}), [candidateName]: { ranks: 0, item_bonus: 0, talent_bonus: 0, proficient: true } }
       updateCharacter({ skills })
       return
     }
-    const cur = char.skills[key]?.proficient ?? false
-    updateSkill(key, 'proficient', !cur)
+    const next = !g.prof
+    const patch = {}
+    if (g.skillKeys.length) {
+      patch.skills = { ...(char.skills || {}) }
+      for (const k of g.skillKeys) patch.skills[k] = { ...patch.skills[k], proficient: next }
+    }
+    if (g.customIds.length) {
+      patch.custom_skills = (char.custom_skills || []).map(cs => g.customIds.includes(cs.id) ? { ...cs, proficient: next } : cs)
+    }
+    if (g.lists.length) {
+      patch.spell_lists = { ...(char.spell_lists || {}) }
+      for (const n of g.lists) patch.spell_lists[n] = { ...patch.spell_lists[n], proficient: next }
+    }
+    updateCharacter(patch)
   }
 
   return (
@@ -453,7 +466,7 @@ function ProfessionalSkillsSubPanel({ char, updateCharacter, updateSkill }) {
       {open && (
         <div style={{ marginTop: 8 }}>
           <div style={{ fontSize: 11, color: 'var(--text3)', marginBottom: 8 }}>
-            RMU: {PROF_SKILL_CAP} professional skills per character — each gives <span style={{ color: 'var(--accent)', fontWeight: 700 }}>+1/rank</span> capped at <span style={{ color: 'var(--accent)', fontWeight: 700 }}>+30 ranks</span>. Pick from your profession's {candidates.length} candidates below, or use the toggle on any skill row in the Skills tab. {overCap && <span style={{ color: 'var(--danger)', fontWeight: 700 }}>You are over the {PROF_SKILL_CAP}-skill RMU limit.</span>}
+            RMU: {PROF_SKILL_CAP} professional skills per character — each gives <span style={{ color: 'var(--accent)', fontWeight: 700 }}>+1/rank</span> capped at <span style={{ color: 'var(--accent)', fontWeight: 700 }}>+30 ranks</span>. A skill counts once and covers all its specializations (e.g. Spell Trickery on every list). Pick from your profession's {candidates.length} candidates below, or use the toggle on any skill row in the Skills tab. {overCap && <span style={{ color: 'var(--danger)', fontWeight: 700 }}>You are over the {PROF_SKILL_CAP}-skill RMU limit.</span>}
           </div>
           {candidates.length === 0 ? (
             <div style={{ fontSize: 11, color: 'var(--text3)', fontStyle: 'italic', padding: 8 }}>
@@ -462,8 +475,7 @@ function ProfessionalSkillsSubPanel({ char, updateCharacter, updateSkill }) {
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 4, fontSize: 12 }}>
               {candidates.map(c => {
-                const key = findCharSkillKey(c.skillName)
-                const isProf = key ? !!char.skills?.[key]?.proficient : false
+                const isProf = !!groupFor(c.skillName)?.prof
                 return (
                   <label
                     key={c.skillName}
@@ -491,12 +503,7 @@ function ProfessionalSkillsSubPanel({ char, updateCharacter, updateSkill }) {
               Match against candidates using the rawKey (which is the template name), but display the resolved
               name with the user's label substituted in. */}
           {(() => {
-            const overflow = proficientSkills.filter(({ rawKey }) => {
-              const tryMatch = candidates.find(c =>
-                c.skillName === rawKey || rawKey.startsWith(c.skillName + ':') || rawKey.startsWith(c.skillName + ': <')
-              )
-              return !tryMatch
-            })
+            const overflow = profGroups.filter(g => !candidates.some(c => (CANDIDATE_ALIAS[c.skillName] || c.skillName) === g.base))
             if (overflow.length === 0) return null
             return (
               <div style={{ marginTop: 10, paddingTop: 8, borderTop: '1px dashed var(--border)' }}>
@@ -504,7 +511,7 @@ function ProfessionalSkillsSubPanel({ char, updateCharacter, updateSkill }) {
                   Also proficient (outside profession's list)
                 </div>
                 <div style={{ fontSize: 11, color: 'var(--text2)' }}>
-                  {overflow.map(s => s.display).join(' · ')}
+                  {overflow.map(g => g.display.length > 1 ? `${g.base} (${g.display.map(d => d.replace(g.base + ': ', '')).join(', ')})` : g.display[0]).join(' · ')}
                 </div>
               </div>
             )
@@ -911,6 +918,8 @@ export default function CharacterSheet() {
     for (const cs of (c.custom_skills || [])) {
       names.push(displaySkillName(cs.template_name, cs.label || ''))
     }
+    // Whole skills — a knack covers every specialization (e.g. "Spell Trickery")
+    for (const n of [...names]) { const base = rmuSkillName(n); if (base !== n) names.push(base) }
     // Individual known spell lists
     for (const listName of Object.keys(c.spell_lists || {})) {
       names.push(listName)
@@ -926,7 +935,7 @@ export default function CharacterSheet() {
       'Spellcasting: Restricted',
       'Spellcasting: Magical Ritual',
     )
-    return names.sort()
+    return [...new Set(names)].sort()
   }, [c.skills, c.custom_skills, c.spell_lists])
 
   // Combat talent chips — display-only reminders in the weapons area
