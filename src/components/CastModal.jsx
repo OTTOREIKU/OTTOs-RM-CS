@@ -7,6 +7,8 @@ import {
   getCastBreakdown, defaultCastOptions, interpretSCR, isSubconscious, isInstantaneous,
   HANDS_OPTIONS, VOICE_OPTIONS, PREP_OPTIONS, FAST_OPTIONS,
 } from '../utils/casting.js'
+import { parseSpellDuration, formatRounds, newEffectId, ROUNDS } from '../utils/time.js'
+import { familiarName } from './ActiveEffects.jsx'
 
 const signed = n => (n > 0 ? `+${n}` : `${n}`)
 const label10 = { fontSize: 10, color: 'var(--text3)', marginBottom: 3, textTransform: 'uppercase', letterSpacing: '0.06em' }
@@ -21,6 +23,16 @@ export default function CastModal({ char, listName, spell, updateCharacter, onCl
   const [cast, setCast]   = useState(null)   // { prevPP, afterPP } once PP are spent
   const [roll, setRoll]   = useState('')
 
+  // Target + duration tracking
+  const temporal = (char.talents || []).find(t => t.talent_id === 'temporal_skills' && t.param === listName)
+  const durMult  = temporal ? 1 + 0.5 * (temporal.tier || 0) : 1
+  const dur      = useMemo(() => parseSpellDuration(spell.duration, char.level ?? 1, durMult), [spell.duration, char.level, durMult])
+  const [target, setTarget]   = useState('self')
+  const [otherName, setOther] = useState('')
+  const [track, setTrack]     = useState(dur.kind !== 'instant')
+  const [manualAmt, setManualAmt]   = useState('')
+  const [manualUnit, setManualUnit] = useState('minute')
+
   const bd      = useMemo(() => getCastBreakdown(char, listName, spell, opts), [char, listName, spell, opts])
   const realm   = realmOf(char)
   const ppMax   = getPowerPoints(char) ?? 0
@@ -34,13 +46,28 @@ export default function CastModal({ char, listName, spell, updateCharacter, onCl
   const result  = rollN == null || Number.isNaN(rollN) ? null : rollN + bd.total
   const outcome = result == null ? null : interpretSCR(result)
 
+  function buildEffect() {
+    const rounds = dur.kind === 'timed' ? dur.rounds
+      : dur.kind === 'manual' && Number(manualAmt) > 0 ? Math.round(Number(manualAmt) * ROUNDS[manualUnit]) : null
+    return {
+      id: newEffectId(), name: spell.name.replace(/\s*\*\s*$/, ''), list: listName, level: spell.level,
+      target: target === 'other' ? (otherName.trim() || 'Other') : target,
+      remaining: rounds, total: rounds,
+      concentration: dur.concentration || dur.kind === 'concentration', permanent: dur.kind === 'permanent',
+    }
+  }
   function spendPP() {
     const after = ppNow - bd.ppCost
-    updateCharacter({ power_points_current: after >= ppMax ? null : after })
-    setCast({ prevPP: char.power_points_current ?? null, afterPP: after })
+    const patch = { power_points_current: after >= ppMax ? null : after }
+    const eff = track && dur.kind !== 'instant' ? buildEffect() : null
+    if (eff) patch.active_effects = [...(char.active_effects || []), eff]
+    updateCharacter(patch)
+    setCast({ prevPP: char.power_points_current ?? null, afterPP: after, effectId: eff?.id })
   }
   function undo() {
-    updateCharacter({ power_points_current: cast.prevPP })
+    const patch = { power_points_current: cast.prevPP }
+    if (cast.effectId) patch.active_effects = (char.active_effects || []).filter(e => e.id !== cast.effectId)
+    updateCharacter(patch)
     setCast(null)
     setRoll('')
   }
@@ -126,6 +153,49 @@ export default function CastModal({ char, listName, spell, updateCharacter, onCl
           </Opt>
         </div>
 
+        {/* Target & duration */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 12, opacity: locked ? 0.6 : 1 }}>
+          <Opt label="Target">
+            <select disabled={locked} value={target} onChange={e => setTarget(e.target.value)} style={{ width: '100%' }}>
+              <option value="self">{char.name || 'You'}</option>
+              {char.familiar && <option value="familiar">{familiarName(char)}</option>}
+              <option value="other">Someone else…</option>
+            </select>
+          </Opt>
+          {target === 'other' ? (
+            <Opt label="Who">
+              <input disabled={locked} value={otherName} onChange={e => setOther(e.target.value)} placeholder="Name" style={{ width: '100%' }} />
+            </Opt>
+          ) : (
+            <Opt label="Duration">
+              <div style={{ fontSize: 12, padding: '6px 0', color: 'var(--text2)' }}>
+                {dur.kind === 'timed' ? formatRounds(dur.rounds)
+                  : dur.kind === 'concentration' ? 'while concentrating'
+                  : dur.kind === 'permanent' ? 'permanent'
+                  : dur.kind === 'instant' ? 'instant' : (spell.duration || 'varies')}
+                {dur.concentration && dur.kind === 'timed' && ' (C)'}
+                {durMult !== 1 && <span style={{ color: '#f59e0b' }}> ×{durMult} Temporal</span>}
+              </div>
+            </Opt>
+          )}
+          {dur.kind === 'manual' && track && (
+            <Opt label={`Duration (${spell.duration || 'varies'})`}>
+              <div style={{ display: 'flex', gap: 4 }}>
+                <input disabled={locked} type="number" min={1} value={manualAmt} onChange={e => setManualAmt(e.target.value)} placeholder="#" style={{ width: 56 }} />
+                <select disabled={locked} value={manualUnit} onChange={e => setManualUnit(e.target.value)}>
+                  {['round', 'minute', 'hour', 'day'].map(u => <option key={u} value={u}>{u}s</option>)}
+                </select>
+              </div>
+            </Opt>
+          )}
+          {dur.kind !== 'instant' && (
+            <label style={{ gridColumn: '1 / -1', display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: 'var(--text2)' }}>
+              <input disabled={locked} type="checkbox" checked={track} onChange={e => setTrack(e.target.checked)} style={{ width: 'auto' }} />
+              Track on Active Spells{target === 'familiar' && spell.range?.toLowerCase() === 'self' ? ' — self spell cast on the familiar (Investiture)' : ''}
+            </label>
+          )}
+        </div>
+
         {/* Breakdown */}
         <div style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 8, padding: '8px 12px', marginBottom: 12 }}>
           {bd.lines.map((l, i) => (
@@ -173,6 +243,7 @@ export default function CastModal({ char, listName, spell, updateCharacter, onCl
               <span style={{ flex: 1, color: 'var(--purple)', fontWeight: 700 }}>
                 Cast: PP {ppNow + bd.ppCost - (cast.recycled ?? 0)} → {cast.afterPP}
                 {cast.recycled ? ` (${cast.recycled} recovered)` : ''}
+                {cast.effectId && <span style={{ color: 'var(--text3)', fontWeight: 400 }}> · tracking on Active Spells</span>}
               </span>
               <button onClick={undo} style={btnStyle('var(--text3)')}>Undo</button>
             </div>

@@ -6,6 +6,7 @@ import {
   getHitsMax, getHitsCurrent, getHitLossPenalty, getConditionPenalty,
   getBleedPerRound, getHealthStatus,
 } from '../utils/calc.js'
+import { advanceTime } from '../utils/time.js'
 
 const STUN_TIERS = [{ i: 0, label: '−25' }, { i: 1, label: '−50' }, { i: 2, label: '−75' }]
 
@@ -171,10 +172,9 @@ export function InjuriesPanel({ c, updateCharacter }) {
   }
 
   // End of round: bleeding costs hits, every stun tier ticks down one round.
+  // One round of game time: bleeding, stun (worst tier first), active effects.
   function nextRound() {
-    const patch = { stun: stun.map(r => Math.max(0, (r ?? 0) - 1)) }
-    if (bleed > 0) patch.hits_current = getHitsCurrent(c) - bleed
-    updateCharacter(patch)
+    updateCharacter(advanceTime(c, 1).patch)
   }
 
   const penaltyParts = [
@@ -201,7 +201,7 @@ export function InjuriesPanel({ c, updateCharacter }) {
         <span style={{ flex: 1 }} />
         {(bleed > 0 || stunned) && (
           <button style={btn('var(--accent)', true)} onClick={nextRound}
-            title="Apply bleeding to hits and count every stun down by one round">Next round</button>
+            title="Apply bleeding, count stun down (worst tier first) and tick active effects">Next round</button>
         )}
       </div>
 

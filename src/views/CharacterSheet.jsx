@@ -6,6 +6,7 @@ import { useCharacter } from '../store/CharacterContext.jsx'
 import { STATS } from '../store/characters.js'
 import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getRRBreakdown, getBaseHits, getEndurance, getPowerPoints, getWeightAllowance, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getConditionPenalty, getConditionInitiativePenalty, getEnduranceConditionModifier, getKnackBonus, rmuSkillName, getWeaponSkillRanks, getBMR } from '../utils/calc.js'
 import { HitsBox, InjuriesPanel } from '../components/HealthPanel.jsx'
+import { ActiveEffectsPanel, FamiliarPanel, familiarName } from '../components/ActiveEffects.jsx'
 import { REALM_COLORS, SPELL_SECTION_COLORS, RR_COLORS } from '../store/theme.js'
 import races from '../data/races.json'
 import professions from '../data/professions.json'
@@ -1125,6 +1126,17 @@ export default function CharacterSheet() {
         </div>
         <InjuriesPanel c={c} updateCharacter={updateCharacter} />
       </Card>
+
+      {/* Active spells & effects + game clock */}
+      <Card title="Active Spells & Effects">
+        <ActiveEffectsPanel c={c} updateCharacter={updateCharacter} />
+      </Card>
+
+      {c.familiar && (
+        <Card title={`Familiar — ${familiarName(c)}`}>
+          <FamiliarPanel c={c} updateCharacter={updateCharacter} />
+        </Card>
+      )}
 
       {/* Statistics table */}
       <Card title="Statistics">

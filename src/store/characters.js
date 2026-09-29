@@ -110,6 +110,10 @@ export function makeBlankCharacter(id) {
     injuries: [],
     // Stun rounds remaining at each severity: [−25, −50, −75]
     stun: [0, 0, 0],
+    // Active spells/effects — see utils/time.js for the shape (durations in rounds)
+    active_effects: [],
+    // Simple familiar card (buff tracker + casting target): { name, notes } or null
+    familiar: null,
 
     // Fatigue tracking (CoreLaw §5.5)
     fatigue: {
