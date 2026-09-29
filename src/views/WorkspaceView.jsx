@@ -12,10 +12,10 @@
 //
 // Mobile (<800px wide): collapses to a single vertical stack, capped at 2 visible panes.
 
-import React, { useMemo, useEffect, useState, useCallback, useRef } from 'react'
+import React, { useEffect, useState, useCallback, useRef } from 'react'
 import { PanelGroup, Panel, PanelResizeHandle } from 'react-resizable-panels'
 import { useCharacter } from '../store/CharacterContext.jsx'
-import { XIcon, PlusIcon, ChevronDownIcon } from '../components/Icons.jsx'
+import { XIcon, ChevronDownIcon } from '../components/Icons.jsx'
 import CharacterSheet from './CharacterSheet.jsx'
 import SkillsView     from './SkillsView.jsx'
 import SpellsView     from './SpellsView.jsx'

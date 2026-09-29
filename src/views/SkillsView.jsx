@@ -507,7 +507,15 @@ function SkillRow({
   )
 }
 
+// Wrapper: only mount the view when a character exists, so its hooks always
+// run in the same order (they used to follow an early return).
 export default function SkillsView() {
+  const { activeChar } = useCharacter()
+  if (!activeChar) return <Empty text="No character selected." />
+  return <SkillsViewBody />
+}
+
+function SkillsViewBody() {
   const { activeChar, updateCharacter, updateSkill, updateSpellList, removeSpellList,
           addCustomSkill, updateCustomSkill, removeCustomSkill } = useCharacter()
   useScrollRestore('rm_scroll_skills')

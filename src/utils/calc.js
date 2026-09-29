@@ -70,7 +70,33 @@ export function getSkillBonus(char, template, skillData, displayName) {
   const isProf        = !!skillData?.proficient
   const profBonus     = isProf ? Math.min(ranks, 30) : 0
   const knackBonus    = displayName ? getKnackBonus(char, displayName) : 0
-  return rb + catB + skillStatB + item + talent + profBonus + knackBonus
+  const autoTalent    = displayName
+    ? getSkillTalentBonus(char, displayName, template?.name, skillData?.talent_excluded || [])
+    : 0
+  return rb + catB + skillStatB + item + talent + autoTalent + profBonus + knackBonus
+}
+
+/**
+ * Skill-targeted talent bonuses (skill_talent_bonus effects) for one skill,
+ * exactly as the Skills tab applies them: matched on the resolved name
+ * ("Melee: Blade"), else the template name; talents the player excluded on
+ * that skill (skillData.talent_excluded) are skipped.
+ */
+export function getSkillTalentBonus(char, displayName, templateName, excluded = []) {
+  const byName = {}
+  for (const inst of (char.talents || [])) {
+    const def = talentsData.find(t => t.id === inst.talent_id)
+    for (const eff of def?.effects || []) {
+      if (eff.type !== 'skill_talent_bonus') continue
+      const targets = eff.skill === 'param'
+        ? [inst.param, ...(inst.extra_params || [])].filter(Boolean)
+        : (eff.skill ? [eff.skill] : [])
+      const bonus = eff.per_tier != null ? eff.per_tier * inst.tier : (eff.flat ?? 0)
+      for (const t of targets) (byName[t] ||= []).push({ instId: inst.id, bonus })
+    }
+  }
+  const entries = byName[displayName] || (templateName ? byName[templateName] : null) || []
+  return entries.filter(e => !excluded.includes(e.instId)).reduce((s, e) => s + e.bonus, 0)
 }
 
 // Aggregate all non-skill talent bonuses from a character's talent list.

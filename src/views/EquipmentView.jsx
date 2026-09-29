@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useState, useMemo } from 'react'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { useScrollRestore } from '../hooks/persist.js'
 import talentsData from '../data/talents.json'

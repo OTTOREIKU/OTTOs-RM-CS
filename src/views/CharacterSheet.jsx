@@ -1,14 +1,13 @@
 import React, { useState, useMemo } from 'react'
 import { usePersistentOpen, useScrollRestore } from '../hooks/persist.js'
 import { ChevronDownIcon, ChevronUpIcon, XIcon, CheckIcon, DiamondIcon, EyeOpenIcon, EyeClosedIcon } from '../components/Icons.jsx'
-import FoundryExportModal from '../components/FoundryExportModal.jsx'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { STATS } from '../store/characters.js'
 import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getRRBreakdown, getBaseHits, getEndurance, getPowerPoints, getWeightAllowance, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getConditionPenalty, getConditionInitiativePenalty, getEnduranceConditionModifier, getKnackBonus, rmuSkillName, getWeaponSkillRanks, getBMR, getFatigueRecoveryCap, restFatiguePenalty, getRaceEntry, getRaceStatBonuses, getArmorPenalties, getEncumbrance, getMovementPenalty, getDefense, SHIELD_DB } from '../utils/calc.js'
 import { HitsBox, InjuriesPanel, StatusStrip } from '../components/HealthPanel.jsx'
 import { ActiveEffectsPanel, FamiliarPanel, familiarName } from '../components/ActiveEffects.jsx'
 import { QuickRollsPanel, ManeuverModal } from '../components/RollModals.jsx'
-import { REALM_COLORS, SPELL_SECTION_COLORS, RR_COLORS } from '../store/theme.js'
+import { SPELL_SECTION_COLORS, RR_COLORS } from '../store/theme.js'
 import races from '../data/races.json'
 import professions from '../data/professions.json'
 import cultures from '../data/cultures.json'
@@ -18,7 +17,6 @@ import professionSkillsData from '../data/profession_skills.json'
 import { useConfirm } from '../components/ConfirmModal.jsx'
 import armorData from '../data/armor.json'
 import weaponsDb from '../data/weapons.json'
-import spellListsDb from '../data/spell_lists.json'
 import skillsData from '../data/skills.json'
 import talentsData from '../data/talents.json'
 import skillCostsData from '../data/skill_costs.json'
@@ -957,7 +955,15 @@ function FatigueCard({ c, updateCharacter, autoEndurance, armorManPenalty, encPe
 }
 
 // ── Main view ─────────────────────────────────────────────────────────────────
+// Wrapper: only mount the sheet when a character exists, so the sheet's hooks
+// always run in the same order (they used to follow an early return).
 export default function CharacterSheet() {
+  const { activeChar } = useCharacter()
+  if (!activeChar) return null
+  return <CharacterSheetBody />
+}
+
+function CharacterSheetBody() {
   const { activeChar, updateCharacter, updateStat, updateSkill, addWeapon, updateWeapon, removeWeapon } = useCharacter()
   const [wBrowse,    setWBrowse]   = useState(false)
   const [identityOpen,    setIdentityOpen]    = usePersistentOpen('rm_panel_identity_v2', false)

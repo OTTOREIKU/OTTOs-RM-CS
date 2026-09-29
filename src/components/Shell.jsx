@@ -5,9 +5,9 @@ import { exportCharacter, importCharactersFromFile, loadCharacters, saveCharacte
 import FoundryExportModal from './FoundryExportModal.jsx'
 import { parseFoundryActor } from '../utils/foundryImport.js'
 import {
-  FILE_SYNC_SUPPORTED, getLinkedHandle, getLinkedFileName,
+  FILE_SYNC_SUPPORTED, getLinkedHandle,
   hasWritePermission, requestWritePermission,
-  pickAndLinkFile, writeToHandle, readFromHandle, clearLinkedHandle,
+  pickAndLinkFile, writeToHandle, clearLinkedHandle,
 } from '../store/fileSync.js'
 import {
   SwordsIcon, ChevronDownIcon, XIcon, SaveIcon,
