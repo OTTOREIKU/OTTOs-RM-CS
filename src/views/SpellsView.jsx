@@ -99,9 +99,15 @@ export default function SpellsView() {
     return matchRealm && matchSearch
   }), [realm, query])
 
-  const myLists = useMemo(() =>
-    c ? Object.entries(spellLists).filter(([name]) => (c.spell_lists?.[name]?.ranks ?? 0) > 0) : [],
-  [c])
+  const myLists = useMemo(() => {
+    if (!c) return []
+    const known = Object.entries(spellLists).filter(([name]) => (c.spell_lists?.[name]?.ranks ?? 0) > 0)
+    // Lists the character has that the app has no spell data for (custom / homebrew)
+    const custom = Object.entries(c.spell_lists || {})
+      .filter(([name, d]) => !spellLists[name] && (d?.ranks ?? 0) > 0)
+      .map(([name, d]) => [name, { realm: c.realm || '', section: d?.category || 'Custom', spells: [], custom: true }])
+    return [...known, ...custom]
+  }, [c])
 
   const condPen = c ? getConditionPenalty(c).total : 0
   function ranks(name)  { return c?.spell_lists?.[name]?.ranks ?? 0 }
@@ -444,6 +450,11 @@ export default function SpellsView() {
                     </div>
                   )
                 })}
+                {list.custom && (
+                  <div style={{ padding: '8px 14px', fontSize: 12, color: 'var(--text3)', borderTop: '1px solid var(--border)' }}>
+                    No spell data for this list in the app — its SCR and Mastery above still apply.
+                  </div>
+                )}
               </>
             )}
           </div>

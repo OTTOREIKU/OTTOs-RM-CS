@@ -1053,7 +1053,11 @@ function SpellListRow({ list, char, updateSpellList, removeSpellList, sub, unloc
   function upd(patch) { updateSpellList(list.name, { ...patch, category: sub }) }
 
   // All skills available as complementary choices
-  const allSkillNames = char ? Object.keys(char.skills || {}).sort() : []
+  const allSkillNames = char
+    ? Object.entries(char.skills || {})
+        .map(([key, d]) => ({ key, label: displayName(key, d?.label || '') }))
+        .sort((a, b) => a.label.localeCompare(b.label))
+    : []
 
   const spellGrid = isMobile ? SPELL_GRID_M : SPELL_GRID
 
@@ -1063,7 +1067,7 @@ function SpellListRow({ list, char, updateSpellList, removeSpellList, sub, unloc
     const s    = char?.skills?.[comp.skill] || {}
     const raw  = (s.ranks ?? 0) + (s.culture_ranks ?? 0)
     const val  = comp.type === 'secondary' ? Math.floor(raw / 2) : raw
-    return `${comp.skill} (${comp.type === 'secondary' ? 'secondary' : 'main'}) +${val}`
+    return `${displayName(comp.skill, s.label || '')} (${comp.type === 'secondary' ? 'secondary' : 'main'}) +${val}`
   })()
 
   const nameCell = (
@@ -1171,7 +1175,7 @@ function SpellListRow({ list, char, updateSpellList, removeSpellList, sub, unloc
           style={{ fontSize: 11, background: 'var(--surface)', border: '1px solid var(--border2)',
             borderRadius: 4, padding: '2px 4px', color: 'var(--text)', maxWidth: 160 }}>
           <option value="">— none —</option>
-          {allSkillNames.map(sn => <option key={sn} value={sn}>{sn}</option>)}
+          {allSkillNames.map(sn => <option key={sn.key} value={sn.key}>{sn.label}</option>)}
         </select>
       </label>
       {comp?.skill && (

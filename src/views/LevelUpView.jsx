@@ -646,11 +646,17 @@ function SpellListsSection({ c, lu, dispatch, dpLeft, spellSearch, setSpellSearc
   const REALMS = ['All', 'Channeling', 'Essence', 'Mentalism', 'Hybrid']
   const REALM_COLOR = REALM_COLORS   // shared CSS-variable map from theme.js
 
-  const filtered = useMemo(() => Object.entries(spellLists).filter(([name, list]) => {
-    const matchRealm  = spellRealm === 'All' || list.realm === spellRealm
-    const matchSearch = !query || name.toLowerCase().includes(query)
-    return matchRealm && matchSearch
-  }), [spellRealm, query])
+  const filtered = useMemo(() => {
+    // Plus the character's own lists that the app has no data for (custom/homebrew)
+    const custom = Object.entries(c.spell_lists || {})
+      .filter(([name]) => !spellLists[name])
+      .map(([name, d]) => [name, { realm: c.realm || '', section: d?.category || 'Custom', spells: [] }])
+    return [...Object.entries(spellLists), ...custom].filter(([name, list]) => {
+      const matchRealm  = spellRealm === 'All' || list.realm === spellRealm
+      const matchSearch = !query || name.toLowerCase().includes(query)
+      return matchRealm && matchSearch
+    })
+  }, [spellRealm, query, c.spell_lists, c.realm])
 
   return (
     <div style={{ marginTop: 16 }}>

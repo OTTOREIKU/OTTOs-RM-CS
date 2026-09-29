@@ -546,7 +546,9 @@ function ProfessionalSkillsSubPanel({ char, updateCharacter, updateSkill }) {
           </div>
           {candidates.length === 0 ? (
             <div style={{ fontSize: 11, color: 'var(--text3)', fontStyle: 'italic', padding: 8 }}>
-              No profession selected, or profession data not available for "{profession}".
+              {profession
+                ? <>No official professional-skill list for {profession}. Pick any 10 with your GM (as RMU's "No Profession" does) using the toggle on skill rows in the Skills tab — they're counted above.</>
+                : 'Choose a profession to see its 15 candidate skills.'}
             </div>
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 4, fontSize: 12 }}>
