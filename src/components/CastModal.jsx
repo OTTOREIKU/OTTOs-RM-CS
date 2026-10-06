@@ -98,7 +98,15 @@ export default function CastModal({ char, listName, spell, updateCharacter, onCl
             <div style={{ fontSize: 11, color: 'var(--text3)' }}>
               {listName} · Level {spell.level} · Type {spell.type || '—'}
               {sub && ' · subconscious'}{isInstantaneous(spell) && ' · instantaneous'}
+              {bd.ppCost === 0 && ' · no PP'}
             </div>
+            {(bd.rr !== 0 || bd.attack) && (
+              <div style={{ fontSize: 11, color: 'var(--text2)', marginTop: 2 }}>
+                {bd.rr !== 0 && <>Target RR {signed(bd.rr)}</>}
+                {bd.rr !== 0 && bd.attack && ' · '}
+                {bd.attack && <>Attack table: {bd.attack}</>}
+              </div>
+            )}
           </div>
           <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, display: 'flex' }}>
             <XIcon size={14} color="var(--text3)" />

@@ -252,6 +252,11 @@ export default function SpellsView() {
                     <span key={h} style={{ fontSize: 9, fontWeight: 600, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>{h}</span>
                   ))}
                 </div>
+                {list.notes && (
+                  <div style={{ padding: '5px 14px', borderTop: '1px solid var(--border)', fontSize: 11, color: 'var(--text3)', fontStyle: 'italic', whiteSpace: 'pre-line' }}>
+                    {list.notes}
+                  </div>
+                )}
                 {/* ── Talent annotation banners ─────────────────────── */}
                 {/* Mute — always shown on every list, most prominent */}
                 {spellTalents.mute && (
@@ -367,7 +372,7 @@ export default function SpellsView() {
                   const overcast  = known && getRawOvercastPenalty(c, spell.level) < 0
                   const unknownDim = !!c && r > 0 && !known
                   const canCast   = known
-                  const expandable = !!(desc || spell.notes) || (canCast && !showCastCol)
+                  const expandable = !!(desc || spell.notes || spell.rr || spell.attack || spell.mods) || (canCast && !showCastCol)
                   const hasDetail = expandable
                   return (
                     <div key={spKey}>
@@ -390,7 +395,11 @@ export default function SpellsView() {
                             </span>
                           )}
                         </span>
-                        <span style={{ display: 'flex', alignItems: 'center', gap: 3 }}>{spell.name}{hasDetail && <InfoIcon size={9} color="var(--text3)" />}</span>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+                          {spell.name}
+                          {spell.mods && <span style={{ color: 'var(--text3)', fontSize: 11 }} title="* instantaneous · • no PP · ‡ part of a set">{spell.mods}</span>}
+                          {hasDetail && <InfoIcon size={9} color="var(--text3)" />}
+                        </span>
                         <span style={{ color: 'var(--text2)', fontSize: 11, display: 'flex', alignItems: 'center', gap: 3, flexWrap: 'nowrap' }}>
                           {spell.aoe || '—'}
                           {scopeTier > 0 && hasAoE(spell) && (
@@ -438,7 +447,18 @@ export default function SpellsView() {
                       </div>
                       {open && hasDetail && (
                         <div style={{ padding: '8px 14px 8px 50px', background: rc + '0d', borderLeft: '3px solid ' + rc, fontSize: 12, lineHeight: 1.6, color: 'var(--text2)' }}>
-                          {desc && <p style={{ margin: '0 0 4px 0' }}>{desc}</p>}
+                          {desc && <p style={{ margin: '0 0 4px 0', whiteSpace: 'pre-line' }}>{desc}</p>}
+                          {(spell.rr || spell.attack || spell.mods) && (
+                            <p style={{ margin: '0 0 4px 0', fontSize: 11, color: 'var(--text3)' }}>
+                              {[
+                                spell.rr ? `Target RR ${spell.rr > 0 ? '+' : ''}${spell.rr}` : null,
+                                spell.attack ? `Attack table: ${spell.attack}` : null,
+                                spell.mods?.includes('*') ? 'Instantaneous' : null,
+                                spell.mods?.includes('•') ? 'No PP cost' : null,
+                                spell.mods?.includes('‡') ? 'Part of a set cast together' : null,
+                              ].filter(Boolean).join(' · ')}
+                            </p>
+                          )}
                           {spell.notes && <p style={{ margin: 0, color: 'var(--text3)', fontStyle: 'italic' }}>{spell.notes}</p>}
                           {canCast && !showCastCol && (
                             <button onClick={() => setCastTarget({ listName, spell })} style={{ ...castBtn(overcast), marginTop: 6, padding: '5px 14px' }}>

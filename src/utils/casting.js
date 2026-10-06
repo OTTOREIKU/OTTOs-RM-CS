@@ -1,8 +1,9 @@
 // Spell casting rules for the Cast dialog.
 //
-// Sources: RMU Foundry system v1.2.33 — spells/prepare.js (known spells,
+// Sources: RMU Foundry system v1.3.5 — spells/prepare.js (known spells,
 // overcasting, armor penalty), apps/perform-spell-dialog.js (situational
-// modifier tables), xpose/scr.js (PP cost), spell-casting/scr.js (result bands).
+// modifier tables), xpose/scr.js (PP cost), spell-casting/scr.js (result bands,
+// failure modifier) — checked against Spell Law ch. 2 and 4.
 import armorData from '../data/armor.json'
 import {
   getSpellCastingBonus, getSpellCastingBreakdown, getSpellMasteryBonus, getConditionPenalty,
@@ -22,9 +23,16 @@ export function getRawOvercastPenalty(char, spellLevel) {
   return spellLevel > casterLevel ? -(spellLevel - casterLevel) * 20 : 0
 }
 
-/** "Stun Relief *" — the asterisk marks an instantaneous spell. */
+// Spell Law symbols live in `mods` (older custom data may still put them in the name):
+//   * instantaneous   • needs no Power Points   ‡ part of a set cast together
+/** Instantaneous spells (*) cast as a 0 AP action and need no prep round to overcast. */
 export function isInstantaneous(spell) {
-  return /\*\s*$/.test(spell?.name || '')
+  return (spell?.mods || '').includes('*') || /\*\s*$/.test(spell?.name || '')
+}
+
+/** Spells marked • cost no Power Points. */
+export function needsNoPP(spell) {
+  return (spell?.mods || '').includes('•') || /•/.test(spell?.name || '')
 }
 
 /** Spell type suffix "s" = subconscious (e.g. "Us"). Ignores injury, grapple, hands. */
@@ -128,9 +136,10 @@ export const PREP_OPTIONS = [
   { value: 0, label: 'None', mod: 0 }, { value: 1, label: '+1 round', mod: 10 }, { value: 2, label: '+2 rounds', mod: 20 },
 ]
 
+// Casting is a 4 AP action, hastened to a minimum of 2 AP (Spell Law 4.2).
 export const FAST_OPTIONS = [
   { value: 0, label: 'Normal', mod: 0 }, { value: 1, label: '1 AP less', mod: -25 },
-  { value: 2, label: '2 AP less', mod: -50 }, { value: 3, label: '3 AP less', mod: -75 },
+  { value: 2, label: '2 AP less', mod: -50 },
 ]
 
 /** Default dialog options for a spell (overcasting defaults to one extra prep round unless instantaneous). */
@@ -219,17 +228,21 @@ export function getCastBreakdown(char, listName, spell, opts) {
   sit('Fast casting', FAST_OPTIONS.find(o => o.value === opts.fast)?.mod ?? 0)
   sit('Other', Number(opts.other) || 0)
 
-  // Spell failure modifier: the situational total, if negative, flipped positive
-  // (overcasting is part of RMU's base SCR, so it doesn't count), plus talents.
+  // Spell failure modifier (RMU 1.3.5 spell-casting/scr.js): the whole SCR bonus —
+  // base plus every modifier, overcasting included — if negative, flipped positive;
+  // plus Graceful Recovery / Inglorious Failure.
+  const total = base + over + situational
   const gr = (char.talents || []).find(t => t.talent_id === 'graceful_recovery')?.tier ?? 0
   const ig = (char.talents || []).find(t => t.talent_id === 'inglorious_failure')?.tier ?? 0
-  const failureMod = (situational < 0 ? -situational : 0) - gr * 5 + ig * 5
+  const failureMod = (total < 0 ? -total : 0) - gr * 5 + ig * 5
 
   return {
     lines,
     base,
-    total: base + over + situational,
-    ppCost: spell.level,
+    total,
+    ppCost: needsNoPP(spell) ? 0 : spell.level,
+    rr: Number(spell.rr) || 0,
+    attack: spell.attack || null,
     known: isSpellKnown(char, listName, spell.level),
     overcast: rawOver < 0,
     failureMod,

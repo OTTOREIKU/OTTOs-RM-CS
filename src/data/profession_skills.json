@@ -2241,5 +2241,236 @@
       "skillName": "Magical Ritual",
       "defaultSelected": false
     }
+  ],
+  "Adept": [
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Drawing/Painting",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Fabric Craft",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Leathercraft",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Metalcraft",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Stonecraft",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Woodcraft",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Delving",
+      "skillName": "Attunement",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Materials Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Spell Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Magical Expertise",
+      "skillName": "Grace",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Power Manipulation",
+      "skillName": "Power Development",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Base",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Closed",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Magical Ritual",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Open",
+      "defaultSelected": false
+    }
+  ],
+  "Sanctifier": [
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Drawing/Painting",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Fabric Craft",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Leathercraft",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Metalcraft",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Stonecraft",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Woodcraft",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Delving",
+      "skillName": "Attunement",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Materials Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Religion/Philosophy",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Magical Expertise",
+      "skillName": "Grace",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Power Manipulation",
+      "skillName": "Power Development",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Base",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Closed",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Magical Ritual",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Open",
+      "defaultSelected": false
+    }
+  ],
+  "Psychographer": [
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Drawing/Painting",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Fabric Craft",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Leathercraft",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Metalcraft",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Stonecraft",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Crafting",
+      "skillName": "Woodcraft",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Delving",
+      "skillName": "Attunement",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Materials Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Lore",
+      "skillName": "Racial Lore",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Magical Expertise",
+      "skillName": "Grace",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Power Manipulation",
+      "skillName": "Power Development",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Base",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Closed",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Magical Ritual",
+      "defaultSelected": false
+    },
+    {
+      "skillCategory": "Spellcasting",
+      "skillName": "Open",
+      "defaultSelected": false
+    }
   ]
 }

@@ -26,7 +26,10 @@
     "Merchant (A)": "2/3",
     "Swashbuckler (A)": "2/3",
     "Seer": "4/6",
-    "Astrologer": "3/5"
+    "Astrologer": "3/5",
+    "Adept": "3/5",
+    "Sanctifier": "4/6",
+    "Psychographer": "4/6"
   },
   "Awareness": {
     "No Profession": "2/4",
@@ -55,7 +58,10 @@
     "Merchant (A)": "1/3",
     "Swashbuckler (A)": "1/3",
     "Seer": "1/3",
-    "Astrologer": "2/4"
+    "Astrologer": "2/4",
+    "Adept": "3/5",
+    "Sanctifier": "3/5",
+    "Psychographer": "4/6"
   },
   "Battle Expertise": {
     "No Profession": "3/5",
@@ -84,7 +90,10 @@
     "Merchant (A)": "6/8",
     "Swashbuckler (A)": "2/4",
     "Seer": "7/10",
-    "Astrologer": "7/10"
+    "Astrologer": "7/10",
+    "Adept": "7/10",
+    "Sanctifier": "7/10",
+    "Psychographer": "6/8"
   },
   "Body Discipline": {
     "No Profession": "4/6",
@@ -113,7 +122,10 @@
     "Merchant (A)": "4/6",
     "Swashbuckler (A)": "5/7",
     "Seer": "6/8",
-    "Astrologer": "6/8"
+    "Astrologer": "6/8",
+    "Adept": "6/8",
+    "Sanctifier": "6/8",
+    "Psychographer": "5/7"
   },
   "Brawn": {
     "No Profession": "3/4",
@@ -142,7 +154,10 @@
     "Merchant (A)": "4/6",
     "Swashbuckler (A)": "2/4",
     "Seer": "6/8",
-    "Astrologer": "6/8"
+    "Astrologer": "6/8",
+    "Adept": "6/8",
+    "Sanctifier": "5/7",
+    "Psychographer": "5/7"
   },
   "Combat Expertise": {
     "No Profession": "3/5",
@@ -171,7 +186,10 @@
     "Merchant (A)": "4/6",
     "Swashbuckler (A)": "1/3",
     "Seer": "7/10",
-    "Astrologer": "7/10"
+    "Astrologer": "7/10",
+    "Adept": "7/10",
+    "Sanctifier": "7/10",
+    "Psychographer": "7/10"
   },
   "Combat Training 1": {
     "No Profession": "3/4",
@@ -200,7 +218,10 @@
     "Merchant (A)": "2/3",
     "Swashbuckler (A)": "1/2",
     "Seer": "6/8",
-    "Astrologer": "6/8"
+    "Astrologer": "6/8",
+    "Adept": "5/7",
+    "Sanctifier": "5/7",
+    "Psychographer": "5/7"
   },
   "Combat Training 2": {
     "No Profession": "3/5",
@@ -229,7 +250,10 @@
     "Merchant (A)": "2/4",
     "Swashbuckler (A)": "2/3",
     "Seer": "7/10",
-    "Astrologer": "7/10"
+    "Astrologer": "7/10",
+    "Adept": "6/8",
+    "Sanctifier": "6/8",
+    "Psychographer": "6/8"
   },
   "Combat Training 3": {
     "No Profession": "5/7",
@@ -258,7 +282,10 @@
     "Merchant (A)": "3/5",
     "Swashbuckler (A)": "4/6",
     "Seer": "12/15",
-    "Astrologer": "12/15"
+    "Astrologer": "12/15",
+    "Adept": "9/12",
+    "Sanctifier": "9/12",
+    "Psychographer": "9/12"
   },
   "Combat Training 4": {
     "No Profession": "7/10",
@@ -287,7 +314,10 @@
     "Merchant (A)": "5/7",
     "Swashbuckler (A)": "5/7",
     "Seer": "15/20",
-    "Astrologer": "15/20"
+    "Astrologer": "15/20",
+    "Adept": "15/20",
+    "Sanctifier": "15/20",
+    "Psychographer": "15/20"
   },
   "Composition": {
     "No Profession": "2/4",
@@ -316,7 +346,10 @@
     "Merchant (A)": "2/3",
     "Swashbuckler (A)": "3/4",
     "Seer": "2/4",
-    "Astrologer": "2/4"
+    "Astrologer": "2/4",
+    "Adept": "2/4",
+    "Sanctifier": "2/4",
+    "Psychographer": "3/4"
   },
   "Crafting": {
     "No Profession": "2/4",
@@ -345,7 +378,10 @@
     "Merchant (A)": "2/3",
     "Swashbuckler (A)": "2/4",
     "Seer": "3/4",
-    "Astrologer": "3/4"
+    "Astrologer": "3/4",
+    "Adept": "1/2",
+    "Sanctifier": "1/2",
+    "Psychographer": "1/2"
   },
   "Delving": {
     "No Profession": "4/6",
@@ -374,7 +410,10 @@
     "Merchant (A)": "2/3",
     "Swashbuckler (A)": "7/10",
     "Seer": "2/3",
-    "Astrologer": "2/3"
+    "Astrologer": "2/3",
+    "Adept": "1/2",
+    "Sanctifier": "1/2",
+    "Psychographer": "1/2"
   },
   "Environmental": {
     "No Profession": "3/4",
@@ -403,7 +442,10 @@
     "Merchant (A)": "1/3",
     "Swashbuckler (A)": "3/5",
     "Seer": "4/6",
-    "Astrologer": "3/5"
+    "Astrologer": "3/5",
+    "Adept": "4/6",
+    "Sanctifier": "4/6",
+    "Psychographer": "4/6"
   },
   "Gymnastic": {
     "No Profession": "3/4",
@@ -432,7 +474,10 @@
     "Merchant (A)": "3/5",
     "Swashbuckler (A)": "2/3",
     "Seer": "4/6",
-    "Astrologer": "4/6"
+    "Astrologer": "4/6",
+    "Adept": "4/6",
+    "Sanctifier": "4/6",
+    "Psychographer": "4/6"
   },
   "Lore": {
     "No Profession": "1/3",
@@ -461,7 +506,10 @@
     "Merchant (A)": "1/3",
     "Swashbuckler (A)": "2/4",
     "Seer": "1/2",
-    "Astrologer": "1/2"
+    "Astrologer": "1/2",
+    "Adept": "1/2",
+    "Sanctifier": "1/3",
+    "Psychographer": "1/3"
   },
   "Magical Expertise": {
     "No Profession": "4/6",
@@ -490,7 +538,10 @@
     "Merchant (A)": "4/6",
     "Swashbuckler (A)": "7/10",
     "Seer": "1/3",
-    "Astrologer": "2/3"
+    "Astrologer": "2/3",
+    "Adept": "2/4",
+    "Sanctifier": "2/4",
+    "Psychographer": "2/4"
   },
   "Medical": {
     "No Profession": "3/4",
@@ -519,7 +570,10 @@
     "Merchant (A)": "2/3",
     "Swashbuckler (A)": "3/4",
     "Seer": "3/5",
-    "Astrologer": "3/5"
+    "Astrologer": "3/5",
+    "Adept": "4/6",
+    "Sanctifier": "3/4",
+    "Psychographer": "3/5"
   },
   "Mental Discipline": {
     "No Profession": "3/4",
@@ -548,7 +602,10 @@
     "Merchant (A)": "2/3",
     "Swashbuckler (A)": "3/5",
     "Seer": "1/3",
-    "Astrologer": "2/3"
+    "Astrologer": "2/3",
+    "Adept": "4/6",
+    "Sanctifier": "3/5",
+    "Psychographer": "3/5"
   },
   "Movement": {
     "No Profession": "2/4",
@@ -577,7 +634,10 @@
     "Merchant (A)": "2/4",
     "Swashbuckler (A)": "1/3",
     "Seer": "4/6",
-    "Astrologer": "4/6"
+    "Astrologer": "4/6",
+    "Adept": "4/6",
+    "Sanctifier": "3/5",
+    "Psychographer": "3/5"
   },
   "Performance Art": {
     "No Profession": "2/4",
@@ -606,7 +666,10 @@
     "Merchant (A)": "2/3",
     "Swashbuckler (A)": "3/4",
     "Seer": "2/4",
-    "Astrologer": "2/4"
+    "Astrologer": "2/4",
+    "Adept": "3/4",
+    "Sanctifier": "3/4",
+    "Psychographer": "2/4"
   },
   "Power Manipulation": {
     "No Profession": "4/6",
@@ -635,7 +698,10 @@
     "Merchant (A)": "9/12",
     "Swashbuckler (A)": "9/12",
     "Seer": "2/3",
-    "Astrologer": "2/4"
+    "Astrologer": "2/4",
+    "Adept": "2/3",
+    "Sanctifier": "2/3",
+    "Psychographer": "2/3"
   },
   "Science": {
     "No Profession": "4/6",
@@ -664,7 +730,10 @@
     "Merchant (A)": "2/3",
     "Swashbuckler (A)": "5/7",
     "Seer": "3/4",
-    "Astrologer": "3/4"
+    "Astrologer": "3/4",
+    "Adept": "3/4",
+    "Sanctifier": "3/5",
+    "Psychographer": "3/5"
   },
   "Social": {
     "No Profession": "2/4",
@@ -693,7 +762,10 @@
     "Merchant (A)": "1/3",
     "Swashbuckler (A)": "1/3",
     "Seer": "2/4",
-    "Astrologer": "2/3"
+    "Astrologer": "2/3",
+    "Adept": "3/4",
+    "Sanctifier": "2/4",
+    "Psychographer": "2/4"
   },
   "Base/Open": {
     "No Profession": "4/6",
@@ -722,7 +794,10 @@
     "Merchant (A)": "7/10",
     "Swashbuckler (A)": "7/10",
     "Seer": "1/2",
-    "Astrologer": "1/3"
+    "Astrologer": "1/3",
+    "Adept": "1/2",
+    "Sanctifier": "1/2",
+    "Psychographer": "1/2"
   },
   "Magical Ritual": {
     "No Profession": "5/7",
@@ -751,7 +826,10 @@
     "Merchant (A)": "9/12",
     "Swashbuckler (A)": "9/12",
     "Seer": "1/3",
-    "Astrologer": "2/3"
+    "Astrologer": "2/3",
+    "Adept": "1/3",
+    "Sanctifier": "1/3",
+    "Psychographer": "1/3"
   },
   "Closed": {
     "No Profession": "7/10",
@@ -780,7 +858,10 @@
     "Merchant (A)": "15/20",
     "Swashbuckler (A)": "15/20",
     "Seer": "2/4",
-    "Astrologer": "3/4"
+    "Astrologer": "3/4",
+    "Adept": "2/4",
+    "Sanctifier": "2/4",
+    "Psychographer": "2/4"
   },
   "Arcane": {
     "No Profession": "15/20",
@@ -809,7 +890,10 @@
     "Merchant (A)": "15/20",
     "Swashbuckler (A)": "15/20",
     "Seer": "5/7",
-    "Astrologer": "4/6"
+    "Astrologer": "4/6",
+    "Adept": "5/7",
+    "Sanctifier": "5/7",
+    "Psychographer": "5/7"
   },
   "Restricted": {
     "No Profession": "15/20",
@@ -838,7 +922,10 @@
     "Merchant (A)": "15/20",
     "Swashbuckler (A)": "15/20",
     "Seer": "6/8",
-    "Astrologer": "7/10"
+    "Astrologer": "7/10",
+    "Adept": "6/8",
+    "Sanctifier": "6/8",
+    "Psychographer": "6/8"
   },
   "Subterfuge": {
     "No Profession": "3/5",
@@ -867,7 +954,10 @@
     "Merchant (A)": "3/5",
     "Swashbuckler (A)": "3/5",
     "Seer": "6/8",
-    "Astrologer": "6/8"
+    "Astrologer": "6/8",
+    "Adept": "6/8",
+    "Sanctifier": "6/8",
+    "Psychographer": "6/8"
   },
   "Technical": {
     "No Profession": "3/5",
@@ -896,7 +986,10 @@
     "Merchant (A)": "1/3",
     "Swashbuckler (A)": "5/7",
     "Seer": "5/7",
-    "Astrologer": "5/7"
+    "Astrologer": "5/7",
+    "Adept": "2/4",
+    "Sanctifier": "3/5",
+    "Psychographer": "4/6"
   },
   "Vocation": {
     "No Profession": "3/4",
@@ -925,6 +1018,9 @@
     "Merchant (A)": "1/3",
     "Swashbuckler (A)": "3/4",
     "Seer": "3/4",
-    "Astrologer": "3/4"
+    "Astrologer": "3/4",
+    "Adept": "3/4",
+    "Sanctifier": "3/4",
+    "Psychographer": "3/4"
   }
 }
