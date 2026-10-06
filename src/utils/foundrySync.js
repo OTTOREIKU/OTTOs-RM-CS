@@ -10,10 +10,9 @@
 //
 // The matching/planning logic lives in foundryReconcile.js (self-contained, so the
 // script can embed its source text).
-import { rmuSkillName, defaultListCategory } from './calc.js'
+import { rmuSkillName, getListCategory, getProfessionalSet, getRealms } from './calc.js'
 import talentsData from '../data/talents.json'
 import skillsData from '../data/skills.json'
-import spellListsData from '../data/spell_lists.json'
 import { reconcileActor, applyPlan } from './foundryReconcile.js'
 import reconcileSource from './foundryReconcile.js?raw'
 
@@ -74,7 +73,8 @@ export function buildDesiredState(char, options = {}) {
   const desired = {
     version: 2,
     name: char.name || '',
-    realm: char.realm || null,
+    // Foundry writes hybrids as "Channeling,Essence"
+    realm: getRealms(char).join(',') || char.realm || null,
     level: char.level ?? null,
     xp: Number(char.experience) > 0 ? Number(char.experience) : null,
     hp: options.includeHealth ? (char.hits_current ?? null) : null,
@@ -120,7 +120,7 @@ export function buildDesiredState(char, options = {}) {
   for (const [key, sl] of Object.entries(char.spell_lists || {})) {
     const ranks = Number(sl?.ranks) || 0
     if (!ranks) continue
-    const cat = sl?.category || defaultListCategory(char, key, spellListsData[key])
+    const cat = getListCategory(char, key)
     desired.lists.push({ name: key, listType: LIST_TYPE[cat] || cat, ranks })
   }
 
@@ -135,11 +135,14 @@ export function buildDesiredState(char, options = {}) {
   // Professional skills (one RMU skill covers all its specializations) and knacks
   const prof = new Map()
   const addProf = list => { for (const p of list) prof.set(`${p.category}|${p.name}`, p) }
-  for (const [key, data] of Object.entries(char.skills || {})) if (data?.proficient) addProf(professionalEntries(char, rmuSkillName(key), key))
-  for (const cs of char.custom_skills || []) if (cs?.proficient) addProf(professionalEntries(char, rmuSkillName(cs.template_name), cs.template_name))
-  for (const sl of Object.values(char.spell_lists || {})) if (sl?.proficient) {
-    const t = sl.category || 'Base'
-    addProf([{ category: 'Spellcasting', name: LIST_TYPE[t] || t }])
+  // Same set the app uses for every total (char.professional_skills + older per-entry flags)
+  const LIST_TYPES = ['Base', 'Open', 'Closed', 'Arcane', 'Restricted', 'Magical Ritual']
+  for (const name of getProfessionalSet(char)) {
+    if (LIST_TYPES.includes(name)) { addProf([{ category: 'Spellcasting', name }]); continue }
+    const appKey = Object.keys(char.skills || {}).find(k => rmuSkillName(k) === name)
+      || (char.custom_skills || []).find(cs => rmuSkillName(cs.template_name) === name)?.template_name
+      || skillsData.find(s => rmuSkillName(s.name) === name)?.name
+    addProf(professionalEntries(char, name, appKey))
   }
   desired.professional = [...prof.values()]
   for (const k of char.knacks || []) {

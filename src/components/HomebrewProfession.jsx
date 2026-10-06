@@ -8,6 +8,7 @@ import professions from '../data/professions.json'
 import professionSkillsData from '../data/profession_skills.json'
 import spellLists from '../data/spell_lists.json'
 import { ChevronDownIcon, ChevronUpIcon, XIcon } from './Icons.jsx'
+import { getListCategory } from '../utils/calc.js'
 
 // Every professional-skill choice any profession offers, for the "add" picker.
 const ALL_PROF_SKILLS = (() => {
@@ -45,6 +46,21 @@ export default function HomebrewProfessionSubPanel({ char, updateCharacter }) {
     updateCharacter(upd)
   }
 
+  // A list the character already has follows its base-list status: added → Base,
+  // removed → back to the book's type (the List type selector can still override).
+  function setBaseLists(next) {
+    const upd = { custom_profession: { ...cp, base_lists: next } }
+    const lists = { ...(char.spell_lists || {}) }
+    let changed = false
+    for (const n of Object.keys(lists)) {
+      const isBase = next.includes(n), wasBase = (cp.base_lists || []).includes(n)
+      if (isBase && !wasBase && lists[n]?.category !== 'Base') { lists[n] = { ...lists[n], category: 'Base' }; changed = true }
+      if (!isBase && wasBase && lists[n]?.category === 'Base') { const { category: _c, ...rest } = lists[n]; lists[n] = rest; changed = true }
+    }
+    if (changed) upd.spell_lists = lists
+    updateCharacter(upd)
+  }
+
   function create() {
     const from = char.profession && professions.includes(char.profession) ? char.profession : 'No Profession'
     const name = 'Homebrew'
@@ -53,7 +69,7 @@ export default function HomebrewProfessionSubPanel({ char, updateCharacter }) {
       custom_profession: {
         name,
         cost_profession: from,
-        base_lists: Object.entries(char.spell_lists || {}).filter(([, l]) => (l?.category || 'Base') === 'Base').map(([n]) => n),
+        base_lists: Object.keys(char.spell_lists || {}).filter(n => getListCategory(char, n) === 'Base'),
         professional_skills: (professionSkillsData[from] || []).map(({ skillCategory, skillName }) => ({ skillCategory, skillName })),
       },
     })
@@ -106,9 +122,9 @@ export default function HomebrewProfessionSubPanel({ char, updateCharacter }) {
                 <span style={label}>Base lists ({(cp.base_lists || []).length})</span>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
                   {(cp.base_lists || []).map(l => (
-                    <Chip key={l} onRemove={() => setCP({ base_lists: cp.base_lists.filter(x => x !== l) })}>{title(l)}</Chip>
+                    <Chip key={l} onRemove={() => setBaseLists(cp.base_lists.filter(x => x !== l))}>{title(l)}</Chip>
                   ))}
-                  <select value="" onChange={e => e.target.value && setCP({ base_lists: [...(cp.base_lists || []), e.target.value] })}
+                  <select value="" onChange={e => e.target.value && setBaseLists([...(cp.base_lists || []), e.target.value])}
                     style={{ fontSize: 11, maxWidth: 170 }}>
                     <option value="">+ add list…</option>
                     {LIST_NAMES.filter(n => !(cp.base_lists || []).includes(n)).map(n => <option key={n} value={n}>{title(n)}</option>)}

@@ -3,7 +3,12 @@
 // into our internal character schema.
 
 import skillsData from '../data/skills.json'
+import spellListsData from '../data/spell_lists.json'
 import { makeBlankCharacter } from '../store/characters.js'
+
+const LIST_KEY_BY_LOWER = Object.fromEntries(Object.keys(spellListsData).map(k => [k.toLowerCase(), k]))
+// Foundry list skill name → the app's list type
+const FOUNDRY_LIST_TYPE = { Base: 'Base', Open: 'Open', Closed: 'Closed', Arcane: 'Arcane', Restricted: 'Restricted', 'Magical Ritual': 'Magic Ritual' }
 
 // ── Constants ───────────────────────────────────────────────────────────────
 
@@ -69,7 +74,7 @@ export function parseFoundryActor(json) {
   // ── Identity ──────────────────────────────────────────────────────────────
 
   char.name  = json.name || 'Imported Character'
-  char.realm = sys.realm || ''
+  char.realm = String(sys.realm || '').split(',').map(r => r.trim()).filter(Boolean).join('/')
   char.level = sys.experience?.level ?? 1
   char.experience = sys.experience?.xp ?? 0
 
@@ -88,17 +93,16 @@ export function parseFoundryActor(json) {
 
   // ── Health ────────────────────────────────────────────────────────────────
 
+  // Max hits / PP stay on auto: RMU 1.3.x derives them and stores 0, and a stored
+  // max would freeze the app's value at the import (it never follows level-ups).
+  // Current values come across only when Foundry has one (null = full).
   if (sys.health?.hp) {
-    const hpMax = sys.health.hp.max   ?? null
-    const hpVal = sys.health.hp.value ?? null
-    char.hits_max     = hpMax
-    char.hits_current = hpVal !== hpMax ? hpVal : null  // null = auto
+    char.hits_max     = null
+    char.hits_current = sys.health.hp.value ?? null
   }
   if (sys.health?.power) {
-    const ppMax = sys.health.power.max   ?? null
-    const ppVal = sys.health.power.value ?? null
-    char.power_points_max     = ppMax
-    char.power_points_current = ppVal !== ppMax ? ppVal : null
+    char.power_points_max     = null
+    char.power_points_current = sys.health.power.value ?? null
   }
 
   // ── Stats ─────────────────────────────────────────────────────────────────
@@ -129,10 +133,14 @@ export function parseFoundryActor(json) {
     const fixedSpec    = s.fixedSpecializations ?? false
 
     // ── Spell lists (Spellcasting category) ────────────────────────────────
+    // Foundry: system.name = list type ("Base", "Magical Ritual"…), specialization =
+    // the list ("Dark Summons"). The app keys lists like spell_lists.json ("DARK SUMMONS").
     if (category === 'Spellcasting') {
       if (spec) {
-        const existing = char.spell_lists[spec] || {}
-        char.spell_lists[spec] = { ...existing, ranks: (existing.ranks ?? 0) + ranks }
+        const key = LIST_KEY_BY_LOWER[spec.trim().toLowerCase()] || spec.trim()
+        const listType = FOUNDRY_LIST_TYPE[foundryName] || null
+        const existing = char.spell_lists[key] || {}
+        char.spell_lists[key] = { ...existing, ranks: (existing.ranks ?? 0) + ranks, ...(listType ? { category: listType } : {}) }
       }
       continue
     }
