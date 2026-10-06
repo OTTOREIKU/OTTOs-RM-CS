@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import { XIcon, PlusIcon } from './Icons.jsx'
 import { useConfirm } from './ConfirmModal.jsx'
 import { ROUNDS, formatRounds, newEffectId, advanceTime, planRest } from '../utils/time.js'
-import { getBleedPerRound } from '../utils/calc.js'
+import { getBleedPerRound, getTalentBonuses } from '../utils/calc.js'
 
 const label10 = { fontSize: 10, color: 'var(--text3)', marginBottom: 3 }
 
@@ -52,6 +52,13 @@ export function useAdvanceTime(c, updateCharacter) {
   return [advance, confirmEl]
 }
 
+// Efficient/Restless Sleeper change how many hours count (Core Law ch.4)
+function sleepNote(c) {
+  const t = getTalentBonuses(c).sleep || 0
+  if (!t) return ''
+  return t > 0 ? ` Efficient Sleeper: ${t === 1 ? 3 : 2} h count as 4.` : ` Restless Sleeper: ${t === -1 ? 5 : 6} h count as 4.`
+}
+
 function RestPanel({ c, updateCharacter, onClose }) {
   const [sleep, setSleep] = useState(true)
   const [hours, setHours] = useState('8')
@@ -60,7 +67,7 @@ function RestPanel({ c, updateCharacter, onClose }) {
   const lines = [
     plan.hitsGain > 0 && `+${plan.hitsGain} hits`,
     plan.ppGain > 0 && `+${plan.ppGain} PP`,
-    plan.fatigueGain > 0 && `fatigue ${c.fatigue?.penalty ?? 0} → ${plan.patch.fatigue?.penalty ?? 0}`,
+    plan.fatigueGain !== 0 && `fatigue ${c.fatigue?.penalty ?? 0} → ${plan.patch.fatigue?.penalty ?? 0}`,
     plan.expired.length > 0 && `ends: ${plan.expired.map(e => e.name).join(', ')}`,
   ].filter(Boolean)
   return (
@@ -73,7 +80,7 @@ function RestPanel({ c, updateCharacter, onClose }) {
         <span style={{ fontSize: 12, color: 'var(--text3)' }}>hours</span>
       </div>
       <div style={{ fontSize: 11, color: 'var(--text3)', marginBottom: 8, lineHeight: 1.5 }}>
-        Hits +10% per 2 h of rest or sleep · PP +10% per 2 h of <b>sleep</b> (up to 8 h a day) · fatigue −1 per minute.
+        Hits and PP +10% per 2 h of continuous rest or sleep (PP up to 8 h a day) · fatigue −1 per minute.{sleepNote(c)}
       </div>
       {plan.bleedLoss > 0 && (
         <div style={{ fontSize: 12, color: 'var(--danger)', fontWeight: 700, marginBottom: 6 }}>

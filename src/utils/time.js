@@ -5,7 +5,7 @@
 //   active_effects: [{ id, name, list?, level?, target, remaining, total, concentration, notes }]
 // where `target` is 'self', 'familiar', or free text, and `remaining`/`total`
 // are in rounds (null = no fixed end: concentration-only, permanent, or unknown).
-import { getBleedPerRound, getHitsCurrent, getHitsMax, getPowerPoints, restFatiguePenalty } from './calc.js'
+import { getBleedPerRound, getHitsCurrent, getHitsMax, getPowerPoints, restFatiguePenalty, getTalentBonuses } from './calc.js'
 
 export const ROUNDS = { round: 1, minute: 12, hour: 720, day: 17280, week: 120960, month: 518400, year: 6307200 }
 
@@ -126,26 +126,61 @@ export function advanceTime(char, rounds) {
 }
 
 /**
- * Rest or sleep for `hours` (Core Law 13.1 / 3.19 / 5.5):
+ * Hours of rest as they count for recovery. Efficient Sleeper: 3 h (Tier I) or
+ * 2 h (Tier II) count as 4; Restless Sleeper: 5 h (I) or 6 h (II) count as 4
+ * (Core Law ch.4; RMU recovery/cycle.js).
+ */
+export function effectiveRestHours(char, hours) {
+  const tier = Math.max(-2, Math.min(2, getTalentBonuses(char).sleep || 0))
+  switch (tier) {
+    case 1:  return (hours / 3) * 4
+    case 2:  return hours * 2
+    case -1: return (hours / 5) * 4
+    case -2: return (hours / 6) * 4
+    default: return hours
+  }
+}
+
+/** Hits back after resting: 10% of max (rounded up) per 2 effective hours (Core Law 13.1; RMU recovery/hp.js). */
+export function restHitsRecovery(char, hitsMax, hours) {
+  if (hitsMax <= 0 || hours <= 0) return 0
+  return Math.floor(effectiveRestHours(char, hours) / 2) * Math.ceil(hitsMax * 0.1)
+}
+
+/**
+ * PP back after resting: 10% of max (rounded up) per 2 effective hours of
+ * continuous rest or sleep, at most 8 effective hours per day (Spell Law 4.1;
+ * RMU recovery/pp.js counts each 24 h block separately).
+ */
+export function restPPRecovery(char, ppMax, hours) {
+  if (ppMax <= 0 || hours <= 0) return 0
+  const per = Math.ceil(ppMax * 0.1)
+  const period = h => Math.floor(Math.min(effectiveRestHours(char, h), 8) / 2) * per
+  return Math.trunc(hours / 24) * period(24) + period(hours % 24)
+}
+
+/**
+ * Rest or sleep for `hours` (Core Law 13.1 / 3.19 / 5.5, Spell Law 4.1):
  *   hits  +10% of max per 2 continuous hours of rest or sleep
- *   PP    +10% of max per 2 hours of SLEEP, at most 8 hours a day
+ *   PP    +10% of max per 2 hours of continuous rest or sleep, at most 8 hours a day
  *   fatigue recovers 1 point per minute of rest
- * Time also passes (effects, stun, bleeding). Returns { patch, ... } for preview.
+ * Efficient/Restless Sleeper change the hours that count. Time also passes
+ * (effects, stun, bleeding). `sleep` only picks the label. Returns { patch, ... }.
  */
 export function planRest(char, hours, sleep) {
   const h = Math.max(0, Number(hours) || 0)
   const { patch, bleedLoss, expired } = advanceTime(char, Math.round(h * ROUNDS.hour))
   const hitsMax  = getHitsMax(char)
   const hitsAfterBleed = patch.hits_current ?? getHitsCurrent(char)
-  const hitsGain = Math.round(hitsMax * 0.1 * Math.floor(h / 2))
+  const hitsGain = restHitsRecovery(char, hitsMax, h)
   const hitsNew  = Math.min(hitsMax, hitsAfterBleed + hitsGain)
   patch.hits_current = hitsNew >= hitsMax ? null : hitsNew
 
   const ppMax = getPowerPoints(char) ?? 0
   let ppGain = 0
-  if (sleep && ppMax > 0) {
+  if (ppMax > 0) {
     const ppNow = char.power_points_current ?? ppMax
-    ppGain = Math.min(ppMax - ppNow, Math.round(ppMax * 0.1 * Math.floor(Math.min(h, 8) / 2)))
+    ppGain = Math.max(0, Math.min(ppMax - ppNow, restPPRecovery(char, ppMax, h)))
     const ppNew = ppNow + ppGain
     patch.power_points_current = ppNew >= ppMax ? null : ppNew
   }
