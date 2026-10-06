@@ -5,7 +5,7 @@ import { XIcon } from './Icons.jsx'
 import { getPowerPoints } from '../utils/calc.js'
 import {
   getCastBreakdown, defaultCastOptions, interpretSCR, isSubconscious, isInstantaneous,
-  HANDS_OPTIONS, VOICE_OPTIONS, PREP_OPTIONS, FAST_OPTIONS,
+  getHandsOptions, getVoiceOptions, PREP_OPTIONS, FAST_OPTIONS, listTalentTier, hasTalent,
 } from '../utils/casting.js'
 import { parseSpellDuration, formatRounds, newEffectId, ROUNDS } from '../utils/time.js'
 import { familiarName } from './ActiveEffects.jsx'
@@ -13,19 +13,14 @@ import { familiarName } from './ActiveEffects.jsx'
 const signed = n => (n > 0 ? `+${n}` : `${n}`)
 const label10 = { fontSize: 10, color: 'var(--text3)', marginBottom: 3, textTransform: 'uppercase', letterSpacing: '0.06em' }
 
-function realmOf(char) {
-  const r = (char?.realm || '').toLowerCase()
-  return r.includes('essence') ? 'Essence' : r.includes('mental') ? 'Mentalism' : 'Channeling'
-}
-
 export default function CastModal({ char, listName, spell, updateCharacter, onClose }) {
   const [opts, setOpts]   = useState(() => defaultCastOptions(char, spell))
   const [cast, setCast]   = useState(null)   // { prevPP, afterPP } once PP are spent
   const [roll, setRoll]   = useState('')
 
   // Target + duration tracking
-  const temporal = (char.talents || []).find(t => t.talent_id === 'temporal_skills' && t.param === listName)
-  const durMult  = temporal ? 1 + 0.5 * (temporal.tier || 0) : 1
+  const temporalTier = listTalentTier(char, 'temporal_skills', listName)
+  const durMult  = temporalTier ? 1 + 0.5 * temporalTier : 1
   const dur      = useMemo(() => parseSpellDuration(spell.duration, char.level ?? 1, durMult), [spell.duration, char.level, durMult])
   const [target, setTarget]   = useState('self')
   const [otherName, setOther] = useState('')
@@ -34,12 +29,12 @@ export default function CastModal({ char, listName, spell, updateCharacter, onCl
   const [manualUnit, setManualUnit] = useState('minute')
 
   const bd      = useMemo(() => getCastBreakdown(char, listName, spell, opts), [char, listName, spell, opts])
-  const realm   = realmOf(char)
   const ppMax   = getPowerPoints(char) ?? 0
   const ppNow   = char.power_points_current ?? ppMax
   const enoughPP = ppNow >= bd.ppCost
-  const mute    = (char.talents || []).some(t => t.talent_id === 'mute')
+  const mute    = hasTalent(char, 'mute')
   const prTier  = (char.talents || []).find(t => t.talent_id === 'power_recycling')?.tier ?? 0
+  const instant = isInstantaneous(spell)
   const sub     = isSubconscious(spell)
 
   const rollN   = roll === '' ? null : Number(roll)
@@ -131,12 +126,12 @@ export default function CastModal({ char, listName, spell, updateCharacter, onCl
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 12, opacity: locked ? 0.6 : 1 }}>
           <Opt label="Hands free">
             <select disabled={locked || sub} value={opts.hands} onChange={e => set({ hands: Number(e.target.value) })} style={{ width: '100%' }}>
-              {HANDS_OPTIONS[realm].map(o => <option key={o.value} value={o.value}>{o.label} ({signed(o.mod)})</option>)}
+              {getHandsOptions(char).map(o => <option key={o.value} value={o.value}>{o.label} ({signed(o.mod)})</option>)}
             </select>
           </Opt>
           <Opt label="Voice">
             <select disabled={locked} value={opts.voice} onChange={e => set({ voice: e.target.value })} style={{ width: '100%' }}>
-              {VOICE_OPTIONS[realm].map(o => <option key={o.value} value={o.value}>{o.label} ({signed(o.mod)})</option>)}
+              {getVoiceOptions(char).map(o => <option key={o.value} value={o.value}>{o.label} ({signed(o.mod)})</option>)}
             </select>
           </Opt>
           <Opt label="Extra preparation">
@@ -144,8 +139,8 @@ export default function CastModal({ char, listName, spell, updateCharacter, onCl
               {PREP_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label} ({signed(o.mod)})</option>)}
             </select>
           </Opt>
-          <Opt label="Fast casting">
-            <select disabled={locked} value={opts.fast} onChange={e => set({ fast: Number(e.target.value) })} style={{ width: '100%' }}>
+          <Opt label={instant ? 'Fast casting (n/a: instantaneous)' : 'Fast casting'}>
+            <select disabled={locked || instant} value={instant ? 0 : opts.fast} onChange={e => set({ fast: Number(e.target.value) })} style={{ width: '100%' }}>
               {FAST_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label} ({signed(o.mod)})</option>)}
             </select>
           </Opt>
@@ -261,9 +256,9 @@ export default function CastModal({ char, listName, spell, updateCharacter, onCl
             {outcome && (
               <div style={{ marginTop: 8, padding: '8px 10px', borderRadius: 8, border: `1px solid ${outcome.color}`, fontSize: 12 }}>
                 <b style={{ color: outcome.color }}>{signed(result)}: {outcome.label}</b>
-                {outcome.code === 'fail' && (
+                {(outcome.code === 'fail' || outcome.code === 'none') && (
                   <div style={{ color: 'var(--text2)', marginTop: 4 }}>
-                    Spell failure roll modifier: <b>{signed(bd.failureMod)}</b>
+                    {outcome.code === 'fail' && <>Spell failure roll modifier: <b>{signed(bd.failureMod)}</b></>}
                     {prTier > 0 && !cast.recycled && (
                       <button onClick={recycle} style={{ ...btnStyle('var(--purple)'), marginLeft: 8 }}>
                         Power Recycling: recover {prTier >= 2 ? bd.ppCost : Math.floor(bd.ppCost / 2)} PP

@@ -164,6 +164,7 @@ export function HitsBox({ c, updateCharacter, autoHitsMax, bleedTalent }) {
               color: c.hits_max != null ? 'var(--text)' : 'var(--text3)',
               background: 'transparent', border: 'none', boxShadow: 'none' }} />
           {c.hits_max == null && <div style={{ fontSize: 8, color: 'var(--accent)', textAlign: 'center', letterSpacing: '0.06em' }}>AUTO</div>}
+          {c.hits_max != null && <div style={{ fontSize: 8, color: 'var(--text3)', textAlign: 'center', marginTop: 1 }}>manual · auto {autoHitsMax ?? '—'}</div>}
         </div>
       </div>
 

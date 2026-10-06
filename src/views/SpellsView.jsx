@@ -2,7 +2,8 @@ import React, { useState, useMemo, useEffect } from 'react'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { useScrollRestore } from '../hooks/persist.js'
 import { ChevronDownIcon, ChevronUpIcon, ChevronRightIcon, InfoIcon } from '../components/Icons.jsx'
-import { getSpellCastingBonus, getSpellMasteryBonus, getConditionPenalty } from '../utils/calc.js'
+import { getSpellMasteryBonus, getConditionPenalty, getTalentInstances } from '../utils/calc.js'
+import { getStandingSCR, listTalentTier } from '../utils/casting.js'
 import spellLists from '../data/spell_lists.json'
 import spellDescs from '../data/spell_descriptions.json'
 import { REALM_COLORS } from '../store/theme.js'
@@ -71,26 +72,22 @@ export default function SpellsView() {
   // Subconscious Discipline: 0 = not taken, 1 = Tier I (½ linger), 2 = Tier II (full linger)
   const sdTier = useMemo(() => {
     if (!c) return 0
-    const inst = c.talents?.find(t => t.talent_id === 'subconscious_discipline')
+    const inst = getTalentInstances(c).find(t => t.talent_id === 'subconscious_discipline')
     return inst?.tier ?? 0
-  }, [c?.talents])
+  }, [c])
 
-  // Phase 3 spell annotation talents
+  // Spell annotation talents (own + racial). Per-list ones are looked up per list
+  // below with listTalentTier (the talent's list or one of its extra lists).
   const spellTalents = useMemo(() => {
     if (!c) return { grTier: 0, ifTier: 0, prTier: 0, mute: false }
-    const find = id => c.talents?.find(t => t.talent_id === id)
+    const find = id => getTalentInstances(c).find(t => t.talent_id === id)
     return {
-      temporal:  find('temporal_skills'),   // param = list name
-      spatial:   find('spatial_skills'),    // param = list name
-      scope:     find('scope_skills'),      // param = list name
-      extReach:  find('extended_reach'),    // param = list name
-      quickCast: find('quick_caster'),      // param = list name
       grTier:    find('graceful_recovery')?.tier ?? 0,   // global
       ifTier:    find('inglorious_failure')?.tier ?? 0,  // global
       prTier:    find('power_recycling')?.tier ?? 0,     // global
       mute:      !!find('mute'),                         // global
     }
-  }, [c?.talents])
+  }, [c])
 
   const filteredLists = useMemo(() => Object.entries(spellLists).filter(([name, list]) => {
     const matchRealm  = realm === 'All' || list.realm === realm
@@ -111,7 +108,8 @@ export default function SpellsView() {
 
   const condPen = c ? getConditionPenalty(c).total : 0
   function ranks(name)  { return c?.spell_lists?.[name]?.ranks ?? 0 }
-  function scr(name)    { return c ? getSpellCastingBonus(c, name) + condPen : null }
+  // Standing SCR: base + condition + encumbrance + armor (the Cast dialog adds per-cast options)
+  function scr(name)    { return c ? getStandingSCR(c, name).total : null }
   function mastery(name){ return c ? getSpellMasteryBonus(c, name) + condPen : null }
 
   const display = tab === 'myspells' ? myLists : filteredLists
@@ -193,11 +191,11 @@ export default function SpellsView() {
           : list.spells ?? []
 
         // Per-list annotation tier (0 = talent doesn't apply to this list)
-        const temporalTier  = spellTalents.temporal?.param === listName  ? (spellTalents.temporal?.tier  ?? 0) : 0
-        const spatialTier   = spellTalents.spatial?.param === listName   ? (spellTalents.spatial?.tier   ?? 0) : 0
-        const scopeTier     = spellTalents.scope?.param === listName     ? (spellTalents.scope?.tier     ?? 0) : 0
-        const extReachTier  = spellTalents.extReach?.param === listName  ? (spellTalents.extReach?.tier  ?? 0) : 0
-        const quickCastTier = spellTalents.quickCast?.param === listName ? (spellTalents.quickCast?.tier ?? 0) : 0
+        const temporalTier  = c ? listTalentTier(c, 'temporal_skills', listName) : 0
+        const spatialTier   = c ? listTalentTier(c, 'spatial_skills', listName) : 0
+        const scopeTier     = c ? listTalentTier(c, 'scope_skills', listName) : 0
+        const extReachTier  = c ? listTalentTier(c, 'extended_reach', listName) : 0
+        const quickCastTier = c ? listTalentTier(c, 'quick_caster', listName) : 0
 
         return (
           <div key={listName} style={{

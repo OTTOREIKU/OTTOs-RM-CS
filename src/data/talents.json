@@ -158,7 +158,8 @@
       {
         "type": "skill_talent_bonus",
         "skill": "Perception",
-        "flat": 25
+        "flat": 25,
+        "situational": true
       }
     ],
     "book": "RMU Core Law",
@@ -177,7 +178,8 @@
       {
         "type": "skill_talent_bonus",
         "skill": "Perception",
-        "flat": -25
+        "flat": -25,
+        "situational": true
       }
     ],
     "book": "RMU Core Law",
@@ -482,7 +484,12 @@
     "max_tiers": 2,
     "param": null,
     "description": "Require less sleep than most people, able to get benefits from 3 hours (Tier I) or 2 hours (Tier II) of sleep as others do in 4. Changes the rate at which you recover Power Points, but not the total per night.",
-    "effects": [],
+    "effects": [
+      {
+        "type": "sleep_mod",
+        "per_tier": 1
+      }
+    ],
     "book": "RMU Core Law",
     "rmu_canonical_name": "Efficient Sleeper"
   },
@@ -495,7 +502,12 @@
     "max_tiers": 2,
     "param": null,
     "description": "Must sleep 5 hours (Tier I) or 6 hours (Tier II) to get the benefit of 4 hours. Changes the rate at which you recover Power Points, but not the total per night.",
-    "effects": [],
+    "effects": [
+      {
+        "type": "sleep_mod",
+        "per_tier": -1
+      }
+    ],
     "book": "RMU Core Law",
     "rmu_canonical_name": "Restless Sleeper"
   },
@@ -627,7 +639,8 @@
       {
         "type": "skill_talent_bonus",
         "skill": "Perception",
-        "flat": 10
+        "flat": 10,
+        "situational": true
       }
     ],
     "book": "RMU Core Law",
@@ -646,7 +659,8 @@
       {
         "type": "skill_talent_bonus",
         "skill": "Perception",
-        "flat": 10
+        "flat": 10,
+        "situational": true
       }
     ],
     "book": "RMU Core Law",
@@ -665,7 +679,8 @@
       {
         "type": "skill_talent_bonus",
         "skill": "Perception",
-        "flat": 20
+        "flat": 20,
+        "situational": true
       }
     ],
     "book": "RMU Core Law",
@@ -684,12 +699,14 @@
       {
         "type": "skill_talent_bonus",
         "skill": "Perception",
-        "flat": 20
+        "flat": 20,
+        "situational": true
       },
       {
         "type": "skill_talent_bonus",
         "skill": "Tracking",
-        "flat": 20
+        "flat": 20,
+        "situational": true
       }
     ],
     "book": "RMU Core Law",
@@ -998,7 +1015,8 @@
       {
         "type": "skill_talent_bonus",
         "skill": "Perception",
-        "flat": 20
+        "flat": 20,
+        "situational": true
       }
     ],
     "book": "RMU Core Law",
@@ -1017,7 +1035,8 @@
       {
         "type": "skill_talent_bonus",
         "skill": "Perception",
-        "flat": 10
+        "flat": 10,
+        "situational": true
       }
     ],
     "book": "RMU Core Law",
@@ -1036,7 +1055,8 @@
       {
         "type": "skill_talent_bonus",
         "skill": "Perception",
-        "flat": 30
+        "flat": 30,
+        "situational": true
       }
     ],
     "book": "RMU Core Law",
@@ -1204,7 +1224,8 @@
       {
         "type": "skill_talent_bonus",
         "skill": "Jumping",
-        "flat": 10
+        "flat": 10,
+        "situational": true
       }
     ],
     "book": "RMU Core Law",
@@ -1223,7 +1244,8 @@
       {
         "type": "skill_talent_bonus",
         "skill": "Perception",
-        "per_tier": 5
+        "per_tier": 5,
+        "situational": true
       }
     ],
     "book": "RMU Core Law",
@@ -1242,7 +1264,8 @@
       {
         "type": "skill_talent_bonus",
         "skill": "Perception",
-        "per_tier": -5
+        "per_tier": -5,
+        "situational": true
       }
     ],
     "book": "RMU Core Law",
@@ -1261,7 +1284,8 @@
       {
         "type": "skill_talent_bonus",
         "skill": "Perception",
-        "per_tier": 5
+        "per_tier": 5,
+        "situational": true
       }
     ],
     "book": "RMU Core Law",
@@ -1280,7 +1304,8 @@
       {
         "type": "skill_talent_bonus",
         "skill": "Perception",
-        "per_tier": -5
+        "per_tier": -5,
+        "situational": true
       }
     ],
     "book": "RMU Core Law",
@@ -1299,7 +1324,8 @@
       {
         "type": "skill_talent_bonus",
         "skill": "Perception",
-        "per_tier": 5
+        "per_tier": 5,
+        "situational": true
       }
     ],
     "book": "RMU Core Law",
@@ -1318,7 +1344,8 @@
       {
         "type": "skill_talent_bonus",
         "skill": "Perception",
-        "per_tier": -5
+        "per_tier": -5,
+        "situational": true
       }
     ],
     "book": "RMU Core Law",
@@ -1337,7 +1364,8 @@
       {
         "type": "skill_talent_bonus",
         "skill": "Perception",
-        "per_tier": 5
+        "per_tier": 5,
+        "situational": true
       }
     ],
     "book": "RMU Core Law",
@@ -1356,7 +1384,8 @@
       {
         "type": "skill_talent_bonus",
         "skill": "Perception",
-        "per_tier": -5
+        "per_tier": -5,
+        "situational": true
       }
     ],
     "book": "RMU Core Law",
@@ -1375,7 +1404,8 @@
       {
         "type": "skill_talent_bonus",
         "skill": "Perception",
-        "per_tier": 5
+        "per_tier": 5,
+        "situational": true
       }
     ],
     "book": "RMU Core Law",
@@ -1394,7 +1424,8 @@
       {
         "type": "skill_talent_bonus",
         "skill": "Perception",
-        "per_tier": -5
+        "per_tier": -5,
+        "situational": true
       }
     ],
     "book": "RMU Core Law",
@@ -1458,7 +1489,8 @@
       {
         "type": "skill_talent_bonus",
         "skill": "Social Awareness",
-        "flat": 50
+        "flat": 50,
+        "situational": true
       }
     ],
     "book": "RMU Core Law",
@@ -1504,7 +1536,18 @@
     "max_tiers": 1,
     "param": null,
     "description": "Have sight only in one eye. Lack distance perception and peripheral vision on the affected side. All ranged attacks suffer a -25 penalty.",
-    "effects": [],
+    "effects": [
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Ranged Weapons",
+        "flat": -25
+      },
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Directed Spell",
+        "flat": -25
+      }
+    ],
     "book": "RMU Core Law",
     "rmu_canonical_name": "One Eye"
   },
@@ -1546,28 +1589,27 @@
     "effects": [
       {
         "type": "skill_talent_bonus",
-        "skill": "Leadership",
-        "per_tier": -20
-      },
-      {
-        "type": "skill_talent_bonus",
         "skill": "Music: Singing",
-        "per_tier": -20
+        "per_tier": -20,
+        "situational": true
       },
       {
         "type": "skill_talent_bonus",
-        "skill": "Influence: Persuasion",
-        "per_tier": -20
-      },
-      {
-        "type": "skill_talent_bonus",
-        "skill": "Influence: Intimidation",
-        "per_tier": -20
+        "skill": "Influence: Charm",
+        "per_tier": -20,
+        "situational": true
       },
       {
         "type": "skill_talent_bonus",
         "skill": "Influence: Duping",
-        "per_tier": -20
+        "per_tier": -20,
+        "situational": true
+      },
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Leadership",
+        "per_tier": -20,
+        "situational": true
       }
     ],
     "book": "RMU Core Law",
@@ -1585,28 +1627,27 @@
     "effects": [
       {
         "type": "skill_talent_bonus",
-        "skill": "Leadership",
-        "per_tier": 10
-      },
-      {
-        "type": "skill_talent_bonus",
         "skill": "Music: Singing",
-        "per_tier": 10
+        "per_tier": 10,
+        "situational": true
       },
       {
         "type": "skill_talent_bonus",
-        "skill": "Influence: Persuasion",
-        "per_tier": 10
-      },
-      {
-        "type": "skill_talent_bonus",
-        "skill": "Influence: Intimidation",
-        "per_tier": 10
+        "skill": "Influence: Charm",
+        "per_tier": 10,
+        "situational": true
       },
       {
         "type": "skill_talent_bonus",
         "skill": "Influence: Duping",
-        "per_tier": 10
+        "per_tier": 10,
+        "situational": true
+      },
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Leadership",
+        "per_tier": 10,
+        "situational": true
       }
     ],
     "book": "RMU Core Law",
@@ -1624,8 +1665,10 @@
     "effects": [
       {
         "type": "rr_bonus",
-        "realm": "mentalism",
-        "per_tier": 5
+        "realm": "mental",
+        "per_tier": 5,
+        "situational": true,
+        "note": "vs mental spells"
       }
     ],
     "book": "RMU Core Law",
@@ -1644,7 +1687,8 @@
       {
         "type": "skill_talent_bonus",
         "skill": "Leadership",
-        "per_tier": 10
+        "per_tier": 10,
+        "situational": true
       }
     ],
     "book": "RMU Core Law",
@@ -1728,7 +1772,8 @@
       {
         "type": "skill_talent_bonus",
         "skill": "param",
-        "per_tier": 10
+        "per_tier": 10,
+        "situational": true
       }
     ],
     "book": "RMU Core Law",
@@ -2017,7 +2062,26 @@
     "max_tiers": 1,
     "param": null,
     "description": "<p data-i18n='SW_RC.TALENT.TROGLI_JOINTS.DESCRIPTION'> Trogli gain a bonus of +10 on contortions, balance, throwing, and fine manual work such as picking locks. </p>",
-    "effects": [],
+    "effects": [
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Contortions",
+        "flat": 10,
+        "situational": true
+      },
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Locks",
+        "flat": 10,
+        "situational": true
+      },
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Ranged Weapons",
+        "flat": 10,
+        "situational": true
+      }
+    ],
     "book": "Shadow World Conversion Guide",
     "rmu_canonical_name": "Trogli Joints",
     "source": "rmu-system"
@@ -2045,7 +2109,17 @@
     "max_tiers": 1,
     "param": null,
     "description": "<p> As quadrupeds, Centaurs have a base movement rate (BMR) of 30’/round, with a maximum pace of Dash, and gain a +10 bonus to their Running skill. </p> <p> (Note that Centaurs also have a +5 stride bonus, so their actual BMR before modification for their Quickness bonus is 35’/round.) </p>",
-    "effects": [],
+    "effects": [
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Running",
+        "flat": 10
+      },
+      {
+        "type": "bmr_base",
+        "flat": 30
+      }
+    ],
     "book": "Shadow World Conversion Guide",
     "rmu_canonical_name": "Walking, Quadrupedal",
     "source": "rmu-system"
@@ -2087,7 +2161,20 @@
     "max_tiers": 5,
     "param": null,
     "description": "<p data-i18n='SW_RC.TALENT.DISTURBING_FORM.DESCRIPTION'>Other races find your appearance to be extremely disturbing. This gives a penalty of -20 to any maneuver to calm or persuade, if you are visible.</p>",
-    "effects": [],
+    "effects": [
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Influence",
+        "per_tier": -20,
+        "situational": true
+      },
+      {
+        "type": "skill_talent_bonus",
+        "skill": "Leadership",
+        "per_tier": -20,
+        "situational": true
+      }
+    ],
     "book": "Shadow World Conversion Guide",
     "rmu_canonical_name": "Disturbing Form",
     "source": "rmu-system"

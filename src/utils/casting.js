@@ -7,7 +7,7 @@
 import armorData from '../data/armor.json'
 import {
   getSpellCastingBonus, getSpellCastingBreakdown, getSpellMasteryBonus, getConditionPenalty,
-  getSkillBonus, findSkillTemplate, getEncumbrance,
+  getSkillBonus, findSkillTemplate, getEncumbrance, getRealms, skillDisplayName, getTalentInstances,
 } from './calc.js'
 
 // ── Spell helpers ────────────────────────────────────────────────────────────
@@ -45,11 +45,22 @@ function spellTypeCode(spell) {
   return (spell?.type || 'U').charAt(0).toUpperCase()
 }
 
-function castingRealm(char) {
-  const r = (char?.realm || '').toLowerCase()
-  if (r.includes('essence')) return 'Essence'
-  if (r.includes('mental'))  return 'Mentalism'
-  return 'Channeling'
+/** The caster's realms for the situational tables (hybrids have two; none → Channeling). */
+function castingRealms(char) {
+  const r = getRealms(char)
+  return r.length ? r : ['Channeling']
+}
+
+/** Talent tier for a per-list talent (Temporal/Spatial/Scope Skills, Quick Caster…) on this list: its own list or one of its extra lists. */
+export function listTalentTier(char, talentId, listName) {
+  const want = String(listName || '').toLowerCase()
+  return (getTalentInstances(char) || [])
+    .filter(t => t.talent_id === talentId && [t.param, ...(t.extra_params || [])].some(p => p && String(p).toLowerCase() === want))
+    .reduce((max, t) => Math.max(max, Number(t.tier) || 0), 0)
+}
+
+export function hasTalent(char, talentId) {
+  return (getTalentInstances(char) || []).some(t => t.talent_id === talentId)
 }
 
 // ── Magical Expertise skills ─────────────────────────────────────────────────
@@ -65,14 +76,14 @@ function listExpertiseBonus(char, base, listName) {
     if (!sameList(spec, listName)) continue
     const ranks = (data?.ranks ?? 0) + (data?.culture_ranks ?? 0)
     if (ranks <= 0) return 0
-    return getSkillBonus(char, findSkillTemplate(key), data, `${base}: ${listName}`)
+    return getSkillBonus(char, findSkillTemplate(key), data, skillDisplayName(key, data?.label))
   }
   // Only two slots exist per skill, so a third list lives in custom_skills.
   for (const cs of char?.custom_skills || []) {
     if (!cs.template_name?.startsWith(base + ':') || !sameList(cs.label, listName)) continue
     const ranks = (cs.ranks ?? 0) + (cs.culture_ranks ?? 0)
     if (ranks <= 0) return 0
-    return getSkillBonus(char, findSkillTemplate(cs.template_name), cs, `${base}: ${listName}`)
+    return getSkillBonus(char, findSkillTemplate(cs.template_name), cs, skillDisplayName(cs.template_name, cs.label))
   }
   return 0
 }
@@ -98,15 +109,19 @@ function armorEnc(part, at) {
  * Mentalism (Pr): only the helmet counts — AT 2-3 −25, 4-6 −50, 7+ −75.
  */
 export function getArmorCastingPenalty(char) {
-  const realm = castingRealm(char)
+  const realms = castingRealms(char)
   const parts = char?.armor_parts || {}
   let penalty = 0
   for (const part of Object.keys(PART_TO_ARMOR_SLOT)) {
     const at = parts[part]?.at ?? 1
     if (at <= 1) continue
-    if (realm === 'Channeling' && at >= 7) penalty += -3 * armorEnc(part, at)
-    if (realm === 'Essence')               penalty += -4 * armorEnc(part, at)
-    if (realm === 'Mentalism' && part === 'head') penalty += at >= 7 ? -75 : at >= 4 ? -50 : -25
+    const per = realms.map(realm => {
+      if (realm === 'Channeling') return at >= 7 ? -3 * armorEnc(part, at) : 0
+      if (realm === 'Essence')    return -4 * armorEnc(part, at)
+      if (realm === 'Mentalism')  return part === 'head' ? (at >= 7 ? -75 : at >= 4 ? -50 : -25) : 0
+      return 0
+    })
+    penalty += Math.min(0, ...per)
   }
   return penalty
 }
@@ -132,6 +147,19 @@ const SUBTLE_MOD = {
   Mentalism:  { E: -30, F: -20, I: 0,   U: -5,  A: 0 },
 }
 
+/** Hands / voice options for this caster: hybrids take the worse value of their realms. */
+export function getHandsOptions(char) {
+  const realms = castingRealms(char)
+  return HANDS_OPTIONS[realms[0]].map(o => ({ ...o, mod: Math.min(...realms.map(r => HANDS_OPTIONS[r].find(x => x.value === o.value)?.mod ?? 0)) }))
+}
+export function getVoiceOptions(char) {
+  const realms = castingRealms(char)
+  return VOICE_OPTIONS[realms[0]].map(o => ({ ...o, mod: Math.min(...realms.map(r => VOICE_OPTIONS[r].find(x => x.value === o.value)?.mod ?? 0)) }))
+}
+function subtleMod(char, typeC) {
+  return Math.min(...castingRealms(char).map(r => SUBTLE_MOD[r][typeC] ?? 0))
+}
+
 export const PREP_OPTIONS = [
   { value: 0, label: 'None', mod: 0 }, { value: 1, label: '+1 round', mod: 10 }, { value: 2, label: '+2 rounds', mod: 20 },
 ]
@@ -147,7 +175,7 @@ export function defaultCastOptions(char, spell) {
   const overcast = getRawOvercastPenalty(char, spell.level) < 0
   return {
     hands: isSubconscious(spell) ? 0 : 2,
-    voice: 'normal',
+    voice: hasTalent(char, 'mute') ? 'silent' : 'normal',   // a mute caster can't use their voice
     subtle: false,
     prep: overcast && !isInstantaneous(spell) ? 1 : 0,
     fast: 0,
@@ -164,7 +192,6 @@ export function defaultCastOptions(char, spell) {
  * of negative modifiers, flipped positive, plus Graceful Recovery/Inglorious Failure).
  */
 export function getCastBreakdown(char, listName, spell, opts) {
-  const realm  = castingRealm(char)
   const sub    = isSubconscious(spell)
   const typeC  = spellTypeCode(spell)
   const lines  = []
@@ -213,19 +240,19 @@ export function getCastBreakdown(char, listName, spell, opts) {
 
   // Hands / voice / subtlety — Spell Trickery can offset these penalties
   let trickable = 0
-  const handMod = sub ? 0 : (HANDS_OPTIONS[realm].find(o => o.value === opts.hands)?.mod ?? 0)
-  const voiceMod = VOICE_OPTIONS[realm].find(o => o.value === opts.voice)?.mod ?? 0
-  const subtleMod = opts.subtle ? (SUBTLE_MOD[realm][typeC] ?? 0) : 0
+  const handMod = sub ? 0 : (getHandsOptions(char).find(o => o.value === opts.hands)?.mod ?? 0)
+  const voiceMod = getVoiceOptions(char).find(o => o.value === opts.voice)?.mod ?? 0
+  const subtle = opts.subtle ? subtleMod(char, typeC) : 0
   sit('Hands', handMod); if (handMod < 0) trickable += handMod
   sit('Voice', voiceMod); if (voiceMod < 0) trickable += voiceMod
-  sit('Subtle casting', subtleMod); if (subtleMod < 0) trickable += subtleMod
+  sit('Subtle casting', subtle); if (subtle < 0) trickable += subtle
   if (trickable < 0) {
     const trick = Math.min(Math.max(0, listExpertiseBonus(char, 'Spell Trickery', listName)), -trickable)
     sit('Spell Trickery', trick)
   }
 
   sit('Extra preparation', PREP_OPTIONS.find(o => o.value === opts.prep)?.mod ?? 0)
-  sit('Fast casting', FAST_OPTIONS.find(o => o.value === opts.fast)?.mod ?? 0)
+  if (!isInstantaneous(spell)) sit('Fast casting', FAST_OPTIONS.find(o => o.value === opts.fast)?.mod ?? 0)
   sit('Other', Number(opts.other) || 0)
 
   // Spell failure modifier (RMU 1.3.5 spell-casting/scr.js): the whole SCR bonus —
@@ -251,6 +278,21 @@ export function getCastBreakdown(char, listName, spell, opts) {
     mastery: getSpellMasteryBonus(char, listName) + cond.total,
     masteryPenalty: cond.total,
   }
+}
+
+/**
+ * The SCR a list header shows: base SCR + standing penalties that apply to any
+ * cast right now — condition, encumbrance, armor (after Transcendence). The
+ * Cast dialog adds the per-cast choices (overcasting, hands, voice, prep…).
+ * Returns { total, base, condition, encumbrance, armor }.
+ */
+export function getStandingSCR(char, listName) {
+  const base = getSpellCastingBonus(char, listName)
+  const condition = getConditionPenalty(char).total
+  const encumbrance = getEncumbrance(char).penalty
+  const rawArmor = getArmorCastingPenalty(char)
+  const armor = rawArmor < 0 ? rawArmor + Math.min(Math.max(0, transcendenceBonus(char)), -rawArmor) : 0
+  return { total: base + condition + encumbrance + armor, base, condition, encumbrance, armor }
 }
 
 /** RMU result bands for the final SCR total (d100OE + total). */

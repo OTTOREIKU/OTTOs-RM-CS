@@ -5,6 +5,8 @@ import talentsData        from '../data/talents.json'
 import skillCategoryStats from '../data/skill_category_stats.json'
 import skillsData         from '../data/skills.json'
 import armorData          from '../data/armor.json'
+import spellListsData     from '../data/spell_lists.json'
+import weaponsData        from '../data/weapons.json'
 
 // ── Profession (including a per-character homebrew profession) ───────────────
 //
@@ -33,6 +35,11 @@ export function isOwnBaseList(char, listName, list) {
   return !!char?.profession && sec === `${char.profession.toLowerCase()} base`
 }
 
+/** A spell list's type for this character: the stored type, else the default below. */
+export function getListCategory(char, listName) {
+  return char?.spell_lists?.[listName]?.category || defaultListCategory(char, listName, spellListsData[listName])
+}
+
 /** List type for a list bought for the first time: own base lists are Base; other
  *  professions' base lists and Evil lists are Restricted. */
 export function defaultListCategory(char, listName, list) {
@@ -55,28 +62,57 @@ const STAT_ABBR_TO_FULL = {
   SD: 'Self Discipline', St: 'Strength',
 }
 
-// Maps a realm name to its primary stat (per CoreLaw Table 3-0a footnote).
-function realmToStatAbbr(realm) {
-  const r = (realm || '').toLowerCase()
-  if (r.includes('channel')) return 'In'
-  if (r.includes('essence')) return 'Em'
-  if (r.includes('mental'))  return 'Pr'
-  return null
+// ── Realms and the realm stat ───────────────────────────────────────────────
+// Channeling → Intuition, Essence → Empathy, Mentalism → Presence (Core Law 3.22).
+// Hybrid casters ("Channeling/Essence", Foundry "Channeling,Essence") use the
+// LOWER of their realm stats (Spell Law 4.2) and get the own-realm RR bonus vs
+// each of their realms. `char.spell_cast_stat` overrides the realm stat.
+export const REALM_STAT = { Channeling: 'Intuition', Essence: 'Empathy', Mentalism: 'Presence' }
+
+/** The character's realms: [] (none), ['Essence'], or two for a hybrid. */
+export function getRealms(char) {
+  const parts = String(char?.realm || '').split(/[,/&+]|\band\b/i).map(s => s.trim().toLowerCase()).filter(Boolean)
+  const out = []
+  for (const p of parts) {
+    const realm = p.startsWith('channel') ? 'Channeling' : p.startsWith('essence') ? 'Essence' : p.startsWith('mental') ? 'Mentalism' : null
+    if (realm && !out.includes(realm)) out.push(realm)
+  }
+  return out
+}
+
+/** Full name of the stat used as the realm stat (null when no realm). */
+export function getRealmStatName(char) {
+  if (char?.spell_cast_stat && char.stats?.[char.spell_cast_stat]) return char.spell_cast_stat
+  const stats = getRealms(char).map(r => REALM_STAT[r])
+  if (!stats.length) return null
+  return stats.reduce((lo, s) => (getCharStatBonus(char, s) < getCharStatBonus(char, lo) ? s : lo))
+}
+
+export function getRealmStatBonus(char) {
+  const name = getRealmStatName(char)
+  return name ? getCharStatBonus(char, name) : 0
+}
+
+/**
+ * A stat's full bonus for this character: table value of the temp stat + racial
+ * + special + Superior/Inferior Stat talents (+1/−1 per tier, Core Law ch.4).
+ * Talents the race already has are part of the race's stat bonuses (see
+ * getTalentInstances), so only extra tiers count here.
+ */
+export function getCharStatBonus(char, statName) {
+  const s = char?.stats?.[statName]
+  if (!s) return 0
+  return getTotalStatBonus(s) + (getTalentBonuses(char).stat[statName] ?? 0)
 }
 
 // Sum of stat bonuses for a slash-separated key string like "Ag/Em" or "RS/RS".
-// '-' or empty returns 0. Each abbr looks up the character's stat bonus via
-// getTotalStatBonus (which includes racial + special offsets).
+// '-' or empty returns 0. 'RS' is the realm stat.
 export function sumStatBonuses(char, statKeys) {
   if (!statKeys || statKeys === '-') return 0
-  const rsAbbr = realmToStatAbbr(char?.realm)
   return statKeys.split('/').reduce((sum, raw) => {
     const k = raw.trim()
-    const abbr = k === 'RS' ? rsAbbr : k
-    if (!abbr) return sum
-    const full = STAT_ABBR_TO_FULL[abbr]
-    const stat = full && char?.stats?.[full]
-    return stat ? sum + getTotalStatBonus(stat) : sum
+    const full = k === 'RS' ? getRealmStatName(char) : STAT_ABBR_TO_FULL[k]
+    return full ? sum + getCharStatBonus(char, full) : sum
   }, 0)
 }
 
@@ -91,74 +127,268 @@ export function findSkillTemplate(name) {
   return skillsData.find(s => s.name === name) || null
 }
 
-// Full RMU skill bonus = rankBonus + skill.stat + category stats + item + talent +
-//   prof (min(ranks,30)) + autoTalent + knack. Excludes fatigue penalty.
-// `skillData` is the character's per-skill state ({ ranks, culture_ranks, item_bonus, talent_bonus, proficient, … }).
-// Returns 0 if neither template nor skillData provided.
-export function getSkillBonus(char, template, skillData, displayName) {
-  if (!template && !skillData) return 0
-  const ranks         = (skillData?.ranks ?? 0) + (skillData?.culture_ranks ?? 0)
-  const rb            = rankBonus(ranks)
-  const catB          = template?.category ? getCategoryStatBonus(char, template.category) : 0
-  const skillStatB    = sumStatBonuses(char, template?.stat_keys || '-')
-  const item          = skillData?.item_bonus   ?? 0
-  const talent        = skillData?.talent_bonus ?? 0
-  // Professional only when the player marked it (Core Law 2.4: 10 chosen skills).
-  // The old prof_type default from the spreadsheet silently granted hidden bonuses.
-  const isProf        = !!skillData?.proficient
-  const profBonus     = isProf ? Math.min(ranks, 30) : 0
-  const knackBonus    = displayName ? getKnackBonus(char, displayName) : 0
-  const autoTalent    = displayName
-    ? getSkillTalentBonus(char, displayName, template?.name, skillData?.talent_excluded || [])
-    : 0
-  return rb + catB + skillStatB + item + talent + autoTalent + profBonus + knackBonus
+// ── Skills: one calculation for every screen ────────────────────────────────
+//
+// Full RMU skill bonus (Core Law 2.7 / 3; RMU skills/skill-bonus.js):
+//   rank bonus + category stats + skill stat (summed) + professional (+1/rank,
+//   max 30) + knack (+5) + item + talent field + skill-targeted talents.
+// Condition, armor and encumbrance penalties are situational and added by the
+// caller (getSkillRollPenalty).
+
+const num = v => Number(v) || 0
+
+/** "Melee: <weapon 1>" + "Blade" → "Melee: Blade"; "Perception" + "Hearing" → "Perception: Hearing". */
+export function skillDisplayName(templateName, label) {
+  if (!label) return templateName
+  if (/<[^>]+>/.test(templateName || '')) return templateName.replace(/<[^>]+>/, label)
+  return `${templateName}: ${label}`
+}
+
+// Talent target matching. A target with no colon names a whole skill and covers
+// every specialization ("Perception", "Influence", "Ranged Weapons"); Prodigy and
+// Inept always cover the whole skill (Core Law ch.4).
+const ALL_SPECS_TALENTS = new Set(['prodigy', 'inept'])
+function skillTargetMatches(target, displayName, templateName, allSpecs) {
+  const t = String(target || '').trim().toLowerCase()
+  if (!t) return false
+  const disp = String(displayName || '').toLowerCase()
+  const tpl = String(templateName || '').toLowerCase()
+  if (t === disp || t === tpl) return true
+  const rmuT = rmuSkillName(target).toLowerCase()
+  const rmuS = rmuSkillName(templateName || displayName).toLowerCase()
+  if (!t.includes(':')) {
+    if (disp.startsWith(t + ':') || tpl.startsWith(t + ':')) return true
+    if (rmuT === rmuS) return true
+  }
+  return allSpecs && rmuT === rmuS
 }
 
 /**
- * Skill-targeted talent bonuses (skill_talent_bonus effects) for one skill,
- * exactly as the Skills tab applies them: matched on the resolved name
- * ("Melee: Blade"), else the template name; talents the player excluded on
- * that skill (skillData.talent_excluded) are skipped.
+ * Skill-targeted talent effects (skill_talent_bonus) for one skill row.
+ * Situational talents (RMU marks them: senses, Light Sleeper, Golden Throat…)
+ * only count where the row opts in (data.talent_included) — or when you picked
+ * this skill as the talent's own target (param / extra lists). Others count
+ * unless excluded on the row (data.talent_excluded).
+ * Returns { applied, entries: [{ instId, talentId, name, bonus, situational, applied, source }] }.
  */
-export function getSkillTalentBonus(char, displayName, templateName, excluded = []) {
-  const byName = {}
-  for (const inst of (char.talents || [])) {
-    const def = talentsData.find(t => t.id === inst.talent_id)
-    for (const eff of def?.effects || []) {
+export function getSkillTalentInfo(char, displayName, templateName, data = {}) {
+  const excluded = data?.talent_excluded || []
+  const included = data?.talent_included || []
+  const entries = []
+  for (const inst of getTalentInstances(char)) {
+    for (const eff of inst.def.effects || []) {
       if (eff.type !== 'skill_talent_bonus') continue
-      const targets = eff.skill === 'param'
-        ? [inst.param, ...(inst.extra_params || [])].filter(Boolean)
-        : (eff.skill ? [eff.skill] : [])
+      const explicit = eff.skill === 'param'
+      const targets = explicit ? [inst.param, ...(inst.extra_params || [])].filter(Boolean) : (eff.skill ? [eff.skill] : [])
+      const allSpecs = ALL_SPECS_TALENTS.has(inst.def.id)
+      if (!targets.some(t => skillTargetMatches(t, displayName, templateName, allSpecs))) continue
       const bonus = eff.per_tier != null ? eff.per_tier * inst.tier : (eff.flat ?? 0)
-      for (const t of targets) (byName[t] ||= []).push({ instId: inst.id, bonus })
+      const situational = !!(eff.situational || inst.situational) && !explicit
+      const applied = situational ? included.includes(inst.id) : !excluded.includes(inst.id)
+      entries.push({ instId: inst.id, talentId: inst.def.id, name: inst.def.name, bonus, situational, applied, source: inst.source })
     }
   }
-  const entries = byName[displayName] || (templateName ? byName[templateName] : null) || []
-  return entries.filter(e => !excluded.includes(e.instId)).reduce((s, e) => s + e.bonus, 0)
+  return { applied: entries.filter(e => e.applied).reduce((s, e) => s + e.bonus, 0), entries }
 }
 
-// Aggregate all non-skill talent bonuses from a character's talent list.
-// Returns: { spellcasting, db, hits, initiative, endurance, rr: { [realm]: bonus } }
-export function getTalentBonuses(char) {
-  const result = {
-    spellcasting: 0, db: 0, hits: 0, initiative: 0, endurance: 0, rr: {},
-    // Phase 2 additions
-    stride: 0,       // increased/decreased_stride: metres/round bonus to BMR
-    at: 0,           // natural_armor: AT bonus (all body parts)
-    carry: 0,        // beast_of_burden: extra carry capacity in % of body weight
-    bleed: 0,        // slow_bleeder (negative) / rapid_bleeder (positive): hits/round per wound
-    size: 0,         // increased/decreased_size: character size tier modifier
-    sizeHits: 0,     // light_boned: effective size for hit calculation only
-    sizeAttack: 0,   // enhanced/lesser_attack: natural attack size modifier
-    stat: {},        // superior/inferior_stat: { [statFullName]: flatBonus }
-    elemental: {},   // elemental_resistance/susceptibility: { [element]: bonus }
+/** Back-compat: applied skill-talent total for one skill. */
+export function getSkillTalentBonus(char, displayName, templateName, excluded = []) {
+  return getSkillTalentInfo(char, displayName, templateName, { talent_excluded: excluded }).applied
+}
+
+// ── Professional skills (Core Law 2.4) ───────────────────────────────────────
+// A professional skill covers every specialization of the RMU skill, and a
+// spell list type ("Base") covers every list of that type. Picks are kept as RMU
+// skill names in char.professional_skills; older saves flagged single entries
+// (`proficient`), which still count for the whole skill.
+const PROF_ALIAS = { 'Magic Ritual': 'Magical Ritual' }
+const profKey = n => PROF_ALIAS[n] || n
+const _profCache = new WeakMap()
+
+export function getProfessionalSet(char) {
+  if (!char) return new Set()
+  if (_profCache.has(char)) return _profCache.get(char)
+  const set = new Set((char.professional_skills || []).map(profKey))
+  for (const [k, d] of Object.entries(char.skills || {})) if (d?.proficient) set.add(profKey(rmuSkillName(k)))
+  for (const cs of char.custom_skills || []) if (cs?.proficient) set.add(profKey(rmuSkillName(cs.template_name)))
+  for (const [k, l] of Object.entries(char.spell_lists || {})) if (l?.proficient) set.add(profKey(getListCategory(char, k)))
+  _profCache.set(char, set)
+  return set
+}
+
+export function isProfessionalSkill(char, templateName) {
+  return getProfessionalSet(char).has(profKey(rmuSkillName(templateName)))
+}
+
+/** Is this RMU skill name (or list type) one of the character's professional skills? */
+export function isProfessionalName(char, rmuName) {
+  return getProfessionalSet(char).has(profKey(rmuName))
+}
+
+export function isProfessionalList(char, listName) {
+  return getProfessionalSet(char).has(profKey(getListCategory(char, listName)))
+}
+
+/**
+ * Patch that makes an RMU skill (or list type) professional or not: updates
+ * char.professional_skills and clears the old per-entry flags in that group.
+ */
+export function professionalPatch(char, rmuName, on) {
+  const key = profKey(rmuName)
+  const list = new Set((char.professional_skills || []).map(profKey))
+  if (on) list.add(key); else list.delete(key)
+  const patch = { professional_skills: [...list] }
+  const inGroup = k => profKey(rmuSkillName(k)) === key
+  if (Object.entries(char.skills || {}).some(([k, d]) => d?.proficient && inGroup(k))) {
+    patch.skills = Object.fromEntries(Object.entries(char.skills).map(([k, d]) => [k, d?.proficient && inGroup(k) ? { ...d, proficient: false } : d]))
   }
-  for (const inst of (char.talents || [])) {
+  if ((char.custom_skills || []).some(cs => cs?.proficient && inGroup(cs.template_name))) {
+    patch.custom_skills = char.custom_skills.map(cs => cs?.proficient && inGroup(cs.template_name) ? { ...cs, proficient: false } : cs)
+  }
+  if (Object.entries(char.spell_lists || {}).some(([k, l]) => l?.proficient && profKey(getListCategory(char, k)) === key)) {
+    patch.spell_lists = Object.fromEntries(Object.entries(char.spell_lists).map(([k, l]) => [k, l?.proficient && profKey(getListCategory(char, k)) === key ? { ...l, proficient: false } : l]))
+  }
+  return patch
+}
+
+/**
+ * Every part of a skill's bonus. `templateName` is the skills.json name
+ * ("Melee: <weapon 1>"), `data` the character's entry (template slot or custom
+ * skill), `displayName` the resolved name ("Melee: Blade") if already known.
+ */
+export function getSkillBreakdown(char, templateName, data = {}, displayName) {
+  const tpl = templateName ? findSkillTemplate(templateName) : null
+  const category = tpl?.category || null
+  const catStats = category ? (skillCategoryStats[category] || '-') : '-'
+  const ranks = num(data?.ranks), culture = num(data?.culture_ranks)
+  const totalRanks = ranks + culture
+  const rb = rankBonus(totalRanks, catStats)
+  const catStat = sumStatBonuses(char, catStats)
+  const skillStat = sumStatBonuses(char, tpl?.stat_keys || '-')
+  const name = displayName || skillDisplayName(templateName, data?.label)
+  const prof = templateName ? isProfessionalSkill(char, templateName) : !!data?.proficient
+  const profBonus = prof ? Math.min(totalRanks, 30) : 0
+  const knack = name ? getKnackBonus(char, name) : 0
+  const item = num(data?.item_bonus), talentField = num(data?.talent_bonus)
+  const talents = getSkillTalentInfo(char, name, templateName, data)
+  const total = rb + catStat + skillStat + profBonus + knack + item + talentField + talents.applied
+  return {
+    category, ranks, culture, totalRanks, rankBonus: rb, catStat, skillStat, stat: catStat + skillStat,
+    prof, profBonus, knack, item, talentField, talentAuto: talents.applied, talentEntries: talents.entries,
+    total, displayName: name,
+  }
+}
+
+// Full RMU skill bonus for a template + the character's entry. Excludes the
+// condition/armor/encumbrance penalties (see getSkillRollPenalty).
+export function getSkillBonus(char, template, skillData, displayName) {
+  if (!template && !skillData) return 0
+  return getSkillBreakdown(char, template?.name || null, skillData || {}, displayName).total
+}
+
+/** Penalties on a maneuver with a skill: condition + armor/encumbrance (physical skills). */
+export function getSkillRollPenalty(char, templateName) {
+  const tpl = findSkillTemplate(templateName)
+  const cond = getConditionPenalty(char).total
+  const move = getMovementPenalty(char, tpl?.category, templateName).total
+  return { condition: cond, movement: move, total: cond + move }
+}
+
+/** Find the character's entry for a skill by key or label (template slots, then custom skills). */
+export function findCharSkill(char, nameOrLabel) {
+  const want = String(nameOrLabel || '').trim()
+  if (!want) return null
+  if (char.skills?.[want]) return { templateName: want, data: char.skills[want], displayName: skillDisplayName(want, char.skills[want].label) }
+  const lw = want.toLowerCase()
+  for (const [k, d] of Object.entries(char.skills || {})) {
+    if ((d?.label && d.label.toLowerCase() === lw) || skillDisplayName(k, d?.label).toLowerCase() === lw) return { templateName: k, data: d, displayName: skillDisplayName(k, d?.label) }
+  }
+  for (const cs of char.custom_skills || []) {
+    if ((cs.label && cs.label.toLowerCase() === lw) || skillDisplayName(cs.template_name, cs.label).toLowerCase() === lw) return { templateName: cs.template_name, data: cs, displayName: skillDisplayName(cs.template_name, cs.label), custom: true }
+  }
+  return null
+}
+
+// ── Talents: the character's own plus their race's ──────────────────────────
+// Racial talents apply automatically (Fair Elf Defensive Aura, Troll Natural
+// Armor, Avinarc Light-boned, elven Efficient Sleeper…), except those already
+// built into the race data — base hits (Tough/Fragile), frame size, stat
+// bonuses, RR values. For those, only tiers the character has beyond the race's
+// own count apply (RMU pc.js talentOffset). A talent the character also has
+// themselves is counted once (their own entry wins).
+const RACE_BAKED = new Set([
+  'tough', 'fragile', 'increased_size', 'decreased_size', 'superior_stat', 'inferior_stat',
+  'magical_resistance', 'magical_vulnerability', 'physical_resistance', 'physical_vulnerability',
+])
+const talentByName = (() => {
+  const m = new Map()
+  for (const t of talentsData) for (const n of [t.name, t.rmu_canonical_name]) if (n) m.set(n.toLowerCase(), t)
+  return m
+})()
+
+function racialParam(rt, def) {
+  for (const o of rt.overrides || []) {
+    if (o.key === 'skill' && o.skillName) return o.skillSpecialization ? `${o.skillName}: ${o.skillSpecialization}` : o.skillName
+    if (o.key === 'resistance' && o.value) return o.value
+  }
+  return def.param ? null : (rt.param ?? null)
+}
+
+const _instCache = new WeakMap()
+export function getTalentInstances(char) {
+  if (!char) return []
+  if (_instCache.has(char)) return _instCache.get(char)
+  const racial = []
+  for (const rt of getRaceEntry(char)?.racial_talents || []) {
+    const def = talentByName.get(String(rt.name || '').toLowerCase())
+    if (!def) continue
+    racial.push({ def, tier: Number(rt.tier) || 1, param: racialParam(rt, def), situational: (rt.overrides || []).some(o => o.situational === true || (o.key === 'situational' && String(o.value) === 'true')) })
+  }
+  const out = []
+  for (const inst of char.talents || []) {
     const def = talentsData.find(t => t.id === inst.talent_id)
-    if (!def?.effects) continue
-    for (const eff of def.effects) {
+    if (!def) continue
+    let tier = Number(inst.tier) || 1
+    if (RACE_BAKED.has(def.id)) {
+      const raceTier = racial.filter(r => r.def.id === def.id && (!inst.param || !r.param || String(r.param).toLowerCase() === String(inst.param).toLowerCase()))
+        .reduce((s, r) => s + r.tier, 0)
+      tier = Math.max(0, tier - raceTier)
+    }
+    if (tier > 0) out.push({ ...inst, tier, def, source: 'char' })
+  }
+  racial.forEach((r, i) => {
+    if (RACE_BAKED.has(r.def.id)) return
+    if ((char.talents || []).some(t => t.talent_id === r.def.id && (!r.param || !t.param || String(t.param).toLowerCase() === String(r.param).toLowerCase()))) return
+    if (r.def.param && !r.param) return   // needs a target the race data doesn't give
+    out.push({ id: `race_${r.def.id}_${i}`, talent_id: r.def.id, tier: r.tier, param: r.param, situational: r.situational, def: r.def, source: 'race' })
+  })
+  _instCache.set(char, out)
+  return out
+}
+
+// Aggregate all non-skill talent bonuses (own + racial, see getTalentInstances).
+// Returns: { spellcasting, db, hits, initiative, endurance, rr: { [realm]: bonus }, … }
+const _tbCache = new WeakMap()
+export function getTalentBonuses(char) {
+  if (char && _tbCache.has(char)) return _tbCache.get(char)
+  const result = {
+    spellcasting: 0, db: 0, hits: 0, initiative: 0, endurance: 0, rr: {}, rrSituational: [],
+    stride: 0,       // increased/decreased_stride: feet/round on BMR
+    at: 0,           // natural_armor: AT tiers
+    carry: 0,        // beast_of_burden: extra carry allowance, % of body weight (not for dodging)
+    bleed: 0,        // slow/rapid_bleeder: hits/round per wound
+    size: 0,         // increased/decreased_size: size steps
+    sizeHits: 0,     // light_boned: size steps for concussion hits only
+    sizeAttack: 0,   // enhanced/lesser_attack: natural attack size steps
+    stat: {},        // superior/inferior_stat: { [statFullName]: bonus }
+    elemental: {},   // elemental_resistance/susceptibility: { [element]: bonus }
+    sleep: 0,        // efficient (+) / restless (−) sleeper tier, for rest recovery
+    bmrBase: null,   // walking quadrupedal: base movement rate
+  }
+  for (const inst of getTalentInstances(char)) {
+    const def = inst.def
+    for (const eff of def.effects || []) {
       const val = eff.per_tier != null ? eff.per_tier * inst.tier : (eff.flat ?? 0)
-      if (!val) continue
       switch (eff.type) {
         case 'spellcasting_bonus': result.spellcasting += val; break
         case 'db_bonus':          result.db           += val; break
@@ -169,6 +399,8 @@ export function getTalentBonuses(char) {
         case 'at_bonus':          result.at           += val; break
         case 'carry_bonus':       result.carry        += val; break
         case 'bleed_mod':         result.bleed        += val; break
+        case 'sleep_mod':         result.sleep        += val; break
+        case 'bmr_base':          result.bmrBase = Math.max(result.bmrBase ?? 0, eff.flat ?? 0); break
         case 'size_mod': {
           const target = eff.target || 'size'
           if      (target === 'size')   result.size       += val
@@ -177,32 +409,39 @@ export function getTalentBonuses(char) {
           break
         }
         case 'stat_bonus': {
-          // eff.stat === 'param' means use inst.param as the stat name
           const statName = eff.stat === 'param' ? (inst.param || '') : (eff.stat || '')
           if (statName) result.stat[statName] = (result.stat[statName] ?? 0) + val
           break
         }
         case 'elemental_bonus': {
-          // eff.element === 'param' means use inst.param as the element name
           const elem = eff.element === 'param' ? (inst.param || '') : (eff.element || '')
           if (elem) result.elemental[elem] = (result.elemental[elem] ?? 0) + val
           break
         }
         case 'rr_bonus': {
-          const realm = eff.realm === 'param'
-            ? (inst.param || '').toLowerCase()
-            : (eff.realm || '')
-          if (realm) result.rr[realm] = (result.rr[realm] ?? 0) + val
+          const realm = eff.realm === 'param' ? (inst.param || '').toLowerCase() : (eff.realm || '')
+          if (!realm) break
+          // Situational RR talents (Iron Will: vs mental spells) are offered in the roll dialog
+          if (eff.situational) result.rrSituational.push({ name: def.name, realm, bonus: val, note: eff.note || '' })
+          else result.rr[realm] = (result.rr[realm] ?? 0) + val
           break
         }
       }
     }
   }
+  if (char) _tbCache.set(char, result)
   return result
 }
 
+/** The race entry for char.race (exact, canonical RMU name, or case-insensitive — Foundry imports use RMU names). */
 export function getRaceEntry(char) {
-  return racesData.find(r => r.name === char?.race) || null
+  const want = String(char?.race || '').trim()
+  if (!want) return null
+  const lw = want.toLowerCase()
+  return racesData.find(r => r.name === want)
+    || racesData.find(r => r.rmu_canonical_name && r.rmu_canonical_name.toLowerCase() === lw)
+    || racesData.find(r => r.name.toLowerCase() === lw)
+    || null
 }
 
 /** The race's stat bonuses as { Agility: n, … } (all 0 when unknown). */
@@ -216,60 +455,48 @@ export function getStatBonus(value) {
 }
 
 export function getTotalStatBonus(stat) {
-  // stat = { temp, potential, racial, special }
+  // stat = { temp, potential, racial, special } — no talents (see getCharStatBonus)
   const base = getStatBonus(stat.temp ?? 0)
   return base + (stat.racial ?? 0) + (stat.special ?? 0)
 }
 
+/** Quickness ×3 + talent DB (the always-on part of DB; see getDefense for the full DB). */
 export function getDefensiveBonus(char) {
-  const qu = char.stats?.Quickness
-  const quBonus = qu ? getTotalStatBonus(qu) : 0
-  const talentDB = getTalentBonuses(char).db
-  return quBonus * 3 + talentDB
+  return getCharStatBonus(char, 'Quickness') * 3 + getTalentBonuses(char).db
 }
 
 export function getInitiativeBonus(char) {
-  const qu = char.stats?.Quickness
-  const quBonus = qu ? getTotalStatBonus(qu) : 0
-  const talentIni = getTalentBonuses(char).initiative
-  return quBonus + talentIni
+  return getCharStatBonus(char, 'Quickness') + getTalentBonuses(char).initiative
 }
 
-// Rank bonus per CoreLaw Table 3-0b:
-//   0 ranks → -25 (untrained penalty)
-//   Ranks  1-10 → +5 each  (max +50 at rank 10)
-//   Ranks 11-20 → +3 each  (max +80 at rank 20)
-//   Ranks 21-30 → +2 each  (max +100 at rank 30)
-//   Ranks 31+   → +1 each
-export function rankBonus(ranks) {
-  if (!ranks || ranks <= 0) return -25
+// Rank bonus per Core Law Table 3-0b (RMU skills/ranks-bonus.js):
+//   0 ranks → −25 untrained, except categories with no stats (Battle, Combat and
+//   Magical Expertise) → 0. Ranks 1-10 +5 each, 11-20 +3, 21-30 +2, 31+ +1.
+export function rankBonus(ranks, categoryStats) {
+  if (!ranks || ranks <= 0) return categoryStats !== undefined && (!categoryStats || categoryStats === '-') ? 0 : -25
   if (ranks <= 10) return ranks * 5
   if (ranks <= 20) return 50 + (ranks - 10) * 3
   if (ranks <= 30) return 80 + (ranks - 20) * 2
   return 100 + (ranks - 30)
 }
 
-// Weapon OB = full skill bonus (rb + skill.stat + categoryStats + bonuses)
-// + the weapon's magical/quality bonus.
-//
-// Per RMU, weapon attacks use the corresponding Combat Training skill
-// (e.g. "Melee: Blade"), whose bonus already includes 2×Ag + St for melee.
-// This replaces an older approximation that averaged Ag/St only.
-//
-// Untrained weapons inherit the -25 rank bonus penalty automatically (no
-// special case here — rankBonus(0) returns -25 for category-stat skills).
+// ── Weapons ──────────────────────────────────────────────────────────────────
+// Weapon OB = the full weapon skill bonus (e.g. "Melee: Blade": rank bonus +
+// 2×St + Ag + …) + the weapon's item bonus + 10 for two-handed melee + the armor
+// ranged penalty. Attacking adds condition penalties, prone and parry
+// (getWeaponAttackOB).
+
+const WEAPON_GROUP_TEMPLATE = { melee: 'Melee: <weapon 1>', ranged: 'Ranged: <weapon 1>', thrown: 'Ranged: <weapon 1>', unarmed: 'Unarmed: <weapon 1>' }
+
 /**
- * The character's skill entry behind a weapon: by key, else by label for
- * placeholder slots like "Melee: <weapon 1>" labelled "Blade".
- * Returns { skillKey, charSkillData } (both null when not found).
+ * The character's skill entry behind a weapon: a template key, a label on a
+ * template slot ("Blade"), or a custom skill instance (case-insensitive).
+ * Returns { skillKey, charSkillData, displayName } (nulls when not found).
  */
 export function resolveWeaponSkill(char, weapon) {
-  const skillName = weapon?.skill_name || ''
-  if (char.skills?.[skillName]) return { skillKey: skillName, charSkillData: char.skills[skillName] }
-  const found = Object.entries(char.skills || {}).find(
-    ([key, data]) => data?.label === skillName && key !== skillName
-  )
-  return found ? { skillKey: found[0], charSkillData: found[1] } : { skillKey: null, charSkillData: null }
+  const hit = findCharSkill(char, weapon?.skill_name)
+  if (hit) return { skillKey: hit.templateName, charSkillData: hit.data, displayName: hit.displayName }
+  return { skillKey: null, charSkillData: null, displayName: null }
 }
 
 /** Total ranks (incl. culture) in the weapon's skill — used for fumble reduction. */
@@ -278,54 +505,61 @@ export function getWeaponSkillRanks(char, weapon) {
   return (charSkillData?.ranks ?? 0) + (charSkillData?.culture_ranks ?? 0)
 }
 
+// Greater Blade/Chain/Hafted and Pole Arm weapons are two-handed (Core Law 7.1).
+const TWO_HANDED_GROUPS = /\b(greater blade|greater chain|greater hafted|pole ?arms?)\b/i
+
 /** Two-handed melee weapons get +10 OB (Core Law Table 9-5). */
-export function isTwoHandedMelee(weapon) {
+export function isTwoHandedMelee(weapon, char) {
   if ((weapon?.ob_type || 'melee') !== 'melee') return false
-  return weapon?.handed === '2H' || /\(2H\)|two[- ]hand/i.test(weapon?.name || '')
+  if (weapon?.handed === '2H' || /\(2H\)|two[- ]hand/i.test(weapon?.name || '')) return true
+  if (weapon?.handed === '1H') return false
+  const db = weaponsData.find(w => w.name === weapon?.name)
+  if (db?.handed === '2H') return true
+  const skill = char ? resolveWeaponSkill(char, weapon).displayName : null
+  return TWO_HANDED_GROUPS.test(`${weapon?.skill_name || ''} ${skill || ''} ${db?.skill || ''}`)
+}
+
+export function isRangedWeapon(weapon) {
+  return weapon?.ob_type === 'ranged' || weapon?.ob_type === 'thrown' || /^ranged/i.test(weapon?.skill_name || '')
 }
 
 export function getWeaponOB(char, weapon) {
-  const { skillKey, charSkillData } = resolveWeaponSkill(char, weapon)
-  const twoHanded = isTwoHandedMelee(weapon) ? 10 : 0
-  const isRanged = weapon?.ob_type === 'ranged' || weapon?.ob_type === 'thrown' || /^ranged/i.test(weapon?.skill_name || '')
-  const armorRanged = isRanged ? getArmorPenalties(char).ranged : 0
+  const { skillKey, charSkillData, displayName } = resolveWeaponSkill(char, weapon)
+  const twoHanded = isTwoHandedMelee(weapon, char) ? 10 : 0
+  const armorRanged = isRangedWeapon(weapon) ? getArmorPenalties(char).ranged : 0
+  // No matching skill: the weapon group at 0 ranks (−25 + the group's stat bonuses)
+  const tplName = skillKey || WEAPON_GROUP_TEMPLATE[weapon?.ob_type || 'melee'] || WEAPON_GROUP_TEMPLATE.melee
+  const skill = getSkillBreakdown(char, tplName, charSkillData || {}, displayName || undefined).total
+  return skill + (Number(weapon?.item_bonus) || 0) + twoHanded + armorRanged
+}
 
-  // Find the template (for category + skill.stat lookup)
-  const template = skillKey ? findSkillTemplate(skillKey) : null
-
-  // If we have no template at all (weapon points at a skill we don't know),
-  // fall back to legacy approximation so the weapon still shows *something*.
-  if (!template) {
-    const charSkill = charSkillData || {}
-    const ranks = (charSkill.ranks ?? 0) + (charSkill.culture_ranks ?? 0)
-    return rankBonus(ranks) + (weapon.item_bonus ?? 0) + twoHanded + armorRanged
-  }
-
-  // Resolved display name (used for knack matching, e.g. "Melee: Blade")
-  const label = charSkillData?.label || ''
-  const displayName = label
-    ? (skillKey.includes('<') ? skillKey.replace(/<[^>]+>/, label) : `${skillKey}: ${label}`)
-    : skillKey
-
-  return getSkillBonus(char, template, charSkillData || {}, displayName)
-    + (weapon.item_bonus ?? 0) + twoHanded + armorRanged
+/**
+ * OB when attacking now: weapon OB + condition penalties (hit loss, injuries,
+ * stun, fatigue, grapple) − 50 for a melee attack from prone (Core Law 9.5)
+ * − the OB moved into parry (melee).
+ */
+export function getWeaponAttackOB(char, weapon) {
+  const melee = !isRangedWeapon(weapon)
+  const prone = melee && char?.conditions?.prone ? -50 : 0
+  const parry = melee ? Math.max(0, Number(char?.defense?.parry) || 0) : 0
+  return getWeaponOB(char, weapon) + getConditionPenalty(char).total + prone - parry
 }
 
 /**
  * Base Movement Rate in feet per round (Core Law 5.3 / 2.7; RMU movement.js):
- * 20' + ½ Quickness bonus (round up) + racial stride + stride talents.
+ * 20' (30' for quadrupeds) + ½ Quickness bonus (round up) + racial stride + stride talents.
  */
 export function getBMR(char) {
-  const qu = char.stats?.Quickness ? getTotalStatBonus(char.stats.Quickness) : 0
-  const race = racesData.find(r => r.name === char.race)
-  return 20 + Math.ceil(qu / 2) + (race?.frame?.stride ?? 0) + getTalentBonuses(char).stride
+  const qu = getCharStatBonus(char, 'Quickness')
+  const tb = getTalentBonuses(char)
+  return (tb.bmrBase ?? 20) + Math.ceil(qu / 2) + (getRaceEntry(char)?.frame?.stride ?? 0) + tb.stride
 }
 
 // App skill base → RMU skill name, the unit that professional bonuses and knacks
 // attach to (Core Law 2.4: they cover all specializations). RMU's Language skill
-// is specialized as spoken / written / signaled.
+// is specialized as spoken / written / signaled / lip reading.
 const RMU_SKILL_ALIAS = {
-  'Spoken': 'Language', 'Written': 'Language', 'Signaled': 'Language',
+  'Spoken': 'Language', 'Written': 'Language', 'Signaled': 'Language', 'Lip Reading': 'Language',
   'Own Spoken': 'Language', 'Own Written': 'Language',
   'Melee': 'Melee Weapons', 'Ranged': 'Ranged Weapons', 'Directed Spells': 'Directed Spell',
 }
@@ -338,140 +572,113 @@ export function rmuSkillName(appName) {
   return RMU_SKILL_ALIAS[base] || base
 }
 
-// Returns +5 if skillDisplayName is in the character's knack list, else 0.
-// Pass the *resolved* display name (e.g. "Melee: Dagger"), same as stored in char.knacks.
+// Returns +5 if the skill (display name, e.g. "Melee: Dagger") is covered by one
+// of the character's knacks. A knack covers every specialization of its skill
+// (Core Law 2.4), and "Spellcasting: Closed" covers every Closed spell list.
 export function getKnackBonus(char, skillDisplayName) {
-  const knacks = char.knacks || []
-  // Direct match (e.g. "Perception", "Melee: Blade")
-  if (knacks.includes(skillDisplayName)) return 5
-  // A knack covers every specialization of its skill (Core Law 2.4):
-  // "Spell Trickery" → "Spell Trickery: Dark Summons", "Influence" → "Influence: Duping".
-  const colon = (skillDisplayName || '').indexOf(':')
-  if (colon > 0 && knacks.includes(skillDisplayName.slice(0, colon).trim())) return 5
-  const rmuName = rmuSkillName(skillDisplayName)
-  if (rmuName !== skillDisplayName && knacks.includes(rmuName)) return 5
-  // Category match for spell lists:
-  // A knack of "Spellcasting: Closed" applies to all Closed spell lists the character knows.
-  const listData = (char.spell_lists || {})[skillDisplayName]
-  if (listData) {
-    const category = listData.category || 'Base'
-    if (knacks.includes(`Spellcasting: ${category}`)) return 5
-    // Lists store "Magic Ritual"; the knack picker offers RMU's "Magical Ritual".
-    if (category === 'Magic Ritual' && knacks.includes('Spellcasting: Magical Ritual')) return 5
+  const knacks = (char.knacks || []).map(k => String(k).trim().toLowerCase())
+  if (!knacks.length || !skillDisplayName) return 0
+  const name = String(skillDisplayName).trim()
+  const has = n => knacks.includes(String(n).trim().toLowerCase())
+  if (has(name)) return 5
+  const colon = name.indexOf(':')
+  if (colon > 0 && has(name.slice(0, colon))) return 5
+  const rmuName = rmuSkillName(name)
+  if (rmuName !== name && has(rmuName)) return 5
+  const listKey = Object.keys(char.spell_lists || {}).find(k => k.toLowerCase() === name.toLowerCase())
+  if (listKey) {
+    const category = getListCategory(char, listKey)
+    if (has(`Spellcasting: ${category}`)) return 5
+    if (category === 'Magic Ritual' && has('Spellcasting: Magical Ritual')) return 5
   }
   return 0
 }
 
-// Per CoreLaw: a character trained in a Realm receives +10 to RRs vs. that realm's magic.
-const REALM_RR_TYPE = { Channeling: 'channeling', Essence: 'essence', Mentalism: 'mentalism' }
+// ── Resistance rolls (Core Law 5.6, Table 5-6) ──────────────────────────────
+// RR = stat bonus + 2 × level + race + 10 vs your own realm(s) + special + talents.
+// Condition penalties don't apply to RRs ("only the character's stats, race and
+// level"). Situational RR talents (Iron Will vs mental spells) are offered in the
+// roll dialog, not added here.
+const RR_STATS = { channeling: 'Intuition', essence: 'Empathy', mentalism: 'Presence', physical: 'Constitution', fear: 'Self Discipline' }
+
+// Worn armor vs magic (Spell Law Table 4-5; RMU resistance.js): torso armor vs
+// Channeling (metal only) and Essence, helmet vs Mentalism. Metal +15, organic
+// +10; AT 7+ counts as metal, AT 2-6 as organic (RMU armor.js isMetallic).
+function armorRRBonus(char, type) {
+  const at = type === 'mentalism' ? (char.armor_parts?.head?.at ?? 1) : (char.armor_parts?.torso?.at ?? 1)
+  if (type === 'channeling') return at >= 7 ? 15 : 0
+  if (type === 'essence' || type === 'mentalism') return at >= 7 ? 15 : at >= 2 ? 10 : 0
+  return 0
+}
+
+export function getRRBreakdown(char, type) {
+  const statB      = getCharStatBonus(char, RR_STATS[type] || '')
+  const lvlBonus   = (char.level ?? 1) * 2
+  const realmBonus = getRealms(char).some(r => r.toLowerCase() === type) ? 10 : 0
+  const special    = Number(char.rr_bonuses?.[type]) || 0
+  const raceB      = getRaceEntry(char)?.[`${type}_rr`] ?? 0
+  const tb         = getTalentBonuses(char)
+  const talentB    = tb.rr[type] ?? 0
+  const armorB     = armorRRBonus(char, type)
+  // "vs mental spells" (Iron Will) applies to the three realm RRs only
+  const situational = tb.rrSituational.filter(s => s.realm === type || (s.realm === 'mental' && REALM_STAT[type[0].toUpperCase() + type.slice(1)]))
+  return { statB, lvlBonus, realmBonus, raceB, talentB, armorB, special, situational, total: statB + lvlBonus + realmBonus + raceB + armorB + special + talentB }
+}
 
 export function getResistanceBonuses(char) {
-  const level = char.level ?? 1
-  const lvlBonus = level * 2
-  const RR_STATS = {
-    channeling: 'Intuition',
-    essence:    'Empathy',
-    mentalism:  'Presence',
-    physical:   'Constitution',
-    fear:       'Self Discipline',
-  }
-  // Realm bonus: +10 to the RR type matching the character's realm
-  const realmType = char.realm ? (REALM_RR_TYPE[char.realm] || null) : null
-  const talentRR = getTalentBonuses(char).rr
-  const race = getRaceEntry(char)
   const result = {}
-  for (const [type, statName] of Object.entries(RR_STATS)) {
-    const stat = char.stats?.[statName]
-    const statB     = stat ? getTotalStatBonus(stat) : 0
-    const special   = char.rr_bonuses?.[type] ?? 0
-    const realmBonus = realmType === type ? 10 : 0
-    const raceB     = race?.[`${type}_rr`] ?? 0      // racial RR modifier (Core Law Table 2-2a)
-    result[type] = statB + lvlBonus + realmBonus + raceB + special + (talentRR[type] ?? 0)
-  }
+  for (const type of Object.keys(RR_STATS)) result[type] = getRRBreakdown(char, type).total
   return result
 }
 
-// Returns just the breakdown for a single RR type (used in UI tooltips).
-export function getRRBreakdown(char, type) {
-  const RR_STATS = { channeling:'Intuition', essence:'Empathy', mentalism:'Presence', physical:'Constitution', fear:'Self Discipline' }
-  const statName  = RR_STATS[type] || ''
-  const stat      = char.stats?.[statName]
-  const statB     = stat ? getTotalStatBonus(stat) : 0
-  const lvlBonus  = (char.level ?? 1) * 2
-  const realmType = char.realm ? (REALM_RR_TYPE[char.realm] || null) : null
-  const realmBonus = realmType === type ? 10 : 0
-  const special   = char.rr_bonuses?.[type] ?? 0
-  const raceB     = getRaceEntry(char)?.[`${type}_rr`] ?? 0
-  const talentB   = getTalentBonuses(char).rr[type] ?? 0
-  return { statB, lvlBonus, realmBonus, raceB, talentB, special }
-}
-
-// Per CoreLaw p.109: SCR uses raw rank count, NOT the scaled rank bonus.
-// Complementary skill contributes its raw ranks (main) or floor(raw ranks / 2) (secondary).
-function _realmStatBonus(char) {
-  const realmStatMap = { Channeling: 'Intuition', Essence: 'Empathy', Mentalism: 'Presence' }
-  const statName = char.spell_cast_stat ?? realmStatMap[char.realm]
-  return statName && char.stats?.[statName] ? getTotalStatBonus(char.stats[statName]) : 0
-}
+// ── Spellcasting (Core Law 3.22, Spell Law 4) ───────────────────────────────
 
 /**
- * Sum of all skill_talent_bonus effects that explicitly target a given name
- * (checks inst.param and inst.extra_params). Used to apply skill-targeted
- * talent bonuses to spell lists when the list name is used as the param.
+ * Sum of skill_talent_bonus effects that name a spell list as their target
+ * (talent param / extra lists). Applies to the list's SCR and Spell Mastery.
  */
 export function getNamedTalentBonus(char, name) {
   if (!name) return 0
+  const want = String(name).toLowerCase()
   let total = 0
-  for (const inst of (char.talents || [])) {
-    const def = talentsData.find(t => t.id === inst.talent_id)
-    if (!def?.effects) continue
-    for (const eff of def.effects) {
+  for (const inst of getTalentInstances(char)) {
+    for (const eff of inst.def.effects || []) {
       if (eff.type !== 'skill_talent_bonus') continue
-      const targets = eff.skill === 'param'
-        ? [inst.param, ...(inst.extra_params || [])].filter(Boolean)
-        : (eff.skill ? [eff.skill] : [])
-      if (targets.includes(name)) {
-        total += eff.per_tier != null ? eff.per_tier * inst.tier : (eff.flat ?? 0)
-      }
+      const targets = eff.skill === 'param' ? [inst.param, ...(inst.extra_params || [])] : [eff.skill]
+      if (targets.some(t => t && String(t).toLowerCase() === want)) total += eff.per_tier != null ? eff.per_tier * inst.tier : (eff.flat ?? 0)
     }
   }
   return total
 }
 
+// Complementary skill on a list (Core Law 3, Spell Law 5): the first adds its
+// ranks, a second one half its ranks. A list stores one; "secondary" halves it.
 function _compBonus(char, sl) {
   const comp = sl?.complementary
   if (!comp?.skill) return 0
-  const s = char.skills?.[comp.skill] || {}
+  const s = char.skills?.[comp.skill] || findCharSkill(char, comp.skill)?.data || {}
   const rawRanks = (s.ranks ?? 0) + (s.culture_ranks ?? 0)
   return comp.type === 'secondary' ? Math.floor(rawRanks / 2) : rawRanks
 }
 
-// SCR modifier by spell list type (RMU spells/prepare.js calculateSCRListModifier).
-// Magic Ritual lists aren't cast with an SCR, so they get no modifier.
-const SCR_LIST_TYPE_MOD = { Base: 5, Open: 0, Closed: -5, Arcane: -10, Restricted: -10, 'Magic Ritual': 0 }
+// SCR modifier by spell list type (Spell Law 4.2: own Base +5, Open 0, Closed −5,
+// any other −10; RMU spells/prepare.js). Magic Ritual lists aren't cast with an SCR.
+const SCR_LIST_TYPE_MOD = { Base: 5, Open: 0, Closed: -5, Arcane: -10, Restricted: -10, 'Magic Ritual': 0, 'Magical Ritual': 0 }
 
 export function getSCRListTypeModifier(char, listName) {
-  const category = char.spell_lists?.[listName]?.category || 'Base'
-  return SCR_LIST_TYPE_MOD[category] ?? 0
+  return SCR_LIST_TYPE_MOD[getListCategory(char, listName)] ?? 0
 }
 
 /**
- * Spellcasting Roll (SCR) modifier — what you add to d100OE when casting.
- * Formula (Core Law 3.22 + RMU): raw ranks + realm stat (×1) + list type
- * modifier + talent bonus + complementary. Knacks and the professional bonus
- * are NOT part of the SCR — they only raise the full skill bonus used for
- * Spell Mastery. Excludes situational modifiers (overcasting, armor,
- * condition) — see utils/casting.js.
+ * Spellcasting Roll (SCR) bonus — added to d100OE when casting.
+ * raw ranks + realm stat (once) + list type + talents (+ complementary).
+ * Knacks and the professional bonus are NOT part of the SCR (Core Law 3.22).
+ * Standing penalties (condition, armor, encumbrance) are in casting.js
+ * getStandingSCR; per-cast options in getCastBreakdown.
  */
 export function getSpellCastingBonus(char, listName) {
-  const sl            = char.spell_lists?.[listName] || {}
-  const rawRanks      = sl.ranks ?? 0
-  const talentSpell   = getTalentBonuses(char).spellcasting
-  const customTalent  = sl.talent_bonus ?? 0
-  const namedTalent   = getNamedTalentBonus(char, listName)
-  const compB         = _compBonus(char, sl)
-  const listTypeB     = getSCRListTypeModifier(char, listName)
-  return rawRanks + _realmStatBonus(char) + listTypeB + talentSpell + customTalent + namedTalent + compB
+  const b = getSpellCastingBreakdown(char, listName)
+  return b.ranks + b.realmStat + b.listType + b.talents + b.complementary
 }
 
 /** Itemized pieces of getSpellCastingBonus, for the Cast dialog. Sums to the same total. */
@@ -479,7 +686,7 @@ export function getSpellCastingBreakdown(char, listName) {
   const sl = char.spell_lists?.[listName] || {}
   return {
     ranks:    sl.ranks ?? 0,
-    realmStat: _realmStatBonus(char),
+    realmStat: getRealmStatBonus(char),
     listType: getSCRListTypeModifier(char, listName),
     talents:  getTalentBonuses(char).spellcasting + (sl.talent_bonus ?? 0) + getNamedTalentBonus(char, listName),
     complementary: _compBonus(char, sl),
@@ -487,90 +694,74 @@ export function getSpellCastingBreakdown(char, listName) {
 }
 
 /**
- * Spell Mastery modifier — the list's full skill bonus, rolled to change a
- * spell as it's cast (reshape it, disguise its look, etc.).
- * Formula (Core Law 3.22, verified): rank bonus + Spellcasting category
- * [RS + RS] + list skill stat [Me] + item + professional + knack + talents +
- * complementary. Eloquence/Mumbler are "Spellcasting roll" talents and apply
- * to the SCR only (RMU Foundry uses them only in the SCR).
+ * Spell Mastery — the list's full skill bonus, rolled to change a spell as it's
+ * cast (Core Law 3.22, Spell Law 4.6): rank bonus + Spellcasting category
+ * [RS + RS] + list stat [Me] + item + professional + knack + talents +
+ * complementary. Eloquence/Mumbler are SCR-only.
  */
 export function getSpellMasteryBonus(char, listName) {
   const sl           = char.spell_lists?.[listName] || {}
   const ranks        = sl.ranks ?? 0
   const rb           = rankBonus(ranks)
   const item         = sl.item_bonus  ?? 0
-  const profB        = sl.proficient  ? Math.min(ranks, 30) : 0
+  const profB        = isProfessionalList(char, listName) ? Math.min(ranks, 30) : 0
   const customTalent = sl.talent_bonus ?? 0
   const namedTalent  = getNamedTalentBonus(char, listName)
-  const rsB          = _realmStatBonus(char)
-  const meB          = char.stats?.Memory ? getTotalStatBonus(char.stats.Memory) : 0
+  const rsB          = getRealmStatBonus(char)
+  const meB          = getCharStatBonus(char, 'Memory')
   const compB        = _compBonus(char, sl)
   const knackB       = getKnackBonus(char, listName)
   return rb + rsB * 2 + meB + item + profB + customTalent + namedTalent + compB + knackB
 }
 
-// RMU CreatureSize.hitMultiplier table from systems/rmu/module/rmu/size.js.
-// Values are percentages — 100 = Medium baseline.
+// ── Size, hits, endurance ────────────────────────────────────────────────────
+// RMU CreatureSize.hitMultiplier (systems/rmu/module/rmu/size.js); Medium = 1.
 const SIZE_HIT_MULT = {
   Minuscule:  0.25, Diminutive: 0.50, Tiny:       0.67,
   Small:      0.75, Medium:     1.00, Big:        1.50,
   Large:      2.00, Huge:       3.00, Gigantic:   4.00,
   Enormous:   5.00, Immense:    6.00, Behemoth:   7.00, Leviathan: 8.00,
 }
+export const SIZE_ORDER = ['Minuscule', 'Diminutive', 'Tiny', 'Small', 'Medium', 'Big', 'Large', 'Huge', 'Gigantic', 'Enormous', 'Immense', 'Behemoth', 'Leviathan']
 
-function getSizeHitMultiplier(char) {
-  const raceEntry = racesData.find(r => r.name === char.race)
-  // Prefer the character's own appearance.size override if set
-  const sizeName = char.size || raceEntry?.frame?.size || 'Medium'
-  return SIZE_HIT_MULT[sizeName] ?? 1.0
+/**
+ * The character's size, and the size used for concussion hits. A size picked in
+ * Identity is final; otherwise the race's size + Increased/Decreased Size tiers
+ * beyond the race's own. Light-boned counts hits as one size smaller per tier.
+ */
+export function getSizeInfo(char) {
+  const tb = getTalentBonuses(char)
+  const clamp = i => Math.max(0, Math.min(SIZE_ORDER.length - 1, i))
+  const base = SIZE_ORDER.indexOf(char?.size || getRaceEntry(char)?.frame?.size || 'Medium')
+  const index = char?.size ? clamp(base) : clamp((base < 0 ? 4 : base) + tb.size)
+  const hitsIndex = clamp(index + tb.sizeHits)
+  return { name: SIZE_ORDER[index], index, hitsName: SIZE_ORDER[hitsIndex], hitMultiplier: SIZE_HIT_MULT[SIZE_ORDER[hitsIndex]] ?? 1 }
 }
 
+// Body / Power Development with no ranks use their stat bonuses only, not −25
+// (RMU skills/skills.js getNonDevelopedPenalty).
+function devSkillBonus(char, name) {
+  const b = getSkillBreakdown(char, name, char.skills?.[name] || {}, name)
+  return b.totalRanks > 0 ? b.total : b.total - b.rankBonus
+}
+
+/** Full Body Development skill bonus (sets hits, endurance and the death threshold). */
+export function getBodyDevBonus(char) {
+  return devSkillBonus(char, 'Body Development')
+}
+
+/**
+ * Concussion hits (Core Law 2.7; RMU pc.js): (race base hits + Body Development
+ * bonus + Tough/Fragile tiers beyond the race's own) × size multiplier, rounded.
+ */
 export function getBaseHits(char) {
-  // RMU: Base Hits = (race base + full Body-Development skill bonus) × size mult
-  // BD skill bonus already includes Brawn category stats: cat=[Co,SD] + skill.stat=Co → 2×Co + SD
-  const raceEntry  = racesData.find(r => r.name === char.race)
-  const racialBase = raceEntry?.base_hits ?? 25
-  const co = char.stats?.Constitution
-  const sd = char.stats?.['Self Discipline']
-  const coBonus = co ? getTotalStatBonus(co) : 0
-  const sdBonus = sd ? getTotalStatBonus(sd) : 0
-  const bdSkill   = char.skills?.['Body Development'] || {}
-  const bdRanks   = (bdSkill.ranks ?? 0) + (bdSkill.culture_ranks ?? 0)
-  const rb        = rankBonus(bdRanks)
-  const statBonus = 2 * coBonus + sdBonus
-  const itemB     = bdSkill.item_bonus   ?? 0
-  const talentB   = bdSkill.talent_bonus ?? 0
-  const profB     = bdSkill.proficient ? Math.min(bdRanks, 30) : 0
-  const talentHits = getTalentBonuses(char).hits
-  const sizeMult  = getSizeHitMultiplier(char)
-  const raw       = racialBase + rb + statBonus + itemB + talentB + profB + talentHits
-  return Math.max(1, Math.floor(raw * sizeMult))
+  const raw = (getRaceEntry(char)?.base_hits ?? 25) + getBodyDevBonus(char) + getTalentBonuses(char).hits
+  return Math.max(1, Math.round(raw * getSizeInfo(char).hitMultiplier))
 }
 
+/** Endurance = Body Development bonus + racial endurance + talents (Vigorous/Feeble). */
 export function getEndurance(char) {
-  // CoreLaw p.74: Endurance = Body Development skill bonus + racial endurance modifier
-  // The BD skill bonus is the same full-skill total used for base hits (rank bonus + stat + item + prof)
-  // but WITHOUT the racial base_hits offset.
-  //
-  // Body Development is in the Brawn category (Co/SD), individual skill stat: Co
-  // → stat contribution = 2×Co + SD  (matches getBaseHits)
-  const co = char.stats?.Constitution
-  const sd = char.stats?.['Self Discipline']
-  const coBonus = co ? getTotalStatBonus(co) : 0
-  const sdBonus = sd ? getTotalStatBonus(sd) : 0
-  const bdSkill  = char.skills?.['Body Development'] || {}
-  const bdRanks  = (bdSkill.ranks ?? 0) + (bdSkill.culture_ranks ?? 0)
-  const rb       = rankBonus(bdRanks)
-  const statBonus = 2 * coBonus + sdBonus
-  const itemB    = bdSkill.item_bonus   ?? 0
-  const talentB  = bdSkill.talent_bonus ?? 0
-  const profB    = bdSkill.proficient ? Math.min(bdRanks, 30) : 0
-  const bdBonus  = rb + statBonus + itemB + talentB + profB
-
-  const raceEntry     = racesData.find(r => r.name === char.race)
-  const racialEndurance = raceEntry?.endurance ?? 0
-  const talentEndurance = getTalentBonuses(char).endurance
-  return bdBonus + racialEndurance + talentEndurance
+  return getBodyDevBonus(char) + (getRaceEntry(char)?.endurance ?? 0) + getTalentBonuses(char).endurance
 }
 
 // ── Fatigue helpers (CoreLaw §5.5) ────────────────────────────────────────────
@@ -587,19 +778,7 @@ export function getFatiguePenalty(char) {
 //   injuries:     [{ id, label, penalty (≤0), bleed (hits/rd ≥0) }]
 //   stun:         [r25, r50, r75]  rounds remaining at each stun severity
 
-/** Full Body Development skill bonus (the value that sets the death threshold). */
-export function getBodyDevBonus(char) {
-  const co = char.stats?.Constitution
-  const sd = char.stats?.['Self Discipline']
-  const coBonus = co ? getTotalStatBonus(co) : 0
-  const sdBonus = sd ? getTotalStatBonus(sd) : 0
-  const bdSkill = char.skills?.['Body Development'] || {}
-  const bdRanks = (bdSkill.ranks ?? 0) + (bdSkill.culture_ranks ?? 0)
-  const profB   = bdSkill.proficient ? Math.min(bdRanks, 30) : 0
-  return rankBonus(bdRanks) + 2 * coBonus + sdBonus
-    + (bdSkill.item_bonus ?? 0) + (bdSkill.talent_bonus ?? 0) + profB
-}
-
+/** Max hits: the manual override if one is set, else the calculated value. */
 export function getHitsMax(char) {
   return char.hits_max ?? getBaseHits(char)
 }
@@ -659,9 +838,12 @@ export function getConditionPenalty(char) {
   return { hitLoss, injury, stun, fatigue, grapple, total: hitLoss + injury + stun + fatigue + grapple }
 }
 
-/** Initiative loses 1 per full −10 of condition penalty (RMU rounds the /10). */
+/**
+ * Initiative: −1 for every full −10 of penalties (Core Law 8.3, "round down" —
+ * −16 → −1). Penalties = hit loss, injuries, stun, fatigue, grapple, encumbrance.
+ */
 export function getConditionInitiativePenalty(char) {
-  return Math.round((getConditionPenalty(char).total + getEncumbrance(char).penalty) / 10)
+  return Math.trunc((getConditionPenalty(char).total + getEncumbrance(char).penalty) / 10) || 0
 }
 
 /**
@@ -672,15 +854,14 @@ export function getHealthStatus(char) {
   const cur    = getHitsCurrent(char)
   const deathAt = -(Math.max(0, getBodyDevBonus(char)) + 1)
   if (cur <= deathAt) return { status: 'dead', deathAt }
+  // Systemic shock (Core Law 9.8): at −300 or worse in total penalties the
+  // character dies at the next upkeep; from −200 they keep failing fatigue.
+  const pen = getConditionPenalty(char).total
+  if (pen <= -300)    return { status: 'dying', deathAt, reason: 'systemic shock: penalties at −300 or worse' }
   if (cur <= 0)       return { status: 'unconscious', deathAt }
   return { status: 'ok', deathAt }
 }
 
-/**
- * Sum of Table 5-5 situational modifiers for an Endurance roll (conditions only —
- * does NOT include base endurance, armor, or accumulated fatigue; those are added
- * separately so each component can be shown in the UI).
- */
 /**
  * Fatigue recovery cap while short of food/water: the penalty can't recover
  * past half the deprivation penalty. null = no cap.
@@ -696,8 +877,16 @@ export function restFatiguePenalty(char, minutes) {
   const pen = char.fatigue?.penalty ?? 0
   const proposed = Math.min(0, pen + Math.max(0, minutes))
   const cap = getFatigueRecoveryCap(char)
-  return cap !== null ? Math.min(proposed, cap) : proposed
+  // Short of food/water, rest only recovers down to the cap — it never makes
+  // fatigue worse than it already is.
+  return cap !== null ? Math.min(proposed, Math.max(pen, cap)) : proposed
 }
+
+/**
+ * Sum of Table 5-5 situational modifiers for an Endurance roll (conditions only —
+ * does NOT include base endurance, armor, or accumulated fatigue; those are added
+ * separately so each component can be shown in the UI).
+ */
 
 export function getEnduranceConditionModifier(char) {
   const fc = char.fatigue_conditions || {}
@@ -720,11 +909,17 @@ function armorRow(part, at) {
   return (armorData[ARMOR_PART_SLOT[part]] || []).find(r => r.at === (at ?? 1)) || null
 }
 
-/** Full skill bonus of a single named skill (0 ranks → no offset). */
-function namedSkillBonus(char, name) {
+/**
+ * Full skill bonus of a fixed-name skill (Maneuvering in Armor, Shield, Running,
+ * Transcendence); 0 ranks → 0 (no offset). `skipTalents` drops talents by id
+ * (Recurved Musculature doesn't help dodging).
+ */
+function namedSkillBonus(char, name, skipTalents = []) {
   const data = char.skills?.[name]
-  const ranks = (data?.ranks ?? 0) + (data?.culture_ranks ?? 0)
-  return ranks > 0 ? getSkillBonus(char, findSkillTemplate(name), data, name) : 0
+  const b = getSkillBreakdown(char, name, data || {}, name)
+  if (b.totalRanks <= 0) return 0
+  const skipped = b.talentEntries.filter(e => e.applied && skipTalents.includes(e.talentId)).reduce((s, e) => s + e.bonus, 0)
+  return b.total - skipped
 }
 
 /**
@@ -744,20 +939,44 @@ export function getArmorPenalties(char) {
   }
   const mia = Math.max(0, namedSkillBonus(char, 'Maneuvering in Armor'))
   const maneuver = Math.min(0, maneuverRaw + mia)
-  return { maneuverRaw, maneuver, miaOffset: maneuver - maneuverRaw, ranged, perception, weightPct }
+  return { maneuverRaw, maneuver, mia, miaOffset: maneuver - maneuverRaw, ranged, perception, weightPct }
+}
+
+/** Natural Armor talent (own or racial): AT 1 + tiers; it never stacks with worn armor (use the higher AT). */
+export function getNaturalArmor(char) {
+  const tiers = getTalentBonuses(char).at
+  const worn = char.armor_parts?.torso?.at ?? 1
+  const at = tiers > 0 ? 1 + tiers : 1
+  // Worn armor heavier than the natural AT: add the tiers as DB (Core Law ch.4)
+  return { tiers, at, wornAT: worn, effectiveAT: Math.max(worn, at), db: tiers > 0 && worn > at ? tiers : 0 }
 }
 
 const NOT_CARRIED = ['Stored', 'Mount']
+const SHIELD_WEIGHT = Object.fromEntries((armorData.shields || []).map(s => [s.name, Number(s.weight_lbs) || 0]))
+const qtyOf = q => (q === '' || q == null ? 1 : Math.max(0, Number(q) || 0))
 
-/** Weight carried in lbs: gear (not Stored/Mount), weapons, magic items, worn armor. */
+/** Gear weight in lbs: { carried (not Stored/Mount), all }. Quantity blank = 1, 0 = 0. */
+export function getGearWeight(char) {
+  let carried = 0, all = 0
+  for (const e of char?.equipment || []) {
+    const w = (Number(e.weight) || 0) * qtyOf(e.qty)
+    all += w
+    if (!NOT_CARRIED.includes(e.location)) carried += w
+  }
+  return { carried: Math.round(carried * 10) / 10, all: Math.round(all * 10) / 10 }
+}
+
+/** Weight carried in lbs: gear (not Stored/Mount) × quantity, weapons, magic items, worn armor, shield. */
 export function getCarriedWeight(char) {
   const body = Number(char.weight) || 0
   const gear = (char.equipment || []).filter(e => !NOT_CARRIED.includes(e.location))
-    .reduce((s, e) => s + (Number(e.weight) || 0) * (Number(e.qty) || 1), 0)
+    .reduce((s, e) => s + (Number(e.weight) || 0) * qtyOf(e.qty), 0)
   const weapons = (char.weapons || []).reduce((s, w) => s + (Number(w.weight) || 0), 0)
   const magic   = (char.magic_items || []).reduce((s, m) => s + (Number(m.weight) || 0), 0)
   const armor   = body * getArmorPenalties(char).weightPct / 100
-  return Math.round((gear + weapons + magic + armor) * 10) / 10
+  const shieldType = char.armor_parts?.shield?.type
+  const shield  = shieldType && !(char.weapons || []).some(w => w.name === shieldType) ? (SHIELD_WEIGHT[shieldType] ?? 0) : 0
+  return Math.round((gear + weapons + magic + armor + shield) * 10) / 10
 }
 
 // Heaviest load (% of body weight) that still allows each pace (Core Law Table 5-3).
@@ -766,12 +985,14 @@ const PACE_MAX_LOAD = [['Dash', 15], ['Sprint', 30], ['Run', 45], ['Jog', 60], [
 /**
  * Encumbrance: penalty −1 per 1% of body weight carried over the allowance
  * (Core Law: −5 per 5%), and the fastest pace the load allows.
+ * `forDodge`: Beast of Burden's extra allowance doesn't count (Core Law ch.4).
  * Returns nulls when body weight isn't set.
  */
-export function getEncumbrance(char) {
+export function getEncumbrance(char, { forDodge = false } = {}) {
   const body = Number(char.weight) || 0
   const carried = getCarriedWeight(char)
-  const allowancePct = getWeightAllowance(char).pct
+  const wa = getWeightAllowance(char)
+  const allowancePct = forDodge ? Math.max(0, wa.pct - wa.carryBonus) : wa.pct
   if (!body) return { body: null, carried, loadPct: null, allowancePct, penalty: 0, maxPace: null }
   const loadPct = Math.round((carried / body) * 1000) / 10
   const penalty = Math.min(0, -Math.floor(loadPct - allowancePct))
@@ -791,6 +1012,7 @@ const NON_PHYSICAL = new Set([
 /**
  * Armor + encumbrance penalty for a skill maneuver in `category`.
  * Perception takes the armor perception penalty instead; Fortitude is exempt.
+ * Swimming triples both before Maneuvering in Armor applies (Core Law 3.17).
  */
 export function getMovementPenalty(char, category, skillName) {
   const base = (skillName || '').split(':')[0].trim()
@@ -799,9 +1021,14 @@ export function getMovementPenalty(char, category, skillName) {
     return { armor: p, enc: 0, total: p }
   }
   if (NON_PHYSICAL.has(category) || base === 'Fortitude') return { armor: 0, enc: 0, total: 0 }
-  const armor = getArmorPenalties(char).maneuver
+  const ap = getArmorPenalties(char)
+  if (base === 'Swimming') {
+    const armor = Math.min(0, ap.maneuverRaw * 3 + ap.mia)
+    const enc = getEncumbrance(char).penalty * 3
+    return { armor, enc, total: armor + enc }
+  }
   const enc = getEncumbrance(char).penalty
-  return { armor, enc, total: armor + enc }
+  return { armor: ap.maneuver, enc, total: ap.maneuver + enc }
 }
 
 // ── Defense (Core Law 9.6; RMU db/db.js) ────────────────────────────────────
@@ -813,10 +1040,12 @@ const COVER = { none: [0, 0], partial: [10, 20], half: [20, 40], full: [50, 100]
  * Full DB with the character's chosen defense (char.defense):
  *   dodge / block: 'none' | 'passive' | 'partial' | 'full'
  *   parry: OB moved to DB vs melee;  cover: 'none'|'partial'|'half'|'full', hardCover
- * Dodge uses Running; block uses Shield. Passive dodge and passive block don't
- * combine (the better one counts). Armor/encumbrance reduce dodge; injury
- * penalties reduce partial/full dodge and block. Dodge is halved vs ranged.
- * Returns { total, vsRanged, parts: { qu, talent, shield, dodge, parry, cover, coverRanged, armor, magic }, … }.
+ * Dodge uses Running (without Recurved Musculature); block uses Shield. Passive
+ * dodge and passive block don't combine (the better one counts). Armor and
+ * encumbrance (without Beast of Burden) reduce dodge; condition penalties reduce
+ * partial/full dodge and block. Dodge is halved vs ranged. Flat-footed: no Qu
+ * DB, shield, dodge or parry; surprised: no shield.
+ * Returns { total, vsRanged, parts: { qu, talent, shield, dodge, parry, cover, coverRanged, armor, natural, magic }, … }.
  */
 export function getDefense(char) {
   const d     = char.defense || {}
@@ -827,7 +1056,7 @@ export function getDefense(char) {
   const dodgeMode  = d.dodge ?? (shieldItem.type ? 'none' : 'passive')
   const blockMode  = hasShield ? (d.block ?? 'passive') : 'none'
   const injury     = getConditionPenalty(char).total
-  const qu     = flat ? 0 : (char.stats?.Quickness ? getTotalStatBonus(char.stats.Quickness) : 0) * 3
+  const qu     = flat ? 0 : getCharStatBonus(char, 'Quickness') * 3
   const talent = getTalentBonuses(char).db
 
   // Block (Shield skill)
@@ -843,8 +1072,8 @@ export function getDefense(char) {
   // Dodge (Running)
   const rData  = char.skills?.Running
   const rRanks = (rData?.ranks ?? 0) + (rData?.culture_ranks ?? 0)
-  const rBonus = rRanks > 0 ? namedSkillBonus(char, 'Running') : 0
-  const armorEnc = getArmorPenalties(char).maneuver + getEncumbrance(char).penalty
+  const rBonus = rRanks > 0 ? namedSkillBonus(char, 'Running', ['recurved_musculature']) : 0
+  const armorEnc = getArmorPenalties(char).maneuver + getEncumbrance(char, { forDodge: true }).penalty
   let dodge = 0
   if (!flat) {
     if (dodgeMode === 'passive') dodge = Math.max(0, Math.min(50, rRanks) + armorEnc)
@@ -856,48 +1085,41 @@ export function getDefense(char) {
     if (dodge > shield - shieldBase) { shield = shieldBase } else { dodge = 0 }
   }
 
-  const parry = Math.max(0, Number(d.parry) || 0)
+  const parry = flat ? 0 : Math.max(0, Number(d.parry) || 0)
   const [cm, cr] = COVER[d.cover || 'none'] || [0, 0]
   const hard = d.hardCover ? 2 : 1
   const armor = ['torso', 'head', 'arms', 'legs'].reduce((s, p) => s + (char.armor_parts?.[p]?.db ?? 0), 0)
+  const natural = getNaturalArmor(char).db
   const magic = (char.magic_items || []).reduce((s, m) => s + (Number(m.db) || 0), 0)
 
-  const common = qu + talent + shield + armor + magic
+  const common = qu + talent + shield + armor + natural + magic
   return {
     total:    common + dodge + parry + cm * hard,
-    vsRanged: common + Math.floor(dodge / 2) + cr * hard,
-    parts: { qu, talent, shield, dodge, parry, cover: cm * hard, coverRanged: cr * hard, armor, magic },
+    vsRanged: common + Math.ceil(dodge / 2) + cr * hard,
+    parts: { qu, talent, shield, dodge, parry, cover: cm * hard, coverRanged: cr * hard, armor, natural, magic },
     dodgeMode, blockMode, hasShield, rRanks, sRanks,
   }
 }
 
+/** Weight allowance: 15% + 2 × Strength bonus + Beast of Burden (never below 0%, Core Law 5.4). */
 export function getWeightAllowance(char) {
-  const st = char.stats?.Strength
-  const stBonus = st ? getTotalStatBonus(st) : 0
   const carryBonus = getTalentBonuses(char).carry ?? 0
-  const pct = 15 + (2 * stBonus) + carryBonus
+  const pct = Math.max(0, 15 + 2 * getCharStatBonus(char, 'Strength') + carryBonus)
   const lbs = char.weight ? Math.round(pct * Number(char.weight) / 100) : null
   return { pct, lbs, carryBonus }
 }
 
+/**
+ * Power points = the Power Development skill bonus (Spell Law 4.1): rank bonus +
+ * 2 × realm stat + Co + professional + knack + talents + item. null without a realm.
+ */
+export function getPowerPointsAuto(char) {
+  if (!getRealmStatName(char)) return null
+  return Math.max(0, devSkillBonus(char, 'Power Development'))
+}
+
+/** Max PP: the manual override if one is set, else the calculated value. */
 export function getPowerPoints(char) {
   if (char.power_points_max !== null && char.power_points_max !== undefined) return char.power_points_max
-  // PP = Power Development skill bonus (the full skill total IS the PP pool)
-  // Power Manipulation category stats: RS + RS (summed); Power Dev individual stat: Co
-  // Total stat contribution = rsBonus + rsBonus + coBonus  →  2×RS + Co
-  const realmStatMap = { Channeling: 'Intuition', Essence: 'Empathy', Mentalism: 'Presence' }
-  const rsName = char.spell_cast_stat ?? realmStatMap[char.realm]
-  if (!rsName) return null    // no realm selected
-  const rsstat = char.stats?.[rsName]
-  const co     = char.stats?.Constitution
-  const rsBonus = rsstat ? getTotalStatBonus(rsstat) : 0
-  const coBonus = co     ? getTotalStatBonus(co)     : 0
-  const pdSkill   = char.skills?.['Power Development'] || {}
-  const pdRanks   = (pdSkill.ranks ?? 0) + (pdSkill.culture_ranks ?? 0)
-  const rb        = rankBonus(pdRanks)
-  const statBonus = 2 * rsBonus + coBonus
-  const itemB     = pdSkill.item_bonus   ?? 0
-  const talentB   = pdSkill.talent_bonus ?? 0
-  const profB     = pdSkill.proficient ? Math.min(pdRanks, 30) : 0
-  return Math.max(0, rb + statBonus + itemB + talentB + profB)
+  return getPowerPointsAuto(char)
 }

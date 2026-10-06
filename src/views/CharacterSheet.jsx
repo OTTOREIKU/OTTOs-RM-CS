@@ -3,7 +3,12 @@ import { usePersistentOpen, useScrollRestore } from '../hooks/persist.js'
 import { ChevronDownIcon, ChevronUpIcon, XIcon, CheckIcon, DiamondIcon, EyeOpenIcon, EyeClosedIcon } from '../components/Icons.jsx'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { STATS } from '../store/characters.js'
-import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getRRBreakdown, getBaseHits, getEndurance, getPowerPoints, getWeightAllowance, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getConditionPenalty, getConditionInitiativePenalty, getEnduranceConditionModifier, getKnackBonus, rmuSkillName, getWeaponSkillRanks, getBMR, getFatigueRecoveryCap, restFatiguePenalty, getRaceEntry, getRaceStatBonuses, getArmorPenalties, getEncumbrance, getMovementPenalty, getDefense, SHIELD_DB, getCustomProfession, getCostProfession } from '../utils/calc.js'
+import { getInitiativeBonus, getResistanceBonuses, getRRBreakdown, getBaseHits, getEndurance, getPowerPoints, getWeightAllowance, getTalentBonuses,
+  getSpellMasteryBonus, getConditionPenalty, getConditionInitiativePenalty, getEnduranceConditionModifier, rmuSkillName, getWeaponSkillRanks, getBMR,
+  getFatigueRecoveryCap, restFatiguePenalty, getRaceEntry, getRaceStatBonuses, getArmorPenalties, getEncumbrance, getDefense, SHIELD_DB,
+  getCustomProfession, getCostProfession, getSkillBreakdown, getSkillRollPenalty, getWeaponAttackOB, getCharStatBonus, getPowerPointsAuto,
+  getHitsCurrent, getProfessionalSet, isProfessionalName, professionalPatch, getRealms, getRealmStatName, getListCategory, getNaturalArmor } from '../utils/calc.js'
+import { getStandingSCR } from '../utils/casting.js'
 import { HitsBox, InjuriesPanel, StatusStrip } from '../components/HealthPanel.jsx'
 import { ActiveEffectsPanel, FamiliarPanel, familiarName } from '../components/ActiveEffects.jsx'
 import { QuickRollsPanel, ManeuverModal } from '../components/RollModals.jsx'
@@ -12,17 +17,18 @@ import races from '../data/races.json'
 import professions from '../data/professions.json'
 import cultures from '../data/cultures.json'
 import cultureSkillsData from '../data/culture_skills.json'
-import skillCategoryStats from '../data/skill_category_stats.json'
 import professionSkillsData from '../data/profession_skills.json'
 import { useConfirm } from '../components/ConfirmModal.jsx'
 import armorData from '../data/armor.json'
 import weaponsDb from '../data/weapons.json'
 import skillsData from '../data/skills.json'
 import HomebrewProfessionSubPanel from '../components/HomebrewProfession.jsx'
-import talentsData from '../data/talents.json'
 import skillCostsData from '../data/skill_costs.json'
 
-const REALMS   = ['Channeling', 'Essence', 'Mentalism']
+const REALMS   = ['Channeling', 'Essence', 'Mentalism', 'Channeling/Essence', 'Channeling/Mentalism', 'Essence/Mentalism']
+const REALM_ORDER = ['Channeling', 'Essence', 'Mentalism']
+// "Essence,Channeling" (Foundry) → "Channeling/Essence" so the dropdown shows it
+const realmValue = c => getRealms(c).sort((a, b) => REALM_ORDER.indexOf(a) - REALM_ORDER.indexOf(b)).join('/') || c.realm || ''
 // Every culture with grant data (culture_skills.json has 29; cultures.json only the first 12)
 const CULTURE_NAMES = [...new Set([...cultures, ...cultureSkillsData.map(x => x.name)])]
 // RMU creature sizes (smallest → largest); '' = use the race's size
@@ -46,35 +52,6 @@ function displaySkillName(templateName, label) {
   if (/<[^>]+>/.test(templateName)) return templateName.replace(/<[^>]+>/, label)
   return `${templateName}: ${label}`
 }
-// Mirrors RMU's official SkillCategoryStats — sourced from shared data file.
-const SKILL_CATEGORY_STATS = skillCategoryStats
-const SKILL_STAT_MAP = { Ag:'Agility',Co:'Constitution',Em:'Empathy',In:'Intuition',Me:'Memory',Pr:'Presence',Qu:'Quickness',Re:'Reasoning',SD:'Self Discipline',St:'Strength' }
-function getSkillStatBonus(c, statKeys) {
-  if (!statKeys || statKeys === '-') return 0
-  const realm = (c.realm || '').toLowerCase()
-  const rsKey = realm.includes('channel') ? 'Intuition' : realm.includes('essence') ? 'Empathy' : realm.includes('mental') ? 'Presence' : null
-  return statKeys.split('/').reduce((sum, k) => {
-    const t = k.trim(), full = t === 'RS' ? rsKey : SKILL_STAT_MAP[t]
-    return full && c.stats?.[full] ? sum + getTotalStatBonus(c.stats[full]) : sum
-  }, 0)
-}
-function computeSkillTotal(c, template, skillData, talentBonusMap) {
-  const ranks = (skillData.ranks ?? 0) + (skillData.culture_ranks ?? 0)
-  const rb = rankBonus(ranks)
-  const catStatB = getSkillStatBonus(c, SKILL_CATEGORY_STATS[template?.category] || '-')
-  const skillStatB = getSkillStatBonus(c, template?.stat_keys)
-  const item = skillData.item_bonus ?? 0
-  const talent = skillData.talent_bonus ?? 0
-  const isProf = !!skillData.proficient
-  const profBonus = isProf ? Math.min(ranks, 30) : 0
-  const entries = (talentBonusMap[template?.name || ''] || [])
-  const excluded = skillData.talent_excluded || []
-  const autoBonus = entries.filter(e => !excluded.includes(e.instId)).reduce((s, e) => s + e.bonus, 0)
-  const dispName = displaySkillName(template?.name || '', skillData?.label || '')
-  const knackBonus = getKnackBonus(c, dispName)
-  return rb + catStatB + skillStatB + item + talent + autoBonus + profBonus + knackBonus
-}
-
 // Core Law Table 5-3. Moving while acting costs the penalty; moving instead of
 // acting costs the AP. Max load = heaviest load (% body weight) that allows the pace.
 const PACE_TABLE = [
@@ -90,7 +67,6 @@ const STAT_ABBR = {
   Memory:'Me', Presence:'Pr', Quickness:'Qu', Reasoning:'Re',
   'Self Discipline':'SD', Strength:'St',
 }
-const REALM_STAT = { Channeling:'Intuition', Essence:'Empathy', Mentalism:'Presence' }
 
 // ── Small reusable primitives ─────────────────────────────────────────────────
 function Card({ title, action, children, onToggle, isOpen }) {
@@ -460,64 +436,21 @@ function KnacksSubPanel({ char, updateCharacter, allSkillNames }) {
 // at +30 ranks. Chosen from the profession's ~15 candidates at chargen. Soft cap
 // — over-selection is allowed but flagged in danger color.
 const PROF_SKILL_CAP = 10
-function ProfessionalSkillsSubPanel({ char, updateCharacter, updateSkill }) {
+function ProfessionalSkillsSubPanel({ char, updateCharacter }) {
   const [open, setOpen] = useState(false)
   const profession = char.profession || ''
   const candidates = getCustomProfession(char)?.professional_skills || professionSkillsData[profession] || []
 
   // RMU (Core Law 2.4): a professional skill covers every specialization and counts
-  // once toward the 10. Group entries by base skill ("Spell Trickery: X" → "Spell
-  // Trickery") and spell lists by list type (Base, Closed, …).
-  const baseOf = rmuSkillName
-  const groups = new Map()
-  const group = base => {
-    if (!groups.has(base)) groups.set(base, { base, display: [], skillKeys: [], customIds: [], lists: [], prof: false })
-    return groups.get(base)
-  }
-  for (const [name, data] of Object.entries(char.skills || {})) {
-    const g = group(baseOf(name)); g.skillKeys.push(name)
-    if (data?.proficient) { g.prof = true; g.display.push(displaySkillName(name, data.label || '')) }
-  }
-  for (const cs of (char.custom_skills || [])) {
-    const g = group(baseOf(cs.template_name)); g.customIds.push(cs.id)
-    if (cs?.proficient) { g.prof = true; g.display.push(displaySkillName(cs.template_name, cs.label || '')) }
-  }
-  for (const [name, sl] of Object.entries(char.spell_lists || {})) {
-    const g = group(sl?.category || 'Base'); g.lists.push(name)
-    if (sl?.proficient) { g.prof = true; g.display.push(name) }
-  }
-  const profGroups = [...groups.values()].filter(g => g.prof)
-  const count = profGroups.length
+  // once toward the 10; a spell list type (Base, Closed, …) covers every list of
+  // that type. The same set drives the Skills tab toggles and every skill total.
+  const profNames = [...getProfessionalSet(char)].sort()
+  const count = profNames.length
   const overCap = count > PROF_SKILL_CAP
   const counterColor = overCap ? 'var(--danger)' : (count === PROF_SKILL_CAP ? 'var(--success)' : 'var(--text3)')
 
-  // RMU candidate names vs this app's skill keys
-  const CANDIDATE_ALIAS = { 'Magical Ritual': 'Magic Ritual' }   // list type is stored as "Magic Ritual"
-  const groupFor = name => groups.get(CANDIDATE_ALIAS[name] || name) || null
-
-  // Marks or clears every specialization of the skill at once.
   function toggleProf(candidateName) {
-    const g = groupFor(candidateName)
-    if (!g) {
-      // Skill not on the character yet — add a stub so the flag has somewhere to live
-      const skills = { ...(char.skills || {}), [candidateName]: { ranks: 0, item_bonus: 0, talent_bonus: 0, proficient: true } }
-      updateCharacter({ skills })
-      return
-    }
-    const next = !g.prof
-    const patch = {}
-    if (g.skillKeys.length) {
-      patch.skills = { ...(char.skills || {}) }
-      for (const k of g.skillKeys) patch.skills[k] = { ...patch.skills[k], proficient: next }
-    }
-    if (g.customIds.length) {
-      patch.custom_skills = (char.custom_skills || []).map(cs => g.customIds.includes(cs.id) ? { ...cs, proficient: next } : cs)
-    }
-    if (g.lists.length) {
-      patch.spell_lists = { ...(char.spell_lists || {}) }
-      for (const n of g.lists) patch.spell_lists[n] = { ...patch.spell_lists[n], proficient: next }
-    }
-    updateCharacter(patch)
+    updateCharacter(professionalPatch(char, candidateName, !isProfessionalName(char, candidateName)))
   }
 
   return (
@@ -554,7 +487,7 @@ function ProfessionalSkillsSubPanel({ char, updateCharacter, updateSkill }) {
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 4, fontSize: 12 }}>
               {candidates.map(c => {
-                const isProf = !!groupFor(c.skillName)?.prof
+                const isProf = isProfessionalName(char, c.skillName)
                 return (
                   <label
                     key={c.skillName}
@@ -578,19 +511,23 @@ function ProfessionalSkillsSubPanel({ char, updateCharacter, updateSkill }) {
               })}
             </div>
           )}
-          {/* Show any other proficient skills NOT in the profession's candidate list (overflow / custom picks).
-              Match against candidates using the rawKey (which is the template name), but display the resolved
-              name with the user's label substituted in. */}
+          {/* Professional picks outside the profession's candidates (custom class, GM-approved) */}
           {(() => {
-            const overflow = profGroups.filter(g => !candidates.some(c => (CANDIDATE_ALIAS[c.skillName] || c.skillName) === g.base))
+            const overflow = profNames.filter(n => !candidates.some(c => isProfessionalName({ professional_skills: [n] }, c.skillName)))
             if (overflow.length === 0) return null
             return (
               <div style={{ marginTop: 10, paddingTop: 8, borderTop: '1px dashed var(--border)' }}>
                 <div style={{ fontSize: 10, fontWeight: 600, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>
-                  Also proficient (outside profession's list)
+                  Also professional (outside profession's list)
                 </div>
-                <div style={{ fontSize: 11, color: 'var(--text2)' }}>
-                  {overflow.map(g => g.display.length > 1 ? `${g.base} (${g.display.map(d => d.replace(g.base + ': ', '')).join(', ')})` : g.display[0]).join(' · ')}
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+                  {overflow.map(n => (
+                    <button key={n} onClick={() => updateCharacter(professionalPatch(char, n, false))} title="Remove from professional skills"
+                      style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 11, padding: '2px 6px', borderRadius: 4,
+                        background: 'rgba(76,139,245,0.10)', border: '1px solid var(--accent)', color: 'var(--text2)', cursor: 'pointer' }}>
+                      {n} <XIcon size={9} color="var(--text3)" />
+                    </button>
+                  ))}
                 </div>
               </div>
             )
@@ -752,7 +689,8 @@ function FatigueCard({ c, updateCharacter, autoEndurance, armorManPenalty, encPe
   const total  = pen + inj
 
   const condMod = getEnduranceConditionModifier(c)
-  const rollMod = autoEndurance + armorManPenalty + encPenalty + pen + condMod
+  const condPenalty = getConditionPenalty(c).total   // hit loss, injuries, stun, fatigue (incl. overflow), grapple
+  const rollMod = autoEndurance + armorManPenalty + encPenalty + condPenalty + condMod
 
   const penColor = pen === 0 ? 'var(--text3)' : pen >= -20 ? 'var(--warning)' : 'var(--danger)'
   const fmt = n  => n > 0 ? `+${n}` : String(n)
@@ -787,6 +725,7 @@ function FatigueCard({ c, updateCharacter, autoEndurance, armorManPenalty, encPe
     if (!band) return
     if (band.delta < 0) reduceFatigue(-band.delta)
     else if (band.delta > 0) addFatigue(band.delta)
+    if (band.hits) updateCharacter({ hits_current: getHitsCurrent(c) - 10 })   // Absolute Failure: 10 hits
     setRollInput('')
   }
 
@@ -986,12 +925,12 @@ function CharacterSheetBody() {
     || (!Object.values(c.skills || {}).some(v => (v?.ranks ?? 0) > 0)
         && !Object.values(c.spell_lists || {}).some(v => (v?.ranks ?? 0) > 0))
 
-  const db           = getDefensiveBonus(c)
+  const db           = getDefense(c).parts.qu
   const baseIni      = getInitiativeBonus(c)
   const condPen      = getConditionPenalty(c).total   // hit loss + injuries + stun + fatigue, ≤ 0
   const iniPenalty   = getConditionInitiativePenalty(c) // −1 per −10 condition penalty
   const ini          = baseIni + iniPenalty
-  const realmStat = REALM_STAT[c.realm]
+  const realmStat = getRealmStatName(c)
   const rrBonuses = getResistanceBonuses(c)
   const talentB   = getTalentBonuses(c)
 
@@ -1046,7 +985,7 @@ function CharacterSheetBody() {
 
   // Auto-calculated derived stats (shown as placeholder when field is null / not overridden)
   const autoHitsMax    = getBaseHits(c)
-  const autoPPMax      = getPowerPoints(c)     // null if no realm selected
+  const autoPPMax      = getPowerPointsAuto(c)     // null if no realm selected
   const autoEndurance  = getEndurance(c)
   const wa             = getWeightAllowance(c)
   const effHitsMax     = c.hits_max          ?? autoHitsMax
@@ -1161,7 +1100,7 @@ function CharacterSheetBody() {
         {wBrowse && (
           <WeaponBrowser
             onSelect={w => {
-              addWeapon({ name: w.name, fumble: w.fumble, str_req: w.str_req, skill_name: w.skill_name, ob_type: w.ob_type })
+              addWeapon({ name: w.name, fumble: w.fumble, str_req: w.str_req, skill_name: w.skill_name, ob_type: w.ob_type, weight: Number(w.weight) || 0, handed: w.handed })
               setWBrowse(false)
             }}
             onCancel={() => setWBrowse(false)}
@@ -1179,7 +1118,7 @@ function CharacterSheetBody() {
         )}
         <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
           {weapons.map(w => {
-            const ob = getWeaponOB(c, w) + condPen
+            const ob = getWeaponAttackOB(c, w)
             const skillRanks = getWeaponSkillRanks(c, w)
             const baseFumble = w.fumble ?? 3
             const effFumble = Math.max(1, baseFumble - Math.floor(skillRanks / 5))
@@ -1193,7 +1132,7 @@ function CharacterSheetBody() {
                   <FieldRow label={fumbleReduced ? `Fumble (${effFumble} eff)` : 'Fumble'}>
                     <NInput value={w.fumble} onChange={v => updateWeapon(w.id, { fumble: v })} min={1} max={20} />
                   </FieldRow>
-                  <FieldRow label="Str Req">
+                  <FieldRow label="Str (durability)">
                     <NInput value={w.str_req} onChange={v => updateWeapon(w.id, { str_req: v })} min={0} />
                   </FieldRow>
                   <FieldRow label="Item Bonus">
@@ -1207,8 +1146,8 @@ function CharacterSheetBody() {
                     </FieldRow>
                     <FieldRow label="OB Type">
                       <select value={w.ob_type || 'melee'} onChange={e => updateWeapon(w.id, { ob_type: e.target.value })} style={{ width:'100%' }}>
-                        <option value="melee">Melee (Ag+St)</option>
-                        <option value="ranged">Ranged (Ag+Qu)</option>
+                        <option value="melee">Melee</option>
+                        <option value="ranged">Ranged</option>
                         <option value="unarmed">Unarmed (Ag+St)</option>
                       </select>
                     </FieldRow>
@@ -1395,9 +1334,11 @@ function CharacterSheetBody() {
           <StatCard label="Total DB"  value={fmt(totalDB)} color={totalDB > 0 ? 'var(--success)' : 'var(--text)'} sub="vs melee" />
           <StatCard label="vs Ranged" value={fmt(defense.vsRanged)} color={defense.vsRanged > 0 ? 'var(--success)' : 'var(--text)'} sub="dodge ½, ranged cover" />
           <StatCard label="Initiative" value={fmt(ini)} color="var(--accent)" />
-          {talentB.at > 0 && (
-            <StatCard label="Natural Armor" value={`+${talentB.at} AT`} color="var(--success)" sub="no encumbrance" />
-          )}
+          {talentB.at > 0 && (() => {
+            const na = getNaturalArmor(c)
+            return <StatCard label="Natural Armor" value={`AT ${na.at}`} color="var(--success)"
+              sub={na.db ? `worn AT ${na.wornAT} used · +${na.db} DB` : na.wornAT > 1 ? `used over worn AT ${na.wornAT}` : 'no encumbrance'} />
+          })()}
         </div>
 
         {/* Resistance Rolls */}
@@ -1422,6 +1363,8 @@ function CharacterSheetBody() {
                 bd.realmBonus ? `Realm bonus: +${bd.realmBonus}` : null,
                 bd.raceB ? `Race: ${bd.raceB >= 0 ? '+' : ''}${bd.raceB}` : null,
                 bd.talentB ? `Talents: ${bd.talentB >= 0 ? '+' : ''}${bd.talentB}` : null,
+                bd.armorB ? `Armor: +${bd.armorB}` : null,
+                ...bd.situational.map(x => `(${x.name}: +${x.bonus} ${x.note || 'situational'})`),
                 `Special: ${bd.special >= 0 ? '+' : ''}${bd.special}`,
                 `Total: ${total >= 0 ? '+' : ''}${total}`,
               ].filter(Boolean).join('\n')
@@ -1432,6 +1375,7 @@ function CharacterSheetBody() {
                     <div style={{ display:'flex', alignItems:'center', gap:4 }}>
                       {bd.realmBonus > 0 && <span style={{ fontSize:8, color:'var(--accent)', fontWeight:700 }} title="Realm bonus +10">RM</span>}
                       {bd.raceB !== 0 && <span style={{ fontSize:8, color: bd.raceB > 0 ? 'var(--success)' : 'var(--danger)', fontWeight:700 }} title={`Race ${bd.raceB > 0 ? '+' : ''}${bd.raceB}`}>RACE {bd.raceB > 0 ? '+' : ''}{bd.raceB}</span>}
+                      {bd.armorB > 0 && <span style={{ fontSize:8, color:'var(--success)', fontWeight:700 }} title={key === 'mentalism' ? 'Helmet vs Mentalism' : 'Torso armor vs ' + label}>ARM +{bd.armorB}</span>}
                       {showArmorDetail && <div style={{ fontSize:8, color:'var(--text3)' }}>{stat}</div>}
                     </div>
                   </div>
@@ -1565,7 +1509,7 @@ function CharacterSheetBody() {
           <FieldRow label="Level"><NInput value={c.level} onChange={v => updateCharacter({ level: v })} min={1} max={100} /></FieldRow>
           <FieldRow label="Race"><SInput value={c.race} onChange={v => updateCharacter({ race: v, stats: withRaceBonuses(c.stats, races.find(r => r.name === v)) })} options={races.map(r => r.name)} /></FieldRow>
           <FieldRow label="Profession"><SInput value={c.profession} onChange={v => updateCharacter({ profession: v })} options={c.custom_profession?.name ? [...professions, c.custom_profession.name] : professions} /></FieldRow>
-          <FieldRow label="Realm"><SInput value={c.realm} onChange={v => updateCharacter({ realm: v })} options={REALMS} /></FieldRow>
+          <FieldRow label="Realm"><SInput value={realmValue(c)} onChange={v => updateCharacter({ realm: v })} options={REALMS} /></FieldRow>
           <FieldRow label="Culture"><SInput value={c.culture} onChange={v => updateCharacter({ culture: v })} options={CULTURE_NAMES} /></FieldRow>
           <FieldRow label="Size">
             <div style={{ display:'flex', alignItems:'center', gap:6 }}>
@@ -1620,7 +1564,7 @@ function CharacterSheetBody() {
         <RacialTalentsNote race={getRaceEntry(c)} />
         <KnacksSubPanel char={c} updateCharacter={updateCharacter} allSkillNames={allSkillNames} />
         <HomebrewProfessionSubPanel char={c} updateCharacter={updateCharacter} />
-        <ProfessionalSkillsSubPanel char={c} updateCharacter={updateCharacter} updateSkill={updateSkill} />
+        <ProfessionalSkillsSubPanel char={c} updateCharacter={updateCharacter} />
         <CTGroupsSubPanel char={c} updateCharacter={updateCharacter} />
       </Card>
         </div>
@@ -1655,7 +1599,7 @@ function CharacterSheetBody() {
             <tbody>
               {STATS.map((stat, i) => {
                 const s = c.stats[stat] || { temp: 50, potential: 50, racial: 0, special: 0 }
-                const bonus = getTotalStatBonus(s)
+                const bonus = getCharStatBonus(c, stat)
                 const isRealm = stat === realmStat
                 const bonusColor = bonus > 0 ? 'var(--success)' : bonus < 0 ? 'var(--danger)' : 'var(--text3)'
                 return (
@@ -1687,7 +1631,7 @@ function CharacterSheetBody() {
                     <td style={{ padding: '5px 6px', textAlign: 'center', fontWeight: 700, color: bonusColor, fontSize: 14 }}>
                       {fmt(bonus)}
                       {talentB.stat[stat] ? (
-                        <span style={{ display: 'inline-block', fontSize: 9, fontWeight: 700, marginLeft: 3, padding: '1px 4px', borderRadius: 3,
+                        <span title="Included: Superior/Inferior Stat talent" style={{ display: 'inline-block', fontSize: 9, fontWeight: 700, marginLeft: 3, padding: '1px 4px', borderRadius: 3,
                           background: talentB.stat[stat] > 0 ? 'var(--success)' : 'var(--danger)', color: '#fff', verticalAlign: 'middle' }}>
                           {talentB.stat[stat] > 0 ? `+${talentB.stat[stat]}` : talentB.stat[stat]}T
                         </span>
@@ -1699,7 +1643,7 @@ function CharacterSheetBody() {
             </tbody>
           </table>
         </div>
-        <p style={{ fontSize: 10, color: 'var(--text3)', marginTop: 8, display: 'flex', alignItems: 'center', gap: 4 }}><DiamondIcon size={7} color="var(--accent)" /> Realm stat · Bonus = stat bonus + racial + special</p>
+        <p style={{ fontSize: 10, color: 'var(--text3)', marginTop: 8, display: 'flex', alignItems: 'center', gap: 4 }}><DiamondIcon size={7} color="var(--accent)" /> Realm stat · Bonus = stat bonus + racial + special + stat talents (T)</p>
       </Card>
         </div>
       </div>
@@ -1711,49 +1655,24 @@ function CharacterSheetBody() {
 /* ─── STARRED SKILLS PANEL ──────────────────────────────── */
 function StarredSkillsPanel({ c }) {
   const [open, setOpen] = usePersistentOpen('rm_panel_starred', true)
-  const talentBonusMap = useMemo(() => {
-    const map = {}
-    for (const inst of (c.talents || [])) {
-      const def = talentsData.find(t => t.id === inst.talent_id)
-      if (!def?.effects) continue
-      for (const eff of def.effects) {
-        if (eff.type !== 'skill_talent_bonus') continue
-        const skillNames = eff.skill === 'param'
-          ? [inst.param, ...(inst.extra_params || [])].filter(Boolean)
-          : (eff.skill ? [eff.skill] : [])
-        const bonus = eff.per_tier != null ? eff.per_tier * inst.tier : (eff.flat ?? 0)
-        for (const skillName of skillNames) {
-          if (!map[skillName]) map[skillName] = []
-          map[skillName].push({ instId: inst.id, name: def.name, bonus })
-        }
-      }
-    }
-    return map
-  }, [c.talents])
-
-  const condPen = getConditionPenalty(c).total
   const starred = useMemo(() => {
     const result = []
     for (const [skillName, skillData] of Object.entries(c.skills || {})) {
       if (!skillData.starred) continue
-      const template = skillsDataMap[skillName]
-      if (!template) continue
-      const total = computeSkillTotal(c, template, skillData, talentBonusMap) + condPen
-        + getMovementPenalty(c, template.category, skillName).total
+      if (!skillsDataMap[skillName]) continue
+      const total = getSkillBreakdown(c, skillName, skillData).total + getSkillRollPenalty(c, skillName).total
       const ranks = (skillData.ranks ?? 0) + (skillData.culture_ranks ?? 0)
       result.push({ name: displaySkillName(skillName, skillData.label), total, ranks, notes: skillData.notes })
     }
     for (const cs of (c.custom_skills || [])) {
       if (!cs.starred) continue
-      const template = skillsDataMap[cs.template_name]
       const name = displaySkillName(cs.template_name, cs.label)
-      const total = computeSkillTotal(c, template, cs, talentBonusMap) + condPen
-        + getMovementPenalty(c, template?.category, cs.template_name).total
+      const total = getSkillBreakdown(c, cs.template_name, cs, name).total + getSkillRollPenalty(c, cs.template_name).total
       const ranks = (cs.ranks ?? 0) + (cs.culture_ranks ?? 0)
       result.push({ name, total, ranks, notes: cs.notes })
     }
     return result.sort((a, b) => a.name.localeCompare(b.name))
-  }, [c.skills, c.custom_skills, c.talents, c.stats, c.realm, talentBonusMap, condPen])
+  }, [c])
 
   const [rolling, setRolling] = useState(null)
   if (!starred.length) return null
@@ -1786,8 +1705,6 @@ function StarredSkillsPanel({ c }) {
 }
 
 /* ─── SPELL LISTS PANEL ─────────────────────────────────── */
-// Per CoreLaw: Mentalism realm stat is Presence, not Self Discipline
-const REALM_STAT_MAP = { Channeling: 'Intuition', Essence: 'Empathy', Mentalism: 'Presence' }
 const SPELL_SUBS = ['Magic Ritual', 'Base', 'Open', 'Closed', 'Arcane', 'Restricted']
 const SUB_COLOR  = SPELL_SECTION_COLORS
 
@@ -1799,7 +1716,7 @@ function SpellListsPanel({ c }) {
   const grouped = {}
   for (const sub of SPELL_SUBS) grouped[sub] = []
   for (const [name, data] of lists) {
-    const cat = (typeof data === 'object' ? data.category : null) || 'Base'
+    const cat = getListCategory(c, name)
     const target = grouped[cat] ?? grouped['Base']
     target.push([name, data])
   }
@@ -1829,7 +1746,7 @@ function SpellListsPanel({ c }) {
               {subLists.map(([name, data]) => {
                 const ranks = typeof data === 'number' ? data : (data?.ranks ?? 0)
                 const condPen = getConditionPenalty(c).total
-                const scr     = getSpellCastingBonus(c, name) + condPen
+                const scr     = getStandingSCR(c, name).total
                 const mastery = getSpellMasteryBonus(c, name) + condPen
                 return (
                   <div key={name} style={{ display: 'grid', gridTemplateColumns: '1fr 36px 54px 60px',

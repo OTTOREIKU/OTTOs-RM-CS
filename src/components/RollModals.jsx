@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { XIcon } from './Icons.jsx'
 import { DIFFICULTIES, rollD100OE, rollDie, absoluteResult, percentageResult, resistanceResult } from '../utils/dice.js'
-import { getResistanceBonuses, getInitiativeBonus, getConditionInitiativePenalty } from '../utils/calc.js'
+import { getResistanceBonuses, getRRBreakdown, getInitiativeBonus, getConditionInitiativePenalty } from '../utils/calc.js'
 
 const signed = n => (n > 0 ? `+${n}` : `${n}`)
 const label10 = { fontSize: 10, color: 'var(--text3)', marginBottom: 3, textTransform: 'uppercase', letterSpacing: '0.06em' }
@@ -129,8 +129,28 @@ const RR_TYPES = [
   { key: 'physical', label: 'Physical' }, { key: 'fear', label: 'Fear' },
 ]
 
+// Spell Law Table 4-5 situational RR modifiers (worn armor is already in the RR bonus)
+const RR_RANGE = [
+  { value: 'none',  label: 'Range: not given',          mod: 0 },
+  { value: 'touch', label: 'Touch (−15)',               mod: -15 },
+  { value: 'close', label: "10' or less (−5)",          mod: -5 },
+  { value: 'half',  label: 'Up to half range (0)',      mod: 0 },
+  { value: 'far',   label: 'Over half range (+10)',     mod: 10 },
+]
+const RR_COVER = [
+  { value: 'none',    label: 'No cover',          mod: 0 },
+  { value: 'partial', label: 'Partial cover (+5)', mod: 5 },
+  { value: 'full',    label: 'Full cover (+10)',   mod: 10 },
+]
+
 function ResistanceModal({ c, onClose }) {
   const bonuses = getResistanceBonuses(c)
+  const stunnedNow = (c.stun || []).some(r => (r ?? 0) > 0) || !!c.conditions?.surprised
+  const [stunned, setStunned] = useState(stunnedNow)
+  const [range, setRange]   = useState('none')
+  const [cover, setCover]   = useState('none')
+  const [willing, setWilling] = useState(false)
+  const [sitOn, setSitOn]   = useState({})   // situational talents ticked (e.g. Iron Will vs mental spells)
   const [type, setType]     = useState('essence')
   const [level, setLevel]   = useState('')
   const [vs, setVs]         = useState('spell')
@@ -139,7 +159,12 @@ function ResistanceModal({ c, onClose }) {
   const [roll, setRoll]     = useState('')
   const [dice, setDice]     = useState(null)
   const lvl = Number(level) || 0
-  const mod = bonuses[type] - 2 * lvl + (Number(other) || 0)
+  const situational = getRRBreakdown(c, type).situational
+  const magic = vs === 'spell'
+  const sitMod = situational.reduce((s, x) => s + (sitOn[x.name] ? x.bonus : 0), 0)
+  const tableMod = (stunned ? -5 : 0)
+    + (magic ? (RR_RANGE.find(o => o.value === range)?.mod ?? 0) + (RR_COVER.find(o => o.value === cover)?.mod ?? 0) + (willing ? -50 : 0) : 0)
+  const mod = bonuses[type] - 2 * lvl + sitMod + tableMod + (Number(other) || 0)
   const tgt = vs === 'fixed' ? 50 : vs === 'skill' ? (Number(target) || 0) - 100 : (Number(target) || 0)
   const needTarget = vs !== 'fixed' && target === ''
   const r = roll === '' ? null : Number(roll)
@@ -169,12 +194,42 @@ function ResistanceModal({ c, onClose }) {
             <input type="number" value={target} onChange={e => setTarget(e.target.value)} placeholder="GM tells you" style={{ width: '100%' }} />
           </Field>
         )}
+        {magic && (
+          <Field label="Range from caster">
+            <select value={range} onChange={e => setRange(e.target.value)} style={{ width: '100%' }}>
+              {RR_RANGE.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+            </select>
+          </Field>
+        )}
+        {magic && (
+          <Field label="Cover">
+            <select value={cover} onChange={e => setCover(e.target.value)} style={{ width: '100%' }}>
+              {RR_COVER.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+            </select>
+          </Field>
+        )}
         <Field label="Other modifier">
           <input type="number" value={other} onChange={e => setOther(e.target.value)} placeholder="0" style={{ width: '100%' }} />
         </Field>
       </div>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px 12px', marginTop: 8, fontSize: 12, color: 'var(--text2)' }}>
+        <label style={{ display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer' }}>
+          <input type="checkbox" checked={stunned} onChange={e => setStunned(e.target.checked)} /> Stunned or surprised (−5)
+        </label>
+        {magic && (
+          <label style={{ display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer' }}>
+            <input type="checkbox" checked={willing} onChange={e => setWilling(e.target.checked)} /> Willing target (−50)
+          </label>
+        )}
+        {situational.map(x => (
+          <label key={x.name} style={{ display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer' }}>
+            <input type="checkbox" checked={!!sitOn[x.name]} onChange={e => setSitOn(p => ({ ...p, [x.name]: e.target.checked }))} />
+            {x.name} (+{x.bonus}{x.note ? `, ${x.note}` : ''})
+          </label>
+        ))}
+      </div>
       <div style={{ fontSize: 12, color: 'var(--text2)', margin: '10px 0' }}>
-        Modifier <b>{signed(mod)}</b>{lvl ? ` (RR ${signed(bonuses[type])} − ${2 * lvl} for level ${lvl})` : ''}
+        Modifier <b>{signed(mod)}</b>{lvl ? ` (RR ${signed(bonuses[type])} − ${2 * lvl} for level ${lvl})` : ''}{tableMod || sitMod ? ` · situational ${signed(tableMod + sitMod)}` : ''}
         {!needTarget && <> · need <b>{tgt}</b></>}
         {type === 'fear' && <span style={{ color: 'var(--text3)' }}> · fear ignores injury/fatigue; add a present leader's Leadership ranks</span>}
       </div>

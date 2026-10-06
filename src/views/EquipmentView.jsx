@@ -6,7 +6,7 @@ import skillsData from '../data/skills.json'
 import weaponsData from '../data/weapons.json'
 import armorData from '../data/armor.json'
 import equipmentData from '../data/equipment.json'
-import { getWeaponOB, getConditionPenalty, getWeaponSkillRanks } from '../utils/calc.js'
+import { getWeaponAttackOB, getWeaponSkillRanks, getGearWeight, getCarriedWeight } from '../utils/calc.js'
 import { XIcon, ChevronDownIcon, ChevronRightIcon, ArrowDownIcon, PencilIcon } from '../components/Icons.jsx'
 
 const LOCATIONS = ['Carried', 'Pack', 'Belt', 'Worn', 'Stored', 'Mount']
@@ -169,7 +169,8 @@ function WeaponsCard({ activeChar, addWeapon, updateWeapon, removeWeapon }) {
   }, [browseSearch, catFilter, obFilter])
 
   function selectWeapon(wDef) {
-    addWeapon({ name: wDef.name, fumble: wDef.fumble, str_req: wDef.str_req, skill_name: wDef.skill_name, ob_type: wDef.ob_type, weight: wDef.weight ?? null })
+    addWeapon({ name: wDef.name, fumble: wDef.fumble, str_req: wDef.str_req, skill_name: wDef.skill_name, ob_type: wDef.ob_type,
+      weight: wDef.weight == null || wDef.weight === '' ? null : Number(wDef.weight), handed: wDef.handed })
     setBrowseOpen(false)
     setBrowseSearch('')
     setCatFilter('All')
@@ -199,7 +200,7 @@ function WeaponsCard({ activeChar, addWeapon, updateWeapon, removeWeapon }) {
 
         {weapons.map(w => {
           const isOpen = expanded === w.id
-          const ob = getWeaponOB(activeChar, w) + getConditionPenalty(activeChar).total
+          const ob = getWeaponAttackOB(activeChar, w)   // + condition, prone, parry
           const skillRanks = getWeaponSkillRanks(activeChar, w)
           const effFumble = Math.max(1, (w.fumble ?? 3) - Math.floor(skillRanks / 5))
           const fumbleReduced = effFumble < (w.fumble ?? 3)
@@ -259,7 +260,7 @@ function WeaponsCard({ activeChar, addWeapon, updateWeapon, removeWeapon }) {
                           borderRadius:5,padding:'4px 6px',color:'var(--text)',fontSize:12,textAlign:'center'}}/>
                     </div>
                     <div>
-                      <div style={{fontSize:10,color:'var(--text3)',marginBottom:3,textTransform:'uppercase',letterSpacing:'0.06em'}}>Str Req</div>
+                      <div style={{fontSize:10,color:'var(--text3)',marginBottom:3,textTransform:'uppercase',letterSpacing:'0.06em'}} title="Item strength (durability), not a Strength requirement">Str (durability)</div>
                       <input type="number" value={w.str_req??0} min={0}
                         onChange={e=>updateWeapon(w.id,{str_req:Number(e.target.value)||0})}
                         style={{width:'100%',boxSizing:'border-box',background:'var(--surface)',border:'1px solid var(--border2)',
@@ -296,9 +297,9 @@ function WeaponsCard({ activeChar, addWeapon, updateWeapon, removeWeapon }) {
                       <select value={w.ob_type||'melee'} onChange={e=>updateWeapon(w.id,{ob_type:e.target.value})}
                         style={{width:'100%',background:'var(--surface)',border:'1px solid var(--border2)',
                           borderRadius:5,padding:'4px 6px',color:'var(--text)',fontSize:12}}>
-                        <option value="melee">Melee (Ag+St)</option>
-                        <option value="ranged">Ranged (Ag+Qu)</option>
-                        <option value="unarmed">Unarmed (Ag+St)</option>
+                        <option value="melee">Melee</option>
+                        <option value="ranged">Ranged</option>
+                        <option value="unarmed">Unarmed</option>
                       </select>
                     </div>
                   </div>
@@ -856,7 +857,8 @@ export default function EquipmentView() {
   const equipment = activeChar.equipment || []
   const magicItems = activeChar.magic_items || []
   const traits = activeChar.traits || []
-  const totalWeight = equipment.reduce((s, e) => s + ((e.weight || 0) * (e.qty || 1)), 0)
+  const gearWeight = getGearWeight(activeChar)   // same rules as encumbrance (Stored/Mount don't count)
+  const loadWeight = getCarriedWeight(activeChar)
 
   function addTrait() {
     updateCharacter({ traits: [...traits, { id: 'tr_'+Date.now(), name:'', tier:'Minor', effect:'' }] })
@@ -966,7 +968,9 @@ export default function EquipmentView() {
             + Add Item
           </button>
           <span style={{ fontSize:12, color:'var(--text2)' }}>
-            Total: <strong style={{ color:'var(--text)' }}>{totalWeight.toFixed(1)}</strong> lbs
+            Carried: <strong style={{ color:'var(--text)' }}>{gearWeight.carried.toFixed(1)}</strong> lbs
+            {gearWeight.all !== gearWeight.carried && <span style={{ color:'var(--text3)' }}> (+{(gearWeight.all - gearWeight.carried).toFixed(1)} stored/mount)</span>}
+            <span style={{ color:'var(--text3)' }}> · total load {loadWeight.toFixed(1)} lbs</span>
           </span>
         </div>
       </Card>

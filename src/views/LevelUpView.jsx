@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { useScrollRestore } from '../hooks/persist.js'
 import { STATS } from '../store/characters.js'
-import { getTotalStatBonus, rankBonus, getCostProfession, defaultListCategory } from '../utils/calc.js'
+import { getTotalStatBonus, getCostProfession, defaultListCategory, getSkillBreakdown } from '../utils/calc.js'
 import skillsData from '../data/skills.json'
 import skillCosts from '../data/skill_costs.json'
 import spellLists from '../data/spell_lists.json'
@@ -65,7 +65,6 @@ function customSkillDef(cs) {
     dev_cost:    tpl.dev_cost,
     ctName:      cs.template_name,
     _isCustom:   true,
-    _curRanks:   cs.ranks || 0,
   }
 }
 
@@ -577,11 +576,17 @@ function SkillStep({ c, lu, dispatch, skillSearch, setSkillSearch, dpLeft,
                 {filtered.map((skill, idx) => {
                   const displayName = skill.displayName || skill.name
                   const costs    = getSkillCostsForChar(skill, getCostProfession(c), c)
-                  const curRanks = skill._isCustom ? (skill._curRanks || 0) : (c.skills?.[skill.name]?.ranks || 0)
+                  // Full skill bonus now and after buying (culture ranks, stats, professional, knacks, talents)
+                  const cs       = skill._isCustom ? (c.custom_skills || []).find(x => x.id === skill.name) : null
+                  const data     = cs || c.skills?.[skill.name] || {}
+                  const tplName  = cs ? cs.template_name : skill.name
+                  const curRanks = data.ranks || 0
+                  const culture  = data.culture_ranks || 0
                   const buying   = lu.skillBuys[skill.name] || 0
                   const newRanks = curRanks + buying
-                  const curBonus = rankBonus(curRanks)
-                  const newBonus = rankBonus(newRanks)
+                  const curBonus = getSkillBreakdown(c, tplName, data, displayName).total
+                  const newBonus = buying ? getSkillBreakdown(c, tplName, { ...data, ranks: newRanks }, displayName).total : curBonus
+                  const sgn      = v => (v >= 0 ? `+${v}` : `${v}`)
                   const nextCost = buying === 0 ? costs.first : costs.second
                   const canAfford1 = dpLeft >= nextCost
 
@@ -594,7 +599,7 @@ function SkillStep({ c, lu, dispatch, skillSearch, setSkillSearch, dpLeft,
                       <div>
                         <span>{displayName}</span>
                         {skill._isCustom && <span style={{ marginLeft: 4, fontSize: 9, color: 'var(--text3)', background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 3, padding: '0 3px' }}>custom</span>}
-                        <span style={{ marginLeft: 6, fontSize: 10, color: curRanks > 0 ? 'var(--accent)' : 'var(--text3)' }}>{costs.first}/{costs.second} DP · cur {curRanks} ranks</span>
+                        <span style={{ marginLeft: 6, fontSize: 10, color: curRanks + culture > 0 ? 'var(--accent)' : 'var(--text3)' }}>{costs.first}/{costs.second} DP · cur {curRanks} ranks{culture ? ` + ${culture} culture` : ''}</span>
                       </div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                         <button onClick={() => buying > 0 && dispatch({ type: 'SKILL_BUY', name: skill.name, ranks: buying - 1, costs })}
@@ -605,8 +610,8 @@ function SkillStep({ c, lu, dispatch, skillSearch, setSkillSearch, dpLeft,
                       </div>
                       <div style={{ fontSize: 11, color: 'var(--text2)' }}>
                         Bonus: <span style={{ color: buying > 0 ? 'var(--success)' : 'var(--text2)', fontWeight: buying > 0 ? 700 : 400 }}>
-                          {curBonus >= 0 ? `+${curBonus}` : curBonus}
-                          {buying > 0 && ` → +${newBonus}`}
+                          {sgn(curBonus)}
+                          {buying > 0 && ` → ${sgn(newBonus)}`}
                         </span>
                       </div>
                       <div style={{ fontSize: 11, color: buying > 0 ? 'var(--warning)' : 'var(--text3)' }}>
