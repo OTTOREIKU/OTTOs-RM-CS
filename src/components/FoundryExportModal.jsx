@@ -1,39 +1,32 @@
-import React, { useState, useMemo, useRef } from 'react'
+import React, { useState, useMemo, useRef, useEffect } from 'react'
 import { XIcon } from './Icons.jsx'
-import { generateFoundryScript, generateInjectionScript, analyzeSync } from '../utils/foundryExport.js'
+import { buildDesiredState, generateSyncScript, buildImportFile } from '../utils/foundrySync.js'
 
-// Three ways to get a character into Foundry:
-//  1. Module    — download/copy JSON for the RMU Character+ Sync module (DM installs it once)
-//  2. Console   — paste a console script that pushes stats/skills/spell ranks + knacks (no install; you own the actor)
-//  3. Inject    — paste a console script that adds talents/weapons/equipment from compendium (bypasses the "level up first" lock)
-//
-// Tabs 2 & 3 need no module — they work for any player on a character they own.
+// Ways to get a character into Foundry (RMU system 1.3.x):
+//  1. Sync script — paste into the F12 console as the GM or the actor's owner. Previews
+//     every change, saves a backup of the actor, adds missing skills/lists/talents from
+//     the compendiums, then verifies. No module needed. (Main route.)
+//  2. Import file — backup route: upload the actor's "Export Data" file, download the
+//     merged file, and use "Import Data" on the actor.
+//  3. Module JSON — for the RMU Character+ Sync module, if the DM installed it.
 
 export default function FoundryExportModal({ char, onClose }) {
-  const [tab, setTab] = useState('module')   // 'module' | 'console' | 'inject'
+  const [tab, setTab] = useState('script')   // 'script' | 'file' | 'module'
   const [copied, setCopied] = useState('')
+  const [includeHealth, setIncludeHealth] = useState(false)
   const textRef = useRef(null)
 
-  const payload = useMemo(() => ({ _version: 1, _type: 'single', character: char }), [char])
-  const jsonStr = useMemo(() => JSON.stringify(payload, null, 2), [payload])
-  const pushScript = useMemo(() => generateFoundryScript(char), [char])
-  const injectScript = useMemo(() => generateInjectionScript(char), [char])
-  const analysis = useMemo(() => analyzeSync(char), [char])
-  const injectCount = analysis.talentInjects.length + analysis.weaponInjects.length + analysis.equipmentInjects.length
+  const desired = useMemo(() => buildDesiredState(char, { includeHealth }), [char, includeHealth])
+  const script = useMemo(() => generateSyncScript(desired), [desired])
+  const jsonStr = useMemo(() => JSON.stringify({ _version: 1, _type: 'single', character: char }, null, 2), [char])
 
   const safe = s => (s || '').replace(/[^a-z0-9]/gi, '_').replace(/_+/g, '_').replace(/^_|_$/g, '')
-  const filename = `${safe(char.name) || 'Character'}_${safe(char.race) || 'Unknown'}_${safe(char.profession) || 'Unknown'}_${char.level ?? 1}_foundry.json`
+  const baseName = `${safe(char.name) || 'Character'}_${safe(char.race) || 'Unknown'}_${safe(char.profession) || 'Unknown'}_${char.level ?? 1}`
 
   function copy(text, which) {
     navigator.clipboard.writeText(text).then(() => {
       setCopied(which); setTimeout(() => setCopied(''), 2000)
     }).catch(() => textRef.current?.select())
-  }
-  function download() {
-    const blob = new Blob([jsonStr], { type: 'application/json' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a'); a.href = url; a.download = filename; a.click()
-    URL.revokeObjectURL(url)
   }
 
   return (
@@ -42,10 +35,9 @@ export default function FoundryExportModal({ char, onClose }) {
       display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: '24px 12px', overflowY: 'auto',
     }}>
       <div onClick={e => e.stopPropagation()} style={{
-        width: '100%', maxWidth: 700, background: 'var(--surface)', border: '1px solid var(--border)',
+        width: '100%', maxWidth: 720, background: 'var(--surface)', border: '1px solid var(--border)',
         borderRadius: 14, overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
       }}>
-        {/* Header */}
         <div style={{ padding: '14px 16px 0', borderBottom: '1px solid var(--border)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
             <div style={{ flex: 1 }}>
@@ -56,84 +48,183 @@ export default function FoundryExportModal({ char, onClose }) {
               <XIcon size={18} color="currentColor" />
             </button>
           </div>
-          {/* Tabs */}
           <div style={{ display: 'flex', gap: 2 }}>
-            <TabBtn active={tab === 'module'} onClick={() => setTab('module')} label="Module (JSON)" sub="DM installs once" />
-            <TabBtn active={tab === 'console'} onClick={() => setTab('console')} label="Console Push" sub="no install" />
-            <TabBtn active={tab === 'inject'} onClick={() => setTab('inject')} label="Inject Items" sub="talents·gear" />
+            <TabBtn active={tab === 'script'} onClick={() => setTab('script')} label="Sync script" sub="recommended" />
+            <TabBtn active={tab === 'file'} onClick={() => setTab('file')} label="Import file" sub="backup route" />
+            <TabBtn active={tab === 'module'} onClick={() => setTab('module')} label="Module JSON" sub="if installed" />
           </div>
         </div>
 
-        {/* ── Module (JSON) ── */}
+        {tab === 'script' && (
+          <>
+            <Instructions title="Paste into Foundry's console. No module needed.">
+              <ol style={olStyle}>
+                <li>In Foundry, select {char.name || 'your character'}'s token (or have them as your assigned character).</li>
+                <li>Press <strong>F12</strong> → <strong>Console</strong>. If Chrome warns you, type <code style={codeStyle}>allow pasting</code> and press Enter.</li>
+                <li><strong>Copy script</strong>, paste it into the console, press Enter.</li>
+                <li>Check the preview and click <strong>Apply</strong>. A backup of the actor downloads first.</li>
+              </ol>
+              <Note>Works as the GM or the character's owner. It adds missing skills, spell lists and talents from the compendiums, sets ranks, culture ranks, professional skills, knacks, stats, realm and level, then re-checks. Nothing is deleted. Things in Foundry that the app doesn't have are listed, and you can choose to zero them.</Note>
+            </Instructions>
+            <DesiredSummary desired={desired} />
+            <div style={{ padding: '8px 16px', display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+              <button onClick={() => copy(script, 'script')} style={primaryBtn}>{copied === 'script' ? '✓ Copied' : 'Copy script'}</button>
+              <label style={{ fontSize: 12, color: 'var(--text2)', display: 'flex', gap: 6, alignItems: 'center' }}>
+                <input type="checkbox" checked={includeHealth} onChange={e => setIncludeHealth(e.target.checked)} />
+                Also send current hits &amp; PP
+              </label>
+            </div>
+            <ScriptBox value={script} label={`Sync script (${script.length.toLocaleString()} chars)`} textRef={textRef} />
+          </>
+        )}
+
+        {tab === 'file' && <ImportFileTab desired={desired} baseName={baseName} />}
+
         {tab === 'module' && (
           <>
-            <Instructions title="Apply via the RMU Character+ Sync module">
+            <Instructions title="For the RMU Character+ Sync module">
               <ol style={olStyle}>
                 <li><strong>Download .json</strong> (or Copy JSON).</li>
-                <li>In Foundry, open your character sheet → click the <strong>RMU Character+ Sync</strong> header button.</li>
-                <li>On the <strong>Push</strong> tab, upload/paste the JSON → <strong>Import to actor</strong>.</li>
+                <li>In Foundry, open the character sheet → <strong>RMU Character+ Sync</strong> → <strong>Push</strong>.</li>
               </ol>
-              <Note>Requires the DM to install the module once. Skills must already exist on your actor.</Note>
+              <Note>Only if your DM installed the module. It can't add missing skills, spell lists or talents. Use the sync script instead when you can.</Note>
             </Instructions>
             <div style={{ padding: '10px 16px', display: 'flex', gap: 8 }}>
-              <button onClick={download} style={primaryBtn}>Download .json</button>
+              <button onClick={() => download(jsonStr, `${baseName}_foundry.json`)} style={primaryBtn}>Download .json</button>
               <button onClick={() => copy(jsonStr, 'json')} style={secondaryBtn}>{copied === 'json' ? '✓ Copied' : 'Copy JSON'}</button>
             </div>
             <ScriptBox value={jsonStr} label={`JSON (${jsonStr.length.toLocaleString()} chars)`} textRef={textRef} />
           </>
         )}
-
-        {/* ── Console Push ── */}
-        {tab === 'console' && (
-          <>
-            <Instructions title="Push values via the browser console — no module, works on a character you own">
-              <ol style={olStyle}>
-                <li>Open your character's sheet (or select its token) in Foundry.</li>
-                <li>Press <strong>F12</strong> → <strong>Console</strong> tab. If warned, type <code style={codeStyle}>allow pasting</code> ↵</li>
-                <li>Click <strong>Copy script</strong>, paste into the console, press Enter.</li>
-              </ol>
-              <Note>Updates stats, health, level, skill &amp; spell ranks, and knacks. Shows a current→new diff in the console, applies, then re-reads to verify. Never deletes or replaces anything.</Note>
-            </Instructions>
-            <PreflightSummary
-              willSync={analysis.skillUpdates.length + analysis.spellUpdates.length + analysis.knackUpdates.length}
-              cannotSync={analysis.cannotSync}
-            />
-            <div style={{ padding: '8px 16px' }}>
-              <button onClick={() => copy(pushScript, 'push')} style={primaryBtn}>{copied === 'push' ? '✓ Copied' : 'Copy script'}</button>
-            </div>
-            <ScriptBox value={pushScript} label="Console push script" textRef={textRef} />
-          </>
-        )}
-
-        {/* ── Inject Items (talents · weapons · equipment) ── */}
-        {tab === 'inject' && (
-          <>
-            <Instructions title="Inject items — adds talents, weapons & equipment from any compendium">
-              <ol style={olStyle}>
-                <li>Open your character's sheet (or select its token).</li>
-                <li>Press <strong>F12</strong> → <strong>Console</strong>. If warned, type <code style={codeStyle}>allow pasting</code> ↵</li>
-                <li>Copy the script, paste, Enter. Then <strong>reload the world (F5)</strong> so talent effects recompute.</li>
-              </ol>
-              <Note>Searches every installed compendium (core + module/PDF packs), so non-core content is found. Talents bypass the “level up first” lock. Items already on your character are skipped.</Note>
-            </Instructions>
-            <InjectSummary
-              talents={analysis.talentInjects.length}
-              weapons={analysis.weaponInjects.length}
-              equipment={analysis.equipmentInjects.length}
-              unknownTalents={analysis.unknownTalents}
-            />
-            <div style={{ padding: '8px 16px' }}>
-              <button onClick={() => copy(injectScript, 'inject')} style={primaryBtn}
-                disabled={injectCount === 0}>
-                {copied === 'inject' ? '✓ Copied' : (injectCount === 0 ? 'Nothing to inject' : 'Copy script')}
-              </button>
-            </div>
-            <ScriptBox value={injectScript} label="Item injection script" textRef={textRef} />
-          </>
-        )}
       </div>
     </div>
   )
+}
+
+// ── Import file (backup route) ──────────────────────────────────────────────
+function ImportFileTab({ desired, baseName }) {
+  const [templates, setTemplates] = useState(null)
+  const [exportJson, setExportJson] = useState(null)
+  const [error, setError] = useState('')
+  const [zeroMissing, setZeroMissing] = useState(false)
+  const fileRef = useRef(null)
+
+  useEffect(() => {
+    import('../data/foundry_templates.json').then(m => setTemplates(m.default || m)).catch(e => setError('Could not load Foundry data: ' + e.message))
+  }, [])
+
+  const result = useMemo(() => {
+    if (!templates || !exportJson) return null
+    try { return buildImportFile(desired, exportJson, templates, { zeroMissing }) } catch (e) { return { error: e.message } }
+  }, [templates, exportJson, desired, zeroMissing])
+
+  async function onFile(e) {
+    setError('')
+    const f = e.target.files?.[0]
+    e.target.value = ''
+    if (!f) return
+    try {
+      const json = JSON.parse(await f.text())
+      if (json.type !== 'Character' || !Array.isArray(json.items)) throw new Error("That isn't a Foundry Character export (right-click the actor → Export Data).")
+      setExportJson(json)
+    } catch (err) { setError(err.message) }
+  }
+
+  const changes = result?.plan ? Object.keys(result.plan.actorSet).length + result.plan.updates.length + result.plan.creates.length : 0
+  return (
+    <>
+      <Instructions title="Use this if the script doesn't work for you">
+        <ol style={olStyle}>
+          <li>In Foundry's Actors sidebar, right-click the character → <strong>Export Data</strong>.</li>
+          <li><strong>Choose that file</strong> below. The app merges your character into it.</li>
+          <li><strong>Download</strong> the result, then right-click the actor → <strong>Import Data</strong> → pick the downloaded file.</li>
+        </ol>
+        <Note>Import Data replaces the whole actor with the file, so export it fresh just before you do this. Your exported file is your backup. Gear isn't added this way.</Note>
+      </Instructions>
+      <div style={{ padding: '10px 16px', display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
+        <input ref={fileRef} type="file" accept=".json" style={{ display: 'none' }} onChange={onFile} />
+        <button onClick={() => fileRef.current?.click()} style={secondaryBtn} disabled={!templates}>
+          {templates ? (exportJson ? `Loaded: ${exportJson.name}` : 'Choose Foundry export…') : 'Loading…'}
+        </button>
+        {result?.plan && (
+          <>
+            <label style={{ fontSize: 12, color: 'var(--text2)', display: 'flex', gap: 6, alignItems: 'center' }}>
+              <input type="checkbox" checked={zeroMissing} onChange={e => setZeroMissing(e.target.checked)} />
+              Zero what the app doesn't have ({result.plan.extras.length})
+            </label>
+            <button onClick={() => download(JSON.stringify(result.actor, null, 2), `${baseName}_for_foundry_import.json`)} style={primaryBtn}>
+              Download ({changes} change{changes === 1 ? '' : 's'})
+            </button>
+          </>
+        )}
+      </div>
+      {(error || result?.error) && <div style={{ padding: '0 16px 10px', color: 'var(--danger)', fontSize: 12 }}>{error || result.error}</div>}
+      {result?.plan && <PlanTable plan={result.plan} />}
+    </>
+  )
+}
+
+function PlanTable({ plan }) {
+  return (
+    <div style={{ padding: '0 16px 16px', fontSize: 12 }}>
+      {plan.report.length === 0
+        ? <div style={{ color: 'var(--success)', fontWeight: 600 }}>Already in sync. Nothing to change.</div>
+        : (
+          <div style={{ maxHeight: 300, overflowY: 'auto', border: '1px solid var(--border)', borderRadius: 8 }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <tbody>
+                {plan.report.map((r, i) => (
+                  <tr key={i} style={{ background: i % 2 ? 'var(--surface2)' : 'transparent' }}>
+                    <td style={td}>{r.action}</td>
+                    <td style={{ ...td, fontWeight: 600 }}>{r.label}</td>
+                    <td style={{ ...td, color: 'var(--text3)' }}>{String(r.from)}</td>
+                    <td style={td}>→ {String(r.to)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      {plan.extras.length > 0 && (
+        <div style={{ marginTop: 8, color: 'var(--text2)' }}>
+          <strong>In Foundry but not in the app:</strong> {plan.extras.map(x => `${x.label} (${x.value})`).join(' · ')}
+        </div>
+      )}
+      {plan.warnings.length > 0 && (
+        <ul style={{ margin: '8px 0 0', paddingLeft: 16, color: 'var(--text3)', lineHeight: 1.5 }}>
+          {plan.warnings.map((w, i) => <li key={i}>{w}</li>)}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+function DesiredSummary({ desired }) {
+  const n = (count, label) => <span><strong style={{ color: 'var(--text)' }}>{count}</strong> {label}</span>
+  return (
+    <div style={{ padding: '10px 16px', borderBottom: '1px solid var(--border)', fontSize: 12, color: 'var(--text2)' }}>
+      <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
+        {n(desired.skills.length, 'skills')}
+        {n(desired.lists.length, 'spell lists')}
+        {n(desired.talents.length, 'talents')}
+        {n(desired.professional.length, 'professional')}
+        {n(desired.knacks.length, 'knacks')}
+        {desired.gear.length > 0 && n(desired.gear.length, 'gear')}
+      </div>
+      {desired.unsynced.length > 0 && (
+        <ul style={{ margin: '8px 0 0', paddingLeft: 16, fontSize: 11, color: 'var(--text3)', lineHeight: 1.5 }}>
+          {desired.unsynced.map((u, i) => <li key={i}><strong>{u.display}</strong>: {u.reason}</li>)}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+function download(text, filename) {
+  const blob = new Blob([text], { type: 'application/json' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a'); a.href = url; a.download = filename; a.click()
+  URL.revokeObjectURL(url)
 }
 
 // ── Subcomponents ────────────────────────────────────────────────────────────
@@ -160,67 +251,12 @@ function Instructions({ title, children }) {
 function Note({ children }) {
   return <div style={{ marginTop: 8, fontSize: 11, color: 'var(--text3)', fontStyle: 'italic' }}>{children}</div>
 }
-function PreflightSummary({ willSync, willSyncLabel = 'item(s) will sync', cannotSync = [], cannotLabel = 'app-only (can’t push)' }) {
-  return (
-    <div style={{ padding: '10px 16px', borderBottom: '1px solid var(--border)' }}>
-      <div style={{ fontSize: 12, color: 'var(--success)', fontWeight: 600 }}>
-        {willSync} {willSyncLabel}
-      </div>
-      {cannotSync.length > 0 && (
-        <div style={{ marginTop: 6 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--danger)', marginBottom: 3 }}>
-            {cannotSync.length} {cannotLabel}:
-          </div>
-          <ul style={{ margin: 0, paddingLeft: 16, fontSize: 11, color: 'var(--text2)', lineHeight: 1.5 }}>
-            {cannotSync.map((c, i) => (
-              <li key={i}><strong>{c.display}</strong> — {c.reason}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
-  )
-}
-function InjectSummary({ talents, weapons, equipment, unknownTalents = [] }) {
-  const total = talents + weapons + equipment
-  const chip = (n, label) => (
-    <span style={{ fontSize: 11, color: n > 0 ? 'var(--text)' : 'var(--text3)' }}>
-      <strong style={{ color: n > 0 ? 'var(--success)' : 'var(--text3)' }}>{n}</strong> {label}
-    </span>
-  )
-  return (
-    <div style={{ padding: '10px 16px', borderBottom: '1px solid var(--border)' }}>
-      <div style={{ display: 'flex', gap: 14, alignItems: 'center', flexWrap: 'wrap' }}>
-        <div style={{ fontSize: 12, color: total > 0 ? 'var(--success)' : 'var(--text3)', fontWeight: 600 }}>
-          {total} item(s) to inject
-        </div>
-        <span style={{ color: 'var(--border2)' }}>·</span>
-        {chip(talents, 'talents')}
-        {chip(weapons, 'weapons')}
-        {chip(equipment, 'equipment')}
-      </div>
-      {unknownTalents.length > 0 && (
-        <div style={{ marginTop: 6 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--danger)', marginBottom: 3 }}>
-            {unknownTalents.length} talent(s) can’t be resolved:
-          </div>
-          <ul style={{ margin: 0, paddingLeft: 16, fontSize: 11, color: 'var(--text2)', lineHeight: 1.5 }}>
-            {unknownTalents.map((c, i) => (<li key={i}><strong>{c.display}</strong> — {c.reason}</li>))}
-          </ul>
-        </div>
-      )}
-      <div style={{ marginTop: 6, fontSize: 10.5, color: 'var(--text3)', fontStyle: 'italic' }}>
-        Weapons/equipment with no compendium match are reported in the console; inventory items fall back to a plain item.
-      </div>
-    </div>
-  )
-}
 function ScriptBox({ value, label, textRef }) {
   return (
     <div style={{ padding: '4px 16px 16px' }}>
-      <div style={{ fontSize: 11, color: 'var(--text3)', marginBottom: 6 }}>{label} — click inside to select all</div>
+      <div style={{ fontSize: 11, color: 'var(--text3)', marginBottom: 6 }}>{label}. Click inside to select all.</div>
       <textarea ref={textRef} readOnly value={value} onClick={e => e.target.select()} style={{
-        width: '100%', height: 260, resize: 'vertical', fontFamily: 'monospace', fontSize: 11, lineHeight: 1.5,
+        width: '100%', height: 200, resize: 'vertical', fontFamily: 'monospace', fontSize: 11, lineHeight: 1.5,
         padding: '10px 12px', borderRadius: 8, background: 'var(--surface2)', border: '1px solid var(--border)',
         color: 'var(--text)', boxSizing: 'border-box',
       }} />
@@ -229,6 +265,7 @@ function ScriptBox({ value, label, textRef }) {
 }
 
 // ── Styles ───────────────────────────────────────────────────────────────────
+const td = { padding: '4px 8px', borderBottom: '1px solid var(--border)', verticalAlign: 'top' }
 const olStyle = { margin: 0, paddingLeft: 18, fontSize: 12, color: 'var(--text2)', lineHeight: 1.7 }
 const codeStyle = { background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 3, padding: '1px 5px', fontFamily: 'monospace', fontSize: 11 }
 const primaryBtn = { padding: '7px 16px', borderRadius: 8, fontWeight: 700, fontSize: 13, cursor: 'pointer', background: 'var(--accent)', color: '#fff', border: 'none' }
