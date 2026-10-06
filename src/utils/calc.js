@@ -6,6 +6,44 @@ import skillCategoryStats from '../data/skill_category_stats.json'
 import skillsData         from '../data/skills.json'
 import armorData          from '../data/armor.json'
 
+// ── Profession (including a per-character homebrew profession) ───────────────
+//
+// A homebrew profession (e.g. a DM's custom class) lives only on the character,
+// never in professions.json, so other players don't see it as a choice:
+//   char.custom_profession = { name, realm?, cost_profession, base_lists: [LIST KEY],
+//                              professional_skills: [{ skillCategory, skillName }], source? }
+// It applies while char.profession equals its name.
+
+export function getCustomProfession(char) {
+  const cp = char?.custom_profession
+  return cp?.name && (!char.profession || char.profession === cp.name) ? cp : null
+}
+
+/** Profession whose development costs apply (a homebrew profession borrows another's). */
+export function getCostProfession(char) {
+  const cp = getCustomProfession(char)
+  return cp ? (cp.cost_profession || 'No Profession') : (char?.profession || '')
+}
+
+/** Is this one of the character's own base lists (homebrew list, or "<Profession> Base")? */
+export function isOwnBaseList(char, listName, list) {
+  const cp = getCustomProfession(char)
+  if (cp) return (cp.base_lists || []).some(l => String(l).toUpperCase() === String(listName || '').toUpperCase())
+  const sec = (list?.section || '').toLowerCase()
+  return !!char?.profession && sec === `${char.profession.toLowerCase()} base`
+}
+
+/** List type for a list bought for the first time: own base lists are Base; other
+ *  professions' base lists and Evil lists are Restricted. */
+export function defaultListCategory(char, listName, list) {
+  if (isOwnBaseList(char, listName, list)) return 'Base'
+  const sec = (list?.section || '').toLowerCase()
+  if (sec.startsWith('open'))   return 'Open'
+  if (sec.startsWith('closed')) return 'Closed'
+  if (sec.includes('evil') || sec.includes('base')) return 'Restricted'
+  return 'Base'
+}
+
 // ── Stat key utilities ─────────────────────────────────────────────────────
 //
 // Stat keys use 2-letter abbreviations matching RMU (Ag, Co, Em, …) plus 'RS'

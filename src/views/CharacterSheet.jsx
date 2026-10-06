@@ -3,7 +3,7 @@ import { usePersistentOpen, useScrollRestore } from '../hooks/persist.js'
 import { ChevronDownIcon, ChevronUpIcon, XIcon, CheckIcon, DiamondIcon, EyeOpenIcon, EyeClosedIcon } from '../components/Icons.jsx'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { STATS } from '../store/characters.js'
-import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getRRBreakdown, getBaseHits, getEndurance, getPowerPoints, getWeightAllowance, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getConditionPenalty, getConditionInitiativePenalty, getEnduranceConditionModifier, getKnackBonus, rmuSkillName, getWeaponSkillRanks, getBMR, getFatigueRecoveryCap, restFatiguePenalty, getRaceEntry, getRaceStatBonuses, getArmorPenalties, getEncumbrance, getMovementPenalty, getDefense, SHIELD_DB } from '../utils/calc.js'
+import { rankBonus, getTotalStatBonus, getDefensiveBonus, getInitiativeBonus, getWeaponOB, getResistanceBonuses, getRRBreakdown, getBaseHits, getEndurance, getPowerPoints, getWeightAllowance, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getConditionPenalty, getConditionInitiativePenalty, getEnduranceConditionModifier, getKnackBonus, rmuSkillName, getWeaponSkillRanks, getBMR, getFatigueRecoveryCap, restFatiguePenalty, getRaceEntry, getRaceStatBonuses, getArmorPenalties, getEncumbrance, getMovementPenalty, getDefense, SHIELD_DB, getCustomProfession, getCostProfession } from '../utils/calc.js'
 import { HitsBox, InjuriesPanel, StatusStrip } from '../components/HealthPanel.jsx'
 import { ActiveEffectsPanel, FamiliarPanel, familiarName } from '../components/ActiveEffects.jsx'
 import { QuickRollsPanel, ManeuverModal } from '../components/RollModals.jsx'
@@ -18,6 +18,7 @@ import { useConfirm } from '../components/ConfirmModal.jsx'
 import armorData from '../data/armor.json'
 import weaponsDb from '../data/weapons.json'
 import skillsData from '../data/skills.json'
+import HomebrewProfessionSubPanel from '../components/HomebrewProfession.jsx'
 import talentsData from '../data/talents.json'
 import skillCostsData from '../data/skill_costs.json'
 
@@ -462,7 +463,7 @@ const PROF_SKILL_CAP = 10
 function ProfessionalSkillsSubPanel({ char, updateCharacter, updateSkill }) {
   const [open, setOpen] = useState(false)
   const profession = char.profession || ''
-  const candidates = professionSkillsData[profession] || []
+  const candidates = getCustomProfession(char)?.professional_skills || professionSkillsData[profession] || []
 
   // RMU (Core Law 2.4): a professional skill covers every specialization and counts
   // once toward the 10. Group entries by base skill ("Spell Trickery: X" → "Spell
@@ -605,7 +606,7 @@ const CT_GROUPS = ['Melee Weapons', 'Unarmed', 'Shield', 'Ranged Weapons']
 function CTGroupsSubPanel({ char, updateCharacter }) {
   const [open, setOpen] = useState(false)
   const groups = char.combat_training_groups || {}
-  const profession = char.profession || ''
+  const profession = getCostProfession(char)
   const summary = CT_GROUPS.map(g => {
     const t = groups[g] ?? 1
     const cost = skillCostsData[`Combat Training ${t}`]?.[profession] || `Tier ${t}`
@@ -1563,7 +1564,7 @@ function CharacterSheetBody() {
           <FieldRow label="Player"><TInput value={c.player} onChange={v => updateCharacter({ player: v })} /></FieldRow>
           <FieldRow label="Level"><NInput value={c.level} onChange={v => updateCharacter({ level: v })} min={1} max={100} /></FieldRow>
           <FieldRow label="Race"><SInput value={c.race} onChange={v => updateCharacter({ race: v, stats: withRaceBonuses(c.stats, races.find(r => r.name === v)) })} options={races.map(r => r.name)} /></FieldRow>
-          <FieldRow label="Profession"><SInput value={c.profession} onChange={v => updateCharacter({ profession: v })} options={professions} /></FieldRow>
+          <FieldRow label="Profession"><SInput value={c.profession} onChange={v => updateCharacter({ profession: v })} options={c.custom_profession?.name ? [...professions, c.custom_profession.name] : professions} /></FieldRow>
           <FieldRow label="Realm"><SInput value={c.realm} onChange={v => updateCharacter({ realm: v })} options={REALMS} /></FieldRow>
           <FieldRow label="Culture"><SInput value={c.culture} onChange={v => updateCharacter({ culture: v })} options={CULTURE_NAMES} /></FieldRow>
           <FieldRow label="Size">
@@ -1618,6 +1619,7 @@ function CharacterSheetBody() {
         )}
         <RacialTalentsNote race={getRaceEntry(c)} />
         <KnacksSubPanel char={c} updateCharacter={updateCharacter} allSkillNames={allSkillNames} />
+        <HomebrewProfessionSubPanel char={c} updateCharacter={updateCharacter} />
         <ProfessionalSkillsSubPanel char={c} updateCharacter={updateCharacter} updateSkill={updateSkill} />
         <CTGroupsSubPanel char={c} updateCharacter={updateCharacter} />
       </Card>

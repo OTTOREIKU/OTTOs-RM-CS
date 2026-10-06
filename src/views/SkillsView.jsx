@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { ManeuverModal } from '../components/RollModals.jsx'
 import { useScrollRestore } from '../hooks/persist.js'
-import { rankBonus, getTotalStatBonus, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getNamedTalentBonus, getConditionPenalty, getKnackBonus, getArmorPenalties, getEncumbrance, getMovementPenalty } from '../utils/calc.js'
+import { rankBonus, getTotalStatBonus, getTalentBonuses, getSpellCastingBonus, getSpellMasteryBonus, getNamedTalentBonus, getConditionPenalty, getKnackBonus, getArmorPenalties, getEncumbrance, getMovementPenalty, getCostProfession } from '../utils/calc.js'
 import skillsData from '../data/skills.json'
 import skillCosts from '../data/skill_costs.json'
 import talentsData from '../data/talents.json'
@@ -622,7 +622,7 @@ function SkillsViewBody() {
   }
 
   function profCost(skill) {
-    return skillCosts[skill.category]?.[c.profession] || skill.dev_cost
+    return skillCosts[skill.category]?.[getCostProfession(c)] || skill.dev_cost
   }
 
   // Context bundle spread onto every SkillRow (avoids re-declaring props at each call site)

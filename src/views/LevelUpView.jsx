@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useCharacter } from '../store/CharacterContext.jsx'
 import { useScrollRestore } from '../hooks/persist.js'
 import { STATS } from '../store/characters.js'
-import { getTotalStatBonus, rankBonus } from '../utils/calc.js'
+import { getTotalStatBonus, rankBonus, getCostProfession, defaultListCategory } from '../utils/calc.js'
 import skillsData from '../data/skills.json'
 import skillCosts from '../data/skill_costs.json'
 import spellLists from '../data/spell_lists.json'
@@ -91,17 +91,6 @@ function statRollGains(rolls) {
   const out = {}
   for (const r of rolls || []) if (r.stat && r.result != null) out[r.stat] = (out[r.stat] || 0) + r.result
   return out
-}
-
-// List type for a list bought for the first time here: the profession's own base
-// lists are Base; other professions' base lists and Evil lists are Restricted.
-function defaultListCategory(list, profession) {
-  const sec = (list?.section || '').toLowerCase()
-  if (sec.startsWith('open'))   return 'Open'
-  if (sec.startsWith('closed')) return 'Closed'
-  if (sec.includes('evil'))     return 'Restricted'
-  if (sec.includes('base'))     return profession && sec.startsWith(profession.toLowerCase()) ? 'Base' : 'Restricted'
-  return 'Base'
 }
 
 // Net DP change when moving from `from` ranks to `to` ranks purchased this level.
@@ -314,7 +303,7 @@ export default function LevelUpView() {
       const curRanks = existing?.ranks || 0
       updateSpellList(name, existing?.category
         ? curRanks + newRanks
-        : { ranks: curRanks + newRanks, category: defaultListCategory(spellLists[name], c.profession) })
+        : { ranks: curRanks + newRanks, category: defaultListCategory(c, name, spellLists[name]) })
     })
 
     clearCachedLU(c)
@@ -587,7 +576,7 @@ function SkillStep({ c, lu, dispatch, skillSearch, setSkillSearch, dpLeft,
               <div style={{ border: '1px solid var(--border)', borderTop: 'none', borderRadius: '0 0 7px 7px', overflow: 'hidden' }}>
                 {filtered.map((skill, idx) => {
                   const displayName = skill.displayName || skill.name
-                  const costs    = getSkillCostsForChar(skill, c.profession, c)
+                  const costs    = getSkillCostsForChar(skill, getCostProfession(c), c)
                   const curRanks = skill._isCustom ? (skill._curRanks || 0) : (c.skills?.[skill.name]?.ranks || 0)
                   const buying   = lu.skillBuys[skill.name] || 0
                   const newRanks = curRanks + buying
@@ -684,7 +673,7 @@ function SpellListsSection({ c, lu, dispatch, dpLeft, spellSearch, setSpellSearc
 
       {filtered.map(([name, list], idx) => {
         const rc       = REALM_COLOR[list.realm] || 'var(--accent)'
-        const costs    = getSpellCostForChar(name, list, c.profession, c.spell_lists?.[name]?.category || defaultListCategory(list, c.profession))   // { first, second }
+        const costs    = getSpellCostForChar(name, list, getCostProfession(c), c.spell_lists?.[name]?.category || defaultListCategory(c, name, list))   // { first, second }
         const curRanks = c.spell_lists?.[name]?.ranks || 0
         const buying   = lu.spellBuys[name] || 0
         const costForNext = buying === 0 ? costs.first : costs.second
@@ -772,7 +761,7 @@ function ReviewStep({ c, lu, onConfirm }) {
             const skillDef    = cs ? customSkillDef(cs) : (skillsData.find(s => s.name === name) || {})
             const slotLabel   = c.skills?.[name]?.label
             const displayName = cs ? skillDef.displayName : (slotLabel && /<[^>]+>/.test(name) ? name.replace(/<[^>]+>/, slotLabel) : name)
-            const costs       = getSkillCostsForChar(skillDef, c.profession, c)
+            const costs       = getSkillCostsForChar(skillDef, getCostProfession(c), c)
             const cur         = cs ? (cs.ranks || 0) : (c.skills?.[name]?.ranks || 0)
             return <Row key={name} label={displayName} value={`+${ranks} rank${ranks > 1 ? 's' : ''} (${cur} → ${cur + ranks}) · −${rankCostDelta(0, ranks, costs)} DP`} color="var(--accent)" />
           })}
@@ -783,7 +772,7 @@ function ReviewStep({ c, lu, onConfirm }) {
         <Section title={`Spell List Ranks (${spellChanges.length} lists)`}>
           {spellChanges.map(([name, ranks]) => {
             const list  = spellLists[name]
-            const costs = getSpellCostForChar(name, list || {}, c.profession, c.spell_lists?.[name]?.category || defaultListCategory(list, c.profession))
+            const costs = getSpellCostForChar(name, list || {}, getCostProfession(c), c.spell_lists?.[name]?.category || defaultListCategory(c, name, list))
             const cur   = c.spell_lists?.[name]?.ranks || 0
             const dpUsed = rankCostDelta(0, ranks, costs)
             return <Row key={name} label={name} value={`+${ranks} rank${ranks > 1 ? 's' : ''} (${cur} → ${cur + ranks}) · −${dpUsed} DP`} color="var(--purple)" />
