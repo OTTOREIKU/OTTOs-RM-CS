@@ -1,5 +1,10 @@
 # RMU Character+ Sync
 
+> **Legacy.** The app's *Send to Foundry → Sync script* replaces this module: it needs
+> no install, adds missing skills, spell lists and talents from the compendiums, and is
+> written for RMU 1.3.x (spell lists are skill items there, not `spell-list` items). This
+> module only updates skills that already exist and matches spell list names exactly.
+
 A small Foundry VTT module that pairs with the [RMU Character+ web app](https://ottoreiku.github.io/OTTOs-RM-CS/). Adds a **Sync** button to every Character actor sheet — players can push character data from the web app into Foundry, or pull updates back, without ever opening the developer console.
 
 ## Compatibility
