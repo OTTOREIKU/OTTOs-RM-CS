@@ -19,8 +19,9 @@ import combatGuide  from '../data/combat_guide.json'
 import weaponsData  from '../data/weapons.json'
 import fumbleTables from '../data/fumble_tables.json'
 import equipmentData from '../data/equipment.json'
+import { CreaturesPanel, HerbsPanel, MagicItemsPanel } from './RefLibrary.jsx'
 
-const TABS = ['Races', 'Cultures', 'Armor', 'Stat Bonuses', 'Skill Costs', 'Weapons', 'Equipment', 'Spell Types', 'Crit Tables', 'Attack Tables', 'Combat Calc', 'Combat Guide', 'Formulas']
+const TABS = ['Races', 'Cultures', 'Armor', 'Stat Bonuses', 'Skill Costs', 'Weapons', 'Equipment', 'Magic Items', 'Herbs', 'Creatures', 'Spell Types', 'Crit Tables', 'Attack Tables', 'Combat Calc', 'Combat Guide', 'Formulas']
 const STAT_COLS = ['Agility','Constitution','Empathy','Intuition','Memory',
                    'Presence','Quickness','Reasoning','Self Discipline','Strength']
 const STAT_ABR  = ['Ag','Co','Em','In','Me','Pr','Qu','Re','SD','St']
@@ -744,6 +745,9 @@ export default function ReferenceView() {
 
       {/* ── EQUIPMENT ── */}
       {tab === 'Equipment' && <EquipmentPanel />}
+      {tab === 'Magic Items' && <MagicItemsPanel />}
+      {tab === 'Herbs' && <HerbsPanel />}
+      {tab === 'Creatures' && <CreaturesPanel />}
 
       {/* ── FORMULAS ── */}
       {tab === 'Formulas' && <FormulasPanel />}

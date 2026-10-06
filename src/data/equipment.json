@@ -1196,5 +1196,1845 @@
     "item_size": "Medium",
     "item_hp": 25,
     "rmu_canonical_name": "Whistle"
+  },
+  {
+    "name": "Door, bolted",
+    "cost": "32 sp",
+    "weight": 150,
+    "str_req": 90,
+    "notes": "1\" thick bolt",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Door, bolted"
+  },
+  {
+    "name": "Paddle",
+    "cost": "5 cp",
+    "weight": 3,
+    "str_req": 40,
+    "notes": "Wood. 4'-5'",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Paddle"
+  },
+  {
+    "name": "Mortar & Pestle",
+    "cost": "7 bp",
+    "weight": 2,
+    "str_req": 25,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Mortar & Pestle"
+  },
+  {
+    "name": "Milk",
+    "cost": "6 tp",
+    "weight": 4.3,
+    "str_req": 1,
+    "notes": "1/2 gallon",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Milk"
+  },
+  {
+    "name": "Carpet, exotic",
+    "cost": "1.2 sp",
+    "weight": 4,
+    "str_req": 55,
+    "notes": "per square foot",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Carpet, exotic"
+  },
+  {
+    "name": "Parchment",
+    "cost": "2 sp",
+    "weight": 0.025,
+    "str_req": 15,
+    "notes": "10 sheets, 12\" x 6\". Very durable",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Parchment"
+  },
+  {
+    "name": "Branding Iron",
+    "cost": "8 bp",
+    "weight": 3,
+    "str_req": 75,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Branding Iron"
+  },
+  {
+    "name": "Harmonica",
+    "cost": "4 sp",
+    "weight": 1,
+    "str_req": 75,
+    "notes": "19th Cent. instrument",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Harmonica"
+  },
+  {
+    "name": "Carpet, fine",
+    "cost": "7 bp",
+    "weight": 5,
+    "str_req": 55,
+    "notes": "per square foot",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Carpet, fine"
+  },
+  {
+    "name": "Bowl, wooden",
+    "cost": "2 cp",
+    "weight": 0.5,
+    "str_req": 60,
+    "notes": "0.5 quarts",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Bowl, wooden"
+  },
+  {
+    "name": "Rope, spider-silk",
+    "cost": "5 sp",
+    "weight": 1.5,
+    "str_req": 65,
+    "notes": "Giant spider silk. 50'",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Rope, spider-silk"
+  },
+  {
+    "name": "Pot/Pan",
+    "cost": "7 bp",
+    "weight": 3,
+    "str_req": 65,
+    "notes": "2 gallons",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Pot/Pan"
+  },
+  {
+    "name": "Tapestry, exotic",
+    "cost": "1.8 sp",
+    "weight": 5,
+    "str_req": 55,
+    "notes": "per square foot",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Tapestry, exotic"
+  },
+  {
+    "name": "Steel Jaw Trap",
+    "cost": "8 sp",
+    "weight": 5,
+    "str_req": 95,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Steel Jaw Trap"
+  },
+  {
+    "name": "Dulcian",
+    "cost": "16 sp",
+    "weight": 7,
+    "str_req": 30,
+    "notes": "16th Cent. forerunner of bassoon",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Dulcian"
+  },
+  {
+    "name": "Pitons",
+    "cost": "2 bp",
+    "weight": 0.25,
+    "str_req": 65,
+    "notes": "Iron",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Pitons"
+  },
+  {
+    "name": "Glass Window",
+    "cost": "5 sp",
+    "weight": 10,
+    "str_req": 15,
+    "notes": "3'x3'",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Glass Window"
+  },
+  {
+    "name": "Fire Dogs",
+    "cost": "3 sp",
+    "weight": 3,
+    "str_req": 90,
+    "notes": "iron",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Fire Dogs"
+  },
+  {
+    "name": "Chalk",
+    "cost": "2 cp",
+    "weight": 0.025,
+    "str_req": 10,
+    "notes": "White. 5\" long. 2 hours labor makes 10 pieces",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Chalk"
+  },
+  {
+    "name": "Bed, wood/leather",
+    "cost": "2 sp",
+    "weight": 40,
+    "str_req": 65,
+    "notes": "4'x6'",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Bed, wood/leather"
+  },
+  {
+    "name": "Shirt, fine",
+    "cost": "6 bp",
+    "weight": 1,
+    "str_req": 30,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Shirt, fine"
+  },
+  {
+    "name": "Door, locked",
+    "cost": "40 sp",
+    "weight": 150,
+    "str_req": 90,
+    "notes": "comes with 2 keys, Medium difficulty",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Door, locked"
+  },
+  {
+    "name": "Serpent",
+    "cost": "12 sp",
+    "weight": 5,
+    "str_req": 40,
+    "notes": "brass instrument (body may be wood), multiple curves",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Serpent"
+  },
+  {
+    "name": "Finger Cymbals",
+    "cost": "3 bp",
+    "weight": 0.25,
+    "str_req": 85,
+    "notes": "played in pairs, often by dancers",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Finger Cymbals"
+  },
+  {
+    "name": "Torch",
+    "cost": "3 tp",
+    "weight": 1,
+    "str_req": 35,
+    "notes": "Lights 10' radius for 6 hours",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Torch"
+  },
+  {
+    "name": "False Bottom",
+    "cost": "3 sp",
+    "weight": 8,
+    "str_req": 40,
+    "notes": "Takes 10% of space, hides 8% - installed in a chest",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "False Bottom"
+  },
+  {
+    "name": "Bench, wooden",
+    "cost": "5 bp",
+    "weight": 20,
+    "str_req": 75,
+    "notes": "1'x12'",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Bench, wooden"
+  },
+  {
+    "name": "Plate, china",
+    "cost": "3 sp",
+    "weight": 1,
+    "str_req": 25,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Plate, china"
+  },
+  {
+    "name": "Crumhorn",
+    "cost": "8 sp",
+    "weight": 1,
+    "str_req": 30,
+    "notes": "double reed woodwind",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Crumhorn"
+  },
+  {
+    "name": "Barley",
+    "cost": "2 cp",
+    "weight": 1,
+    "str_req": 1,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Barley"
+  },
+  {
+    "name": "Chair, cushioned",
+    "cost": "5 sp",
+    "weight": 15,
+    "str_req": 40,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Chair, cushioned"
+  },
+  {
+    "name": "Panpipes",
+    "cost": "5 bp",
+    "weight": 1,
+    "str_req": 30,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Panpipes"
+  },
+  {
+    "name": "Dress, normal",
+    "cost": "1.8 sp",
+    "weight": 2,
+    "str_req": 35,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Dress, normal"
+  },
+  {
+    "name": "Paint, white wash",
+    "cost": "7 bp",
+    "weight": 1,
+    "str_req": 30,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Paint, white wash"
+  },
+  {
+    "name": "Harp",
+    "cost": "16 sp",
+    "weight": 30,
+    "str_req": 30,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Harp"
+  },
+  {
+    "name": "Anvil",
+    "cost": "15 sp",
+    "weight": 250,
+    "str_req": 110,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Anvil"
+  },
+  {
+    "name": "Chimes",
+    "cost": "1 sp",
+    "weight": 1.5,
+    "str_req": 40,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Chimes"
+  },
+  {
+    "name": "Ladle",
+    "cost": "3 cp",
+    "weight": 0.5,
+    "str_req": 20,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Ladle"
+  },
+  {
+    "name": "Drinking Horn",
+    "cost": "5 bp",
+    "weight": 1,
+    "str_req": 60,
+    "notes": "horn/bone",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Drinking Horn"
+  },
+  {
+    "name": "Pitcher, metal",
+    "cost": "4 bp",
+    "weight": 2,
+    "str_req": 50,
+    "notes": "1 gallon",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Pitcher, metal"
+  },
+  {
+    "name": "Handbell",
+    "cost": "5 bp",
+    "weight": 1,
+    "str_req": 50,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Handbell"
+  },
+  {
+    "name": "Goblet/Mug, glass",
+    "cost": "2 bp",
+    "weight": 1,
+    "str_req": 5,
+    "notes": "1 pint",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Goblet/Mug, glass"
+  },
+  {
+    "name": "Oats",
+    "cost": "1 cp",
+    "weight": 1,
+    "str_req": 1,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Oats"
+  },
+  {
+    "name": "Water Clock",
+    "cost": "20 sp",
+    "weight": 25,
+    "str_req": 5,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Water Clock"
+  },
+  {
+    "name": "Fur/Pelt, large",
+    "cost": "8 tp",
+    "weight": 1,
+    "str_req": 45,
+    "notes": "Unfinished, common",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Fur/Pelt, large"
+  },
+  {
+    "name": "Horn, monster",
+    "cost": "5 sp",
+    "weight": 3,
+    "str_req": 75,
+    "notes": "from a monster",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Horn, monster"
+  },
+  {
+    "name": "Eggs",
+    "cost": "2 cp",
+    "weight": 0.1,
+    "str_req": 1,
+    "notes": "1.2",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Eggs"
+  },
+  {
+    "name": "Cloth, exotic",
+    "cost": "5 bp",
+    "weight": 3,
+    "str_req": 30,
+    "notes": "per square yard",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Cloth, exotic"
+  },
+  {
+    "name": "Potter's Wheel",
+    "cost": "6 sp",
+    "weight": 30,
+    "str_req": 70,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Potter's Wheel"
+  },
+  {
+    "name": "Meat, chicken",
+    "cost": "1 cp",
+    "weight": 1,
+    "str_req": 1,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Meat, chicken"
+  },
+  {
+    "name": "Meat, fish",
+    "cost": "1 cp",
+    "weight": 1,
+    "str_req": 1,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Meat, fish"
+  },
+  {
+    "name": "Pitcher, china",
+    "cost": "4 sp",
+    "weight": 2,
+    "str_req": 30,
+    "notes": "1 gallon",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Pitcher, china"
+  },
+  {
+    "name": "Pennant",
+    "cost": "2 sp",
+    "weight": 0.25,
+    "str_req": 40,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Pennant"
+  },
+  {
+    "name": "Fur/Pelt, medium",
+    "cost": "5 tp",
+    "weight": 0.5,
+    "str_req": 40,
+    "notes": "Unfinished, common",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Fur/Pelt, medium"
+  },
+  {
+    "name": "Psaltery",
+    "cost": "7 sp",
+    "weight": 3,
+    "str_req": 25,
+    "notes": "ancient plucked string instrument",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Psaltery"
+  },
+  {
+    "name": "Dress, coarse",
+    "cost": "1 sp",
+    "weight": 2,
+    "str_req": 35,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Dress, coarse"
+  },
+  {
+    "name": "Cauldron, small",
+    "cost": "8 sp",
+    "weight": 45,
+    "str_req": 80,
+    "notes": "8 gallons",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Cauldron, small"
+  },
+  {
+    "name": "Vise",
+    "cost": "2.5 sp",
+    "weight": 30,
+    "str_req": 85,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Vise"
+  },
+  {
+    "name": "Dress, exotic",
+    "cost": "7 sp",
+    "weight": 2,
+    "str_req": 20,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Dress, exotic"
+  },
+  {
+    "name": "Cape",
+    "cost": "5 bp",
+    "weight": 0.5,
+    "str_req": 25,
+    "notes": "Light linen or wool",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Cape"
+  },
+  {
+    "name": "Lute, Medieval",
+    "cost": "12 sp",
+    "weight": 3,
+    "str_req": 20,
+    "notes": "15 strings, more or less",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Lute, Medieval"
+  },
+  {
+    "name": "Recorder",
+    "cost": "1 sp",
+    "weight": 2.5,
+    "str_req": 30,
+    "notes": "wooden",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Recorder"
+  },
+  {
+    "name": "Table, long",
+    "cost": "1 sp",
+    "weight": 60,
+    "str_req": 90,
+    "notes": "4'x12'",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Table, long"
+  },
+  {
+    "name": "Tapestry, coarse",
+    "cost": "3 bp",
+    "weight": 2,
+    "str_req": 65,
+    "notes": "per sq ft",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Tapestry, coarse"
+  },
+  {
+    "name": "Fiddle",
+    "cost": "14 sp",
+    "weight": 3,
+    "str_req": 20,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Fiddle"
+  },
+  {
+    "name": "Sack",
+    "cost": "8 cp",
+    "weight": 2.5,
+    "str_req": 20,
+    "notes": "Holds 50 lbs., 3 cu. ft.",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Sack"
+  },
+  {
+    "name": "Viol",
+    "cost": "14 sp",
+    "weight": 3,
+    "str_req": 20,
+    "notes": "a violin-sized 6-stringed viol",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Viol"
+  },
+  {
+    "name": "Glass Window, stained",
+    "cost": "50 sp",
+    "weight": 12,
+    "str_req": 10,
+    "notes": "3'x3'",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Glass Window, stained"
+  },
+  {
+    "name": "Fruit",
+    "cost": "3 cp",
+    "weight": 1,
+    "str_req": 1,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Fruit"
+  },
+  {
+    "name": "Wheat",
+    "cost": "5 tp",
+    "weight": 1,
+    "str_req": 1,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Wheat"
+  },
+  {
+    "name": "Bed, wood/rope",
+    "cost": "8 bp",
+    "weight": 30,
+    "str_req": 60,
+    "notes": "3'x6'",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Bed, wood/rope"
+  },
+  {
+    "name": "Chandelier, glass",
+    "cost": "150 sp",
+    "weight": 80,
+    "str_req": 10,
+    "notes": "Holds several candles",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Chandelier, glass"
+  },
+  {
+    "name": "Rice",
+    "cost": "2 tp",
+    "weight": 1,
+    "str_req": 1,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Rice"
+  },
+  {
+    "name": "Waterskin, Large",
+    "cost": "2 cp",
+    "weight": 0.75,
+    "str_req": 25,
+    "notes": "Hold 1 gallon (8lbs)",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Waterskin, Large"
+  },
+  {
+    "name": "Rope, superior",
+    "cost": "1.2 sp",
+    "weight": 3,
+    "str_req": 40,
+    "notes": "Reinforced hemp. 50'",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Rope, superior"
+  },
+  {
+    "name": "Dress, fine",
+    "cost": "3.5 sp",
+    "weight": 2,
+    "str_req": 25,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Dress, fine"
+  },
+  {
+    "name": "Bedroll, heavy",
+    "cost": "7 bp",
+    "weight": 9,
+    "str_req": 65,
+    "notes": "Wool/fur; 4 season",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Bedroll, heavy"
+  },
+  {
+    "name": "Harpsichord",
+    "cost": "40 sp",
+    "weight": 100,
+    "str_req": 30,
+    "notes": "keyboard instrument with plucked strings",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Harpsichord"
+  },
+  {
+    "name": "Torch Stand",
+    "cost": "8 cp",
+    "weight": 6.5,
+    "str_req": 75,
+    "notes": "iron, holds 1 torch",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Torch Stand"
+  },
+  {
+    "name": "Door, barred",
+    "cost": "30 sp",
+    "weight": 150,
+    "str_req": 90,
+    "notes": "6'x3'x2\"; ash w/iron",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Door, barred"
+  },
+  {
+    "name": "Bread",
+    "cost": "6 tp",
+    "weight": 1,
+    "str_req": 1,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Bread"
+  },
+  {
+    "name": "Gemshorn",
+    "cost": "4 sp",
+    "weight": 2,
+    "str_req": 65,
+    "notes": "flute made of an ox horn",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Gemshorn"
+  },
+  {
+    "name": "Tapestry, fine",
+    "cost": "1 sp",
+    "weight": 8,
+    "str_req": 55,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Tapestry, fine"
+  },
+  {
+    "name": "Cap, fur",
+    "cost": "7 bp",
+    "weight": 1,
+    "str_req": 40,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Cap, fur"
+  },
+  {
+    "name": "Bowl, china",
+    "cost": "2 sp",
+    "weight": 1,
+    "str_req": 30,
+    "notes": "0.5 quarts",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Bowl, china"
+  },
+  {
+    "name": "Nuts",
+    "cost": "1 cp",
+    "weight": 1,
+    "str_req": 1,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Nuts"
+  },
+  {
+    "name": "Paint",
+    "cost": "1 sp",
+    "weight": 1,
+    "str_req": 1,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Paint"
+  },
+  {
+    "name": "Poison Needle Trap",
+    "cost": "10 sp",
+    "weight": 0.2,
+    "str_req": 55,
+    "notes": "in any lock",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Poison Needle Trap"
+  },
+  {
+    "name": "Vest",
+    "cost": "9 bp",
+    "weight": 1.5,
+    "str_req": 35,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Vest"
+  },
+  {
+    "name": "Loom",
+    "cost": "9 sp",
+    "weight": 45,
+    "str_req": 35,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Loom"
+  },
+  {
+    "name": "Nightingale Board",
+    "cost": "3 sp",
+    "weight": 10,
+    "str_req": 25,
+    "notes": "-20 to any attempt to Stalk through room",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Nightingale Board"
+  },
+  {
+    "name": "Bookcase",
+    "cost": "8 bp",
+    "weight": 15,
+    "str_req": 70,
+    "notes": "3'x5'x1'",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Bookcase"
+  },
+  {
+    "name": "Cheese",
+    "cost": "8 tp",
+    "weight": 1,
+    "str_req": 1,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Cheese"
+  },
+  {
+    "name": "Shawm",
+    "cost": "4 sp",
+    "weight": 3,
+    "str_req": 25,
+    "notes": "double reed instrument",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Shawm"
+  },
+  {
+    "name": "Flute",
+    "cost": "5 sp",
+    "weight": 1,
+    "str_req": 25,
+    "notes": "wooden transverse flute",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Flute"
+  },
+  {
+    "name": "Rope, standard",
+    "cost": "4 bp",
+    "weight": 5,
+    "str_req": 25,
+    "notes": "Hemp. 50'",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Rope, standard"
+  },
+  {
+    "name": "Meat, beef",
+    "cost": "1.2 cp",
+    "weight": 1,
+    "str_req": 1,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Meat, beef"
+  },
+  {
+    "name": "Crucible",
+    "cost": "2.5 bp",
+    "weight": 4,
+    "str_req": 60,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Crucible"
+  },
+  {
+    "name": "Caltrops, set of 5",
+    "cost": "8 bp",
+    "weight": 2,
+    "str_req": 70,
+    "notes": "traps 5'x5'",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Caltrops, set of 5"
+  },
+  {
+    "name": "Candelabra",
+    "cost": "8 bp",
+    "weight": 4,
+    "str_req": 70,
+    "notes": "Holds several candles",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Candelabra"
+  },
+  {
+    "name": "Balance & Weights",
+    "cost": "12 sp",
+    "weight": 12,
+    "str_req": 25,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Balance & Weights"
+  },
+  {
+    "name": "Cloth, fine",
+    "cost": "2 bp",
+    "weight": 3,
+    "str_req": 30,
+    "notes": "Heavy linen or wool, per square yard",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Cloth, fine"
+  },
+  {
+    "name": "Gloves, fur",
+    "cost": "3 bp",
+    "weight": 0.5,
+    "str_req": 40,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Gloves, fur"
+  },
+  {
+    "name": "Padlock, best",
+    "cost": "5.8 sp",
+    "weight": 1,
+    "str_req": 90,
+    "notes": "iron, two keys, Extremely Hard difficulty",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Padlock, best"
+  },
+  {
+    "name": "Rebec",
+    "cost": "8 sp",
+    "weight": 1,
+    "str_req": 20,
+    "notes": "early bow-playing stringed instrument",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Rebec"
+  },
+  {
+    "name": "Meat, pork",
+    "cost": "9 tp",
+    "weight": 1,
+    "str_req": 1,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Meat, pork"
+  },
+  {
+    "name": "Gamba",
+    "cost": "17 sp",
+    "weight": 5,
+    "str_req": 20,
+    "notes": "guitar-sized, 6-stringed viol",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Gamba"
+  },
+  {
+    "name": "Drum, medium",
+    "cost": "1.4 sp",
+    "weight": 5,
+    "str_req": 30,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Drum, medium"
+  },
+  {
+    "name": "Pitcher, wood",
+    "cost": "4 cp",
+    "weight": 1,
+    "str_req": 40,
+    "notes": "1 gallon",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Pitcher, wood"
+  },
+  {
+    "name": "Hose",
+    "cost": "5 bp",
+    "weight": 1,
+    "str_req": 20,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Hose"
+  },
+  {
+    "name": "Plate, wood",
+    "cost": "3 cp",
+    "weight": 0.5,
+    "str_req": 35,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Plate, wood"
+  },
+  {
+    "name": "Shoes, soft",
+    "cost": "2 sp",
+    "weight": 1.5,
+    "str_req": 35,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Shoes, soft"
+  },
+  {
+    "name": "Quill Pens",
+    "cost": "4 cp",
+    "weight": 0.025,
+    "str_req": 15,
+    "notes": "Goose feather quills",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Quill Pens"
+  },
+  {
+    "name": "Candle Stand",
+    "cost": "2 cp",
+    "weight": 0.5,
+    "str_req": 90,
+    "notes": "Holds 1 candle",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Candle Stand"
+  },
+  {
+    "name": "Bellows",
+    "cost": "2 bp",
+    "weight": 2.5,
+    "str_req": 45,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Bellows"
+  },
+  {
+    "name": "Chest, Lockable",
+    "cost": "55 sp",
+    "weight": 180,
+    "str_req": 80,
+    "notes": "Comes with 2 keys, Hard difficulty, 8 cu. ft.",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Chest, Lockable"
+  },
+  {
+    "name": "Organetto",
+    "cost": "10 sp",
+    "weight": 5,
+    "str_req": 25,
+    "notes": "small portable organ",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Organetto"
+  },
+  {
+    "name": "Butter Churn",
+    "cost": "2 sp",
+    "weight": 15,
+    "str_req": 50,
+    "notes": "2 gallons",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Butter Churn"
+  },
+  {
+    "name": "Robe",
+    "cost": "1 sp",
+    "weight": 4.5,
+    "str_req": 30,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Robe"
+  },
+  {
+    "name": "Cloth, coarse",
+    "cost": "3 cp",
+    "weight": 3,
+    "str_req": 40,
+    "notes": "per square yard",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Cloth, coarse"
+  },
+  {
+    "name": "Coat, fur",
+    "cost": "1.8 sp",
+    "weight": 8,
+    "str_req": 50,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Coat, fur"
+  },
+  {
+    "name": "Pipe Organ",
+    "cost": "5000 sp",
+    "weight": 15000,
+    "str_req": 95,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Pipe Organ"
+  },
+  {
+    "name": "Bowl, metal",
+    "cost": "2 bp",
+    "weight": 1,
+    "str_req": 65,
+    "notes": "0.5 quarts",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Bowl, metal"
+  },
+  {
+    "name": "Comb",
+    "cost": "3 cp",
+    "weight": 0.25,
+    "str_req": 30,
+    "notes": "Hard organic material. Grooms hair",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Comb"
+  },
+  {
+    "name": "Safe, Steel",
+    "cost": "120 sp",
+    "weight": 800,
+    "str_req": 120,
+    "notes": "freestanding, combination, 2'x2'x2' interior",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Safe, Steel"
+  },
+  {
+    "name": "Eating Utensils, metal",
+    "cost": "3 bp",
+    "weight": 0.25,
+    "str_req": 40,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Eating Utensils, metal"
+  },
+  {
+    "name": "Horn, domestic animal",
+    "cost": "2 sp",
+    "weight": 2,
+    "str_req": 60,
+    "notes": "from a domesticated animal",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Horn, domestic animal"
+  },
+  {
+    "name": "Gong",
+    "cost": "100 sp",
+    "weight": 15,
+    "str_req": 80,
+    "notes": "12.5 lbs. bronze gong, with stand",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Gong"
+  },
+  {
+    "name": "Lizard",
+    "cost": "11 sp",
+    "weight": 4,
+    "str_req": 40,
+    "notes": "s-curved horn",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Lizard"
+  },
+  {
+    "name": "Hurdy-Gurdy",
+    "cost": "20 sp",
+    "weight": 8,
+    "str_req": 15,
+    "notes": "cranked mechanical string plucking complexity",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Hurdy-Gurdy"
+  },
+  {
+    "name": "Paper",
+    "cost": "1.2 sp",
+    "weight": 0.025,
+    "str_req": 5,
+    "notes": "10 sheets, 12\" x 6\"",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Paper"
+  },
+  {
+    "name": "Belt, leather",
+    "cost": "1 bp",
+    "weight": 0.5,
+    "str_req": 45,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Belt, leather"
+  },
+  {
+    "name": "Hat, leather",
+    "cost": "6 bp",
+    "weight": 1,
+    "str_req": 50,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Hat, leather"
+  },
+  {
+    "name": "Magnifying Glass",
+    "cost": "2 sp",
+    "weight": 0.5,
+    "str_req": 25,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Magnifying Glass"
+  },
+  {
+    "name": "Chalice",
+    "cost": "3 sp",
+    "weight": 1,
+    "str_req": 25,
+    "notes": "0.5 pint. Ornate.",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Chalice"
+  },
+  {
+    "name": "Tub",
+    "cost": "1 sp",
+    "weight": 8,
+    "str_req": 50,
+    "notes": "wood; 20 gallons",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Tub"
+  },
+  {
+    "name": "Fur/Pelt, small",
+    "cost": "3 tp",
+    "weight": 0.5,
+    "str_req": 35,
+    "notes": "Unfinished, common",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Fur/Pelt, small"
+  },
+  {
+    "name": "Eating Utensils, wood",
+    "cost": "3 cp",
+    "weight": 0.25,
+    "str_req": 25,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Eating Utensils, wood"
+  },
+  {
+    "name": "Tunic",
+    "cost": "6 bp",
+    "weight": 2,
+    "str_req": 35,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Tunic"
+  },
+  {
+    "name": "Lute, Baroque",
+    "cost": "15 sp",
+    "weight": 7.5,
+    "str_req": 20,
+    "notes": "26 strings, more or less",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Lute, Baroque"
+  },
+  {
+    "name": "Paintbrush",
+    "cost": "2 bp",
+    "weight": 0.5,
+    "str_req": 30,
+    "notes": "For walls",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Paintbrush"
+  },
+  {
+    "name": "Mandolin",
+    "cost": "9 sp",
+    "weight": 7.5,
+    "str_req": 20,
+    "notes": "8 strings",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Mandolin"
+  },
+  {
+    "name": "Writing Brush",
+    "cost": "5 cp",
+    "weight": 0.25,
+    "str_req": 15,
+    "notes": "Wooden haft w/hair bristles. Capped",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Writing Brush"
+  },
+  {
+    "name": "Table, small",
+    "cost": "5 bp",
+    "weight": 30,
+    "str_req": 85,
+    "notes": "3'x3'",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Table, small"
+  },
+  {
+    "name": "Padlock, excellent",
+    "cost": "4.2 sp",
+    "weight": 1,
+    "str_req": 90,
+    "notes": "iron, two keys, Very Hard difficulty",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Padlock, excellent"
+  },
+  {
+    "name": "Funnel",
+    "cost": "1 bp",
+    "weight": 1,
+    "str_req": 30,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Funnel"
+  },
+  {
+    "name": "Hourglass",
+    "cost": "4 sp",
+    "weight": 5,
+    "str_req": 15,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Hourglass"
+  },
+  {
+    "name": "Pegs",
+    "cost": "9 tp",
+    "weight": 0.2,
+    "str_req": 40,
+    "notes": "Wood",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Pegs"
+  },
+  {
+    "name": "Chandelier, metal",
+    "cost": "100 sp",
+    "weight": 95,
+    "str_req": 25,
+    "notes": "Holds several candles",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Chandelier, metal"
+  },
+  {
+    "name": "Nails",
+    "cost": "9 tp",
+    "weight": 0.025,
+    "str_req": 80,
+    "notes": "Iron. 3\" length",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Nails"
+  },
+  {
+    "name": "Bagpipes",
+    "cost": "10 sp",
+    "weight": 5,
+    "str_req": 25,
+    "notes": "an ancient instrument",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Bagpipes"
+  },
+  {
+    "name": "Wire",
+    "cost": "9 bp",
+    "weight": 0.3,
+    "str_req": 45,
+    "notes": "Iron. 100'",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Wire"
+  },
+  {
+    "name": "Needle, sewing",
+    "cost": "1 cp",
+    "weight": 0.01,
+    "str_req": 20,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Needle, sewing"
+  },
+  {
+    "name": "Goblet/Mug, metal",
+    "cost": "1 bp",
+    "weight": 1,
+    "str_req": 40,
+    "notes": "1 pint",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Goblet/Mug, metal"
+  },
+  {
+    "name": "Carpet, coarse",
+    "cost": "1 bp",
+    "weight": 5,
+    "str_req": 70,
+    "notes": "per square foot",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Carpet, coarse"
+  },
+  {
+    "name": "Tamborine",
+    "cost": "1.5 sp",
+    "weight": 1.5,
+    "str_req": 25,
+    "notes": "a very old variation on the drum",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Tamborine"
+  },
+  {
+    "name": "Sacbut",
+    "cost": "10 sp",
+    "weight": 4,
+    "str_req": 35,
+    "notes": "brass; Renaissance trombone",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Sacbut"
+  },
+  {
+    "name": "Lyre",
+    "cost": "9 sp",
+    "weight": 5,
+    "str_req": 20,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Lyre"
+  },
+  {
+    "name": "Oar",
+    "cost": "6 cp",
+    "weight": 4.5,
+    "str_req": 55,
+    "notes": "Wood. 6'-8'",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Oar"
+  },
+  {
+    "name": "Horn, wild animal",
+    "cost": "2.5 sp",
+    "weight": 2,
+    "str_req": 60,
+    "notes": "from a wild animal",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Horn, wild animal"
+  },
+  {
+    "name": "Birdcage",
+    "cost": "1.5 sp",
+    "weight": 1.5,
+    "str_req": 30,
+    "notes": "Wood",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Birdcage"
+  },
+  {
+    "name": "Pitcher, pottery",
+    "cost": "3 cp",
+    "weight": 2,
+    "str_req": 30,
+    "notes": "1 gallon",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Pitcher, pottery"
+  },
+  {
+    "name": "Stocks",
+    "cost": "3 sp",
+    "weight": 45,
+    "str_req": 90,
+    "notes": "Head and arms",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Stocks"
+  },
+  {
+    "name": "Plate, metal",
+    "cost": "3 bp",
+    "weight": 1,
+    "str_req": 40,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Plate, metal"
+  },
+  {
+    "name": "Church Bell",
+    "cost": "650 sp",
+    "weight": 100,
+    "str_req": 100,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Church Bell"
+  },
+  {
+    "name": "Carrying Case",
+    "cost": "4 sp",
+    "weight": 1,
+    "str_req": 20,
+    "notes": "Water-resistant. Leather, w/straps. 12\"x3\"x6\"",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Carrying Case"
+  },
+  {
+    "name": "Brazier",
+    "cost": "1 sp",
+    "weight": 2.5,
+    "str_req": 75,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Brazier"
+  },
+  {
+    "name": "Cauldron, large",
+    "cost": "15 sp",
+    "weight": 90,
+    "str_req": 90,
+    "notes": "20 gallons",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Cauldron, large"
+  },
+  {
+    "name": "Bowl, pottery",
+    "cost": "2 cp",
+    "weight": 1,
+    "str_req": 30,
+    "notes": "0.5 quarts",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Bowl, pottery"
+  },
+  {
+    "name": "Trumpet",
+    "cost": "6 sp",
+    "weight": 4,
+    "str_req": 40,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Trumpet"
+  },
+  {
+    "name": "Vegetables",
+    "cost": "1 cp",
+    "weight": 1,
+    "str_req": 1,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Vegetables"
+  },
+  {
+    "name": "Bedroll, light",
+    "cost": "2 bp",
+    "weight": 5,
+    "str_req": 50,
+    "notes": "Wool blanket; 2 season",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Bedroll, light"
+  },
+  {
+    "name": "Bookstand",
+    "cost": "3 bp",
+    "weight": 12,
+    "str_req": 65,
+    "notes": "1'x2'x5'",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Bookstand"
+  },
+  {
+    "name": "Plate, pottery",
+    "cost": "2 cp",
+    "weight": 1,
+    "str_req": 25,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Plate, pottery"
+  },
+  {
+    "name": "Belt, fur",
+    "cost": "5.5 bp",
+    "weight": 1,
+    "str_req": 35,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Belt, fur"
+  },
+  {
+    "name": "Tent",
+    "cost": "2 sp",
+    "weight": 9,
+    "str_req": 35,
+    "notes": "Canvas. 5' x 8'. Two man",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Tent"
+  },
+  {
+    "name": "Doublet",
+    "cost": "1 sp",
+    "weight": 3.5,
+    "str_req": 35,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Doublet"
+  },
+  {
+    "name": "Trousers, fine",
+    "cost": "5 bp",
+    "weight": 1.5,
+    "str_req": 30,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Trousers, fine"
+  },
+  {
+    "name": "Goblet/Mug, wood",
+    "cost": "5 cp",
+    "weight": 0.5,
+    "str_req": 35,
+    "notes": "1 pint",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Goblet/Mug, wood"
+  },
+  {
+    "name": "Plank",
+    "cost": "6 tp",
+    "weight": 11,
+    "str_req": 40,
+    "notes": "Wood. 10' x 6\" x 2\". Bears 350 lbs.",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Plank"
+  },
+  {
+    "name": "Dulcimer",
+    "cost": "18 sp",
+    "weight": 12,
+    "str_req": 20,
+    "notes": "stringed instrument played w/tiny hammers",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Dulcimer"
+  },
+  {
+    "name": "Spinning Wheel",
+    "cost": "8 sp",
+    "weight": 25,
+    "str_req": 45,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Spinning Wheel"
+  },
+  {
+    "name": "Chair, wooden",
+    "cost": "6 bp",
+    "weight": 15,
+    "str_req": 60,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Chair, wooden"
+  },
+  {
+    "name": "Veil",
+    "cost": "6 bp",
+    "weight": 0.1,
+    "str_req": 15,
+    "notes": "",
+    "book": "RMU Treasure Law",
+    "item_size": "Medium",
+    "rmu_canonical_name": "Veil"
   }
 ]
